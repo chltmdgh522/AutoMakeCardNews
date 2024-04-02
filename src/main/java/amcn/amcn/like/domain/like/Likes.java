@@ -4,8 +4,10 @@ import amcn.amcn.board.domain.board.Board;
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class Likes {
 
     @Id
@@ -19,7 +21,6 @@ public class Likes {
     @ManyToOne
     @JoinColumn(name = "carddews_id")
     private CardNews cardNews;
-
 
     @OneToOne
     @JoinColumn(name="member_id")

@@ -1,6 +1,7 @@
 package amcn.amcn.board.domain.board;
 
 import amcn.amcn.comment.domain.comment.Comment;
+import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -35,7 +36,7 @@ public class Board {
     private String content;
 
     @OneToMany(mappedBy = "board")
-    private List<Board> boards=new ArrayList<>();
+    private List<Likes> likes=new ArrayList<>();
 
     private boolean modify;
 

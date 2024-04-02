@@ -2,6 +2,7 @@ package amcn.amcn.cardnews.domain.cardnews;
 
 import amcn.amcn.board.domain.board.Board;
 import amcn.amcn.commonentity.NewsGenerate;
+import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.*;
 
@@ -26,7 +27,7 @@ public class CardNews {
     private String complexImage;
 
     @OneToMany(mappedBy = "cardNews")
-    private List<CardNews> cards = new ArrayList<>();
+    private List<Likes> likes = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private CardNewsType cardNewsType;
