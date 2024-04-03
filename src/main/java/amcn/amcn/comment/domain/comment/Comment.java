@@ -1,6 +1,7 @@
 package amcn.amcn.comment.domain.comment;
 
 import amcn.amcn.board.domain.board.Board;
+import amcn.amcn.board.domain.careerboard.CareerBoard;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,10 +27,14 @@ public class Comment {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    private String content;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "career_board_id")
+    private CareerBoard careerBoard;
+
+    private String content; // 댓글 내용
 
     @CreatedDate
-    private LocalDate date;
+    private LocalDate date; // 댓글 달린 시간
 
 
 

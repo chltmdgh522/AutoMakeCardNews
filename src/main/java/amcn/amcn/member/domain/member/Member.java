@@ -1,6 +1,7 @@
 package amcn.amcn.member.domain.member;
 
 import amcn.amcn.board.domain.board.Board;
+import amcn.amcn.board.domain.careerboard.CareerBoard;
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
 import amcn.amcn.comment.domain.comment.Comment;
 import amcn.amcn.like.domain.like.Likes;
@@ -28,6 +29,9 @@ public class Member {
 
     @OneToOne(mappedBy = "member")
     private Board board;
+
+    @OneToOne(mappedBy = "member")
+    private CareerBoard careerBoard;
 
     @OneToOne(mappedBy = "member")
     private Comment comment;
@@ -60,7 +64,7 @@ public class Member {
     private String profile;
 
     @Enumerated(EnumType.STRING)
-    private MemberType memberType;
+    private MemberType memberSex;
 
     @Enumerated(EnumType.STRING)
     private RoleType roleType;

@@ -5,11 +5,13 @@ import amcn.amcn.commonentity.NewsGenerate;
 import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
 public class CardNews {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,17 +22,17 @@ public class CardNews {
     private Member member;
 
     @Embedded
-    private NewsGenerate newsGenerate;
+    private NewsGenerate newsGenerate; // 이미지 검색하기 위해 제목, 키워드, 요약문
 
-    private String simpleImage;
+    private String simpleImage; // 단일이미지
 
-    private String complexImage;
+    private String complexImage; // 복합 이미지 쟤네 둘이 합칠까 생각중 ....
 
     @OneToMany(mappedBy = "cardNews")
-    private List<Likes> likes = new ArrayList<>();
+    private List<Likes> likes = new ArrayList<>(); // 카드 뉴스 공감
 
     @Enumerated(EnumType.STRING)
-    private CardNewsType cardNewsType;
+    private CardNewsType cardNewsType; // 카드뉴스 카테고리 IT, 스포츠 등 등
 
-    private String sound;
+    private String sound; // 카드뉴스 음향
 }

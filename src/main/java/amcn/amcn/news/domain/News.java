@@ -23,11 +23,14 @@ public class News {
 
     private String journalistName; // 기자명
 
-    private Date date;
+    private Date date; // 태초 뉴스 작성 시간 (사용자 및 관리자가 올린 뉴스 시간 XX)
 
     private String company; // 언론사
     @Lob
     private String originalContent; // 원본
+
+    @Lob
+    private String newsLink; // 해당 뉴스 링크
 
     @Embedded
     private NewsGenerate newsGenerate;

@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class NewsGenerate {
     @Lob
-    private String title;
+    private String title; // 뉴스 제목 및 이미지 제목
     @Lob
     private String summary; // 요약본
 
