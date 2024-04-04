@@ -10,7 +10,6 @@ import lombok.Data;
 @Entity
 @Data
 public class Likes {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +29,4 @@ public class Likes {
     @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
-
-
 }

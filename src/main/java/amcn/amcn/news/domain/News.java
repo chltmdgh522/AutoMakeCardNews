@@ -1,5 +1,6 @@
 package amcn.amcn.news.domain;
 
+import amcn.amcn.cardnews.domain.cardnews.CardNewsType;
 import amcn.amcn.commonentity.NewsGenerate;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.*;
@@ -19,8 +20,6 @@ public class News {
     @JoinColumn(name = "member_id")
     private Member member;
 
-
-
     private String journalistName; // 기자명
 
     private Date date; // 태초 뉴스 작성 시간 (사용자 및 관리자가 올린 뉴스 시간 XX)
@@ -34,5 +33,8 @@ public class News {
 
     @Embedded
     private NewsGenerate newsGenerate;
+
+    @Enumerated(EnumType.STRING)
+    private NewsType NewsType; // 뉴스 카테고리 IT, 스포츠 등 등
 
 }

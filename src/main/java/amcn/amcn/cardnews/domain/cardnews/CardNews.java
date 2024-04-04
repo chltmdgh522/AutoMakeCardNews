@@ -21,12 +21,18 @@ public class CardNews {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Embedded
-    private NewsGenerate newsGenerate; // 이미지 검색하기 위해 제목, 키워드, 요약문
+    // @Embedded
+    // private NewsGenerate newsGenerate; // 이미지 검색하기 위해 제목, 키워드, 요약문
 
-    private String simpleImage; // 단일이미지
+    private String message;
 
-    private String complexImage; // 복합 이미지 쟤네 둘이 합칠까 생각중 ....
+    // @Lob
+    // private String simpleImage; // 단일이미지
+
+    // @Lob
+    // private String complexImage; // 영상 이미지 쟤네 둘(단일 영상)이 합칠까 생각중 ....
+
+    private String image;
 
     @OneToMany(mappedBy = "cardNews")
     private List<Likes> likes = new ArrayList<>(); // 카드 뉴스 공감
