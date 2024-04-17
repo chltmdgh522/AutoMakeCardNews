@@ -17,6 +17,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -25,25 +27,25 @@ import java.time.format.DateTimeFormatter;
 public class Member {
 
     @Id
-    String id;
+    String member_id;
 
-    @OneToOne(mappedBy = "member")
-    private Board board;
+    @OneToMany(mappedBy = "member")
+    private List<Board> board=new ArrayList<>();
 
-    @OneToOne(mappedBy = "member")
-    private CareerBoard careerBoard;
+    @OneToMany(mappedBy = "member")
+    private List<CareerBoard> careerBoard=new ArrayList<>();
 
-    @OneToOne(mappedBy = "member")
-    private Comment comment;
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comment=new ArrayList<>();
 
-    @OneToOne(mappedBy = "member")
-    private News news;
+    @OneToMany(mappedBy = "member")
+    private List<News> news=new ArrayList<>();
 
-    @OneToOne(mappedBy = "member")
-    private CardNews cardNews;
+    @OneToMany(mappedBy = "member")
+    private List<CardNews> cardNews=new ArrayList<>();
 
-    @OneToOne(mappedBy = "member")
-    private Likes likes;
+    @OneToMany(mappedBy = "member")
+    private List<Likes> likes=new ArrayList<>();
 
 
     private String loginId;

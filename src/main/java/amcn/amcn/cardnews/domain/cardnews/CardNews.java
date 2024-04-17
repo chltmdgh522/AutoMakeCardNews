@@ -15,9 +15,9 @@ import java.util.List;
 public class CardNews {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long card_news_id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -32,7 +32,8 @@ public class CardNews {
     // @Lob
     // private String complexImage; // 영상 이미지 쟤네 둘(단일 영상)이 합칠까 생각중 ....
 
-    private String image;
+    @Lob
+    private String image_url;
 
     @OneToMany(mappedBy = "cardNews")
     private List<Likes> likes = new ArrayList<>(); // 카드 뉴스 공감

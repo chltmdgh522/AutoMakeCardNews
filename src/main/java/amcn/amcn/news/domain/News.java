@@ -2,11 +2,14 @@ package amcn.amcn.news.domain;
 
 import amcn.amcn.cardnews.domain.cardnews.CardNewsType;
 import amcn.amcn.commonentity.NewsGenerate;
+import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -14,11 +17,14 @@ public class News {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long news_id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "news")
+    private List<Likes> likes=new ArrayList<>();
 
     private String journalistName; // 기자명
 
@@ -30,6 +36,7 @@ public class News {
 
     @Lob
     private String newsLink; // 해당 뉴스 링크
+
 
     @Embedded
     private NewsGenerate newsGenerate;
