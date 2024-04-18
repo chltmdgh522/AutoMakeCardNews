@@ -17,7 +17,7 @@ public class CardNews {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long card_news_id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 

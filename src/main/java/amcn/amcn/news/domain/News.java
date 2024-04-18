@@ -19,7 +19,7 @@ public class News {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long news_id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
