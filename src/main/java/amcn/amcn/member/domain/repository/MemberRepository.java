@@ -8,8 +8,23 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
-public interface MemberRepository extends JpaRepository<Member, Long> {
+import java.util.List;
+import java.util.Optional;
+
+
+public interface MemberRepository{
+
+    void save(Member member);
+
+    Member update(Member member);
+
+    Optional<Member> findByLoginId(Member member);
+
+    Optional<Member> findByEmail(Member member);
+
+    List<Member> findAll();
+
+    void delete();
 
 
 }

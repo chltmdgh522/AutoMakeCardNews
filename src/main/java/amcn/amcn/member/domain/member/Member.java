@@ -27,7 +27,7 @@ import java.util.List;
 public class Member {
 
     @Id
-    String member_id;
+    String memberId;
 
     @OneToMany(mappedBy = "member")
     private List<Board> board=new ArrayList<>();
@@ -54,6 +54,8 @@ public class Member {
     private String passwordCheck;
 
     private String password;
+
+    private String name;
 
     @Email(message = "이메일 형식이 아닙니다.")
     private String email;
