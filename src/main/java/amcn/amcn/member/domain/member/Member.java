@@ -57,8 +57,14 @@ public class Member {
 
     private String name;
 
-    @Email(message = "이메일 형식이 아닙니다.")
+    @Email
     private String email;
+
+    @Transient
+    private String emailF;
+
+    @Transient
+    private EmailType emailType;
 
     private String phone;
 
