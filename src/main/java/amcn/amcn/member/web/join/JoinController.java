@@ -47,6 +47,10 @@ public class JoinController {
             bindingResult.reject("joinFail","존재하는 아이디가 있습니다");
             return "member/join";
         }
+        if(Objects.equals(save,"password")){
+            bindingResult.reject("joinFail","비밀번호가 일치하지 않습니다");
+            return "member/join";
+        }
 
         if(Objects.equals(save,"email")){
             bindingResult.reject("joinFail","존재하는 이메일이 있습니다");
