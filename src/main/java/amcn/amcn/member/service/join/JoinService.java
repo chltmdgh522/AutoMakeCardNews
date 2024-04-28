@@ -52,7 +52,7 @@ public class JoinService {
             member.setRoleType(RoleType.USER);
         }
 
-//        member.setProfile("basic.jpg");
+        member.setProfile("basic.png");
 
 
         member.setMemberId(UUID.randomUUID().toString());
