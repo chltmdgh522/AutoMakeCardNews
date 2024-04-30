@@ -1,9 +1,11 @@
 package amcn.amcn.member.web.mypage;
 
 import amcn.amcn.file.FileStore;
+import amcn.amcn.member.domain.member.EmailType;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.domain.mypage.MyPageMember;
 import amcn.amcn.member.service.MyPageService;
+import amcn.amcn.member.service.join.JoinService;
 import amcn.amcn.member.web.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -26,6 +31,18 @@ public class MyPageController {
     private final MyPageService myPageService;
     private final FileStore fileStore;
 
+
+    @ModelAttribute("et")
+    public List<EmailType> deliveryCodes(){
+        List<EmailType> emalCodes=new ArrayList<>();
+        emalCodes.add(new EmailType("naver.com"));
+        emalCodes.add(new EmailType("nate.com"));
+        emalCodes.add(new EmailType("google.com"));
+        emalCodes.add(new EmailType("gs.anyang.ac.kr"));
+
+        return emalCodes;
+    }
+
     @GetMapping("/{memberId}")
     public String getMyPage(
             @PathVariable String memberId,
@@ -36,7 +53,7 @@ public class MyPageController {
                 .ifPresent(findMember -> model.addAttribute("member", findMember));
 
         model.addAttribute("loginMember", loginMember);
-        log.info("gd");
+
 
         return "member/mypage";
 
@@ -44,14 +61,31 @@ public class MyPageController {
 
     @GetMapping("/edit")
     public String editGetMyPageHome(
+            @ModelAttribute Member member,
             Model model,
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
 
         model.addAttribute("loginMember", loginMember);
 
-        myPageService.memberIdCheck(loginMember.getMemberId())
-                .ifPresent(findMember -> model.addAttribute("member", findMember));
 
+        Optional<Member> findMember = myPageService.memberIdCheck(loginMember.getMemberId());
+        if (findMember.isPresent()) {
+            member = findMember.get();
+
+            // 이메일 도메인 얻기
+            String email = member.getEmail();
+            int i = email.indexOf("@");
+            String domain = email.substring(i + 1);
+            model.addAttribute("emailDomain", domain);
+
+            // 이메일 아이디 얻기
+            String emailFirst = email.substring(0, i);
+            member.setEmailF(emailFirst);
+
+            model.addAttribute("member", member);
+        } else {
+            return null;
+        }
 
         return "member/mypage-edit";
     }
@@ -65,11 +99,8 @@ public class MyPageController {
             RedirectAttributes redirectAttributes,
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) throws IOException {
         model.addAttribute("member",loginMember);
-        if (bindingResult.hasErrors()) {
-            return "member/mypage-edit";
-        }
+
         Member member=new Member();
-        log.info("============================================");
         // 프로필사진
         String uploadImage = fileStore.storeFile(myPageMember.getProfile());
         member.setProfile(uploadImage);
@@ -83,10 +114,30 @@ public class MyPageController {
         member.setName(myPageMember.getName());
 
         // 이메일
-        member.setEmail(myPageMember.getEmail());
+        String Final_email = myPageMember.getEmailF() + "@" + myPageMember.getEmailType().getEmailCode();
+        member.setEmail(Final_email);
+        member.setEmailF(myPageMember.getEmailF());
+        member.setDomain(myPageMember.getEmailType().getEmailCode());
 
         //멤버 고유 id
         member.setMemberId(loginMember.getMemberId());
+
+        String email_msg = myPageService.email(member);
+
+
+        if(Objects.equals(email_msg,"email")){
+            bindingResult.reject("error_email","이메일이 존재합다");
+            model.addAttribute("member",member);
+            model.addAttribute("emailDomain", member.getDomain());
+            return "member/mypage-edit";
+        }
+        if(Objects.equals(email_msg,"emailF")){
+            bindingResult.reject("error_email","올바른 이메일 형식이 아닙니다");
+            model.addAttribute("member",member);
+            model.addAttribute("emailDomain", member.getDomain());
+
+            return "member/mypage-edit";
+        }
 
         myPageService.updateMyPage(member);
 

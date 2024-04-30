@@ -12,6 +12,7 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -66,9 +67,13 @@ public class Member {
     @Transient
     private EmailType emailType;
 
+    @Transient
+    private String domain;
+
     private String phone;
 
     private Date birth;
+
 
     @Lob
     private String profile;
