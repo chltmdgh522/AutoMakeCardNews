@@ -25,8 +25,11 @@ public class MemberJPARepository implements MemberRepository {
     }
 
     @Override
-    public Member update(Member member) {
-        return null;
+    public void update(Member member) {
+        Member findMember = em.find(Member.class, member.getMemberId());
+        findMember.setEmail(member.getEmail());
+        findMember.setName(member.getName());
+        findMember.setProfile(member.getProfile());
     }
 
     @Override

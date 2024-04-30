@@ -17,4 +17,9 @@ public class MyPageService {
     public Optional<Member> memberIdCheck(String memberId) {
         return memberRepository.findMemberId(memberId);
     }
+
+
+    public void updateMyPage(Member member){
+        memberRepository.update(member);
+    }
 }

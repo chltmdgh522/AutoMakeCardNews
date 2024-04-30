@@ -21,7 +21,7 @@ public class FileController {
 
     //마이페이지 프로필
     @ResponseBody
-    @GetMapping("/image/{filename}")
+    @GetMapping("/my-page/image/{filename}")
     public Resource profileImage(@PathVariable String filename) throws MalformedURLException {
         return new UrlResource("file:" + fileStore.getFullPath(filename));
     }

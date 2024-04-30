@@ -1,6 +1,7 @@
 package amcn.amcn;
 
 import amcn.amcn.member.domain.member.Member;
+import amcn.amcn.member.domain.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
+    private final MemberRepository memberRepository;
     @GetMapping("/")
     public String home(Model model,
                        @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
@@ -22,7 +24,8 @@ public class HomeController {
         return "home/noLoginHome";
     }
 
-        model.addAttribute("member",loginMember);
+        memberRepository.findMemberId(loginMember.getMemberId())
+                .ifPresent(findMember -> model.addAttribute("member", findMember));
         return "home/loginHome";
     }
 }

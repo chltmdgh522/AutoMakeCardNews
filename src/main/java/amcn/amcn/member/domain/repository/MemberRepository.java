@@ -13,10 +13,9 @@ import java.util.Optional;
 
 
 public interface MemberRepository{
-
     void save(Member member);
 
-    Member update(Member member);
+    void update(Member member);
 
     Optional<Member> findMemberId(String memberId);
 
