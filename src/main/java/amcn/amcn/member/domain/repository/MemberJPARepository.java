@@ -30,6 +30,18 @@ public class MemberJPARepository implements MemberRepository {
     }
 
     @Override
+    public Optional<Member> findMemberId(String memberId) {
+        try {
+            Member findMember = em.createQuery("select m from Member m where m.memberId = :id ", Member.class)
+                    .setParameter("id", memberId)
+                    .getSingleResult();
+            return Optional.of(findMember);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Optional<Member> findByLoginId(Member member) {
         try {
             Member findMember = em.createQuery("select m from Member m where m.loginId = :loginId ", Member.class)
