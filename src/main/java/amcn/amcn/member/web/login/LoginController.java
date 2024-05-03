@@ -1,5 +1,6 @@
 package amcn.amcn.member.web.login;
 
+import amcn.amcn.mail.MailService;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.service.login.LoginService;
 import amcn.amcn.member.web.session.SessionConst;
@@ -37,7 +38,7 @@ public class LoginController {
     @PostMapping("/login")
     public String postLogin(@Validated @ModelAttribute Member member, BindingResult bindingResult,
                             @RequestParam(defaultValue = "/") String redirectURL,
-                            HttpServletRequest request) {
+                            HttpServletRequest request) throws Exception {
 
         Optional<Member> findLoginMember = loginService.loginIdCheck(member);
         if (findLoginMember.isEmpty()) {
