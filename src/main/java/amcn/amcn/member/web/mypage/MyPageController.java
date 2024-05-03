@@ -4,8 +4,7 @@ import amcn.amcn.file.FileStore;
 import amcn.amcn.member.domain.member.EmailType;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.domain.mypage.MyPageMember;
-import amcn.amcn.member.service.MyPageService;
-import amcn.amcn.member.service.join.JoinService;
+import amcn.amcn.member.service.mypage.MyPageService;
 import amcn.amcn.member.web.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,13 +41,12 @@ public class MyPageController {
         return emalCodes;
     }
 
-    @GetMapping("/{memberId}")
+    @GetMapping
     public String getMyPage(
-            @PathVariable String memberId,
             Model model,
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
 
-        myPageService.memberIdCheck(memberId)
+        myPageService.memberIdCheck(loginMember.getMemberId())
                 .ifPresent(findMember -> model.addAttribute("member", findMember));
 
         model.addAttribute("loginMember", loginMember);
@@ -96,7 +93,6 @@ public class MyPageController {
             @ModelAttribute("member") MyPageMember myPageMember,
             BindingResult bindingResult,
             Model model,
-            RedirectAttributes redirectAttributes,
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) throws IOException {
         model.addAttribute("member",loginMember);
 
@@ -124,26 +120,28 @@ public class MyPageController {
 
         String email_msg = myPageService.email(member);
 
+        if(!Final_email.equals(loginMember.getEmail())) {
 
-        if(Objects.equals(email_msg,"email")){
-            bindingResult.reject("error_email","이메일이 존재합다");
-            model.addAttribute("member",member);
-            model.addAttribute("emailDomain", member.getDomain());
-            return "member/mypage-edit";
-        }
-        if(Objects.equals(email_msg,"emailF")){
-            bindingResult.reject("error_email","올바른 이메일 형식이 아닙니다");
-            model.addAttribute("member",member);
-            model.addAttribute("emailDomain", member.getDomain());
+            if (Objects.equals(email_msg, "email")) {
+                model.addAttribute("error_email", "이메일이 존재합니다");
+                log.info("이메일");
+                model.addAttribute("member", member);
+                model.addAttribute("emailDomain", member.getDomain());
+                return "member/mypage-edit";
+            }
+            if (Objects.equals(email_msg, "emailF")) {
+                model.addAttribute("error_email", "올바른 이메일 형식이 아닙니다");
+                model.addAttribute("member", member);
+                model.addAttribute("emailDomain", member.getDomain());
 
-            return "member/mypage-edit";
+                return "member/mypage-edit";
+            }
         }
+
 
         myPageService.updateMyPage(member);
 
-        redirectAttributes.addAttribute("memberId",loginMember.getMemberId());
-
-        return "redirect:/mypage/{memberId}";
+        return "redirect:/mypage";
 
     }
 

@@ -1,14 +1,10 @@
 package amcn.amcn.member;
 
 import amcn.amcn.member.domain.member.Member;
-import amcn.amcn.member.domain.member.RoleType;
-import amcn.amcn.member.domain.repository.MemberRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import amcn.amcn.member.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @SpringBootTest

@@ -1,4 +1,4 @@
-package amcn.amcn.member.domain.repository;
+package amcn.amcn.member.repository;
 
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.EntityManager;
@@ -16,6 +16,8 @@ public interface MemberRepository{
     void save(Member member);
 
     void update(Member member);
+
+    void updatePassword(String memberId,String password);
 
     Optional<Member> findMemberId(String memberId);
 

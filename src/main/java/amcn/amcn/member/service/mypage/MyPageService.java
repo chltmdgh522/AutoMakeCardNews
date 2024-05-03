@@ -1,7 +1,7 @@
-package amcn.amcn.member.service;
+package amcn.amcn.member.service.mypage;
 
 import amcn.amcn.member.domain.member.Member;
-import amcn.amcn.member.domain.repository.MemberRepository;
+import amcn.amcn.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

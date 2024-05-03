@@ -1,11 +1,10 @@
-package amcn.amcn.member.domain.repository;
+package amcn.amcn.member.repository;
 
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +29,12 @@ public class MemberJPARepository implements MemberRepository {
         findMember.setEmail(member.getEmail());
         findMember.setName(member.getName());
         findMember.setProfile(member.getProfile());
+    }
+
+    @Override
+    public void updatePassword(String memberId ,String password) {
+        Member findMember = em.find(Member.class, memberId);
+        findMember.setPassword(password);
     }
 
     @Override

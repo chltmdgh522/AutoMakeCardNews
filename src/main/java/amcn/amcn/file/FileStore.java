@@ -23,10 +23,8 @@ public class FileStore {
 
     public String storeFile(MultipartFile multipartFile) throws IOException {
         if (multipartFile.isEmpty()) {
-            log.info("사진1");
             return null;
         }
-        log.info("사진2");
 
         String originalFilename = multipartFile.getOriginalFilename(); //image.png
 

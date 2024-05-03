@@ -1,6 +1,6 @@
 package amcn.amcn.file;
 
-import amcn.amcn.member.domain.repository.MemberRepository;
+import amcn.amcn.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;

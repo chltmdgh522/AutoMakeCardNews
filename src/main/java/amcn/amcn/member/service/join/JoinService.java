@@ -2,7 +2,7 @@ package amcn.amcn.member.service.join;
 
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.domain.member.RoleType;
-import amcn.amcn.member.domain.repository.MemberRepository;
+import amcn.amcn.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

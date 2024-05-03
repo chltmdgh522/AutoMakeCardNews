@@ -1,7 +1,7 @@
 package amcn.amcn;
 
 import amcn.amcn.member.domain.member.Member;
-import amcn.amcn.member.domain.repository.MemberRepository;
+import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
