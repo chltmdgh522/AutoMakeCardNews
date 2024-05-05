@@ -67,7 +67,9 @@ public class ForgotIdController {
        // HttpSession session= request.getSession();
        // session.setAttribute(SessionConst.TEM_MEMBER, member);
 
-        return "redirect:/login";
+        return "redirect:/login?mailSent=true";
+
+
     }
 
     //@GetMapping("/find-id")
