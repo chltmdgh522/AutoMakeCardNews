@@ -23,7 +23,7 @@ public class JoinService {
         String F_email = member.getEmailF() + "@" + member.getEmailType().getEmailCode();
         member.setEmail(F_email);
 
-        // 이메일 형식
+        //  이메일 형식
         if (member.getEmailF().contains("@")) {
             return "emailF";
         }
@@ -47,14 +47,14 @@ public class JoinService {
 
         //관리자 부여
         if (member.getLoginId().equals("chltmdgh522")) {
-            member.setRoleType(RoleType.ADMIN);
+            member.setRoleType(RoleType.MASTER);
         } else {
             member.setRoleType(RoleType.USER);
         }
 
         member.setProfile("basic.png");
 
-
+        member.setAuthPassword("0000");
         member.setMemberId(UUID.randomUUID().toString());
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberRepository.save(member);

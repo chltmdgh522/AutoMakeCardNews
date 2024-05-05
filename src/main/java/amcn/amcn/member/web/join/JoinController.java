@@ -1,5 +1,6 @@
 package amcn.amcn.member.web.join;
 
+import amcn.amcn.mail.NaverMailService;
 import amcn.amcn.member.domain.member.EmailType;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.service.join.JoinService;
@@ -24,16 +25,15 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class JoinController {
     private final JoinService joinService;
+    private final NaverMailService mailService;
 
     @ModelAttribute("et")
     public List<EmailType> deliveryCodes(){
-        List<EmailType> deliveryCodes=new ArrayList<>();
-        deliveryCodes.add(new EmailType("naver.com"));
-        deliveryCodes.add(new EmailType("nate.com"));
-        deliveryCodes.add(new EmailType("google.com"));
-        deliveryCodes.add(new EmailType("gs.anyang.ac.kr"));
+        List<EmailType> emalCodes=new ArrayList<>();
+        emalCodes.add(new EmailType("naver.com"));
+        emalCodes.add(new EmailType("google.com"));
 
-        return deliveryCodes;
+        return emalCodes;
     }
     @GetMapping("/join")
     public String getJoin(@ModelAttribute Member member,
@@ -67,6 +67,8 @@ public class JoinController {
             bindingResult.reject("joinFail","올바른 이메일 형식이 아닙니다");
             return "member/join";
         }
+
+
 
         return "redirect:/login";
     }

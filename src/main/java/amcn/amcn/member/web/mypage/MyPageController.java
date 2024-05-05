@@ -3,6 +3,7 @@ package amcn.amcn.member.web.mypage;
 import amcn.amcn.file.FileStore;
 import amcn.amcn.member.domain.member.EmailType;
 import amcn.amcn.member.domain.member.Member;
+import amcn.amcn.member.domain.member.RoleType;
 import amcn.amcn.member.domain.mypage.MyPageMember;
 import amcn.amcn.member.service.mypage.MyPageService;
 import amcn.amcn.member.web.session.SessionConst;
@@ -34,10 +35,7 @@ public class MyPageController {
     public List<EmailType> deliveryCodes(){
         List<EmailType> emalCodes=new ArrayList<>();
         emalCodes.add(new EmailType("naver.com"));
-        emalCodes.add(new EmailType("nate.com"));
         emalCodes.add(new EmailType("google.com"));
-        emalCodes.add(new EmailType("gs.anyang.ac.kr"));
-
         return emalCodes;
     }
 
@@ -83,6 +81,8 @@ public class MyPageController {
         } else {
             return null;
         }
+        log.info(loginMember.getRoleType().name());
+        model.addAttribute("type",loginMember.getRoleType().name());
 
         return "member/mypage-edit";
     }
@@ -138,7 +138,7 @@ public class MyPageController {
             }
         }
 
-
+        member.setRoleType(RoleType.USER);
         myPageService.updateMyPage(member);
 
         return "redirect:/mypage";

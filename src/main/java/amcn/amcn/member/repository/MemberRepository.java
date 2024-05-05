@@ -19,6 +19,8 @@ public interface MemberRepository{
 
     void updatePassword(String memberId,String password);
 
+    void updateRoleType(Member member);
+
     Optional<Member> findMemberId(String memberId);
 
     Optional<Member> findByLoginId(Member member);

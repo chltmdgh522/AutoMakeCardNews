@@ -73,7 +73,8 @@ public class Member {
     private String phone;
 
     private Date birth;
-
+    @Transient
+    private String authPassword;
 
     @Lob
     private String profile;

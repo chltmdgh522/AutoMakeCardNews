@@ -1,6 +1,7 @@
 package amcn.amcn.member.repository;
 
 import amcn.amcn.member.domain.member.Member;
+import amcn.amcn.member.domain.member.RoleType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class MemberJPARepository implements MemberRepository {
         findMember.setEmail(member.getEmail());
         findMember.setName(member.getName());
         findMember.setProfile(member.getProfile());
+        findMember.setRoleType(RoleType.USER);
     }
 
     @Override
@@ -36,6 +38,13 @@ public class MemberJPARepository implements MemberRepository {
         Member findMember = em.find(Member.class, memberId);
         findMember.setPassword(password);
     }
+
+    @Override
+    public void updateRoleType(Member member) {
+        Member findMember = em.find(Member.class, member.getMemberId());
+        findMember.setRoleType(RoleType.AUTHUSER);
+    }
+
 
     @Override
     public Optional<Member> findMemberId(String memberId) {
