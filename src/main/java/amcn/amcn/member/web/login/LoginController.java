@@ -1,6 +1,6 @@
 package amcn.amcn.member.web.login;
 
-import amcn.amcn.mail.GoggleMailService;
+
 import amcn.amcn.mail.NaverMailService;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.service.login.LoginService;
@@ -24,7 +24,7 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    private final GoggleMailService goggleMailService;
+
     private final NaverMailService naverMailService;
 
     @GetMapping("/login")

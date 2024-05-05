@@ -15,10 +15,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/join", "/login", "/css/**", "/*.ico", "/error",
-                        "/logout", "/forgot-password", "/new-password", "/admin/login", "/admin/logout",
+                        "/logout", "/forgot-id", "/forgot-password", "/new-password", "/admin/login", "/admin/logout",
                         "/my-page/imagesV3/{boardId}", "/my-page/imagesV2/{memberId}",
                         "/my-page/images/{boardId}", "/my-page/imageV4/{image}",
-                        "/*.jpg", "/*.png", "/*.gif", "/logo/AMCNicon.png");
+                        "/*.jpg", "/*.png", "/*.gif", "/logo/AMCNicon.png",
+                        "/email-verification");
 
     }
 }

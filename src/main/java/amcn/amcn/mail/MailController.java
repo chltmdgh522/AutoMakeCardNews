@@ -3,6 +3,8 @@ package amcn.amcn.mail;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpRequest;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -59,4 +62,46 @@ public class MailController {
         memberRepository.updateRoleType(loginMember);
         return "redirect:/mypage";
     }
+
+
+
+    //@GetMapping("/email-verification")
+    public String getForgot(
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
+            @SessionAttribute(name = SessionConst.TEM_MEMBER, required = false) Member temMember,
+            Model model
+    ) throws Exception {
+        if(loginMember !=null || temMember ==null ){
+            return "redirect:/";
+        }
+        String code = mailService.sendSimpleMessage(temMember.getEmail());
+        temMember.setAuthPassword(code);
+
+        Member member = new Member();
+        model.addAttribute("member", member);
+
+        return "email/email";
+    }
+
+    //@PostMapping("/email-verification")
+    public String postForgot(
+            @Validated
+            @ModelAttribute Member member,
+            BindingResult bindingResult,
+            @SessionAttribute(name = SessionConst.TEM_MEMBER, required = false)
+            Member temMember,
+            HttpServletRequest request) {
+        if (!Objects.equals(member.getAuthPassword(), temMember.getAuthPassword())) {
+            bindingResult.reject("err", "이메일 인증번호가 일치하지 않습니다");
+            return "email/email";
+        }
+
+        HttpSession session = request.getSession(false);
+        if(session !=null){
+            session.invalidate();
+        }
+
+        return "redirect:/login";
+    }
+
 }

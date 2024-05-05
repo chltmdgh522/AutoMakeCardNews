@@ -72,7 +72,7 @@ public class Member {
 
     private String phone;
 
-    private Date birth;
+    private LocalDate birthday;
     @Transient
     private String authPassword;
 

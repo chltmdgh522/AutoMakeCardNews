@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
-
-@Service
+/*
+//@Service
 @Slf4j
 
 public class GoggleMailService implements MailService {
@@ -111,3 +111,4 @@ public class GoggleMailService implements MailService {
     }
 
 }
+*/
