@@ -5,6 +5,7 @@ import amcn.amcn.member.domain.member.EmailType;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.domain.member.RoleType;
 import amcn.amcn.member.domain.mypage.MyPageMember;
+import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.service.mypage.MyPageService;
 import amcn.amcn.member.web.session.SessionConst;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +30,15 @@ public class MyPageController {
 
     private final MyPageService myPageService;
     private final FileStore fileStore;
+    private final MemberRepository memberRepository;
 
 
     @ModelAttribute("et")
     public List<EmailType> deliveryCodes(){
         List<EmailType> emalCodes=new ArrayList<>();
         emalCodes.add(new EmailType("naver.com"));
-        emalCodes.add(new EmailType("google.com"));
+        emalCodes.add(new EmailType("gmail.com"));
+        emalCodes.add(new EmailType("gs.anyang.ac.kr"));
         return emalCodes;
     }
 
@@ -76,13 +79,14 @@ public class MyPageController {
             // 이메일 아이디 얻기
             String emailFirst = email.substring(0, i);
             member.setEmailF(emailFirst);
+            model.addAttribute("type",member.getRoleType().name());
 
             model.addAttribute("member", member);
         } else {
             return null;
         }
         log.info(loginMember.getRoleType().name());
-        model.addAttribute("type",loginMember.getRoleType().name());
+
 
         return "member/mypage-edit";
     }
@@ -138,7 +142,17 @@ public class MyPageController {
             }
         }
 
-        member.setRoleType(RoleType.USER);
+        member.setRoleType(RoleType.valueOf(loginMember.getRoleType().name()));
+        Optional<Member> findeMember = memberRepository.findMemberId(loginMember.getMemberId());
+        if(findeMember.isPresent()){
+            Member member1 = findeMember.get();
+            if(!Objects.equals(member1.getEmail(), member.getEmail())){
+                member.setRoleType(RoleType.USER);
+            }
+        }else{
+            return null;
+        }
+
         myPageService.updateMyPage(member);
 
         return "redirect:/mypage";

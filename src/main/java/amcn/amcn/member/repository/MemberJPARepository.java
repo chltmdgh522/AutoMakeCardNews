@@ -30,7 +30,7 @@ public class MemberJPARepository implements MemberRepository {
         findMember.setEmail(member.getEmail());
         findMember.setName(member.getName());
         findMember.setProfile(member.getProfile());
-        findMember.setRoleType(RoleType.USER);
+        findMember.setRoleType(RoleType.valueOf(member.getRoleType().name()));
     }
 
     @Override

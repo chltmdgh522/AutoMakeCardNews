@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class MailController {
 
     private final NaverMailService mailService;
 
+
     private final MemberRepository memberRepository;
 
     @GetMapping("/email-auth")
@@ -27,11 +29,18 @@ public class MailController {
             Model model,
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
             Member loginMember) throws Exception {
-        String authPassword = mailService.sendSimpleMessage(loginMember.getEmail());
-        loginMember.setAuthPassword(authPassword);
 
-        Member member=new Member();
-        model.addAttribute("member",member);
+        Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
+        if (findMember.isPresent()) {
+            Member member1 = findMember.get();
+            String authPassword = mailService.sendSimpleMessage(member1.getEmail());
+            loginMember.setAuthPassword(authPassword);
+
+            Member member = new Member();
+            model.addAttribute("member", member);
+        } else {
+            return null;
+        }
         return "email/email";
     }
 
@@ -42,7 +51,7 @@ public class MailController {
             BindingResult bindingResult,
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
             Member loginMember) {
-        if(!Objects.equals(member.getAuthPassword(),loginMember.getAuthPassword())){
+        if (!Objects.equals(member.getAuthPassword(), loginMember.getAuthPassword())) {
             bindingResult.reject("err", "이메일 인증번호가 일치하지 않습니다");
             return "email/email";
         }

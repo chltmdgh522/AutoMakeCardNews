@@ -31,8 +31,8 @@ public class JoinController {
     public List<EmailType> deliveryCodes(){
         List<EmailType> emalCodes=new ArrayList<>();
         emalCodes.add(new EmailType("naver.com"));
-        emalCodes.add(new EmailType("google.com"));
-
+        emalCodes.add(new EmailType("gmail.com"));
+        emalCodes.add(new EmailType("gs.anyang.ac.kr"));
         return emalCodes;
     }
     @GetMapping("/join")
