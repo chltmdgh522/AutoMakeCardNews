@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import java.util.Optional;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -24,8 +26,14 @@ public class HomeController {
         return "home/noLoginHome";
     }
 
-        memberRepository.findMemberId(loginMember.getMemberId())
-                .ifPresent(findMember -> model.addAttribute("member", findMember));
+        Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
+        if(findMember.isPresent()){
+            Member member = findMember.get();
+            model.addAttribute("type", member.getRoleType().name());
+            model.addAttribute("member",member);
+        }else {
+            return null;
+        }
         return "home/loginHome";
     }
 }

@@ -1,8 +1,11 @@
 package amcn.amcn.member.web.password;
 
 
+import amcn.amcn.mail.NaverMailIdService;
+import amcn.amcn.mail.NaverMailPasswordService;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.domain.password.ChangePassword;
+import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.service.password.PasswordService;
 import amcn.amcn.member.web.session.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +32,8 @@ public class PasswordController {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final PasswordService passwordService;
+    private final NaverMailPasswordService mailService;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/change-password")
     public String getChangePassword(@ModelAttribute("password") ChangePassword password,
@@ -79,6 +84,41 @@ public class PasswordController {
         }
 
         return "redirect:/login";
+
+    }
+
+    @GetMapping("/forgot-password")
+    public String getForgotId(@ModelAttribute Member member
+            , Model model) {
+        model.addAttribute("member", member);
+        return "member/password/forgotPassword";
+    }
+
+    @PostMapping("/forgot-password")
+    public String postForgotId(@Validated
+                               @ModelAttribute Member member,
+                               BindingResult bindingResult,
+                               HttpServletRequest request
+    ) throws Exception {
+        Optional<Member> findMember = memberRepository.findByEmail(member);
+        if (findMember.isPresent()) {
+            Member member1 = findMember.get();
+            if (!Objects.equals(member1.getEmail(), member.getEmail())) {
+                bindingResult.reject("err", "일치하는 계정이 없습니다.");
+                return "member/password/forgotPassword";
+            }
+        } else {
+            bindingResult.reject("err", "일치하는 계정이 없습니다.");
+            return "member/password/forgotPassword";
+        }
+
+        String code = mailService.sendSimpleMessage(member);
+        memberRepository.updatePassword(findMember.get().getMemberId(),bCryptPasswordEncoder.encode(code));
+        // HttpSession session= request.getSession();
+        // session.setAttribute(SessionConst.TEM_MEMBER, member);
+
+        return "redirect:/login?mailSent=true";
+
 
     }
 }
