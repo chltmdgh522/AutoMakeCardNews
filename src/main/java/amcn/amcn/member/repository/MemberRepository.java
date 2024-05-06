@@ -29,7 +29,7 @@ public interface MemberRepository{
 
     List<Member> findAll();
 
-    void delete();
+    void delete(Member member);
 
 
 }

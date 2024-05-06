@@ -89,7 +89,8 @@ public class MemberJPARepository implements MemberRepository {
     }
 
     @Override
-    public void delete() {
-
+    public void delete(Member member) {
+        Member findMember = em.find(Member.class, member.getMemberId());
+        em.remove(findMember);
     }
 }
