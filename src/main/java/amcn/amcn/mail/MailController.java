@@ -27,6 +27,16 @@ public class MailController {
 
     private final MemberRepository memberRepository;
 
+
+    @PostMapping("/join-email")
+    @ResponseBody
+    public String postJoinEmail(@RequestParam("email") String email) throws Exception {
+      log.info(email);
+        String code = mailService.sendSimpleMessage(email);
+        Member member=new Member();
+        return code;
+    }
+
     @GetMapping("/email-auth")
     public String getEmail(
             Model model,

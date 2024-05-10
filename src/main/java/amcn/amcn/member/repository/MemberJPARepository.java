@@ -45,7 +45,6 @@ public class MemberJPARepository implements MemberRepository {
         findMember.setRoleType(RoleType.AUTHUSER);
     }
 
-
     @Override
     public Optional<Member> findMemberId(String memberId) {
         try {

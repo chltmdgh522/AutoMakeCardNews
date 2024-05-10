@@ -49,7 +49,7 @@ public class JoinService {
         if (member.getLoginId().equals("chltmdgh522")) {
             member.setRoleType(RoleType.MASTER);
         } else {
-            member.setRoleType(RoleType.USER);
+            member.setRoleType(RoleType.AUTHUSER);
         }
 
         member.setProfile("basic.png");

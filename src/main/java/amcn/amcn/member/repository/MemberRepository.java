@@ -21,6 +21,7 @@ public interface MemberRepository{
 
     void updateRoleType(Member member);
 
+
     Optional<Member> findMemberId(String memberId);
 
     Optional<Member> findByLoginId(Member member);
