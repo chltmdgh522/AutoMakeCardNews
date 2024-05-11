@@ -76,6 +76,7 @@ public class MemberJPARepository implements MemberRepository {
             Member findMember = em.createQuery("select m from Member m where m.email = :email ", Member.class)
                     .setParameter("email", member.getEmail())
                     .getSingleResult();
+            log.info("repo:"+findMember.getEmail());
             return Optional.of(findMember);
         } catch (NoResultException e) {
             return Optional.empty();

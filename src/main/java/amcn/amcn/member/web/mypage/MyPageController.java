@@ -85,7 +85,6 @@ public class MyPageController {
         } else {
             return null;
         }
-        log.info(loginMember.getRoleType().name());
 
 
         return "member/mypage-edit";
@@ -119,10 +118,18 @@ public class MyPageController {
         member.setEmailF(myPageMember.getEmailF());
         member.setDomain(myPageMember.getEmailType().getEmailCode());
 
+
         //멤버 고유 id
         member.setMemberId(loginMember.getMemberId());
 
+        //세션 이메일 업데이트 왜냐하면 같은거 중복허용
+
+
+
+
         String email_msg = myPageService.email(member);
+        log.info("넘어온:"+Final_email);
+        log.info(loginMember.getEmail());
 
         if(!Final_email.equals(loginMember.getEmail())) {
 
@@ -153,7 +160,9 @@ public class MyPageController {
             return null;
         }
 
+
         myPageService.updateMyPage(member);
+        loginMember.setEmail(member.getEmail());
 
         return "redirect:/mypage";
 
