@@ -33,7 +33,6 @@ public class MailController {
     public String postJoinEmail(@RequestParam("email") String email) throws Exception {
       log.info(email);
         String code = mailService.sendSimpleMessage(email);
-        Member member=new Member();
         return code;
     }
 
