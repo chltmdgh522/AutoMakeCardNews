@@ -35,7 +35,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail:3.2.5'
 
 
+	// 파이썬 의존성 추가
+	implementation 'org.python:jython-standalone:2.7.2'
 
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
