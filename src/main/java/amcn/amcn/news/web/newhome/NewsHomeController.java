@@ -27,7 +27,6 @@ import java.util.Optional;
 public class NewsHomeController {
     private final MemberRepository memberRepository;
     private final NewsHomeService newsHomeService;
-    private final NewsRepository newsRepository;
 
     @GetMapping("/news")
     public String getNewsHome(Model model,

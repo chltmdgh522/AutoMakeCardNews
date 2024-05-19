@@ -90,6 +90,36 @@ public class NewsPageController {
         }
     }
 
+
+    // POST 요청을 받아 파이썬 스크립트 실행 취소
+    @PostMapping("/cancel-tts")
+    @ResponseBody
+    public void cancelTTSScript() {
+        if (ttsProcess != null) {
+            ttsProcess.destroy(); // 파이썬 스크립트 실행 프로세스를 종료
+            log.info("TTS script execution canceled.");
+        } else {
+
+            log.info("No TTS script is currently running.");
+        }
+    }
+
+    // POST 요청을 받아 파이썬 스크립트 실행 취소
+    @PostMapping("/cancel-tts2")
+    @ResponseBody
+    public void cancelTTSScriptOther() {
+        log.info("하이");
+        if (ttsProcess != null) {
+            ttsProcess.destroy(); // 파이썬 스크립트 실행 프로세스를 종료
+            log.info("다옴");
+            log.info("TTS script execution canceled.");
+        } else {
+            log.info("아니야");
+            log.info("No TTS script is currently running.");
+        }
+    }
+
+
     //@PostMapping("/run-tts")
     @ResponseBody
     public void postTTSScriptV2(@RequestParam("newsId") String content) {
@@ -113,17 +143,6 @@ public class NewsPageController {
         }
     }
 
-    // POST 요청을 받아 파이썬 스크립트 실행 취소
-    @PostMapping("/cancel-tts")
-    @ResponseBody
-    public void cancelTTSScript() {
-        if (ttsProcess != null) {
-            ttsProcess.destroy(); // 파이썬 스크립트 실행 프로세스를 종료
-            System.out.println("TTS script execution canceled.");
-        } else {
-            System.out.println("No TTS script is currently running.");
-        }
-    }
 
 }
 
