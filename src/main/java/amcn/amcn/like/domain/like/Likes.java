@@ -13,7 +13,7 @@ import lombok.Data;
 public class Likes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long like_id;
+    private Long likeId;
 
     @ManyToOne
     @JoinColumn(name = "board_id")
@@ -23,7 +23,7 @@ public class Likes {
     @JoinColumn(name = "career_board_id")
     private CareerBoard careerBoard;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "news_id")
     private News news;
 
@@ -31,7 +31,7 @@ public class Likes {
     @JoinColumn(name = "card_news_id")
     private CardNews cardNews;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 }
