@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class LikeRepository {
     }
 
     public String newsRemove(Likes likes) {
-        Likes findLikes=null;
+        Likes findLikes = null;
         try {
             findLikes = em.createQuery("select l from Likes l where l.member.memberId = :member_id and " +
                             "l.news.newsId= :news_id", Likes.class)
@@ -51,5 +52,11 @@ public class LikeRepository {
             return "O";
         }
         return "X";
+    }
+
+    public List<Likes> findByBookmarkNewsLike(Likes likes) {
+        return em.createQuery("select l from Likes l where l.news.newsId = :news_id", Likes.class)
+                .setParameter("news_id", likes.getNews().getNewsId())
+                .getResultList();
     }
 }

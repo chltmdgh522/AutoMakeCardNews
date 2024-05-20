@@ -1,5 +1,7 @@
 package amcn.amcn.news.web.newspage;
 
+import amcn.amcn.like.domain.like.Likes;
+import amcn.amcn.like.repository.LikeRepository;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
@@ -8,6 +10,7 @@ import amcn.amcn.news.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
+import org.python.modules._locale._locale;
 import org.python.util.PythonInterpreter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +32,7 @@ public class NewsPageController {
 
     private final NewsRepository newsRepository;
     private final MemberRepository memberRepository;
+    private final LikeRepository likeRepository;
     private Process ttsProcess; // TTS 스크립트를 실행할 프로세스
 
 
@@ -36,9 +40,10 @@ public class NewsPageController {
     public String getNewsPage(@PathVariable Long id, Model model,
                               @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
 
+        Likes likes=new Likes();
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
-            Member member = findMember.get();
+            Member member = findMember.get();;
             model.addAttribute("type", member.getRoleType().name());
             model.addAttribute("member", member);
         } else {
@@ -48,10 +53,14 @@ public class NewsPageController {
         Optional<News> byNews = newsRepository.findById(id);
         if (byNews.isPresent()) {
             News news = byNews.get();
+            likes.setNews(news);
             model.addAttribute("news", news);
         } else {
             return null;
         }
+
+        int newsLike=likeRepository.findByBookmarkNewsLike(likes).size();
+        model.addAttribute("newsLike",newsLike);
 
         return "news/newspage";
     }
