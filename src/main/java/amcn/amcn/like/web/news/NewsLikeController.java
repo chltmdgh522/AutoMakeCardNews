@@ -21,25 +21,25 @@ public class NewsLikeController {
 
     @PostMapping("/news-like")
     @ResponseBody
-    public String newLike(@RequestParam("newsId") Long id,
-                        @SessionAttribute(name= SessionConst.LOGIN_MEMBER, required = false)
-                            Member loginMember){
-        log.info("좋아요");
-        Likes likes=new Likes();
-        News news=new News();
+    public int newLike(@RequestParam("newsId") Long id,
+                       @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                       Member loginMember) {
+
+        Likes likes = new Likes();
+        News news = new News();
         news.setNewsId(id);
         likes.setMember(loginMember);
         likes.setNews(news);
 
         // 좋아요가 있는지 확인
         String correct = likeRepository.findByNewsLike(likes);
-        if(correct.equals("O")){
+        if (correct.equals("O")) {
             //좋아요가 없으면 좋아요 저장
             likeRepository.newsSave(likes);
-            return "북마크에 저장이 됐습니다.";
-        }else{
+            return likeRepository.findByBookmarkNewsLike(likes).size();
+        } else {
             likeRepository.newsRemove(likes);
-            return "북마크에 저장이 취소 됐습니다.";
+            return likeRepository.findByBookmarkNewsLike(likes).size();
         }
 
 
