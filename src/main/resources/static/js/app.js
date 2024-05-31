@@ -37,10 +37,18 @@ const addTextButton = document.getElementById('addTextButton');
 let texts = [];
 let isDragging = false;
 let selectedTextIndex = -1;
-let backgroundImage = null;
+var backgroundImage = null;
 
 let brushStrokes = [];
 let penStrokes = [];
+
+function setBackgroundImage(imageUrl) {
+    backgroundImage = new Image();
+    backgroundImage.onload = function() {
+        redrawCanvas();
+    };
+    backgroundImage.src = imageUrl;
+}
 
 function addTextToCanvas() {
     const text = textInput.value;
