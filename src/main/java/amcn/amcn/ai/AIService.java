@@ -23,12 +23,12 @@ public class AIService {
     @Value("${openai.key}")
     private String openaiApiKey;
     public String generatePictureV2(String prompt) throws IOException, InterruptedException {
-
-
         String url = "https://api.openai.com/v1/images/generations";
 
         // JSON 문자열 생성
-        String requestBody = String.format("{\"model\":\"dall-e-3\",\"prompt\":\"%s\",\"n\":1,\"size\":\"1024x1024\"}", prompt);
+        String requestBody = String.format(
+                "{\"model\":\"dall-e-3\",\"prompt\":\"%s\",\"n\":1,\"size\":\"1024x1024\"}",
+                prompt);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
