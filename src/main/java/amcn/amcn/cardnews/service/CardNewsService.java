@@ -1,4 +1,4 @@
-package amcn.amcn.ai;
+package amcn.amcn.cardnews.service;
 
 import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.service.OpenAiService;
@@ -15,7 +15,7 @@ import java.net.http.HttpResponse;
 
 @Service
 @Slf4j
-public class AIService {
+public class CardNewsService {
 
     @Autowired
     private OpenAiService openAiService;

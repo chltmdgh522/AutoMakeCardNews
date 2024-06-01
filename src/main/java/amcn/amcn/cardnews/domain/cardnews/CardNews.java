@@ -21,6 +21,10 @@ public class CardNews {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    private String title;
+
+    private String content;
+
     // @Embedded
     // private NewsGenerate newsGenerate; // 이미지 검색하기 위해 제목, 키워드, 요약문
 
@@ -38,8 +42,7 @@ public class CardNews {
     @OneToMany(mappedBy = "cardNews")
     private List<Likes> likes = new ArrayList<>(); // 카드 뉴스 공감
 
-    @Enumerated(EnumType.STRING)
-    private CardNewsType cardNewsType; // 카드뉴스 카테고리 IT, 스포츠 등 등
+    private String category;
 
     private String sound; // 카드뉴스 음향
 }

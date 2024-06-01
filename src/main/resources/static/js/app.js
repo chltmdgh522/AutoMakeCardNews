@@ -37,17 +37,35 @@ const addTextButton = document.getElementById('addTextButton');
 let texts = [];
 let isDragging = false;
 let selectedTextIndex = -1;
-var backgroundImage = null;
+let backgroundImage=null;
 
 let brushStrokes = [];
 let penStrokes = [];
 
 function setBackgroundImage(imageUrl) {
-    backgroundImage = new Image();
-    backgroundImage.onload = function() {
+    const img = new Image();
+
+console.log(imageUrl)
+//    img.crossOrigin = 'anonymous'; // CORS 설정
+    img.src =`/ai/image/${imageUrl}`;
+    img.onload = function() {
+        backgroundImage = img;
+        // 이미지가 설정될 때마다 펜 스트로크와 브러시 스트로크를 지우고 다시 그립니다.
         redrawCanvas();
+        inputImage.value = null;
     };
-    backgroundImage.src = imageUrl;
+}
+
+function onImg(event) {
+    const files = event.target.files[0];
+    const url = URL.createObjectURL(files);
+    const img = new Image();
+    img.src = url;
+    img.onload = function () {
+        backgroundImage = img;
+        redrawCanvas();
+        inputImage.value = null;
+    };
 }
 
 function addTextToCanvas() {
@@ -68,16 +86,15 @@ function addTextToCanvas() {
     });
     redrawCanvas();
 }
-
-
 function redrawCanvas() {
-    ctx.save();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.setTransform(1, 0, 0, 1, 0, 0); // 추가된 라인: 캔버스를 초기 상태로 되돌림
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+
     if (backgroundImage) {
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     }
 
+    // 펜 스트로크 그리기
     penStrokes.forEach(stroke => {
         ctx.save();
         ctx.beginPath();
@@ -91,6 +108,7 @@ function redrawCanvas() {
         ctx.restore();
     });
 
+    // 브러쉬 스트로크 그리기
     brushStrokes.forEach(stroke => {
         ctx.save();
         ctx.globalAlpha = stroke.alpha;
@@ -101,17 +119,18 @@ function redrawCanvas() {
         ctx.restore();
     });
 
+    // 텍스트 그리기
     texts.forEach(textObj => {
         const lines = textObj.text.split('\n');
         ctx.fillStyle = textObj.color;
         ctx.font = `${textObj.weight} ${textObj.size}px ${textObj.font}`;
-        const lineHeight = textObj.size * 1.2; // Adjust line height as needed
+        const lineHeight = textObj.size * 1.2;
         lines.forEach((line, index) => {
             ctx.fillText(line, textObj.x, textObj.y + (index * lineHeight));
         });
     });
-    ctx.restore(); // 추가된 라인: 원래 상태로 되돌림
 }
+
 
 
 
@@ -161,18 +180,6 @@ canvas.addEventListener('mouseup', function(event) {
 // 텍스트 추가 버튼에 이벤트 리스너 등록
 addTextButton.addEventListener('click', addTextToCanvas);
 
-function onImg(event) {
-    const files = event.target.files[0];
-    const url = URL.createObjectURL(files);
-    const img = new Image();
-    img.src = url;
-    img.onload = function () {
-        backgroundImage = img;
-        redrawCanvas();
-        inputImage.value = null;
-    };
-}
-
 function onReset() {
     ctx.save();
     ctx.fillStyle = 'white';
@@ -188,11 +195,15 @@ function onReset() {
 }
 
 function onSave() {
-    const url = canvas.toDataURL();
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'Art.png';
-    a.click();
+    try {
+        const url = canvas.toDataURL();
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Art.png';
+        a.click();
+    } catch (error) {
+        console.error('Error exporting canvas as image', error);
+    }
 }
 
 function onKeyboard(event) {
@@ -242,7 +253,10 @@ function onMouseMove(event) {
     } else if (isPainting && isDrawing) {
         ctx.lineTo(event.offsetX, event.offsetY);
         ctx.stroke();
-        penStrokes[penStrokes.length - 1].points.push({ x: event.offsetX, y: event.offsetY });
+
+        if (penStrokes.length > 0 && penStrokes[penStrokes.length - 1].points) {
+            penStrokes[penStrokes.length - 1].points.push({ x: event.offsetX, y: event.offsetY });
+        }
     } else if (isPainting && isBrushing) {
         ctx.save();
         function distanceBetween(point1, point2) {
@@ -309,49 +323,35 @@ function onMouseUp(event) {
 
 
 function onBrush() {
-    if (!isBrushing) {
-        isBrushing = true;
-        isErasing = false;
-        isDrawing = false;
-        brush.style.backgroundColor = 'gray';
-        eraser.style.backgroundColor = '#171717';
-        drawing.style.backgroundColor = '#171717';
-    } else {
-        isBrushing = false;
-        brush.style.backgroundColor = '#171717';
-    }
+    isBrushing = !isBrushing;
+    isErasing = false;
+    isDrawing = false;
+    brush.style.backgroundColor = isBrushing ? 'gray' : '#171717';
+    eraser.style.backgroundColor = '#171717';
+    drawing.style.backgroundColor = '#171717';
     redrawCanvas();
 }
 
 function onErase() {
-    if (!isErasing) {
-        isErasing = true;
-        isDrawing = false;
-        isBrushing = false;
-        eraser.style.backgroundColor = 'gray';
-        brush.style.backgroundColor = '#171717';
-        drawing.style.backgroundColor = '#171717';
-    } else {
-        isErasing = false;
-        eraser.style.backgroundColor = '#171717';
-    }
+    isErasing = !isErasing;
+    isDrawing = false;
+    isBrushing = false;
+    eraser.style.backgroundColor = isErasing ? 'gray' : '#171717';
+    brush.style.backgroundColor = '#171717';
+    drawing.style.backgroundColor = '#171717';
     redrawCanvas();
 }
 
 function onDraw() {
-    if (!isDrawing) {
-        isDrawing = true;
-        isBrushing = false;
-        isErasing = false;
-        drawing.style.backgroundColor = 'gray';
-        brush.style.backgroundColor = '#171717';
-        eraser.style.backgroundColor = '#171717';
-    } else {
-        isDrawing = false;
-        drawing.style.backgroundColor = '#171717';
-    }
+    isDrawing = !isDrawing;
+    isBrushing = false;
+    isErasing = false;
+    drawing.style.backgroundColor = isDrawing ? 'gray' : '#171717';
+    brush.style.backgroundColor = '#171717';
+    eraser.style.backgroundColor = '#171717';
     redrawCanvas();
 }
+
 
 function onColorChange(event) {
     ctx.strokeStyle = event.target.value;
@@ -381,7 +381,7 @@ canvas.addEventListener('dblclick', function(event) {
 
     for (let i = 0; i < texts.length; i++) {
         if (isMouseOnText(mouseX, mouseY, texts[i])) {
-            const padding = 10; // 클릭 범위를 확장하기 위한 여유 공간
+            const padding = 15; // 클릭 범위를 확장하기 위한 여유 공간
             editingTextIndex = i;
             const textObj = texts[i];
             document.getElementById('popupTextInput').value = textObj.text;
@@ -468,9 +468,18 @@ canvas.addEventListener('mousemove', onMouseMove);
 canvas.addEventListener('mousedown', onMouseDown);
 canvas.addEventListener('mouseup', onMouseUp);
 canvas.addEventListener('mouseleave', onMouseUp);
-brush.addEventListener('click', onBrush);
-eraser.addEventListener('click', onErase);
-drawing.addEventListener('click', onDraw);
+brush.addEventListener('click', function() {
+    onBrush();
+    redrawCanvas();
+});
+eraser.addEventListener('click', function() {
+    onErase();
+    redrawCanvas();
+});
+drawing.addEventListener('click', function() {
+    onDraw();
+    redrawCanvas();
+});
 color.addEventListener('change', onColorChange);
 resetBtn.addEventListener('click', onDelete);
 canvasWidth.addEventListener('change', onWidthChange);
