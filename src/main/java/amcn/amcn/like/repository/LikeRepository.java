@@ -59,4 +59,50 @@ public class LikeRepository {
                 .setParameter("news_id", likes.getNews().getNewsId())
                 .getResultList();
     }
+
+
+
+
+
+
+    public void cardNewsSave(Likes likes) {
+        em.persist(likes);
+        em.flush();
+    }
+
+    public String cardNewsRemove(Likes likes) {
+        Likes findLikes = null;
+        try {
+            findLikes = em.createQuery("select l from Likes l where l.member.memberId = :member_id and " +
+                            "l.cardNews.cardNewsId= :cardNews_id", Likes.class)
+                    .setParameter("member_id", likes.getMember().getMemberId())
+                    .setParameter("cardNews_id", likes.getCardNews().getCardNewsId())
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            log.info(e.getMessage());
+            return null;
+        }
+        em.remove(findLikes);
+        em.flush();
+        return "삭제 성공";
+    }
+
+    public String findByCardNewsLike(Likes likes) {
+        try {
+            Likes findLikes = em.createQuery("select l from Likes l where l.member.memberId = :member_id and " +
+                            "l.cardNews.cardNewsId= :cardNews_id", Likes.class)
+                    .setParameter("member_id", likes.getMember().getMemberId())
+                    .setParameter("cardNews_id", likes.getCardNews().getCardNewsId())
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return "O";
+        }
+        return "X";
+    }
+
+    public List<Likes> findByBookmarkCardNewsLike(Likes likes) {
+        return em.createQuery("select l from Likes l where l.cardNews.cardNewsId = :cardNews_id", Likes.class)
+                .setParameter("cardNews_id", likes.getCardNews().getCardNewsId())
+                .getResultList();
+    }
 }

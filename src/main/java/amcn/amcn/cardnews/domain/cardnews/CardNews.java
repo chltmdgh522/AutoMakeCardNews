@@ -15,7 +15,7 @@ import java.util.List;
 public class CardNews {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long card_news_id;
+    private Long cardNewsId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

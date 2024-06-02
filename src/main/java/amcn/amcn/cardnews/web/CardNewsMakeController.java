@@ -9,13 +9,13 @@ import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.python.antlr.op.Mod;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -31,7 +31,7 @@ import java.util.UUID;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-public class CardNewsController {
+public class CardNewsMakeController {
     private final CardNewsService cardNewsService;
     private final MemberRepository memberRepository;
     private final CardNewsRepository cardNewsRepository;
@@ -65,7 +65,8 @@ public class CardNewsController {
                             @ModelAttribute CardNews cardNews,
                             BindingResult bindingResult,
                             Model model,
-                            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
+                            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
+                            RedirectAttributes redirectAttributes) {
 
         if(cardNews.getTitle().isEmpty()){
             bindingResult.reject("fail","제목을 입력해주세요");
@@ -104,9 +105,9 @@ public class CardNewsController {
 
             cardNews.setImage_url(fileName);
             cardNews.setMember(loginMember);
-            cardNewsRepository.save(cardNews);
-
-            return "redirect:/";
+            Long cardId = cardNewsRepository.save(cardNews);
+            redirectAttributes.addAttribute("id",cardId);
+            return "redirect:/cardnews/{id}";
         } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/";
