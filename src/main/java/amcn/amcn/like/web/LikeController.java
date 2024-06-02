@@ -9,6 +9,7 @@ import amcn.amcn.news.domain.News;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,14 +52,15 @@ public class LikeController {
     @ResponseBody
     public int cardNewsLike(@RequestParam("cardnewsId") Long id,
                        @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                       Member loginMember) {
-        log.info("왔니?" );
+                       Member loginMember,
+                            Model model) {
         Likes likes = new Likes();
         CardNews cardNews=new CardNews();
         cardNews.setCardNewsId(id);
         likes.setMember(loginMember);
         likes.setCardNews(cardNews);
 
+        String cardLike;
         // 좋아요가 있는지 확인
         String correct = likeRepository.findByCardNewsLike(likes);
         if (correct.equals("O")) {
@@ -69,7 +71,6 @@ public class LikeController {
             likeRepository.cardNewsRemove(likes);
             return likeRepository.findByBookmarkCardNewsLike(likes).size();
         }
-
 
     }
 }

@@ -103,7 +103,7 @@ public class CardNewsMakeController {
             File outputfile = new File(fileName);
             ImageIO.write(img, "png", destinationPath.toFile());
 
-            cardNews.setImage_url(fileName);
+            cardNews.setImageUrl(fileName);
             cardNews.setMember(loginMember);
             Long cardId = cardNewsRepository.save(cardNews);
             redirectAttributes.addAttribute("id",cardId);

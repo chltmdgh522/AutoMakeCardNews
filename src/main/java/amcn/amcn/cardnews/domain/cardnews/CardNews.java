@@ -37,7 +37,7 @@ public class CardNews {
     // private String complexImage; // 영상 이미지 쟤네 둘(단일 영상)이 합칠까 생각중 ....
 
     @Lob
-    private String image_url;
+    private String imageUrl;
 
     @OneToMany(mappedBy = "cardNews")
     private List<Likes> likes = new ArrayList<>(); // 카드 뉴스 공감
@@ -45,4 +45,7 @@ public class CardNews {
     private String category;
 
     private String sound; // 카드뉴스 음향
+
+    @Transient
+    private String selected;
 }
