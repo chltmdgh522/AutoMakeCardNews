@@ -9,6 +9,7 @@ import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.python.antlr.op.Mod;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,10 +64,23 @@ public class CardNewsController {
                             @Validated
                             @ModelAttribute CardNews cardNews,
                             BindingResult bindingResult,
+                            Model model,
                             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
 
-        if(cardNews.getTitle().equals("")){
-            bindingResult.reject("fail","입력해주세요");
+        if(cardNews.getTitle().isEmpty()){
+            bindingResult.reject("fail","제목을 입력해주세요");
+            model.addAttribute("member",loginMember);
+            return "cardNews/cardnewsmake";
+        }
+        if(cardNews.getContent().isEmpty()){
+            bindingResult.reject("fail","내용을 입력해주세요");
+            model.addAttribute("member",loginMember);
+            return "cardNews/cardnewsmake";
+        }
+        if(cardNews.getCategory()==null){
+            bindingResult.reject("fail","카테고리를 선택해주세요");
+            model.addAttribute("member",loginMember);
+            return "cardNews/cardnewsmake";
         }
 
 
