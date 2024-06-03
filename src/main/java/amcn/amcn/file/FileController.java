@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 public class FileController {
     private final FileStore fileStore;
     private final MemberRepository memberRepository;
+    private final FileStore2 fileStore2;
 
     //마이페이지 프로필
     @ResponseBody
@@ -38,6 +39,20 @@ public class FileController {
     @GetMapping("/ai/image/{filename}")
     public Resource AIImage(@PathVariable String filename) throws MalformedURLException {
         return new UrlResource("file:" + fileStore.getFullPath(filename));
+    }
+
+    //단일 이미지 저장
+    @ResponseBody
+    @GetMapping("/ai/imageone/{filename}")
+    public Resource AI2Image(@PathVariable String filename) throws MalformedURLException {
+        return new UrlResource("file:" + fileStore2.getFullPath(filename));
+    }
+
+    //json 읽기
+    @ResponseBody
+    @GetMapping("/ai/json/{filename}")
+    public Resource jsonImage(@PathVariable String filename) throws MalformedURLException {
+        return new UrlResource("file:" + fileStore2.getFullPath2(filename));
     }
 
 }

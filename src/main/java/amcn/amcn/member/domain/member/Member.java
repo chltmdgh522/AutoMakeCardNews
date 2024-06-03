@@ -72,6 +72,9 @@ public class Member {
 
     private String phone;
 
+    @Lob
+    private String originalUrl;
+
     private LocalDate birthday;
     @Transient
     private String authPassword;

@@ -37,54 +37,30 @@ const addTextButton = document.getElementById('addTextButton');
 let texts = [];
 let isDragging = false;
 let selectedTextIndex = -1;
-let backgroundImage=null;
+let backgroundImage = null;
 
 let brushStrokes = [];
 let penStrokes = [];
 
-function setBackgroundImage(imageUrl) {
-    const img = new Image();
-
-console.log(imageUrl)
-//    img.crossOrigin = 'anonymous'; // CORS 설정
-    img.src =`/ai/imageone/${imageUrl}`;
-    img.onload = function() {
-        backgroundImage = img;
-        // 이미지가 설정될 때마다 펜 스트로크와 브러시 스트로크를 지우고 다시 그립니다.
-        redrawCanvas();
-        inputImage.value = null;
-    };
-}
-
-function onImg(event) {
-    const files = event.target.files[0];
-    const formData = new FormData();
-    formData.append('image', files);
-
-    $.ajax({
-        url: '/uploadImage',
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            console.log('Image uploaded successfully');
-            // 서버로부터의 응답에 따른 작업을 수행할 수 있음
-            const url = URL.createObjectURL(files);
-            const img = new Image();
-            img.src = url;
-            img.onload = function () {
-                backgroundImage = img;
-                redrawCanvas();
-                inputImage.value = null;
-            };
-        },
-        error: function(xhr, status, error) {
-            console.error('Error uploading image:', error);
-            // 에러 처리를 수행할 수 있음
-        }
-    });
-}
+// function setBackgroundImage(imageUrl) {
+//     fetch(jsonFilePath)
+//         .then(response => response.json())
+//         .then(data => {
+//             const canvasState = data;
+//
+//             backgroundImage = null;
+//             penStrokes = canvasState.penStrokes || [];
+//             brushStrokes = canvasState.brushStrokes || [];
+//             texts = canvasState.texts || [];
+//
+//             if (canvasState.backgroundImage) {
+//                 setBackgroundImage(canvasState.backgroundImage);
+//             } else {
+//                 redrawCanvas();
+//             }
+//         })
+//         .catch(error => console.error('Error loading JSON:', error));
+// }
 
 function addTextToCanvas() {
     const text = textInput.value;
@@ -104,6 +80,7 @@ function addTextToCanvas() {
     });
     redrawCanvas();
 }
+
 function redrawCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -150,8 +127,6 @@ function redrawCanvas() {
 }
 
 
-
-
 // 텍스트 클릭 확인
 function isMouseOnText(mouseX, mouseY, textObj) {
     const padding = 10; // 클릭 범위를 확장하기 위한 여유 공간
@@ -165,7 +140,7 @@ function isMouseOnText(mouseX, mouseY, textObj) {
 }
 
 // 캔버스에서 클릭 이벤트 처리
-canvas.addEventListener('mousedown', function(event) {
+canvas.addEventListener('mousedown', function (event) {
     const mouseX = event.offsetX;
     const mouseY = event.offsetY;
 
@@ -179,7 +154,7 @@ canvas.addEventListener('mousedown', function(event) {
 });
 
 // 캔버스에서 마우스 이동 이벤트 처리
-canvas.addEventListener('mousemove', function(event) {
+canvas.addEventListener('mousemove', function (event) {
     if (isDragging && selectedTextIndex !== -1) {
         const mouseX = event.offsetX;
         const mouseY = event.offsetY;
@@ -190,7 +165,7 @@ canvas.addEventListener('mousemove', function(event) {
 });
 
 // 캔버스에서 마우스 버튼을 놓는 이벤트 처리
-canvas.addEventListener('mouseup', function(event) {
+canvas.addEventListener('mouseup', function (event) {
     isDragging = false;
     selectedTextIndex = -1;
 });
@@ -255,7 +230,7 @@ function onKeyboard(event) {
     }
 }
 
-inputImage.addEventListener('change', onImg);
+
 resetBtn.addEventListener('click', onReset);
 save.addEventListener('click', onSave);
 document.addEventListener('keydown', onKeyboard);
@@ -273,22 +248,25 @@ function onMouseMove(event) {
         ctx.stroke();
 
         if (penStrokes.length > 0 && penStrokes[penStrokes.length - 1].points) {
-            penStrokes[penStrokes.length - 1].points.push({ x: event.offsetX, y: event.offsetY });
+            penStrokes[penStrokes.length - 1].points.push({x: event.offsetX, y: event.offsetY});
         }
     } else if (isPainting && isBrushing) {
         ctx.save();
+
         function distanceBetween(point1, point2) {
             return Math.sqrt(
                 Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2)
             );
         }
+
         function angleBetween(point1, point2) {
             return Math.atan2(point2.x - point1.x, point2.y - point1.y);
         }
+
         ctx.globalAlpha = '0.02';
         ctx.lineWidth = 0;
         ctx.globalCompositeOperation = 'source-over';
-        var currentPoint = { x: event.offsetX, y: event.offsetY };
+        var currentPoint = {x: event.offsetX, y: event.offsetY};
         var dist = distanceBetween(lastPoint, currentPoint);
         var angle = angleBetween(lastPoint, currentPoint);
         for (var i = 0; i < dist; i += 3) {
@@ -315,12 +293,16 @@ function onMouseMove(event) {
 
 function onMouseDown(event) {
     isPainting = true;
-    lastPoint = { x: event.offsetX, y: event.offsetY };
+    lastPoint = {x: event.offsetX, y: event.offsetY};
     if (isDrawing || isErasing || isBrushing) {
         cStep++;
         cPushArray.push(canvas.toDataURL());
         if (isDrawing) {
-            penStrokes.push({ points: [{ x: event.offsetX, y: event.offsetY }], color: ctx.strokeStyle, width: ctx.lineWidth });
+            penStrokes.push({
+                points: [{x: event.offsetX, y: event.offsetY}],
+                color: ctx.strokeStyle,
+                width: ctx.lineWidth
+            });
         }
     }
     ctx.save();
@@ -391,9 +373,8 @@ function onDelete() {
 }
 
 
-
 // 텍스트 더블 클릭 시 모달 열기
-canvas.addEventListener('dblclick', function(event) {
+canvas.addEventListener('dblclick', function (event) {
     const mouseX = event.offsetX;
     const mouseY = event.offsetY;
 
@@ -414,7 +395,7 @@ canvas.addEventListener('dblclick', function(event) {
 });
 
 // 모달에서 업데이트 버튼 클릭 시 텍스트 수정
-document.getElementById('updateTextButton').addEventListener('click', function(event) {
+document.getElementById('updateTextButton').addEventListener('click', function (event) {
     if (editingTextIndex !== -1) {
         const textObj = texts[editingTextIndex];
         textObj.text = document.getElementById('popupTextInput').value;
@@ -429,14 +410,13 @@ document.getElementById('updateTextButton').addEventListener('click', function(e
 });
 
 // 모달 닫기 버튼 클릭 시 모달 닫기
-document.getElementById('closeTextPopup').addEventListener('click', function(event) {
+document.getElementById('closeTextPopup').addEventListener('click', function (event) {
     document.getElementById('textEditPopup').style.display = 'none';
     editingTextIndex = -1;
 });
 
 // 추가된 변수들
 let editingTextIndex = -1;
-
 
 
 function onWidthChange(event) {
@@ -480,21 +460,19 @@ function onHeightChange(event) {
 }
 
 
-
-
 canvas.addEventListener('mousemove', onMouseMove);
 canvas.addEventListener('mousedown', onMouseDown);
 canvas.addEventListener('mouseup', onMouseUp);
 canvas.addEventListener('mouseleave', onMouseUp);
-brush.addEventListener('click', function() {
+brush.addEventListener('click', function () {
     onBrush();
     redrawCanvas();
 });
-eraser.addEventListener('click', function() {
+eraser.addEventListener('click', function () {
     onErase();
     redrawCanvas();
 });
-drawing.addEventListener('click', function() {
+drawing.addEventListener('click', function () {
     onDraw();
     redrawCanvas();
 });
@@ -503,87 +481,9 @@ resetBtn.addEventListener('click', onDelete);
 canvasWidth.addEventListener('change', onWidthChange);
 canvasHeight.addEventListener('change', onHeightChange);
 
-// JSON 저장 기능
-function saveCanvasAsJSONV2() {
-    const canvasState = {
-        backgroundImage: backgroundImage ? backgroundImage.src : null,
-        penStrokes: penStrokes,
-        brushStrokes: brushStrokes,
-        texts: texts
-    };
-    const json = JSON.stringify(canvasState);
-    const a = document.createElement('a');
-    const file = new Blob([json], {type: 'application/json'});
-    a.href = URL.createObjectURL(file);
-    a.download = 'canvasState.json';
-    a.click();
-}
-function saveCanvasAsJSON() {
-    const canvasState = {
-        backgroundImage: backgroundImage ? backgroundImage.src : null,
-        penStrokes: penStrokes,
-        brushStrokes: brushStrokes,
-        texts: texts
-    };
-    const json = JSON.stringify(canvasState);
-
-    // 서버로 JSON 데이터 전송
-    if (json) { // null 체크
-        fetch('/ai-Json', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: json
-        })
-            .then(response => {
-                // 서버 응답 처리
-            })
-            .catch(error => {
-                // 오류 처리
-            });
-    }
-}
 
 
 
 
-// JSON 불러오기 기능
 
-function loadCanvasFromJSON(event) {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const json = e.target.result;
-        const canvasState = JSON.parse(json);
-
-        backgroundImage = null;
-        penStrokes = canvasState.penStrokes || [];
-        brushStrokes = canvasState.brushStrokes || [];
-        texts = canvasState.texts || [];
-
-        if (canvasState.backgroundImage) {
-            const img = new Image();
-            img.src = canvasState.backgroundImage;
-            img.onload = function() {
-                backgroundImage = img;
-                redrawCanvas();
-            };
-        } else {
-            redrawCanvas();
-        }
-    };
-    reader.readAsText(file);
-}
-
-// "Load from JSON" 버튼 클릭 시 파일 선택 창이 열리도록 설정
-document.getElementById('loadJson').addEventListener('click', function() {
-    document.getElementById('loadJsonFile').click();
-});
-
-// 파일 선택 창에서 JSON 파일을 선택하면 호출되는 함수
-document.getElementById('loadJsonFile').addEventListener('change', loadCanvasFromJSON);
-
-// "Save as JSON" 버튼 클릭 시 캔버스 상태를 JSON 파일로 저장하는 함수 등록
-document.getElementById('saveJson').addEventListener('click', saveCanvasAsJSON);
 

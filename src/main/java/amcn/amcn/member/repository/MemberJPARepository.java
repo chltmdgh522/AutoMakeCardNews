@@ -46,6 +46,12 @@ public class MemberJPARepository implements MemberRepository {
     }
 
     @Override
+    public void updateUrl(Member member) {
+        Member findMember = em.find(Member.class, member.getMemberId());
+        findMember.setOriginalUrl(member.getOriginalUrl());
+    }
+
+    @Override
     public Optional<Member> findMemberId(String memberId) {
         try {
             Member findMember = em.createQuery("select m from Member m where m.memberId = :id ", Member.class)

@@ -13,9 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
@@ -23,6 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
@@ -38,12 +41,16 @@ public class CardNewsMakeController {
     private final MemberRepository memberRepository;
     private final CardNewsRepository cardNewsRepository;
     private final FileService fileService;
-    private static String name;
+    private static String jsonname;
     @Value("${file.dir}")
     private String fileDir;
 
-    @Value("${AI.dir}")
+    @Value("${json.dir}")
     private String jsonDir;
+
+    @Value("${ai.dir}")
+    private String aiDir;
+
 
     @GetMapping("/ai-image")
     public String getImage(Model model,
@@ -103,15 +110,16 @@ public class CardNewsMakeController {
                 return "Failed to decode image.";
             }
 
-            String fileName=name;
-            log.info("dd: "+name);
+            String fileName=UUID.randomUUID().toString() + ".png";;
             Path destinationPath = Paths.get(fileDir, fileName);
             // 파일로 저장
             File outputfile = new File(fileName);
             ImageIO.write(img, "png", destinationPath.toFile());
 
+            cardNews.setJsonUrl(jsonname);
             cardNews.setImageUrl(fileName);
             cardNews.setMember(loginMember);
+            cardNews.setOriginalUrl(loginMember.getOriginalUrl());
             Long cardId = cardNewsRepository.save(cardNews);
             redirectAttributes.addAttribute("id", cardId);
             return "redirect:/cardnews/{id}";
@@ -123,15 +131,23 @@ public class CardNewsMakeController {
 
     @PostMapping("/ai-Json")
     @ResponseBody
-    public String saveJsonData(@RequestBody Map<String, Object> jsonData) {
+    public String saveJsonData(@RequestBody Map<String, Object> jsonData,
+                               @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                               Member loginMember) {
         try {
             log.info("JSON 데이터가 도착했습니다.");
 
-            name = UUID.randomUUID().toString() + ".png";
+            if(jsonData.containsKey("backgroundImage")){
+                jsonData.put("backgroundImage",loginMember.getOriginalUrl());
+            }
+
+            jsonname= UUID.randomUUID().toString() + ".json";
+
+
 
             // 전송된 JSON 데이터를 파일로 저장
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValue(new File(jsonDir + File.separator + name), jsonData);
+            objectMapper.writeValue(new File(jsonDir + File.separator + jsonname), jsonData);
 
 
             // 성공적으로 처리되었을 경우 메시지 반환
@@ -147,16 +163,51 @@ public class CardNewsMakeController {
 
     @PostMapping("/image-create")
     @ResponseBody
-    public String generateImage(@RequestParam String prompt, Model model) throws IOException, InterruptedException {
+    public String generateImage(@RequestParam String prompt, Model model,
+                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                                Member loginMember)
+            throws IOException, InterruptedException {
         String url = cardNewsService.
                 generatePictureV2(prompt);
 
         String path = fileService.saveImageFromUrl(url);
-        log.info(path);
+
         String replace = path.replace('\\', '/');
         String substring_path = replace.substring(57);
-        log.info(substring_path);
+        loginMember.setOriginalUrl(substring_path);
+        memberRepository.updateUrl(loginMember);
         return substring_path;
+    }
+
+    @PostMapping("/uploadImage")
+    @ResponseBody
+    public String uploadImage(@RequestParam("image") MultipartFile image,
+                              @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                              Member loginMember) {
+        log.info("단일 파일");
+        // Check if the file is not empty
+        if (image.isEmpty()) {
+            return "Please select a file to upload";
+        }
+
+        try {
+            // Get the filename
+            String filename = StringUtils.cleanPath(image.getOriginalFilename());
+            loginMember.setOriginalUrl(filename);
+            memberRepository.updateUrl(loginMember);
+
+            // Get the path to save the file
+            String uploadDir = new File(aiDir).getAbsolutePath();
+            // Resolve the path for the file
+            Path path = Paths.get(uploadDir + File.separator + filename);
+            // Copy the file to the upload directory
+            Files.copy(image.getInputStream(), path);
+
+            return "File uploaded successfully: " + filename;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Failed to upload file";
+        }
     }
 }
 

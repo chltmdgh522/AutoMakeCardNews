@@ -19,7 +19,7 @@ import java.util.UUID;
 @Slf4j
 public class FileService {
 
-    @Value("${file.dir}")
+    @Value("${ai.dir}")
     private String fileDir;
 
     public String saveImageFromUrl(String imageUrl) throws IOException {

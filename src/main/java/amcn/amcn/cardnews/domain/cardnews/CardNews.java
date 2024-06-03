@@ -28,6 +28,9 @@ public class CardNews {
     // @Embedded
     // private NewsGenerate newsGenerate; // 이미지 검색하기 위해 제목, 키워드, 요약문
 
+    @Lob
+    private String jsonUrl;
+
     private String message;
 
     // @Lob
@@ -38,6 +41,9 @@ public class CardNews {
 
     @Lob
     private String imageUrl;
+
+    @Lob
+    private String originalUrl;
 
     @OneToMany(mappedBy = "cardNews")
     private List<Likes> likes = new ArrayList<>(); // 카드 뉴스 공감

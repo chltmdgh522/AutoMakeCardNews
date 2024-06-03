@@ -14,12 +14,13 @@ import java.util.Optional;
 
 public interface MemberRepository{
     void save(Member member);
-
     void update(Member member);
 
     void updatePassword(String memberId,String password);
 
     void updateRoleType(Member member);
+
+    void updateUrl(Member member);
 
 
     Optional<Member> findMemberId(String memberId);
