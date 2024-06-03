@@ -484,3 +484,88 @@ color.addEventListener('change', onColorChange);
 resetBtn.addEventListener('click', onDelete);
 canvasWidth.addEventListener('change', onWidthChange);
 canvasHeight.addEventListener('change', onHeightChange);
+
+// JSON 저장 기능
+function saveCanvasAsJSONV2() {
+    const canvasState = {
+        backgroundImage: backgroundImage ? backgroundImage.src : null,
+        penStrokes: penStrokes,
+        brushStrokes: brushStrokes,
+        texts: texts
+    };
+    const json = JSON.stringify(canvasState);
+    const a = document.createElement('a');
+    const file = new Blob([json], {type: 'application/json'});
+    a.href = URL.createObjectURL(file);
+    a.download = 'canvasState.json';
+    a.click();
+}
+function saveCanvasAsJSON() {
+    const canvasState = {
+        backgroundImage: backgroundImage ? backgroundImage.src : null,
+        penStrokes: penStrokes,
+        brushStrokes: brushStrokes,
+        texts: texts
+    };
+    const json = JSON.stringify(canvasState);
+
+    // 서버로 JSON 데이터 전송
+    if (json) { // null 체크
+        fetch('/ai-Json', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: json
+        })
+            .then(response => {
+                // 서버 응답 처리
+            })
+            .catch(error => {
+                // 오류 처리
+            });
+    }
+}
+
+
+
+
+// JSON 불러오기 기능
+
+function loadCanvasFromJSON(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const json = e.target.result;
+        const canvasState = JSON.parse(json);
+
+        backgroundImage = null;
+        penStrokes = canvasState.penStrokes || [];
+        brushStrokes = canvasState.brushStrokes || [];
+        texts = canvasState.texts || [];
+
+        if (canvasState.backgroundImage) {
+            const img = new Image();
+            img.src = canvasState.backgroundImage;
+            img.onload = function() {
+                backgroundImage = img;
+                redrawCanvas();
+            };
+        } else {
+            redrawCanvas();
+        }
+    };
+    reader.readAsText(file);
+}
+
+// "Load from JSON" 버튼 클릭 시 파일 선택 창이 열리도록 설정
+document.getElementById('loadJson').addEventListener('click', function() {
+    document.getElementById('loadJsonFile').click();
+});
+
+// 파일 선택 창에서 JSON 파일을 선택하면 호출되는 함수
+document.getElementById('loadJsonFile').addEventListener('change', loadCanvasFromJSON);
+
+// "Save as JSON" 버튼 클릭 시 캔버스 상태를 JSON 파일로 저장하는 함수 등록
+document.getElementById('saveJson').addEventListener('click', saveCanvasAsJSON);
+

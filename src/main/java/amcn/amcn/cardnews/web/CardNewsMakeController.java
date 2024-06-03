@@ -7,6 +7,7 @@ import amcn.amcn.file.FileService;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,13 +38,16 @@ public class CardNewsMakeController {
     private final MemberRepository memberRepository;
     private final CardNewsRepository cardNewsRepository;
     private final FileService fileService;
-
+    private static String name;
     @Value("${file.dir}")
     private String fileDir;
 
+    @Value("${AI.dir}")
+    private String jsonDir;
+
     @GetMapping("/ai-image")
     public String getImage(Model model,
-                           @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember){
+                           @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
 
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
@@ -53,7 +58,7 @@ public class CardNewsMakeController {
             return null;
         }
 
-        CardNews cardNews=new CardNews();
+        CardNews cardNews = new CardNews();
         model.addAttribute("cardNews", cardNews);
         return "cardNews/cardnewsmake";
     }
@@ -68,19 +73,19 @@ public class CardNewsMakeController {
                             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
                             RedirectAttributes redirectAttributes) {
 
-        if(cardNews.getTitle().isEmpty()){
-            bindingResult.reject("fail","제목을 입력해주세요");
-            model.addAttribute("member",loginMember);
+        if (cardNews.getTitle().isEmpty()) {
+            bindingResult.reject("fail", "제목을 입력해주세요");
+            model.addAttribute("member", loginMember);
             return "cardNews/cardnewsmake";
         }
-        if(cardNews.getContent().isEmpty()){
-            bindingResult.reject("fail","내용을 입력해주세요");
-            model.addAttribute("member",loginMember);
+        if (cardNews.getContent().isEmpty()) {
+            bindingResult.reject("fail", "내용을 입력해주세요");
+            model.addAttribute("member", loginMember);
             return "cardNews/cardnewsmake";
         }
-        if(cardNews.getCategory()==null){
-            bindingResult.reject("fail","카테고리를 선택해주세요");
-            model.addAttribute("member",loginMember);
+        if (cardNews.getCategory() == null) {
+            bindingResult.reject("fail", "카테고리를 선택해주세요");
+            model.addAttribute("member", loginMember);
             return "cardNews/cardnewsmake";
         }
 
@@ -97,7 +102,9 @@ public class CardNewsMakeController {
             if (img == null) {
                 return "Failed to decode image.";
             }
-            String fileName = UUID.randomUUID().toString()+".png";
+
+            String fileName=name;
+            log.info("dd: "+name);
             Path destinationPath = Paths.get(fileDir, fileName);
             // 파일로 저장
             File outputfile = new File(fileName);
@@ -106,7 +113,7 @@ public class CardNewsMakeController {
             cardNews.setImageUrl(fileName);
             cardNews.setMember(loginMember);
             Long cardId = cardNewsRepository.save(cardNews);
-            redirectAttributes.addAttribute("id",cardId);
+            redirectAttributes.addAttribute("id", cardId);
             return "redirect:/cardnews/{id}";
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,14 +121,34 @@ public class CardNewsMakeController {
         }
     }
 
+    @PostMapping("/ai-Json")
+    @ResponseBody
+    public String saveJsonData(@RequestBody Map<String, Object> jsonData) {
+        try {
+            log.info("JSON 데이터가 도착했습니다.");
 
+            name = UUID.randomUUID().toString() + ".png";
+
+            // 전송된 JSON 데이터를 파일로 저장
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writeValue(new File(jsonDir + File.separator + name), jsonData);
+
+
+            // 성공적으로 처리되었을 경우 메시지 반환
+            return "JSON data saved successfully.";
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 오류 발생 시 오류 메시지 반환
+            return "Error occurred while saving JSON data.";
+        }
+    }
 
 
 
     @PostMapping("/image-create")
     @ResponseBody
     public String generateImage(@RequestParam String prompt, Model model) throws IOException, InterruptedException {
-         String url= cardNewsService.
+        String url = cardNewsService.
                 generatePictureV2(prompt);
 
         String path = fileService.saveImageFromUrl(url);
@@ -131,9 +158,6 @@ public class CardNewsMakeController {
         log.info(substring_path);
         return substring_path;
     }
-
-
-
 }
 
 
