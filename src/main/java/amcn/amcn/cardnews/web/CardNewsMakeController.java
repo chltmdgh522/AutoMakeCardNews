@@ -172,8 +172,10 @@ public class CardNewsMakeController {
 
         String path = fileService.saveImageFromUrl(url);
 
+        log.info(path);
         String replace = path.replace('\\', '/');
-        String substring_path = replace.substring(57);
+        String substring_path = replace.substring(56);
+        log.info(substring_path);
         loginMember.setOriginalUrl(substring_path);
         memberRepository.updateUrl(loginMember);
         return substring_path;

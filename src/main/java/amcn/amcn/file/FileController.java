@@ -45,6 +45,7 @@ public class FileController {
     @ResponseBody
     @GetMapping("/ai/imageone/{filename}")
     public Resource AI2Image(@PathVariable String filename) throws MalformedURLException {
+        log.info("2번쨰");
         return new UrlResource("file:" + fileStore2.getFullPath(filename));
     }
 

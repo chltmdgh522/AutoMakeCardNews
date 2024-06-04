@@ -36,6 +36,7 @@ public class FileService {
 
         String uuid = UUID.randomUUID().toString() + "." + fileExtension;
         Path destinationPath = Paths.get(fileDir, uuid);
+        log.info("서비스:" + uuid);
 
         try (InputStream in = url.openStream()) {
             BufferedImage image = ImageIO.read(in);
