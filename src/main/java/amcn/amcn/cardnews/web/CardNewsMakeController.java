@@ -187,9 +187,9 @@ public class CardNewsMakeController {
                               @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                               Member loginMember) {
         log.info("단일 파일");
-        // Check if the file is not empty
+
         if (image.isEmpty()) {
-            return "Please select a file to upload";
+            return "파일선택좀";
         }
 
         try {
@@ -205,10 +205,10 @@ public class CardNewsMakeController {
             // Copy the file to the upload directory
             Files.copy(image.getInputStream(), path);
 
-            return "File uploaded successfully: " + filename;
+            return "업로드 성공: " + filename;
         } catch (IOException e) {
             e.printStackTrace();
-            return "Failed to upload file";
+            return "업로드 실패";
         }
     }
 }
