@@ -39,13 +39,15 @@ public class CardNewsRepository {
         return list;
     }
 
-    public Long update(CardNews cardNews){
+    public void update(CardNews cardNews){
         CardNews findCardNews = em.find(CardNews.class, cardNews.getCardNewsId());
-
+        log.info(cardNews.getJsonUrl());
         findCardNews.setJsonUrl(cardNews.getJsonUrl());
         findCardNews.setImageUrl(cardNews.getImageUrl());
         findCardNews.setMember(cardNews.getMember());
-        findCardNews.setOriginalUrl(cardNews.getOriginalUrl());
-        return cardNews.getCardNewsId();
+        findCardNews.setCategory(cardNews.getCategory());
+        findCardNews.setTitle(cardNews.getTitle());
+        findCardNews.setContent(cardNews.getContent());
+
     }
 }

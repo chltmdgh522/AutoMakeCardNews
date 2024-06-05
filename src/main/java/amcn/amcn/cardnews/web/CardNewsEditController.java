@@ -41,11 +41,12 @@ public class CardNewsEditController {
 
     @Value("${json.dir}")
     private String jsonDir;
+
     @GetMapping("/cardnews/edit/{id}")
     public String getEdit(@PathVariable("id") Long id,
                           @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                           Member loginMember,
-                          Model model){
+                          Model model) {
 
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
@@ -71,6 +72,7 @@ public class CardNewsEditController {
 
     @PostMapping("/cardnews/edit/{id}")
     public String saveImage(@RequestParam("imageData") String imageData,
+                            @PathVariable("id") Long id,
                             @Validated
                             @ModelAttribute CardNews cardNews,
                             BindingResult bindingResult,
@@ -108,18 +110,20 @@ public class CardNewsEditController {
                 return "Failed to decode image.";
             }
 
-            String fileName= UUID.randomUUID().toString() + ".png";;
+            String fileName = UUID.randomUUID().toString() + ".png";
+            ;
             Path destinationPath = Paths.get(fileDir, fileName);
             // 파일로 저장
             File outputfile = new File(fileName);
             ImageIO.write(img, "png", destinationPath.toFile());
 
+            cardNews.setCardNewsId(id);
             cardNews.setJsonUrl(jsonname);
             cardNews.setImageUrl(fileName);
             cardNews.setMember(loginMember);
-            cardNews.setOriginalUrl(loginMember.getOriginalUrl());
-            Long cardId = cardNewsRepository.update(cardNews);
-            redirectAttributes.addAttribute("id", cardId);
+
+            cardNewsRepository.update(cardNews);
+            redirectAttributes.addAttribute("id", id);
             return "redirect:/cardnews/{id}";
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,12 +140,11 @@ public class CardNewsEditController {
         try {
             log.info("JSON 데이터가 도착했습니다.");
 
-            if(jsonData.containsKey("backgroundImage")){
-                jsonData.put("backgroundImage",loginMember.getOriginalUrl());
+            if (jsonData.containsKey("backgroundImage")) {
+                //jsonData.put("backgroundImage", loginMember.getOriginalUrl());
             }
 
-            jsonname= UUID.randomUUID().toString() + ".json";
-
+            jsonname = UUID.randomUUID().toString() + ".json";
 
 
             // 전송된 JSON 데이터를 파일로 저장
