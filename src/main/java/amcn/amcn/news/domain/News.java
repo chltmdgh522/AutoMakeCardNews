@@ -21,7 +21,7 @@ public class News {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "news")
+    @OneToMany(mappedBy = "news" , cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likes = new ArrayList<>();
 
 

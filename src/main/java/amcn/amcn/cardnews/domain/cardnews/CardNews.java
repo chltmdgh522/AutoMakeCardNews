@@ -38,7 +38,7 @@ public class CardNews {
     @Lob
     private String originalUrl;
 
-    @OneToMany(mappedBy = "cardNews" )
+    @OneToMany(mappedBy = "cardNews" , cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likes = new ArrayList<>(); // 카드 뉴스 공감
 
     private String category;

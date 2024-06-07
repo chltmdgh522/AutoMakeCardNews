@@ -25,7 +25,7 @@ public class Board {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board" , cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     @Size(max = 30)
@@ -34,7 +34,7 @@ public class Board {
     @Lob
     private String content;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board" , cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likes = new ArrayList<>();
 
     private boolean modify;
