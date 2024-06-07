@@ -158,7 +158,7 @@ public class CardNewsTemplateController {
     }
 
 
-    @PostMapping("/ai-templateeditJson")
+    @PostMapping("/ai-template/editJson")
     @ResponseBody
     public String saveJsonData(@RequestBody Map<String, Object> jsonData,
                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
@@ -166,9 +166,6 @@ public class CardNewsTemplateController {
         try {
             log.info("JSON 데이터가 도착했습니다.");
 
-            if (jsonData.containsKey("backgroundImage")) {
-                //jsonData.put("backgroundImage", loginMember.getOriginalUrl());
-            }
 
             jsonname = UUID.randomUUID().toString() + ".json";
 

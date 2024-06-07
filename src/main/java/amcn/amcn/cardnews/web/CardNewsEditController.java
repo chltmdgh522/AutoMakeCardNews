@@ -22,10 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -61,7 +58,7 @@ public class CardNewsEditController {
         Optional<CardNews> findCardNews = cardNewsRepository.findCardNewsId(id);
         if (findCardNews.isPresent()) {
             CardNews cardNews = findCardNews.get();
-            if (cardNews.getMember().getMemberId() != loginMember.getMemberId()) {
+            if (!Objects.equals(cardNews.getMember().getMemberId(), loginMember.getMemberId())) {
                 return "redirect:/";
             }
             model.addAttribute("cardNews", cardNews);
