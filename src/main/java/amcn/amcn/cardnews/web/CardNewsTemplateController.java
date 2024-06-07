@@ -146,6 +146,7 @@ public class CardNewsTemplateController {
             cardNews.setMember(loginMember);
             cardNews.setOriginalUrl(loginMember.getOriginalUrl());
             cardNews.setEdit("O");
+            cardNews.setTrash("X");
             Long cardId = cardNewsRepository.save(cardNews);
 
             cardNewsRepository.update(cardNews);
