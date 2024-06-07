@@ -22,32 +22,54 @@ public class CardNewsRepository {
     private final EntityManager em;
 
 
-    public Long save(CardNews cardNews){
+    public Long save(CardNews cardNews) {
         em.persist(cardNews);
         return cardNews.getCardNewsId();
     }
+
     public Optional<CardNews> findCardNewsId(Long id) {
         CardNews cardNews = em.find(CardNews.class, id);
         return Optional.ofNullable(cardNews);
     }
 
-    public List<CardNews> findNewAll(){
-        List<CardNews> list = em.createQuery("SELECT n FROM CardNews n ORDER BY n.cardNewsId DESC", CardNews.class)
+    public List<CardNews> findNewAll() {
+        List<CardNews> list = em.createQuery("SELECT n FROM CardNews n where n.trash = 'X' ORDER BY n.cardNewsId DESC", CardNews.class)
                 .setMaxResults(10)
                 .getResultList();
 
         return list;
     }
 
-    public void update(CardNews cardNews){
+    public void update(CardNews cardNews) {
         CardNews findCardNews = em.find(CardNews.class, cardNews.getCardNewsId());
-        log.info(cardNews.getJsonUrl());
         findCardNews.setJsonUrl(cardNews.getJsonUrl());
         findCardNews.setImageUrl(cardNews.getImageUrl());
         findCardNews.setMember(cardNews.getMember());
         findCardNews.setCategory(cardNews.getCategory());
         findCardNews.setTitle(cardNews.getTitle());
         findCardNews.setContent(cardNews.getContent());
+
+    }
+
+    public void updateTrash(CardNews cardNews) {
+        CardNews findCardNews = em.find(CardNews.class, cardNews.getCardNewsId());
+        findCardNews.setTrash(cardNews.getTrash());
+    }
+
+    public List<CardNews> findTrashAll(Member loginMember) {
+        return em.createQuery("select c from CardNews c where c.trash = 'O' AND " +
+                        "c.member.memberId = :memberId", CardNews.class)
+                .setParameter("memberId", loginMember.getMemberId())
+                .getResultList();
+    }
+
+    public void findTrashAllDelete() {
+        List<CardNews> resultList = em.createQuery("select c from CardNews c where c.trash = 'O'", CardNews.class)
+                .getResultList();
+        for (CardNews cardNews : resultList) {
+            em.remove(cardNews);
+        }
+
 
     }
 }

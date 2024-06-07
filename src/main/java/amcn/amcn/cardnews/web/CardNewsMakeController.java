@@ -119,6 +119,8 @@ public class CardNewsMakeController {
             cardNews.setJsonUrl(jsonname);
             cardNews.setImageUrl(fileName);
             cardNews.setMember(loginMember);
+            cardNews.setTrash("X");
+            cardNews.setEdit("X");
             cardNews.setOriginalUrl(loginMember.getOriginalUrl());
             Long cardId = cardNewsRepository.save(cardNews);
             redirectAttributes.addAttribute("id", cardId);

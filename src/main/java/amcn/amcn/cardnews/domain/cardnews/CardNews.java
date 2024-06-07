@@ -30,13 +30,15 @@ public class CardNews {
 
     private String edit;
 
+    private String trash;
+
     @Lob
     private String imageUrl;
 
     @Lob
     private String originalUrl;
 
-    @OneToMany(mappedBy = "cardNews")
+    @OneToMany(mappedBy = "cardNews" )
     private List<Likes> likes = new ArrayList<>(); // 카드 뉴스 공감
 
     private String category;
