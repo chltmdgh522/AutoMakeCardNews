@@ -1,7 +1,10 @@
 package amcn.amcn.cardnews.web;
 
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
+import amcn.amcn.cardnews.domain.searchcond.CardNewsSearchCond;
 import amcn.amcn.cardnews.repository.CardNewsRepository;
+import amcn.amcn.cardnews.repository.CardNewsSpringDataRepository;
+import amcn.amcn.like.repository.LikeRepository;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
@@ -22,18 +25,15 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
+@Controller
 @RequiredArgsConstructor
 @Slf4j
-@Controller
-public class CardNewsEditController {
-
+public class CardNewsTemplateController {
     private final CardNewsRepository cardNewsRepository;
     private final MemberRepository memberRepository;
+    private final CardNewsSpringDataRepository springDataRepository;
 
     private static String jsonname;
     @Value("${file.dir}")
@@ -42,12 +42,35 @@ public class CardNewsEditController {
     @Value("${json.dir}")
     private String jsonDir;
 
-    @GetMapping("/cardnews/edit/{id}")
+
+    @GetMapping("/cardnews/template")
+    public String getTemplate(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                                  Member loginMember,
+                              Model model,
+                              @ModelAttribute("cardNewsSearchCond") CardNewsSearchCond cardNewsSearchCond){
+
+        Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
+
+        if (findMember.isPresent()) {
+            Member member = findMember.get();
+            model.addAttribute("type", member.getRoleType().name());
+            model.addAttribute("member", member);
+        } else {
+            return null;
+        }
+
+        //검색
+        List<CardNews> searchCardNews = springDataRepository.findSearchTemplate(cardNewsSearchCond.getCategory(), cardNewsSearchCond.getSelected());
+
+        model.addAttribute("cardnews",searchCardNews);
+
+        return "cardNews/cardnewstemplate";
+    }
+    @GetMapping("/cardnews/template/edit/{id}")
     public String getEdit(@PathVariable("id") Long id,
                           @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                           Member loginMember,
                           Model model) {
-
 
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
@@ -61,20 +84,17 @@ public class CardNewsEditController {
         Optional<CardNews> findCardNews = cardNewsRepository.findCardNewsId(id);
         if (findCardNews.isPresent()) {
             CardNews cardNews = findCardNews.get();
-            if (cardNews.getMember().getMemberId() != loginMember.getMemberId()) {
-                return "redirect:/";
-            }
             model.addAttribute("cardNews", cardNews);
             model.addAttribute("id", id);
         } else {
             return null;
         }
 
-        return "cardNews/cardnewsedit";
+        return "cardNews/cardnewstemplateedit";
     }
 
 
-    @PostMapping("/cardnews/edit/{id}")
+    @PostMapping("/cardnews/template/edit/{id}")
     public String saveImage(@RequestParam("imageData") String imageData,
                             @PathVariable("id") Long id,
                             @Validated
@@ -121,13 +141,15 @@ public class CardNewsEditController {
             File outputfile = new File(fileName);
             ImageIO.write(img, "png", destinationPath.toFile());
 
-            cardNews.setCardNewsId(id);
             cardNews.setJsonUrl(jsonname);
             cardNews.setImageUrl(fileName);
             cardNews.setMember(loginMember);
+            cardNews.setOriginalUrl(loginMember.getOriginalUrl());
+            cardNews.setEdit("O");
+            Long cardId = cardNewsRepository.save(cardNews);
 
             cardNewsRepository.update(cardNews);
-            redirectAttributes.addAttribute("id", id);
+            redirectAttributes.addAttribute("id", cardId);
             return "redirect:/cardnews/{id}";
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,7 +158,7 @@ public class CardNewsEditController {
     }
 
 
-    @PostMapping("/ai-editJson")
+    @PostMapping("/ai-templateeditJson")
     @ResponseBody
     public String saveJsonData(@RequestBody Map<String, Object> jsonData,
                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
