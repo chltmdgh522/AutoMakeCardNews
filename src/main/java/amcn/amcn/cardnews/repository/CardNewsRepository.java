@@ -63,13 +63,32 @@ public class CardNewsRepository {
                 .getResultList();
     }
 
-    public void findTrashAllDelete() {
-        List<CardNews> resultList = em.createQuery("select c from CardNews c where c.trash = 'O'", CardNews.class)
+    public void findTrashAllDelete(Member loginMember) {
+        List<CardNews> resultList = em.createQuery("select c from CardNews c where c.trash = 'O' AND " +
+                        "c.member.memberId = : memberId", CardNews.class)
+                .setParameter("memberId",loginMember.getMemberId())
                 .getResultList();
         for (CardNews cardNews : resultList) {
             em.remove(cardNews);
         }
+    }
 
+    public void findTrashAllRestore(Member loginMember) {
+        List<CardNews> resultList = em.createQuery("select c from CardNews c where c.trash = 'O' AND " +
+                        "c.member.memberId = : memberId", CardNews.class)
+                .setParameter("memberId",loginMember.getMemberId())
+                .getResultList();
+        for (CardNews cardNews : resultList) {
+            cardNews.setTrash("X");
+        }
+    }
+
+    public void findTrashSelectDelete(List<Long> list) {
+
+        for(Long id : list) {
+            CardNews cardNews = em.find(CardNews.class, id);
+            em.remove(cardNews);
+        }
 
     }
 }

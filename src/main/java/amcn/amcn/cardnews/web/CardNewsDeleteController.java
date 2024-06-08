@@ -5,15 +5,16 @@ import amcn.amcn.cardnews.repository.CardNewsRepository;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -60,9 +61,44 @@ public class CardNewsDeleteController {
     }
 
     @PostMapping("/cardnews/delete")
-    public String deleteCardNews() {
-        cardNewsRepository.findTrashAllDelete();
+    public String deleteCardNews(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                                     Member loginMember) {
+        cardNewsRepository.findTrashAllDelete(loginMember);
         return "redirect:/trash";
+    }
+
+    @PostMapping("/cardnews/restore")
+    public String restoreCardNews(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                                      Member loginMember) {
+        cardNewsRepository.findTrashAllRestore(loginMember);
+        return "redirect:/";
+    }
+
+    @PostMapping("/cardnews/select/delete")
+    public String selectDeleteCardNews(@RequestParam("selectedIds") String selectedIdsJson,
+                                       @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                                  Member loginMember) {
+        // JSON 문자열을 List로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Long> selectedIds = new ArrayList<>();
+
+
+        try {
+            //의존성 2개 추가해야됨
+            selectedIds = objectMapper.readValue(selectedIdsJson, new TypeReference<List<Long>>() {});
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+
+        }
+
+        log.info(selectedIdsJson);
+
+        for (Long selectedId : selectedIds) {
+            log.info(String.valueOf(selectedId));
+        }
+        cardNewsRepository.findTrashSelectDelete(selectedIds);
+
+        return "redirect:/";
     }
 
 }
