@@ -1,10 +1,7 @@
 package amcn.amcn.cardnews.web;
 
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
-import amcn.amcn.cardnews.domain.searchcond.CardNewsSearchCond;
 import amcn.amcn.cardnews.repository.CardNewsRepository;
-import amcn.amcn.cardnews.repository.CardNewsSpringDataRepository;
-import amcn.amcn.like.repository.LikeRepository;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
@@ -27,13 +24,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
-@Slf4j
-public class CardNewsTemplateController {
+public class CardNewsForkController {
     private final CardNewsRepository cardNewsRepository;
     private final MemberRepository memberRepository;
-    private final CardNewsSpringDataRepository springDataRepository;
 
     private static String jsonname;
     @Value("${file.dir}")
@@ -42,36 +38,13 @@ public class CardNewsTemplateController {
     @Value("${json.dir}")
     private String jsonDir;
 
-
-    @GetMapping("/cardnews/template")
-    public String getTemplate(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                  Member loginMember,
-                              Model model,
-                              @ModelAttribute("cardNewsSearchCond") CardNewsSearchCond cardNewsSearchCond){
-
-        Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
-
-        if (findMember.isPresent()) {
-            Member member = findMember.get();
-            model.addAttribute("type", member.getRoleType().name());
-            model.addAttribute("member", member);
-        } else {
-            return null;
-        }
-
-        //검색
-        List<CardNews> searchCardNews = springDataRepository.findSearchTemplate(cardNewsSearchCond.getCategory(), cardNewsSearchCond.getSelected());
-
-        model.addAttribute("cardnews",searchCardNews);
-
-        return "cardNews/cardnewstemplate";
-    }
-    @GetMapping("/cardnews/template/edit/{id}")
+    @GetMapping("/cardnews/fork/{id}")
     public String getEdit(@PathVariable("id") Long id,
                           @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                           Member loginMember,
                           Model model) {
 
+
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
             Member member = findMember.get();
@@ -81,22 +54,24 @@ public class CardNewsTemplateController {
             return null;
         }
 
-
         Optional<CardNews> findCardNews = cardNewsRepository.findCardNewsId(id);
         if (findCardNews.isPresent()) {
             CardNews cardNews = findCardNews.get();
-            loginMember.setOriginalUrl(cardNews.getOriginalUrl());
+
+            cardNews.setTitle("");
+            cardNews.setContent("");
+            cardNews.setCategory("");
+
             model.addAttribute("cardNews", cardNews);
             model.addAttribute("id", id);
         } else {
             return null;
         }
 
-        return "cardNews/cardnewstemplateedit";
+        return "cardNews/cardnewsfork";
     }
 
-
-    @PostMapping("/cardnews/template/edit/{id}")
+    @PostMapping("/cardnews/fork/{id}")
     public String saveImage(@RequestParam("imageData") String imageData,
                             @PathVariable("id") Long id,
                             @Validated
@@ -146,12 +121,12 @@ public class CardNewsTemplateController {
             cardNews.setJsonUrl(jsonname);
             cardNews.setImageUrl(fileName);
             cardNews.setMember(loginMember);
-            cardNews.setOriginalUrl(loginMember.getOriginalUrl());
-            cardNews.setEdit("O");
             cardNews.setTrash("X");
-            Long cardId = cardNewsRepository.save(cardNews);
+            cardNews.setEdit("O");
+            cardNews.setFork(id);
 
-            cardNewsRepository.update(cardNews);
+            Long cardId = cardNewsRepository.save(cardNews);
+            log.info(String.valueOf(cardId));
             redirectAttributes.addAttribute("id", cardId);
             return "redirect:/cardnews/{id}";
         } catch (Exception e) {
@@ -161,7 +136,7 @@ public class CardNewsTemplateController {
     }
 
 
-    @PostMapping("/ai-template/editJson")
+    @PostMapping("/ai-forkJson")
     @ResponseBody
     public String saveJsonData(@RequestBody Map<String, Object> jsonData,
                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
@@ -169,6 +144,9 @@ public class CardNewsTemplateController {
         try {
             log.info("JSON 데이터가 도착했습니다.");
 
+            if (jsonData.containsKey("backgroundImage")) {
+                //jsonData.put("backgroundImage", loginMember.getOriginalUrl());
+            }
 
             jsonname = UUID.randomUUID().toString() + ".json";
 
@@ -186,4 +164,7 @@ public class CardNewsTemplateController {
             return "Error occurred while saving JSON data.";
         }
     }
+
+
+
 }

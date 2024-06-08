@@ -41,6 +41,9 @@ public class HomeController {
             model.addAttribute("type", member.getRoleType().name());
             model.addAttribute("member",member);
             model.addAttribute("cardnews",newAll);
+            log.info("=================================");
+            log.info(member.getName() +"님 입장!!!!!!");
+            log.info("=================================");
         }else {
             return null;
         }

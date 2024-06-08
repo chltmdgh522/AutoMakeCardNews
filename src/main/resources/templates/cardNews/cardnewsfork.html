@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>A.M.C.N</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style_em.css">
+    <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        .field-error {
+            color: #ff0000;
+        }
+    </style>
+</head>
+
+<body>
+<header id="header">
+    <img src="yamyamIcon.png" alt="">
+    <p id="yamlogo">AMCN</p>
+</header>
+
+<div id="main_display">
+    <aside class="tools">
+        <ul>
+            <li>
+                <button id="drawing" class="tool">
+                    🖊
+                    <span class="tooltip">Pen(Q)</span>
+                </button>
+            </li>
+            <li>
+                <button id="brush" class="tool">
+                    🖌
+                    <span class="tooltip">Brush(W)</span>
+                </button>
+            </li>
+            <li>
+                <button id="eraser" class="tool">
+                    ✏
+                    <span class="tooltip">Eraser(E)</span>
+                </button>
+            </li>
+            <li>
+                <button id="square" class="tool">
+                    □
+                    <span class="tooltip">Square(A)</span>
+                </button>
+            </li>
+            <li>
+                <button id="triangle" class="tool">
+                    △
+                    <span class="tooltip">Triangle(S)</span>
+                </button>
+            </li>
+            <li>
+                <button id="circle" class="tool">
+                    ○
+                    <span class="tooltip">Circle(D)</span>
+                </button>
+            </li>
+            <li>
+                <button id="return_button" class="tool">
+                    ↩
+                    <span class="tooltip">Undo(Ctrl+Z)</span>
+                </button>
+            </li>
+            <li>
+                <button id="reset" class="tool">
+                    🗑
+                    <span class="tooltip">Delete(delete)</span>
+                </button>
+            </li>
+        </ul>
+        <li>
+            <button id="category" class="tool">
+                🌠
+                <span class="tooltip">Category(post)</span>
+            </button>
+
+
+            <div id="popup" class="popup">
+                <form id="imageForm" method="post" enctype="multipart/form-data"
+                      th:object="${cardNews}">
+
+                    <input type="hidden" id="imageData" name="imageData">
+                    <h3 style="font-weight: bold">카드 뉴스 편집</h3>
+                    <div th:if="${#fields.hasGlobalErrors()}">
+                        <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+                           th:text="${err}">전체 오류 메시지</p>
+                    </div>
+                    <div class="category">
+                        <label><input type="radio" th:field="*{category}" name="category" value="IT" th:checked
+                                      required> IT</label>
+                        <label><input type="radio" th:field="*{category}" name="category" value="과학" required>
+                            과학</label>
+                        <label><input type="radio" th:field="*{category}" name="category" value="스포츠" required>
+                            스포츠</label>
+                        <label><input type="radio" th:field="*{category}" name="category" value="경제" required>
+                            경제</label>
+                        <label><input type="radio" th:field="*{category}" name="category" value="예술" required>
+                            예술</label>
+                    </div>
+                    <div>
+                        <label for="title">제목</label>
+                        <input type="text" th:field="*{title}" id="title" name="title"
+                               th:value="${cardNews.title}"
+                               required>
+                    </div>
+                    <div>
+                        <label for="content">내용</label>
+                        <textarea id="content" name="content" th:field="*{content}"
+                                  rows="4"
+                                  required th:text="${cardNews.content}"></textarea>
+                    </div>
+                    <button type="button" id="postButton"
+                            onclick="saveImage1()">업데이트 완료
+                    </button>
+                </form>
+            </div>
+
+
+        </li>
+        <ul class='files'>
+
+            <li>
+                <button id="save">💾</button>
+            </li>
+        </ul>
+    </aside>
+    <main>
+        <canvas id="imageCanvas"></canvas>
+    </main>
+    <aside class="tools_sett">
+        <div class="container" style="margin-bottom: -138px;">
+            <input type="color" id="text_color"/>
+            <label for="text_color" class="color_tool">색상</label>
+            <input type="color" id="background_color" value="#ffffff"/>
+            <label for="background_color" class="color_tool">배경색</label>
+        </div>
+        <div class='ranges' style="margin-bottom: -55px;">
+            <div id="canvas_range">
+                <input type="text" id="canvas_width" value="750">
+                X
+                <input type="text" id="canvas_height" value="750">
+                <label for="canvas_range" class="range_tool">Canvas</label>
+            </div>
+            <div id="size_box" style="display: none;">
+                <input type="range" id="line_width" min="1" max="10" value="5" step="0.1"/>
+                <label for="line_width" class="range_tool">사이즈</label>
+            </div>
+        </div>
+        <div>
+            <div class="styled-section">
+                <div class="text-button-group" style="margin-top: 75px;">
+                    <button id="textbutton" class="styled-button">텍스트 추가</button>
+                </div>
+            </div>
+
+            <div id="popup1" class="popup1">
+                <h3 style="font-weight: bold">텍스트 추가</h3>
+                <textarea id="textInput" placeholder="텍스트 입력"></textarea>
+                <input type="color" id="textColorPicker" value="#000000">
+                <input type="number" id="textSizeInput" placeholder="텍스트 크기" min="10" max="100" value="20">
+                <select id="fontWeightSelect">
+                    <option value="normal">Normal</option>
+                    <option value="bold">Bold</option>
+                </select>
+                <select id="fontFamilySelect">
+                    <option value="Arial">Arial</option>
+                    <option value="Courier">Courier</option>
+                    <!-- 추가 폰트 옵션들 -->
+                </select>
+                <button id="addTextButton">텍스트 추가</button>
+            </div>
+        </div>
+
+        <div id="jsonurl" style="display: none" th:text="${cardNews.jsonUrl}">
+        </div>
+        <div id="jsonimage" style="display: none" th:text="${cardNews.originalUrl}">
+        </div>
+
+    </aside>
+</div>
+
+<!-- 텍스트 편집 모달 -->
+<div id="textEditPopup" class="popup2">
+    <h3>업데이트</h3>
+    <div style="margin-bottom: 10px;">
+
+        <textarea id="popupTextInput"></textarea>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <input type="color" id="popupTextColorPicker">
+    </div>
+    <div style="margin-bottom: 10px;">
+        <input type="number" id="popupTextSizeInput" min="10" max="100">
+    </div>
+    <div style="margin-bottom: 10px;">
+        <select id="popupFontWeightSelect" style="padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+            <option value="normal">Normal</option>
+            <option value="bold">Bold</option>
+        </select>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <select id="popupFontFamilySelect" style="padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+            <option value="Arial">Arial</option>
+            <option value="Courier">Courier</option>
+            <!-- 추가 폰트 옵션들 -->
+        </select>
+    </div>
+    <button id="updateTextButton">업데이트</button>
+    <button id="closeTextPopup" style="  margin-top: 15px;
+        width: 100%;
+        padding: 10px;
+        background-color: red;
+       border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease; /* 추가: 호버 효과 */
+        ">닫기
+    </button>
+</div>
+
+
+<script src="/js/app2.js"></script>
+<script>
+    // 이미지 저장 함수
+    function saveImage1() {
+        var canvas = document.getElementById("imageCanvas");
+        var imageData = canvas.toDataURL("image/png");
+
+        document.getElementById("imageData").value = imageData;
+        document.getElementById("imageForm").submit();
+
+        // 서버에서 받은 타임리프 변수를 JavaScript 변수로 가져오기
+        var backgroundImage2 = document.getElementById("jsonimage").textContent;
+
+        const canvasState = {
+            backgroundImage: backgroundImage ? backgroundImage2 : null,
+            penStrokes: penStrokes,
+            brushStrokes: brushStrokes,
+            texts: texts
+        };
+        const json = JSON.stringify(canvasState);
+
+        // 서버로 JSON 데이터 전송
+        if (json) { // null 체크
+            fetch('/ai-forkJson', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: json
+            })
+                .then(response => {
+                    // 서버 응답 처리
+                })
+                .catch(error => {
+                    // 오류 처리
+                });
+        }
+    }
+</script>
+<script>
+    const categoryButton = document.getElementById('category');
+
+    const returnButton = document.getElementById('square');
+    const popup = document.getElementById('popup');
+
+    categoryButton.addEventListener('click', (event) => {
+
+
+        const rect = returnButton.getBoundingClientRect();
+        const rightEdge = window.innerWidth;
+        popup.style.top = `${rect.bottom}px`;
+        if (rect.right + popup.offsetWidth > rightEdge) {
+            popup.style.left = `${rect.left}px`;
+        } else {
+            popup.style.left = `${rect.right}px`;
+        }
+        togglePopup();
+    });
+
+    function togglePopup() {
+        popup.style.display = (popup.style.display === 'block') ? 'none' : 'block';
+    }
+
+    document.addEventListener('click', (event) => {
+        if (!popup.contains(event.target) && event.target !== categoryButton) {
+            popup.style.display = 'none';
+        }
+    });
+
+</script>
+
+<script>
+    const textButton = document.getElementById('textbutton');
+    const color_tool = document.getElementById('text_color');
+    const popup1 = document.getElementById('popup1');
+
+    textButton.addEventListener('click', (event) => {
+        const rect = color_tool.getBoundingClientRect();
+        const rightEdge = window.innerWidth;
+        popup1.style.top = `${rect.bottom}px`;
+        popup1.style.left = `${rect.left - popup1.offsetWidth - 180}px`; // 수정된 부분: 왼쪽에 뜨도록 계산
+        togglePopup1();
+    });
+
+    function togglePopup1() {
+        popup1.style.display = (popup1.style.display === 'block') ? 'none' : 'block';
+    }
+
+    document.addEventListener('click', (event) => {
+        if (!popup1.contains(event.target) && event.target !== textButton) {
+            popup1.style.display = 'none';
+        }
+    });
+
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var jsonName = document.getElementById('jsonurl').textContent.trim();
+        var filePath =`/ai/json/${jsonName}`;
+        loadCanvasFromJSON(filePath);
+    });
+
+    function loadCanvasFromJSON(jsonFilePath) {
+        fetch(jsonFilePath)
+            .then(response => response.json())
+            .then(data => {
+                const canvasState = data;
+
+                backgroundImage = null;
+                penStrokes = canvasState.penStrokes || [];
+                brushStrokes = canvasState.brushStrokes || [];
+                texts = canvasState.texts || [];
+
+                if (canvasState.backgroundImage) {
+                    const img = new Image();
+                    img.src = `/ai/imageone/${canvasState.backgroundImage}`;
+                    img.onload = function () {
+                        backgroundImage = img;
+                        redrawCanvas();
+                    };
+                } else {
+                    redrawCanvas();
+                }
+            })
+            .catch(error => console.error('Error loading JSON:', error));
+    }
+</script>
+
+
+</body>
+
+</html>

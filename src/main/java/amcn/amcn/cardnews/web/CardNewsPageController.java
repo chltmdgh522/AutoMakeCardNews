@@ -74,6 +74,10 @@ public class CardNewsPageController {
         if (cardNewsId.isPresent()) {
             CardNews cardNews = cardNewsId.get();
 
+            // 포크 갯수
+            Integer byCardNewsFork = cardNewsRepository.findByCardNewsFork(cardNews);
+            model.addAttribute("forkcnt",byCardNewsFork);
+
             likes.setCardNews(cardNews);
             likes.setMember(loginMember);
 
@@ -83,6 +87,9 @@ public class CardNewsPageController {
             return null;
         }
 
+
+
+        // 좋아요 갯수
         String correct = likeRepository.findByCardNewsLike(likes);
         model.addAttribute("cardlike",correct);
 

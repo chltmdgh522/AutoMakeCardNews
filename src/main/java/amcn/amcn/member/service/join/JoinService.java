@@ -52,7 +52,7 @@ public class JoinService {
             member.setRoleType(RoleType.AUTHUSER);
         }
 
-        member.setProfile("basic.png");
+        member.setProfile("basic2.png");
 
         member.setAuthPassword("0000");
         member.setMemberId(UUID.randomUUID().toString());

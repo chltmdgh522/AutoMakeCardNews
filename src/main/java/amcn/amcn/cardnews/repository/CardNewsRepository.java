@@ -1,10 +1,12 @@
 package amcn.amcn.cardnews.repository;
 
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
+import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
+import jnr.ffi.annotations.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -40,6 +42,15 @@ public class CardNewsRepository {
         return list;
     }
 
+    public Integer findByCardNewsFork(CardNews cardNews) {
+
+        return em.createQuery("select c from CardNews c where c.fork = :cardId", CardNews.class)
+                .setParameter("cardId", cardNews.getCardNewsId())
+                .getResultList().size();
+
+    }
+
+
     public void update(CardNews cardNews) {
         CardNews findCardNews = em.find(CardNews.class, cardNews.getCardNewsId());
         findCardNews.setJsonUrl(cardNews.getJsonUrl());
@@ -66,7 +77,7 @@ public class CardNewsRepository {
     public void findTrashAllDelete(Member loginMember) {
         List<CardNews> resultList = em.createQuery("select c from CardNews c where c.trash = 'O' AND " +
                         "c.member.memberId = : memberId", CardNews.class)
-                .setParameter("memberId",loginMember.getMemberId())
+                .setParameter("memberId", loginMember.getMemberId())
                 .getResultList();
         for (CardNews cardNews : resultList) {
             em.remove(cardNews);
@@ -76,7 +87,7 @@ public class CardNewsRepository {
     public void findTrashAllRestore(Member loginMember) {
         List<CardNews> resultList = em.createQuery("select c from CardNews c where c.trash = 'O' AND " +
                         "c.member.memberId = : memberId", CardNews.class)
-                .setParameter("memberId",loginMember.getMemberId())
+                .setParameter("memberId", loginMember.getMemberId())
                 .getResultList();
         for (CardNews cardNews : resultList) {
             cardNews.setTrash("X");
@@ -85,7 +96,7 @@ public class CardNewsRepository {
 
     public void findTrashSelectDelete(List<Long> list) {
 
-        for(Long id : list) {
+        for (Long id : list) {
             CardNews cardNews = em.find(CardNews.class, id);
             em.remove(cardNews);
         }
@@ -93,7 +104,7 @@ public class CardNewsRepository {
     }
 
     public void findTrashSelectRestore(List<Long> list) {
-        for(Long id : list) {
+        for (Long id : list) {
             CardNews cardNews = em.find(CardNews.class, id);
             cardNews.setTrash("X");
         }

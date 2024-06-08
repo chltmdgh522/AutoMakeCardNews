@@ -110,7 +110,8 @@ public class CardNewsMakeController {
                 return "Failed to decode image.";
             }
 
-            String fileName=UUID.randomUUID().toString() + ".png";;
+            String fileName = UUID.randomUUID().toString() + ".png";
+            ;
             Path destinationPath = Paths.get(fileDir, fileName);
             // 파일로 저장
             File outputfile = new File(fileName);
@@ -139,12 +140,11 @@ public class CardNewsMakeController {
         try {
             log.info("JSON 데이터가 도착했습니다.");
 
-            if(jsonData.containsKey("backgroundImage")){
-                jsonData.put("backgroundImage",loginMember.getOriginalUrl());
+            if (jsonData.containsKey("backgroundImage")) {
+                jsonData.put("backgroundImage", loginMember.getOriginalUrl());
             }
 
-            jsonname= UUID.randomUUID().toString() + ".json";
-
+            jsonname = UUID.randomUUID().toString() + ".json";
 
 
             // 전송된 JSON 데이터를 파일로 저장
@@ -160,7 +160,6 @@ public class CardNewsMakeController {
             return "Error occurred while saving JSON data.";
         }
     }
-
 
 
     @PostMapping("/image-create")
@@ -196,7 +195,8 @@ public class CardNewsMakeController {
 
         try {
             // Get the filename
-            String filename = StringUtils.cleanPath(image.getOriginalFilename());
+            String uuid = UUID.randomUUID().toString();
+            String filename = StringUtils.cleanPath(uuid);
             loginMember.setOriginalUrl(filename);
             memberRepository.updateUrl(loginMember);
 
@@ -214,5 +214,4 @@ public class CardNewsMakeController {
         }
     }
 }
-
 
