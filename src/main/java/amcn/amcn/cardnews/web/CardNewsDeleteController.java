@@ -63,6 +63,7 @@ public class CardNewsDeleteController {
     @PostMapping("/cardnews/delete")
     public String deleteCardNews(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                  Member loginMember) {
+        log.info("딜리드");
         cardNewsRepository.findTrashAllDelete(loginMember);
         return "redirect:/trash";
     }
@@ -71,7 +72,7 @@ public class CardNewsDeleteController {
     public String restoreCardNews(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                   Member loginMember) {
         cardNewsRepository.findTrashAllRestore(loginMember);
-        return "redirect:/";
+        return "redirect:/cardnews/project";
     }
 
     @PostMapping("/cardnews/select/delete")
@@ -92,7 +93,7 @@ public class CardNewsDeleteController {
 
         cardNewsRepository.findTrashSelectDelete(selectedIds);
 
-        return "redirect:/cardnews/project";
+        return "redirect:/trash";
     }
 
     @PostMapping("/cardnews/select/restore")

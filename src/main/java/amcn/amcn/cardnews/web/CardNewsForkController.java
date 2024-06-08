@@ -118,9 +118,19 @@ public class CardNewsForkController {
             File outputfile = new File(fileName);
             ImageIO.write(img, "png", destinationPath.toFile());
 
+
+            Optional<CardNews> cardNewsId = cardNewsRepository.findCardNewsId(id);
+            if (cardNewsId.isPresent()) {
+                CardNews cardNews2 = cardNewsId.get();
+                cardNews.setOriginalUrl(cardNews2.getOriginalUrl());
+            } else {
+                return null;
+            }
+
             cardNews.setJsonUrl(jsonname);
             cardNews.setImageUrl(fileName);
             cardNews.setMember(loginMember);
+
             cardNews.setTrash("X");
             cardNews.setEdit("O");
             cardNews.setFork(id);
@@ -164,7 +174,6 @@ public class CardNewsForkController {
             return "Error occurred while saving JSON data.";
         }
     }
-
 
 
 }

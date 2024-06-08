@@ -87,6 +87,15 @@ public class LikeRepository {
         return "삭제 성공";
     }
 
+
+    // 아예 카드뉴스 삭제할떄 멤버 때문에 cascade뜸...
+    public void cardRemove(List<Likes> likes){
+        for (Likes like : likes) {
+            em.remove(like);
+
+        }
+    }
+
     public String findByCardNewsLike(Likes likes) {
         try {
             Likes findLikes = em.createQuery("select l from Likes l where l.member.memberId = :member_id and " +

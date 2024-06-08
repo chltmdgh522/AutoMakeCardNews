@@ -2,6 +2,7 @@ package amcn.amcn.cardnews.repository;
 
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
 import amcn.amcn.like.domain.like.Likes;
+import amcn.amcn.like.repository.LikeRepository;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -22,6 +23,8 @@ import java.util.Optional;
 public class CardNewsRepository {
 
     private final EntityManager em;
+
+    private final LikeRepository likeRepository;
 
 
     public Long save(CardNews cardNews) {
@@ -72,14 +75,17 @@ public class CardNewsRepository {
                         "c.member.memberId = :memberId", CardNews.class)
                 .setParameter("memberId", loginMember.getMemberId())
                 .getResultList();
+
     }
 
     public void findTrashAllDelete(Member loginMember) {
         List<CardNews> resultList = em.createQuery("select c from CardNews c where c.trash = 'O' AND " +
-                        "c.member.memberId = : memberId", CardNews.class)
+                        "c.member.memberId = :memberId", CardNews.class)
                 .setParameter("memberId", loginMember.getMemberId())
                 .getResultList();
         for (CardNews cardNews : resultList) {
+            //likeRepository.cardRemove(cardNews.getLikes());
+            log.info(cardNews.getContent());
             em.remove(cardNews);
         }
     }
@@ -104,6 +110,7 @@ public class CardNewsRepository {
     }
 
     public void findTrashSelectRestore(List<Long> list) {
+        log.info("일로왔니?");
         for (Long id : list) {
             CardNews cardNews = em.find(CardNews.class, id);
             cardNews.setTrash("X");
