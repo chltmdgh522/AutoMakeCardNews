@@ -91,4 +91,12 @@ public class CardNewsRepository {
         }
 
     }
+
+    public void findTrashSelectRestore(List<Long> list) {
+        for(Long id : list) {
+            CardNews cardNews = em.find(CardNews.class, id);
+            cardNews.setTrash("X");
+        }
+
+    }
 }

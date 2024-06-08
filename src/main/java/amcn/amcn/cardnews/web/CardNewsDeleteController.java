@@ -43,8 +43,8 @@ public class CardNewsDeleteController {
 
     @GetMapping("/trash")
     public String getTrash(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                               Member loginMember,
-                           Model model){
+                           Member loginMember,
+                           Model model) {
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
             Member member = findMember.get();
@@ -55,29 +55,27 @@ public class CardNewsDeleteController {
         }
 
         List<CardNews> findCardNews = cardNewsRepository.findTrashAll(loginMember);
-        model.addAttribute("cardnews",findCardNews);
+        model.addAttribute("cardnews", findCardNews);
 
         return "trash/trash";
     }
 
     @PostMapping("/cardnews/delete")
     public String deleteCardNews(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                     Member loginMember) {
+                                 Member loginMember) {
         cardNewsRepository.findTrashAllDelete(loginMember);
         return "redirect:/trash";
     }
 
     @PostMapping("/cardnews/restore")
     public String restoreCardNews(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                      Member loginMember) {
+                                  Member loginMember) {
         cardNewsRepository.findTrashAllRestore(loginMember);
         return "redirect:/";
     }
 
     @PostMapping("/cardnews/select/delete")
-    public String selectDeleteCardNews(@RequestParam("selectedIds") String selectedIdsJson,
-                                       @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                  Member loginMember) {
+    public String selectDeleteCardNews(@RequestParam("selectedIds") String selectedIdsJson) {
         // JSON 문자열을 List로 변환
         ObjectMapper objectMapper = new ObjectMapper();
         List<Long> selectedIds = new ArrayList<>();
@@ -85,20 +83,37 @@ public class CardNewsDeleteController {
 
         try {
             //의존성 2개 추가해야됨
-            selectedIds = objectMapper.readValue(selectedIdsJson, new TypeReference<List<Long>>() {});
+            selectedIds = objectMapper.readValue(selectedIdsJson, new TypeReference<List<Long>>() {
+            });
         } catch (JsonProcessingException e) {
             e.printStackTrace();
 
         }
 
-        log.info(selectedIdsJson);
-
-        for (Long selectedId : selectedIds) {
-            log.info(String.valueOf(selectedId));
-        }
         cardNewsRepository.findTrashSelectDelete(selectedIds);
 
-        return "redirect:/";
+        return "redirect:/cardnews/project";
+    }
+
+    @PostMapping("/cardnews/select/restore")
+    public String selectRestoreCardNews(@RequestParam("selectedIdss") String selectedIdsJson) {
+        // JSON 문자열을 List로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Long> selectedIds = new ArrayList<>();
+
+
+        try {
+            selectedIds = objectMapper.readValue(selectedIdsJson, new TypeReference<List<Long>>() {
+            });
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+
+        }
+
+
+        cardNewsRepository.findTrashSelectRestore(selectedIds);
+
+        return "redirect:/cardnews/project";
     }
 
 }
