@@ -30,23 +30,23 @@ public class Member {
     @Id
     String memberId;
 
-    @OneToMany(mappedBy = "member" , cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Board> board=new ArrayList<>();
-
-    @OneToMany(mappedBy = "member" , cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CareerBoard> careerBoard=new ArrayList<>();
-
-    @OneToMany(mappedBy = "member" , cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comment=new ArrayList<>();
-
-    @OneToMany(mappedBy = "member" , cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<News> news=new ArrayList<>();
-
-    @OneToMany(mappedBy = "member" , cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CardNews> cardNews=new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Board> board = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Likes> likes=new ArrayList<>();
+    private List<CareerBoard> careerBoard = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<News> news = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CardNews> cardNews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Likes> likes = new ArrayList<>();
 
 
     private String loginId;
@@ -78,6 +78,9 @@ public class Member {
     private LocalDate birthday;
     @Transient
     private String authPassword;
+
+
+    private int hello;
 
     @Lob
     private String profile;

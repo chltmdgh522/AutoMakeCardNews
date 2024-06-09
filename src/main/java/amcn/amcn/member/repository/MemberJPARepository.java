@@ -34,6 +34,12 @@ public class MemberJPARepository implements MemberRepository {
     }
 
     @Override
+    public void updateHello(Member member) {
+        Member findMember = em.find(Member.class, member.getMemberId());
+        findMember.setHello(member.getHello());
+    }
+
+    @Override
     public void updatePassword(String memberId ,String password) {
         Member findMember = em.find(Member.class, memberId);
         findMember.setPassword(password);

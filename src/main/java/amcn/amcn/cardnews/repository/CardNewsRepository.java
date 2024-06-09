@@ -110,11 +110,17 @@ public class CardNewsRepository {
     }
 
     public void findTrashSelectRestore(List<Long> list) {
-        log.info("일로왔니?");
         for (Long id : list) {
             CardNews cardNews = em.find(CardNews.class, id);
             cardNews.setTrash("X");
         }
-
     }
+
+
+    public List<CardNews> findMyCard(Member loginMember){
+        return em.createQuery("select c from CardNews c where c.member.memberId = :memberId", CardNews.class)
+                .setParameter("memberId",loginMember.getMemberId())
+                .getResultList();
+    }
+
 }

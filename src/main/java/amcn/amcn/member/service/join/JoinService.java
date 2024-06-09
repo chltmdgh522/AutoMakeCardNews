@@ -54,6 +54,7 @@ public class JoinService {
 
         member.setProfile("basic2.png");
 
+        member.setHello(0);
         member.setAuthPassword("0000");
         member.setMemberId(UUID.randomUUID().toString());
         member.setPassword(passwordEncoder.encode(member.getPassword()));

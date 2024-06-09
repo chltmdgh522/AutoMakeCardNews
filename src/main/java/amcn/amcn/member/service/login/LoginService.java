@@ -27,4 +27,8 @@ public class LoginService {
                 .filter(m -> bCryptPasswordEncoder.matches(member.getPassword(), m.getPassword()))
                 .orElse(null);
     }
+
+    public void logoutService(Member member){
+        memberRepository.updateHello(member);
+    }
 }
