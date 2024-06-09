@@ -19,6 +19,10 @@ public class FileStore2 {
     @Value("${json.dir}")
     private String jsonDir;
 
+    @Value("${re.dir}")
+    private String reDir;
+
+
     public String getFullPath(String fileName) {
         return fileDir + fileName;
     }
@@ -26,6 +30,10 @@ public class FileStore2 {
 
     public String getFullPath2(String fileName) {
         return jsonDir + fileName;
+    }
+
+    public String getFullPath3(String fileName) {
+        return reDir + fileName;
     }
 
 }

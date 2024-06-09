@@ -56,4 +56,11 @@ public class FileController {
         return new UrlResource("file:" + fileStore2.getFullPath2(filename));
     }
 
+    //액자
+    @ResponseBody
+    @GetMapping("/reactor")
+    public Resource reactorImage() throws MalformedURLException {
+        return new UrlResource("file:" + fileStore2.getFullPath3("액자.png"));
+    }
+
 }
