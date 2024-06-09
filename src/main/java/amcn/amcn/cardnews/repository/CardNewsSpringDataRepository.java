@@ -25,12 +25,15 @@ public interface CardNewsSpringDataRepository extends JpaRepository<CardNews, Lo
     );
 
 
-    @Query("SELECT e FROM CardNews e WHERE e.trash = 'X' AND e.member.memberId = :memberId AND (:title IS NULL OR e.title LIKE %:title%) AND (:category IS NULL OR e.category = :category OR :category = '') ORDER BY CASE WHEN :selected = '최신' THEN e.cardNewsId END DESC, CASE WHEN :selected = '' THEN e.cardNewsId END DESC, CASE WHEN :selected = '과거' THEN e.cardNewsId END ASC")
-    List<CardNews> findSearchProject(
-            @Param("memberId") String memberId,
-            @Param("title") String title,
-            @Param("category") String category,
-            @Param("selected") String selected
-    );
+    @Query("SELECT e FROM CardNews e LEFT JOIN e.likes l WHERE e.trash = 'X' AND e.member.memberId = :memberId AND " +
+            "(:title IS NULL OR e.title LIKE %:title%) AND (:category IS NULL OR e.category = :category OR :category = '') " +
+            "GROUP BY e " +
+            "ORDER BY CASE " +
+            "WHEN :selected = '최신' THEN e.cardNewsId END DESC, " +
+            "CASE WHEN :selected = '인기' THEN COUNT(l) END DESC, " +
+            "CASE WHEN :selected = '과거' THEN e.cardNewsId END ASC")
+    List<CardNews> findSearchProject(@Param("memberId") String memberId, @Param("title") String title,
+                                        @Param("category") String category, @Param("selected") String selected);
+
 
 }

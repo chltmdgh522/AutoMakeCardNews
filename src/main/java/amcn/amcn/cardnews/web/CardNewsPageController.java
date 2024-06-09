@@ -78,6 +78,18 @@ public class CardNewsPageController {
             Integer byCardNewsFork = cardNewsRepository.findByCardNewsFork(cardNews);
             model.addAttribute("forkcnt",byCardNewsFork);
 
+            // 포크 원본 사용자 이름 불러오기
+            Long fork = cardNews.getFork();
+            if(fork !=0 ){
+                Optional<CardNews> findforkCard = cardNewsRepository.findCardNewsId(fork);
+                if(findforkCard.isPresent()){
+                    CardNews cardNewsFork = findforkCard.get();
+                    model.addAttribute("forkName",cardNewsFork);
+                }
+            }else{
+                model.addAttribute("orginame",cardNews.getMember().getName());
+            }
+
             likes.setCardNews(cardNews);
             likes.setMember(loginMember);
 
