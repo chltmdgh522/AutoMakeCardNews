@@ -30,11 +30,15 @@ public class OthersRepository {
         List<CardNews> list=new ArrayList<>();
         for (Likes findLike : findLikes) {
             try {
-                CardNews cardId = em.createQuery("select c from CardNews c where c.cardNewsId = :cardId and " +
-                                "c.trash = 'X'", CardNews.class)
-                        .setParameter("cardId", findLike.getCardNews().getCardNewsId())
-                        .getSingleResult();
-                list.add(cardId);
+                if (findLike.getCardNews() != null) {
+                    CardNews cardId = em.createQuery("select c from CardNews c where c.cardNewsId = :cardId and " +
+                                    "c.trash = 'X'", CardNews.class)
+                            .setParameter("cardId", findLike.getCardNews().getCardNewsId())
+                            .getSingleResult();
+                    list.add(cardId);
+                }else{
+                    log.info("널이라고?");
+                }
             } catch (NoResultException e) {
 
                 log.info(String.valueOf(e));

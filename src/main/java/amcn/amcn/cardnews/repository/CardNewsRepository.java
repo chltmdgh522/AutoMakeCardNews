@@ -84,8 +84,7 @@ public class CardNewsRepository {
                 .setParameter("memberId", loginMember.getMemberId())
                 .getResultList();
         for (CardNews cardNews : resultList) {
-            //likeRepository.cardRemove(cardNews.getLikes());
-            log.info(cardNews.getContent());
+
             em.remove(cardNews);
         }
     }

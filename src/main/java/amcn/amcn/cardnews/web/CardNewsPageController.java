@@ -101,11 +101,12 @@ public class CardNewsPageController {
 
 
 
-        // 좋아요 갯수
+        // 좋아요 확인
         String correct = likeRepository.findByCardNewsLike(likes);
         model.addAttribute("cardlike",correct);
 
 
+        //좋아요 갯수
         int newsLike = likeRepository.findByBookmarkCardNewsLike(likes).size();
         model.addAttribute("cardNewsLike", newsLike);
 

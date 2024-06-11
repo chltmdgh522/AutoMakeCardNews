@@ -26,25 +26,37 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model,
                        @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                       Member loginMember){
+                       Member loginMember) {
 
         List<CardNews> newAll = cardNewsRepository.findNewAll();
 
-        if(loginMember == null){
-            model.addAttribute("cardnews",newAll);
-        return "home/noLoginHome";
-    }
+        if (loginMember == null) {
+            model.addAttribute("cardnews", newAll);
+            return "home/noLoginHome";
+        }
 
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
-        if(findMember.isPresent()){
+        if (findMember.isPresent()) {
             Member member = findMember.get();
             model.addAttribute("type", member.getRoleType().name());
-            model.addAttribute("member",member);
-            model.addAttribute("cardnews",newAll);
-            log.info("=================================");
-            log.info(member.getName() +"님 입장!!!!!!");
-            log.info("=================================");
-        }else {
+            model.addAttribute("member", member);
+
+            // 추천테마
+            model.addAttribute("cardnews", newAll);
+            // 편집
+            List<CardNews> myCard = cardNewsRepository.findMyCard(loginMember);
+            model.addAttribute("myCardnews",myCard);
+
+            log.info(String.valueOf(member.getHello()));
+
+            if (member.getHello() ==0) {
+                log.info("=================================");
+                log.info(member.getName() + "님 입장!!!!!!");
+                log.info("=================================");
+                member.setHello(2);
+                memberRepository.updateHello(member);
+            }
+        } else {
             return null;
         }
         return "home/loginHome";

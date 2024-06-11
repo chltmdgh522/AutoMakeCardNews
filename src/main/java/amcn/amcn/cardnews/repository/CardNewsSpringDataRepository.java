@@ -28,11 +28,20 @@ public interface CardNewsSpringDataRepository extends JpaRepository<CardNews, Lo
     );
 
 
-    @Query("SELECT e FROM CardNews e WHERE e.trash = 'X' AND e.edit = 'X' AND (:category IS NULL OR e.category = :category OR :category = '') ORDER BY CASE WHEN :selected = '최신' THEN e.cardNewsId END DESC, CASE WHEN :selected = '' THEN e.cardNewsId END DESC, CASE WHEN :selected = '과거' THEN e.cardNewsId END ASC")
+    @Query("SELECT e FROM CardNews e LEFT JOIN e.likes l " +
+            "WHERE e.trash = 'X' AND e.edit = 'X' AND " +
+            "(:category IS NULL OR e.category = :category OR :category = '') " +
+            "GROUP BY e " +
+            "ORDER BY " +
+            "CASE WHEN :selected = '최신' THEN e.cardNewsId END DESC, " +
+            "CASE WHEN :selected = '' THEN e.cardNewsId END DESC, " +
+            "CASE WHEN :selected = '과거' THEN e.cardNewsId END ASC, " +
+            "CASE WHEN :selected = '인기' THEN COUNT(l) END DESC")
     List<CardNews> findSearchTemplate(
             @Param("category") String category,
             @Param("selected") String selected
     );
+
 
 
     @Query("SELECT e FROM CardNews e LEFT JOIN e.likes l WHERE e.trash = 'X' AND e.member.memberId = :memberId AND " +
