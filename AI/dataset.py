@@ -11,6 +11,7 @@ import lightning as L
 from functools import partial
 
 
+
 class KoBARTSummaryDataset(Dataset):
     def __init__(self, file, tokenizer, max_len, ignore_index=-100):
         super().__init__()
