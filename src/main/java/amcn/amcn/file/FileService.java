@@ -24,14 +24,14 @@ public class FileService {
 
     public String saveImageFromUrl(String imageUrl) throws IOException {
         if (StringUtils.isEmpty(imageUrl)) {
-            throw new IllegalArgumentException("Image URL cannot be empty");
+            throw new IllegalArgumentException("해당 이미지 URL이 없습니다.");
         }
 
         URL url = new URL(imageUrl);
         String contentType = url.openConnection().getContentType();
         String fileExtension = getFileExtensionFromContentType(contentType);
         if (fileExtension.isEmpty()) {
-            throw new IllegalArgumentException("Unsupported image format");
+            throw new IllegalArgumentException("이미지 포멧이 안맞습니다.");
         }
 
         String uuid = UUID.randomUUID().toString() + "." + fileExtension;

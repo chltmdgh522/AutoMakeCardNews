@@ -54,11 +54,18 @@ public class NewsPageController {
         if (byNews.isPresent()) {
             News news = byNews.get();
             likes.setNews(news);
+            likes.setMember(loginMember);
             model.addAttribute("news", news);
         } else {
             return null;
         }
 
+
+        // 좋아요 확인
+        String correct = likeRepository.findByNewsLike(likes);
+        model.addAttribute("newslike",correct);
+
+        // 좋아요  갯수
         int newsLike=likeRepository.findByBookmarkNewsLike(likes).size();
         model.addAttribute("newsLike",newsLike);
 
@@ -82,18 +89,18 @@ public class NewsPageController {
             BufferedReader reader = new BufferedReader(new InputStreamReader(ttsProcess.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                log.info(line);
             }
 
             // 에러 출력 읽기
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(ttsProcess.getErrorStream()));
             while ((line = errorReader.readLine()) != null) {
-                System.err.println(line);
+               log.info(line);
             }
 
             // 프로세스 종료 상태 확인
             int exitCode = ttsProcess.waitFor();
-            System.out.println("Exited with code: " + exitCode);
+            log.info(String.valueOf(exitCode));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,10 +127,8 @@ public class NewsPageController {
         log.info("하이");
         if (ttsProcess != null) {
             ttsProcess.destroy(); // 파이썬 스크립트 실행 프로세스를 종료
-            log.info("다옴");
             log.info("TTS script execution canceled.");
         } else {
-            log.info("아니야");
             log.info("No TTS script is currently running.");
         }
     }
