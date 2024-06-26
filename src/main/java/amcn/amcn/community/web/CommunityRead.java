@@ -1,5 +1,7 @@
-package amcn.amcn.commonentity.web;
+package amcn.amcn.community.web;
 
+import amcn.amcn.community.domain.board.Board;
+import amcn.amcn.community.repository.BoardRepository;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
@@ -7,20 +9,22 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class CommunityCrud {
+public class CommunityRead {
 
     private final MemberRepository memberRepository;
-    @GetMapping("/community/add")
-    public String getCommunity(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                               Member loginMember, Model model) {
+    private final BoardRepository boardRepository;
+
+    @GetMapping("/community/{id}")
+    public String getCommunityRead(@PathVariable Long id,
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                               Member loginMember, Model model){
 
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
@@ -31,7 +35,14 @@ public class CommunityCrud {
             return null;
         }
 
+        Optional<Board> findBoard = boardRepository.findBoardId(id);
 
-        return "community/communityadd";
+        if(findBoard.isPresent()){
+            Board board = findBoard.get();
+            model.addAttribute("board",board);
+        }
+
+        return "community/communityread";
     }
+
 }

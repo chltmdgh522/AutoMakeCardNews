@@ -1,7 +1,7 @@
 package amcn.amcn.member.domain.member;
 
-import amcn.amcn.board.domain.board.Board;
-import amcn.amcn.board.domain.careerboard.CareerBoard;
+import amcn.amcn.community.domain.board.Board;
+import amcn.amcn.community.domain.careerboard.CareerBoard;
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
 import amcn.amcn.comment.domain.comment.Comment;
 import amcn.amcn.like.domain.like.Likes;
@@ -9,15 +9,10 @@ import amcn.amcn.news.domain.News;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package amcn.amcn.board.domain.board;
+package amcn.amcn.community.domain.careerboard;
 
 import amcn.amcn.comment.domain.comment.Comment;
 import amcn.amcn.like.domain.like.Likes;
@@ -17,16 +17,21 @@ import java.util.List;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class Board {
+public class CareerBoard {
     @Id
-    private String board_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long career_board_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "board" , cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "careerBoard")
     private List<Comment> comments = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "careerBoard")
+    private List<Likes> likes = new ArrayList<>();
 
     @Size(max = 30)
     private String title;
@@ -34,16 +39,14 @@ public class Board {
     @Lob
     private String content;
 
-    @OneToMany(mappedBy = "board" , cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Likes> likes = new ArrayList<>();
 
     private boolean modify;
 
     @Enumerated(EnumType.STRING)
-    private BoardType boardType;
+    private CareerType careerType;
 
 
-    private String boardImage;
+    private String careerImage;
 
     private int viewCount;
 
@@ -53,5 +56,4 @@ public class Board {
 
     @LastModifiedDate
     private LocalDate modifyDate;
-
 }

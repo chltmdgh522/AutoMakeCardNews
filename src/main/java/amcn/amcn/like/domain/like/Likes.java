@@ -1,7 +1,7 @@
 package amcn.amcn.like.domain.like;
 
-import amcn.amcn.board.domain.board.Board;
-import amcn.amcn.board.domain.careerboard.CareerBoard;
+import amcn.amcn.community.domain.board.Board;
+import amcn.amcn.community.domain.careerboard.CareerBoard;
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.news.domain.News;

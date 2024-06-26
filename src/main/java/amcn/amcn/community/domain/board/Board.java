@@ -1,6 +1,5 @@
-package amcn.amcn.board.domain.careerboard;
+package amcn.amcn.community.domain.board;
 
-import amcn.amcn.board.domain.board.BoardType;
 import amcn.amcn.comment.domain.comment.Comment;
 import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.member.domain.member.Member;
@@ -18,36 +17,33 @@ import java.util.List;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class CareerBoard {
+public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long career_board_id;
+    private Long boardId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "careerBoard")
+    @OneToMany(mappedBy = "board" , cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-
-    @OneToMany(mappedBy = "careerBoard")
-    private List<Likes> likes = new ArrayList<>();
-
-    @Size(max = 30)
+    @Lob
     private String title;
 
     @Lob
-    private String content;
+    private String substance;
 
+    @OneToMany(mappedBy = "board" , cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Likes> likes = new ArrayList<>();
 
     private boolean modify;
 
-    @Enumerated(EnumType.STRING)
-    private CareerType careerType;
+    private String category;
 
 
-    private String careerImage;
+    private String boardImage;
 
     private int viewCount;
 
@@ -57,4 +53,5 @@ public class CareerBoard {
 
     @LastModifiedDate
     private LocalDate modifyDate;
+
 }

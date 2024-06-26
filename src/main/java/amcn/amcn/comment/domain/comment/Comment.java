@@ -1,11 +1,10 @@
 package amcn.amcn.comment.domain.comment;
 
-import amcn.amcn.board.domain.board.Board;
-import amcn.amcn.board.domain.careerboard.CareerBoard;
+import amcn.amcn.community.domain.board.Board;
+import amcn.amcn.community.domain.careerboard.CareerBoard;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
