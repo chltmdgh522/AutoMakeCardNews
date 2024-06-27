@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long comment_id;
+    private Long commentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -30,7 +30,7 @@ public class Comment {
     @JoinColumn(name = "career_board_id")
     private CareerBoard careerBoard;
 
-    private String content; // 댓글 내용
+    private String substance; // 댓글 내용
 
     @CreatedDate
     private LocalDate date; // 댓글 달린 시간
