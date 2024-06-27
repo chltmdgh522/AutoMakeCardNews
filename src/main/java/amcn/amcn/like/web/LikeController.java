@@ -1,6 +1,7 @@
 package amcn.amcn.like.web;
 
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
+import amcn.amcn.community.domain.board.Board;
 import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.like.repository.LikeRepository;
 import amcn.amcn.member.domain.member.Member;
@@ -70,6 +71,34 @@ public class LikeController {
         } else {
             likeRepository.cardNewsRemove(likes);
             return likeRepository.findByBookmarkCardNewsLike(likes).size();
+        }
+
+    }
+
+
+
+    @PostMapping("/board-like")
+    @ResponseBody
+    public int boardLike(@RequestParam("boardId") Long id,
+                            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                            Member loginMember,
+                            Model model) {
+        Likes likes = new Likes();
+        Board board=new Board();
+        board.setBoardId(id);
+        likes.setMember(loginMember);
+        likes.setBoard(board);
+
+        String cardLike;
+        // 좋아요가 있는지 확인
+        String correct = likeRepository.findByBoardLike(likes);
+        if (correct.equals("O")) {
+            //좋아요가 없으면 좋아요 저장
+            likeRepository.boardSave(likes);
+            return likeRepository.findByBookmarkBoardLike(likes).size();
+        } else {
+            likeRepository.boardRemove(likes);
+            return likeRepository.findByBookmarkBoardLike(likes).size();
         }
 
     }

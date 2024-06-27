@@ -114,4 +114,50 @@ public class LikeRepository {
                 .setParameter("cardNews_id", likes.getCardNews().getCardNewsId())
                 .getResultList();
     }
+
+
+
+
+    public void boardSave(Likes likes) {
+        em.persist(likes);
+        em.flush();
+    }
+
+    public String boardRemove(Likes likes) {
+        Likes findLikes = null;
+        try {
+            findLikes = em.createQuery("select l from Likes l where l.member.memberId = :member_id and " +
+                            "l.board.boardId= :boardId", Likes.class)
+                    .setParameter("member_id", likes.getMember().getMemberId())
+                    .setParameter("boardId", likes.getBoard().getBoardId())
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            log.info(e.getMessage());
+            return null;
+        }
+        em.remove(findLikes);
+        em.flush();
+        return "삭제 성공";
+    }
+
+
+
+    public String findByBoardLike(Likes likes) {
+        try {
+            Likes findLikes = em.createQuery("select l from Likes l where l.member.memberId = :member_id and " +
+                            "l.board.boardId= :boardId", Likes.class)
+                    .setParameter("member_id", likes.getMember().getMemberId())
+                    .setParameter("boardId", likes.getBoard().getBoardId())
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return "O";
+        }
+        return "X";
+    }
+
+    public List<Likes> findByBookmarkBoardLike(Likes likes) {
+        return em.createQuery("select l from Likes l where l.board.boardId = :boardId", Likes.class)
+                .setParameter("boardId", likes.getBoard().getBoardId())
+                .getResultList();
+    }
 }
