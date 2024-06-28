@@ -21,7 +21,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class CommunityRead {
+public class CommunityReadController {
 
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;

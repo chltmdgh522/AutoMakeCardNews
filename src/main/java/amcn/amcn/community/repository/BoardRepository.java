@@ -24,6 +24,13 @@ public class BoardRepository {
         return board.getBoardId();
     }
 
+    public void update(Board board){
+        Board findBoard = em.find(Board.class, board.getBoardId());
+        findBoard.setTitle(board.getTitle());
+        findBoard.setSubstance(board.getSubstance());
+        findBoard.setCategory(board.getCategory());
+    }
+
     public Optional<Board> findBoardId(Long boardId){
         try {
             Board findBoard = em.createQuery("select b from Board b where b.boardId= :id ", Board.class)
@@ -33,6 +40,10 @@ public class BoardRepository {
         } catch (NoResultException e) {
             return Optional.empty();
         }
+    }
+
+    public void delete(Board board){
+        em.remove(board);
     }
 
 

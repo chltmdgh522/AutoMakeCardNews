@@ -20,7 +20,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class CommunityAdd {
+public class CommunityAddController {
 
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;

@@ -1,5 +1,6 @@
 package amcn.amcn.community.web;
 
+import amcn.amcn.community.repository.BoardRepository;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
@@ -18,6 +19,8 @@ import java.util.Optional;
 public class CommunityController {
 
     private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
+
     @GetMapping("/community")
     public String getCommunity(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                  Member loginMember, Model model) {
@@ -30,6 +33,8 @@ public class CommunityController {
         } else {
             return null;
         }
+
+        boardRepository.
 
 
         return "community/community";
