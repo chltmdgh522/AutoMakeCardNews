@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -40,6 +41,32 @@ public class BoardRepository {
         } catch (NoResultException e) {
             return Optional.empty();
         }
+    }
+
+    public List<Board> boardListIt(){
+        return em.createQuery("select b from Board b where b.category = 'IT' order by size(b.likes) desc", Board.class)
+                .setMaxResults(5)
+                .getResultList();
+    }
+    public List<Board> boardListSports(){
+        return em.createQuery("select b from Board b where b.category = '스포츠' order by size(b.likes) desc", Board.class)
+                .setMaxResults(5)
+                .getResultList();
+    }
+    public List<Board> boardListEco(){
+        return em.createQuery("select b from Board b where b.category = '경제' order by size(b.likes) desc", Board.class)
+                .setMaxResults(5)
+                .getResultList();
+    }
+    public List<Board> boardListArt(){
+        return em.createQuery("select b from Board b where b.category = '예술' order by size(b.likes) desc", Board.class)
+                .setMaxResults(5)
+                .getResultList();
+    }
+    public List<Board> boardListScience(){
+        return em.createQuery("select b from Board b where b.category = '과학' order by size(b.likes) desc", Board.class)
+                .setMaxResults(5)
+                .getResultList();
     }
 
     public void delete(Board board){

@@ -1,5 +1,6 @@
 package amcn.amcn.community.web;
 
+import amcn.amcn.community.domain.board.Board;
 import amcn.amcn.community.repository.BoardRepository;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
@@ -23,7 +24,7 @@ public class CommunityController {
 
     @GetMapping("/community")
     public String getCommunity(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                 Member loginMember, Model model) {
+                               Member loginMember, Model model) {
 
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
@@ -34,7 +35,14 @@ public class CommunityController {
             return null;
         }
 
-        boardRepository.
+        Board board=new Board();
+
+        model.addAttribute("it", boardRepository.boardListIt());
+        model.addAttribute("sports", boardRepository.boardListSports());
+        model.addAttribute("eco", boardRepository.boardListEco());
+        model.addAttribute("art", boardRepository.boardListArt());
+        model.addAttribute("science", boardRepository.boardListScience());
+
 
 
         return "community/community";
@@ -42,7 +50,7 @@ public class CommunityController {
 
     @GetMapping("/community/more")
     public String getCommunityMore(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                               Member loginMember, Model model) {
+                                   Member loginMember, Model model) {
 
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
