@@ -2,6 +2,7 @@ package amcn.amcn.community.web;
 
 import amcn.amcn.community.domain.board.Board;
 import amcn.amcn.community.repository.BoardRepository;
+import amcn.amcn.community.service.BoardService;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
@@ -21,6 +22,7 @@ public class CommunityController {
 
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
+    private final BoardService boardService;
 
     @GetMapping("/community")
     public String getCommunity(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
@@ -60,6 +62,19 @@ public class CommunityController {
         } else {
             return null;
         }
+
+        model.addAttribute("all",boardService.titleContentALLSub());
+
+        model.addAttribute("it",boardRepository.boardListItmore());
+        model.addAttribute("sport",boardRepository.boardListSportsmore());
+
+        model.addAttribute("art",boardRepository.boardListArtmore());
+
+        model.addAttribute("sci",boardRepository.boardListSciencemore());
+        model.addAttribute("eco",boardRepository.boardListEcomore());
+
+
+
 
 
         return "community/communitymore";

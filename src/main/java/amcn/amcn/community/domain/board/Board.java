@@ -42,6 +42,8 @@ public class Board {
 
     private String category;
 
+    private String titleMax;
+    private String substanceMax;
 
     private String boardImage;
 
