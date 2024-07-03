@@ -42,8 +42,10 @@ public class Board {
 
     private String category;
 
-    private String titleMax;
-    private String substanceMax;
+    private String titleMax="X";
+
+
+    private String substanceMax="X";
 
     private String boardImage;
 
@@ -55,5 +57,24 @@ public class Board {
 
     @LastModifiedDate
     private LocalDate modifyDate;
+
+
+    public Board(){
+
+    }
+    public Board(Member member, String title, String substance, boolean modify, String category, String titleMax, String substanceMax, int viewCount, LocalDate createdDate, LocalDate modifyDate) {
+        this.member = member;
+        this.title = title;
+        this.substance = substance;
+        this.modify = modify;
+        this.category = category;
+        this.titleMax = titleMax;
+        this.substanceMax = substanceMax;
+        this.viewCount = viewCount;
+        this.createdDate = createdDate;
+        this.modifyDate = modifyDate;
+    }
+
+
 
 }
