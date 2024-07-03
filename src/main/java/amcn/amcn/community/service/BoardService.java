@@ -29,15 +29,15 @@ public class BoardService {
             newBoard.setLikes(board.getLikes());
             newBoard.setCreatedDate(board.getCreatedDate());
 
-            if (board.getTitle().length() >= 7 ) {
-                newBoard.setTitle(board.getTitle().substring(0,7) + "...");
-            }else{
+            if (board.getTitle().length() >= 7) {
+                newBoard.setTitle(board.getTitle().substring(0, 7) + "...");
+            } else {
                 newBoard.setTitle(board.getTitle());
             }
 
-            if (board.getSubstance().length() >= 15 ) {
-                newBoard.setSubstance(board.getSubstance().substring(0,15) + "...");
-            }else{
+            if (board.getSubstance().length() >= 15) {
+                newBoard.setSubstance(board.getSubstance().substring(0, 15) + "...");
+            } else {
                 newBoard.setSubstance(board.getSubstance());
             }
 
@@ -51,6 +51,17 @@ public class BoardService {
         List<Board> boards = boardRepository.boardListCategoryMore(category);
         List<Board> boards_copy = new ArrayList<>();
 
+        return titleSubstnaceModify(boards, boards_copy);
+    }
+
+
+    public List<Board> searchService(String title) {
+        List<Board> boards = boardRepository.searchBoard(title);
+        List<Board> boards_copy = new ArrayList<>();
+        return titleSubstnaceModify(boards, boards_copy);
+    }
+
+    private List<Board> titleSubstnaceModify(List<Board> boards, List<Board> boards_copy) {
         for (Board board : boards) {
             Board newBoard = new Board();
             newBoard.setBoardId(board.getBoardId());
@@ -60,21 +71,21 @@ public class BoardService {
             newBoard.setLikes(board.getLikes());
             newBoard.setCreatedDate(board.getCreatedDate());
 
-            if (board.getTitle().length() >= 7 ) {
-                newBoard.setTitle(board.getTitle().substring(0,7) + "...");
-            }else{
+            if (board.getTitle().length() >= 7) {
+                newBoard.setTitle(board.getTitle().substring(0, 7) + "...");
+            } else {
                 newBoard.setTitle(board.getTitle());
             }
 
-            if (board.getSubstance().length() >= 15 ) {
-                newBoard.setSubstance(board.getSubstance().substring(0,15) + "...");
-            }else{
+            if (board.getSubstance().length() >= 15) {
+                newBoard.setSubstance(board.getSubstance().substring(0, 15) + "...");
+            } else {
                 newBoard.setSubstance(board.getSubstance());
             }
 
             boards_copy.add(newBoard);
         }
-
         return boards_copy;
+
     }
 }

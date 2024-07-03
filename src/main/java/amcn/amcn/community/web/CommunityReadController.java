@@ -52,6 +52,7 @@ public class CommunityReadController {
             Board board = findBoard.get();
             int i= board.getComments().size();
             likes.setBoard(board);
+            board.setViewCount(board.getViewCount()+1);
             model.addAttribute("commentsize",i);
             model.addAttribute("board",board);
             model.addAttribute("comment",comment);

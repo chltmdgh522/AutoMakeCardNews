@@ -44,32 +44,12 @@ public class BoardRepository {
         }
     }
 
-    public List<Board> boardListIt(){
-        return em.createQuery("select b from Board b where b.category = 'IT' order by size(b.likes) desc", Board.class)
+    public List<Board> boardList(String category){
+        return em.createQuery("select b from Board b where b.category = :cate order by size(b.likes) desc", Board.class)
+                .setParameter("cate",category)
                 .setMaxResults(5)
                 .getResultList();
     }
-    public List<Board> boardListSports(){
-        return em.createQuery("select b from Board b where b.category = '스포츠' order by size(b.likes) desc", Board.class)
-                .setMaxResults(5)
-                .getResultList();
-    }
-    public List<Board> boardListEco(){
-        return em.createQuery("select b from Board b where b.category = '경제' order by size(b.likes) desc", Board.class)
-                .setMaxResults(5)
-                .getResultList();
-    }
-    public List<Board> boardListArt(){
-        return em.createQuery("select b from Board b where b.category = '예술' order by size(b.likes) desc", Board.class)
-                .setMaxResults(5)
-                .getResultList();
-    }
-    public List<Board> boardListScience(){
-        return em.createQuery("select b from Board b where b.category = '과학' order by size(b.likes) desc", Board.class)
-                .setMaxResults(5)
-                .getResultList();
-    }
-
 
 
     public List<Board> boardListALLmore() {
@@ -103,6 +83,15 @@ public class BoardRepository {
 
         return boards;
     }
+
+
+    public List<Board> searchBoard(String title) {
+        String searchPattern = "%" + title + "%";
+        return em.createQuery("select b from Board b where b.title like :title or b.substance like :title order by b.boardId desc", Board.class)
+                .setParameter("title", searchPattern)
+                .getResultList();
+    }
+
 
 
     public void delete(Board board){
