@@ -65,13 +65,13 @@ public class CommunityController {
 
         model.addAttribute("all",boardService.titleContentALLSub());
 
-        model.addAttribute("it",boardRepository.boardListItmore());
-        model.addAttribute("sport",boardRepository.boardListSportsmore());
+        model.addAttribute("it",boardService.titleContentCategorySub("IT"));
+        model.addAttribute("sport",boardService.titleContentCategorySub("스포츠"));
 
-        model.addAttribute("art",boardRepository.boardListArtmore());
+        model.addAttribute("art",boardService.titleContentCategorySub("예술"));
 
-        model.addAttribute("sci",boardRepository.boardListSciencemore());
-        model.addAttribute("eco",boardRepository.boardListEcomore());
+        model.addAttribute("sci",boardService.titleContentCategorySub("과학"));
+        model.addAttribute("eco",boardService.titleContentCategorySub("경제"));
 
 
 

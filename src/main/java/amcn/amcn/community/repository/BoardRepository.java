@@ -87,9 +87,11 @@ public class BoardRepository {
         return boards;
     }
 
-    public List<Board> boardListItmore() {
-        List<Board> boards = em.createQuery("select b from Board b where b.category = 'IT' order by b.boardId desc", Board.class)
+    public List<Board> boardListCategoryMore(String category) {
+        List<Board> boards = em.createQuery("select b from Board b where b.category = :cate order by b.boardId desc", Board.class)
+                .setParameter("cate",category)
                 .getResultList();
+
         for (Board board : boards) {
             if(board.getTitle().length() >=10){
                 board.setTitleMax("O");
@@ -102,75 +104,6 @@ public class BoardRepository {
         return boards;
     }
 
-    public List<Board> boardListSportsmore(){
-        List<Board> boards = em.createQuery("select b from Board b where b.category = '스포츠' order by b.boardId desc", Board.class)
-                .getResultList();
-        for (Board board : boards) {
-            if(board.getTitle().length() >=10){
-                board.setTitleMax("O");
-            }
-            if(board.getSubstance().length()>=15){
-                board.setSubstanceMax("O");
-            }
-        }
-
-        return boards;
-    }
-    public List<Board> boardListEcomore(){
-        List<Board> boards = em.createQuery("select b from Board b where b.category = '경제' order by b.boardId desc", Board.class)
-                .getResultList();
-        for (Board board : boards) {
-            if(board.getTitle().length() >=10){
-                board.setTitleMax("O");
-            }
-            if(board.getSubstance().length()>=15){
-                board.setSubstanceMax("O");
-            }
-        }
-
-        return boards;
-    }
-    public List<Board> boardListArtmore(){
-        List<Board> boards = em.createQuery("select b from Board b where b.category = '예술' order by b.boardId desc", Board.class)
-                .getResultList();
-        for (Board board : boards) {
-            if(board.getTitle().length() >=10){
-                board.setTitleMax("O");
-            }
-            if(board.getSubstance().length()>=15){
-                board.setSubstanceMax("O");
-            }
-        }
-
-        return boards;
-    }
-    public List<Board> boardListSciencemore(){
-        List<Board> boards = em.createQuery("select b from Board b where b.category = '과학' order by b.boardId desc", Board.class)
-                .getResultList();
-
-        for (Board board : boards) {
-            if(board.getTitle().length() >=10){
-                board.setTitleMax("O");
-            }
-            if(board.getSubstance().length()>=15){
-                board.setSubstanceMax("O");
-            }
-        }
-
-       return boards;
-    }
-
-
-
-
-
-
-    private String trimAndAppendEllipsis(String text, int maxLength) {
-        if (text == null || text.length() <= maxLength) {
-            return text;
-        }
-        return text.substring(0, maxLength) + "...";
-    }
 
     public void delete(Board board){
         em.remove(board);
