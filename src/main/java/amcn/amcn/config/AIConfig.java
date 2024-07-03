@@ -1,4 +1,4 @@
-package amcn.amcn;
+package amcn.amcn.config;
 
 import com.theokanning.openai.service.OpenAiService;
 import org.springframework.beans.factory.annotation.Value;

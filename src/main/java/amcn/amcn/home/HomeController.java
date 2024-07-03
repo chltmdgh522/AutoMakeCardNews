@@ -1,4 +1,4 @@
-package amcn.amcn;
+package amcn.amcn.home;
 
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
 import amcn.amcn.cardnews.repository.CardNewsRepository;

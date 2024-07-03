@@ -89,4 +89,22 @@ public class Member {
     @CreatedDate
     private LocalDate createdDate;
 
+    public Member(){
+
+    }
+
+    public Member(String memberId, String loginId, String password, String email, LocalDate birthday, LocalDate createdDate, String profile,
+                  RoleType roleType, MemberType memberSex, String name) {
+        this.memberId =memberId;
+        this.loginId=loginId;
+        this.password=password;
+        this.email=email;
+        this.birthday=birthday;
+        this.createdDate=createdDate;
+        this.profile=profile;
+        this.roleType=roleType;
+        this.memberSex=memberSex;
+        this.name=name;
+    }
+
 }

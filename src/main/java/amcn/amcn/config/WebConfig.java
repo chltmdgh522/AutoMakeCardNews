@@ -1,4 +1,4 @@
-package amcn.amcn;
+package amcn.amcn.config;
 
 import amcn.amcn.member.web.session.LogCheckInterceptor;
 import lombok.RequiredArgsConstructor;
