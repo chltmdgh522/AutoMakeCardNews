@@ -32,7 +32,7 @@ public class Board {
     @Lob
     private String title;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String substance;
 
     @OneToMany(mappedBy = "board" , cascade = CascadeType.ALL, orphanRemoval = true)

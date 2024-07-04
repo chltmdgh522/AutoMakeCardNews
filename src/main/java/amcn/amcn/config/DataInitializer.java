@@ -1,5 +1,7 @@
 package amcn.amcn.config;
 
+import amcn.amcn.cardnews.domain.cardnews.CardNews;
+import amcn.amcn.cardnews.repository.CardNewsRepository;
 import amcn.amcn.community.domain.board.Board;
 import amcn.amcn.community.repository.BoardRepository;
 import amcn.amcn.member.domain.member.Member;
@@ -14,14 +16,15 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class DataInitializer {
 
-    public final MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-    public final BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
 
+    private final CardNewsRepository cardNewsRepository;
     @Bean
     public CommandLineRunner initDatabase() {
         return args -> {
@@ -1230,6 +1233,494 @@ public class DataInitializer {
         );
 
 
+        //카드뉴스
+        CardNews cardNews1 = new CardNews(
+                member1,
+                "사과 가격 폭락",
+                "사과 가격이.....",
+                "X",
+                "X",
+                0L,
+                "사과4.json",
+                "사과4.png",
+                "사과4.png",
+                "경제"
+
+                );
+
+        CardNews cardNews2 = new CardNews(
+                member2,
+                "다같이 모여서 개발하자",
+                "개발자의 숙명",
+                "X",
+                "X",
+                0L,
+                "IT.json",
+                "IT.png",
+                "IT.png",
+                "IT"
+
+        );
+
+        CardNews cardNews3 = new CardNews(
+                member3,
+                "개발자",
+                "멋있지 않아요??",
+                "X",
+                "X",
+                0L,
+                "개발자.json",
+                "개발자.png",
+                "개발자.png",
+                "IT"
+
+        );
+
+        CardNews cardNews4 = new CardNews(
+                member4,
+                "개발자의 미래",
+                "전망이 안좋아여",
+                "X",
+                "X",
+                0L,
+                "개발자2.json",
+                "개발자2.png",
+                "개발자2.png",
+                "IT"
+
+        );
+
+        CardNews cardNews5 = new CardNews(
+                member5,
+                "경복궁",
+                "경복궁의 아름다움",
+                "X",
+                "X",
+                0L,
+                "경복궁.json",
+                "경복궁.png",
+                "경복궁.png",
+                "예술"
+
+        );
+
+        CardNews cardNews6 = new CardNews(
+                member6,
+                "재밌는 실험",
+                "과학은 재밌어",
+                "X",
+                "X",
+                0L,
+                "과학.json",
+                "과학.png",
+                "과학.png",
+                "과학"
+
+        );
+
+        CardNews cardNews7 = new CardNews(
+                member7,
+                "광화문",
+                "조선의 유적",
+                "X",
+                "X",
+                0L,
+                "광화문.json",
+                "광화문.png",
+                "광화문.png",
+                "예술"
+
+        );
+
+        CardNews cardNews8 = new CardNews(
+                member8,
+                "대한민국 경제",
+                "맨날 안좋음..",
+                "X",
+                "X",
+                0L,
+                "대한민국 경제.json",
+                "대한민국 경제.png",
+                "대한민국 경제.png",
+                "경제"
+
+        );
+
+        CardNews cardNews9 = new CardNews(
+                member9,
+                "도지코인",
+                "사지 마삼",
+                "X",
+                "X",
+                0L,
+                "도지.json",
+                "도지.png",
+                "도지.png",
+                "경제"
+
+        );
+
+        CardNews cardNews10 = new CardNews(
+                member10,
+                "라인아 가지마...",
+                "일본한테 뺏기고 있는 라인..",
+                "X",
+                "X",
+                0L,
+                "라인.json",
+                "라인.png",
+                "라인.png",
+                "경제"
+
+        );
+
+        CardNews cardNews11 = new CardNews(
+                member10,
+                "페이커가 하는거",
+                "롤로로롤!",
+                "X",
+                "X",
+                0L,
+                "롤.json",
+                "롤.png",
+                "롤.png",
+                "스포츠"
+
+        );
+        CardNews cardNews12 = new CardNews(
+                member9,
+                "대한민국 최고로 높은탑",
+                "엄청 높다.....",
+                "X",
+                "X",
+                0L,
+                "롯데타워.json",
+                "롯데타워.png",
+                "롯데타워.png",
+                "경제"
+
+        );
+        CardNews cardNews13 = new CardNews(
+                member8,
+                "문화재 강탈 X",
+                "이걸 봐라!!",
+                "X",
+                "X",
+                0L,
+                "문화재.json",
+                "문화재.png",
+                "문화재.png",
+                "예술"
+
+        );
+        CardNews cardNews14 = new CardNews(
+                member7,
+                "불국사의 아름다움",
+                "불국사는 멋있다...",
+                "X",
+                "X",
+                0L,
+                "불국사.json",
+                "불국사.png",
+                "불국사.png",
+                "예술"
+
+        );
+        CardNews cardNews15 = new CardNews(
+                member6,
+                "비트코인",
+                "비트코인은 장기적으로 볼때 좋음",
+                "X",
+                "X",
+                0L,
+                "비트코인.json",
+                "비트코인.png",
+                "비트코인.png",
+                "경제"
+
+        );
+        CardNews cardNews16 = new CardNews(
+                member5,
+                "신라의 유적",
+                "석굴암의 역사",
+                "X",
+                "X",
+                0L,
+                "석굴암.json",
+                "석굴암.png",
+                "석굴암.png",
+                "예술"
+
+        );
+        CardNews cardNews17 = new CardNews(
+                member4,
+                "손흥민은 아시아 최고 선수",
+                "너무 멋있어요우ㅜㅜㅜㅜ",
+                "X",
+                "X",
+                0L,
+                "손흥민.json",
+                "손흥민.png",
+                "손흥민.png",
+                "스포츠"
+
+        );
+        CardNews cardNews18 = new CardNews(
+                member3,
+                "수소선박",
+                "잘 운행하길",
+                "X",
+                "X",
+                0L,
+                "수소선박.json",
+                "수소선박.png",
+                "수소선박.png",
+                "경제"
+
+        );
+        CardNews cardNews19 = new CardNews(
+                member2,
+                "쟝고보단 스프링",
+                "스프링 최고",
+                "X",
+                "X",
+                0L,
+                "스프링 프레임워크.json",
+                "스프링 프레임워크.png",
+                "스프링 프레임워크.png",
+                "IT"
+
+        );
+        CardNews cardNews20 = new CardNews(
+                member1,
+                "한국 아시안컵 4강에서 멈춰...",
+                "회장 사임해라",
+                "X",
+                "X",
+                0L,
+                "아시안컵.json",
+                "아시안컵.png",
+                "아시안컵.png",
+                "스포츠"
+
+        );
+        CardNews cardNews21 = new CardNews(
+                member1,
+                "대한민국 최고 걸그룹 아일릿!",
+                "이젠 에스파 ㅂㅇ",
+                "X",
+                "X",
+                0L,
+                "아일릿1.json",
+                "아일릿1.png",
+                "아일릿1.png",
+                "예술"
+
+        );CardNews cardNews22 = new CardNews(
+                member2,
+                "LG 야구 우승",
+                "오홍",
+                "X",
+                "X",
+                0L,
+                "야구1.json",
+                "야구1.png",
+                "야구1.png",
+                "스포츠"
+
+        );CardNews cardNews23 = new CardNews(
+                member3,
+                "엔비디아 사세요!!!",
+                "엔비디아 후딱 사셈",
+                "X",
+                "X",
+                0L,
+                "엔비디아.json",
+                "엔비디아.png",
+                "엔비디아.png",
+                "경제"
+
+        );
+        CardNews cardNews24 = new CardNews(
+                member4,
+                "외계인의 존재",
+                "외계인은 과연 있을까",
+                "X",
+                "X",
+                0L,
+                "외계인.json",
+                "외계인.png",
+                "외계인.png",
+                "과학"
+
+        );
+        CardNews cardNews25 = new CardNews(
+                member5,
+                "유적 발굴",
+                "고대 유적을 발굴했어여",
+                "X",
+                "X",
+                0L,
+                "유적.json",
+                "유적.png",
+                "유적.png",
+                "예술"
+
+        );
+        CardNews cardNews26 = new CardNews(
+                member6,
+                "이더리움 사세요",
+                "돈 많이 벌음",
+                "X",
+                "X",
+                0L,
+                "이더리움.json",
+                "이더리움.png",
+                "이더리움.png",
+                "경제"
+
+        );
+        CardNews cardNews27 = new CardNews(
+                member7,
+                "일본문화",
+                "사무라이들",
+                "X",
+                "X",
+                0L,
+                "일본 문화.json",
+                "일본 문화.png",
+                "일본 문화.png",
+                "예술"
+
+        );
+        CardNews cardNews28 = new CardNews(
+                member8,
+                "대한민국 세계 꼴찌",
+                "0.71..... 이게 맞나",
+                "X",
+                "X",
+                0L,
+                "저출산.json",
+                "저출산.png",
+                "저출산.png",
+                "경제"
+
+        );CardNews cardNews29 = new CardNews(
+                member9,
+                "전주한옥마을로 놀러오세요",
+                "대한민국 최고의 한옥마을",
+                "X",
+                "X",
+                0L,
+                "전주한옥마을.json",
+                "전주한옥마을.png",
+                "전주한옥마을.png",
+                "예술"
+
+        );
+        CardNews cardNews30 = new CardNews(
+                member10,
+                "우리나라 주가",
+                "흠 주가의 미래는?",
+                "X",
+                "X",
+                0L,
+                "주가.json",
+                "주가.png",
+                "주가.png",
+                "경제"
+
+        );
+        CardNews cardNews31 = new CardNews(
+                member8,
+                "이슈난 초전도체",
+                "과연 고려대의 희망은?",
+                "X",
+                "X",
+                0L,
+                "초전도체.json",
+                "초전도체.png",
+                "초전도체.png",
+                "과학"
+
+        );
+
+        CardNews cardNews32 = new CardNews(
+                member3,
+                "크리스마스 풍경",
+                "크리스마스의 풍경은 멋지다.",
+                "X",
+                "X",
+                0L,
+                "크리스마스 풍경.json",
+                "크리스마스 풍경.png",
+                "크리스마스 풍경.png",
+                "예술"
+
+        );
+
+        CardNews cardNews33 = new CardNews(
+                member2,
+                "테슬라 자동차",
+                "멋있다....",
+                "X",
+                "X",
+                0L,
+                "테슬라.json",
+                "테슬라.png",
+                "테슬라.png",
+                "IT"
+
+        );
+        CardNews cardNews34 = new CardNews(
+                member2,
+                "트와이스 최고",
+                "걸그룹 트와이스!!!",
+                "X",
+                "X",
+                0L,
+                "트와이스1.json",
+                "트와이스1.png",
+                "트와이스1.png",
+                "예술"
+
+        );
+
+        CardNews cardNews35 = new CardNews(
+                member8,
+                "프로그래밍에 관한 뉴스",
+                "프로그래밍의 내용입니다.",
+                "X",
+                "X",
+                0L,
+                "프로그래밍.json",
+                "프로그래밍.png",
+                "프로그래밍.png",
+                "IT"
+
+        );
+
+        CardNews cardNews36 = new CardNews(
+                member8,
+                "SK 하이닉스",
+                "하이닉스에 관한 카드뉴스",
+                "X",
+                "X",
+                0L,
+                "하이닉스.json",
+                "하이닉스.png",
+                "하이닉스.png",
+                "경제"
+
+        );
+
+
+
+
+
+
+
+
 
 
 
@@ -1298,6 +1789,46 @@ public class DataInitializer {
         boardRepository.save(board48);
         boardRepository.save(board49);
         boardRepository.save(board50);
+
+
+        // 카드뉴스
+        cardNewsRepository.save(cardNews1);
+        cardNewsRepository.save(cardNews2);
+        cardNewsRepository.save(cardNews3);
+        cardNewsRepository.save(cardNews4);
+        cardNewsRepository.save(cardNews5);
+        cardNewsRepository.save(cardNews6);
+        cardNewsRepository.save(cardNews7);
+        cardNewsRepository.save(cardNews8);
+        cardNewsRepository.save(cardNews9);
+        cardNewsRepository.save(cardNews10);
+        cardNewsRepository.save(cardNews11);
+        cardNewsRepository.save(cardNews12);
+        cardNewsRepository.save(cardNews13);
+        cardNewsRepository.save(cardNews14);
+        cardNewsRepository.save(cardNews15);
+        cardNewsRepository.save(cardNews16);
+        cardNewsRepository.save(cardNews17);
+        cardNewsRepository.save(cardNews18);
+        cardNewsRepository.save(cardNews19);
+        cardNewsRepository.save(cardNews20);
+        cardNewsRepository.save(cardNews21);
+        cardNewsRepository.save(cardNews22);
+        cardNewsRepository.save(cardNews23);
+        cardNewsRepository.save(cardNews24);
+        cardNewsRepository.save(cardNews25);
+        cardNewsRepository.save(cardNews26);
+        cardNewsRepository.save(cardNews27);
+        cardNewsRepository.save(cardNews28);
+        cardNewsRepository.save(cardNews29);
+        cardNewsRepository.save(cardNews30);
+        cardNewsRepository.save(cardNews31);
+        cardNewsRepository.save(cardNews32);
+        cardNewsRepository.save(cardNews33);
+        cardNewsRepository.save(cardNews34);
+        cardNewsRepository.save(cardNews35);
+        cardNewsRepository.save(cardNews36);
+
 
 
 

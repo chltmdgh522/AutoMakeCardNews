@@ -49,4 +49,21 @@ public class CardNews {
 
     @Transient
     private String selected;
+
+    public CardNews() {
+
+    }
+
+    public CardNews(Member member, String title, String content, String edit, String trash, Long fork, String jsonUrl, String imageUrl, String originalUrl, String category) {
+        this.member = member;
+        this.title = title;
+        this.content = content;
+        this.edit = edit;
+        this.trash = trash;
+        this.fork = fork;
+        this.jsonUrl = jsonUrl;
+        this.imageUrl = imageUrl;
+        this.originalUrl = originalUrl;
+        this.category = category;
+    }
 }
