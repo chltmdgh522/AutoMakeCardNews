@@ -1,6 +1,8 @@
 package amcn.amcn.other.repository;
 
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
+import amcn.amcn.comment.domain.comment.Comment;
+import amcn.amcn.community.domain.board.Board;
 import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.EntityManager;
@@ -21,12 +23,32 @@ public class OthersRepository {
 
     private final EntityManager em;
 
+
+    public List<Board> findPostBoard(Member loginMember){
+        return em.createQuery("select b from Board b where b.member.memberId = :id order by b.boardId desc", Board.class)
+                .setParameter("id",loginMember.getMemberId())
+                .getResultList();
+    }
+
+    public List<Comment> findCommentBoard(Member loginMember){
+        return em.createQuery("select c from Comment c where c.member.memberId = :id order by c.commentId desc", Comment.class)
+                .setParameter("id",loginMember.getMemberId())
+                .getResultList();
+    }
+
+    public List<Likes> findHeartBoard(Member loginMember){
+        return em.createQuery("select l from Likes l where l.member.memberId = :id order by l.likeId desc", Likes.class)
+                .setParameter("id",loginMember.getMemberId())
+                .getResultList();
+    }
+
+
+
     public List<CardNews> findHeartCardNews(Member loginMember){
         List<Likes> findLikes = em.createQuery("select l from Likes l where l.member.memberId= :memberId", Likes.class)
                 .setParameter("memberId", loginMember.getMemberId())
                 .getResultList();
 
-        log.info(String.valueOf(findLikes.size()));
         List<CardNews> list=new ArrayList<>();
         for (Likes findLike : findLikes) {
             try {
