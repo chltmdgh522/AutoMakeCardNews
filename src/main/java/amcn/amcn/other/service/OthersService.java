@@ -38,23 +38,29 @@ public class OthersService {
         List<Board> boards =new ArrayList<>();
         for (Likes likes : othersRepository.findHeartBoard(loginMember)) {
            Board newBoard=new Board();
-            newBoard.setBoardId(likes.getBoard().getBoardId());
-            newBoard.setComments(likes.getBoard().getComments());
-            newBoard.setMember(likes.getMember());
-            newBoard.setLikes(likes.getBoard().getLikes());
+           try{
+               newBoard.setBoardId(likes.getBoard().getBoardId());
+               newBoard.setComments(likes.getBoard().getComments());
+               newBoard.setMember(likes.getMember());
+               newBoard.setLikes(likes.getBoard().getLikes());
 
-            if (likes.getBoard().getTitle().length() >= 7) {
-                newBoard.setTitle(likes.getBoard().getTitle().substring(0, 7) + "...");
-            } else {
-                newBoard.setTitle(likes.getBoard().getTitle());
-            }
+               if (likes.getBoard().getTitle().length() >= 7) {
+                   newBoard.setTitle(likes.getBoard().getTitle().substring(0, 7) + "...");
+               } else {
+                   newBoard.setTitle(likes.getBoard().getTitle());
+               }
 
-            if (likes.getBoard().getSubstance().length() >= 15) {
-                newBoard.setSubstance(likes.getBoard().getSubstance().substring(0, 15) + "...");
-            } else {
-                newBoard.setSubstance(likes.getBoard().getSubstance());
-            }
-            boards.add(newBoard);
+               if (likes.getBoard().getSubstance().length() >= 15) {
+                   newBoard.setSubstance(likes.getBoard().getSubstance().substring(0, 15) + "...");
+               } else {
+                   newBoard.setSubstance(likes.getBoard().getSubstance());
+               }
+               boards.add(newBoard);
+
+           }catch (NullPointerException e){
+               log.info(e.toString());
+           }
+
         }
 
         return boards;

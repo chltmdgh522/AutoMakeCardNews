@@ -29,9 +29,11 @@ public class HomeController {
                        Member loginMember) {
 
         List<CardNews> newAll = cardNewsRepository.findNewAll();
+        List<CardNews> popAll = cardNewsRepository.findPopAll();
 
         if (loginMember == null) {
             model.addAttribute("cardnews", newAll);
+            model.addAttribute("cardPop", popAll);
             return "home/noLoginHome";
         }
 

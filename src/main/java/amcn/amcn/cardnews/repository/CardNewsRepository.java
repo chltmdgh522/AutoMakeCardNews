@@ -37,6 +37,14 @@ public class CardNewsRepository {
         return Optional.ofNullable(cardNews);
     }
 
+    public List<CardNews> findPopAll() {
+        List<CardNews> list = em.createQuery("SELECT n FROM CardNews n where n.trash = 'X' ORDER BY size(n.likes) DESC", CardNews.class)
+                .setMaxResults(10)
+                .getResultList();
+
+        return list;
+    }
+
     public List<CardNews> findNewAll() {
         List<CardNews> list = em.createQuery("SELECT n FROM CardNews n where n.trash = 'X' ORDER BY n.cardNewsId DESC", CardNews.class)
                 .setMaxResults(10)
