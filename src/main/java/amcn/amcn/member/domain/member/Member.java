@@ -77,6 +77,8 @@ public class Member {
 
     private int hello;
 
+    private Long point;
+
     @Lob
     private String profile;
 
@@ -94,7 +96,7 @@ public class Member {
     }
 
     public Member(String memberId, String loginId, String password, String email, LocalDate birthday, LocalDate createdDate, String profile,
-                  RoleType roleType, MemberType memberSex, String name) {
+                  RoleType roleType, MemberType memberSex, String name, Long point) {
         this.memberId =memberId;
         this.loginId=loginId;
         this.password=password;
@@ -105,6 +107,7 @@ public class Member {
         this.roleType=roleType;
         this.memberSex=memberSex;
         this.name=name;
+        this.point=point;
     }
 
 }

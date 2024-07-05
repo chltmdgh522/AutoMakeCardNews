@@ -24,6 +24,14 @@ public class OthersRepository {
     private final EntityManager em;
 
 
+    //game 포인트
+    public List<Member> memberPointList(){
+        return em.createQuery("select m from Member m order by m.point desc", Member.class)
+                .setMaxResults(5)
+                .getResultList();
+    }
+
+
     public List<Board> findPostBoard(Member loginMember){
         return em.createQuery("select b from Board b where b.member.memberId = :id order by b.boardId desc", Board.class)
                 .setParameter("id",loginMember.getMemberId())

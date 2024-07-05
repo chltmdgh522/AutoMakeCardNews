@@ -21,7 +21,11 @@ public interface MemberRepository{
     void updateRoleType(Member member);
 
     void updateUrl(Member member);
-    public void updateHello(Member member);
+
+    void updateHello(Member member);
+
+    void updatePoint(Member member);
+
 
     Optional<Member> findMemberId(String memberId);
 

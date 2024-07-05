@@ -46,7 +46,8 @@ public class DataInitializer {
                 "basic2.png",
                 RoleType.MASTER,
                 MemberType.남자,
-                "최승호"
+                "최승호",
+                99999L
         );
 
         Member member1 = new Member(
@@ -59,7 +60,8 @@ public class DataInitializer {
                 "basic2.png",
                 RoleType.USER,
                 MemberType.남자,
-                "석재민"
+                "석재민",
+                100L
         );
 
         // 데이터베이스 초기화를 위한 코드 작성
@@ -73,7 +75,8 @@ public class DataInitializer {
                 "basic2.png",
                 RoleType.AUTHUSER,
                 MemberType.남자,
-                "김경진"
+                "김경진",
+                100L
         );
 
         // 데이터베이스 초기화를 위한 코드 작성
@@ -87,7 +90,8 @@ public class DataInitializer {
                 "basic2.png",
                 RoleType.AUTHUSER,
                 MemberType.남자,
-                "이민수"
+                "이민수",
+                100L
         );
 
         Member member4 = new Member(
@@ -100,7 +104,8 @@ public class DataInitializer {
                 "basic2.png",
                 RoleType.AUTHUSER,
                 MemberType.남자,
-                "김성학"
+                "김성학",
+                500L
         );
 
         Member member5 = new Member(
@@ -113,7 +118,8 @@ public class DataInitializer {
                 "basic2.png",
                 RoleType.AUTHUSER,
                 MemberType.여자,
-                "김정연"
+                "김정연",
+                1L
         );
 
 
@@ -127,7 +133,8 @@ public class DataInitializer {
                 "basic2.png",
                 RoleType.AUTHUSER,
                 MemberType.여자,
-                "홍세현"
+                "홍세현",
+                9999L
         );
 
 
@@ -141,7 +148,8 @@ public class DataInitializer {
                 "basic2.png",
                 RoleType.AUTHUSER,
                 MemberType.여자,
-                "송동화"
+                "송동화",
+                250L
         );
 
 
@@ -155,7 +163,8 @@ public class DataInitializer {
                 "basic2.png",
                 RoleType.AUTHUSER,
                 MemberType.여자,
-                "김재림"
+                "김재림",
+                10L
         );
 
 
@@ -169,7 +178,8 @@ public class DataInitializer {
                 "basic2.png",
                 RoleType.AUTHUSER,
                 MemberType.남자,
-                "윤웅희"
+                "윤웅희",
+                150L
         );
 
 
@@ -183,7 +193,8 @@ public class DataInitializer {
                 "basic2.png",
                 RoleType.AUTHUSER,
                 MemberType.남자,
-                "안세준"
+                "안세준",
+                100L
         );
 
 
