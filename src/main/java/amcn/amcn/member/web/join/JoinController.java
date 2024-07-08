@@ -125,4 +125,19 @@ public class JoinController {
 
         return "redirect:/";
     }
+
+    @PostMapping("/deleteoauth")
+    public String postDelete(@ModelAttribute Member member,
+                             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                             Member loginMember,
+                             HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session !=null){
+            session.invalidate();
+        }
+
+        memberRepository.delete(loginMember);
+        return "redirect:/";
+    }
+
 }

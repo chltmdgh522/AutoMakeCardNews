@@ -1,5 +1,5 @@
 package amcn.amcn.member.domain.member;
 
 public enum RoleType {
-    USER, AUTHUSER, MASTER,OAU
+    USER, AUTHUSER, MASTER,OAUTH_USER
 }

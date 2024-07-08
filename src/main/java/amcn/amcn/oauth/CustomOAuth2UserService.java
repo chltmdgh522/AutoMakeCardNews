@@ -94,22 +94,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         NaverResponse naverResponse=new NaverResponse();
 
         if (registrationId.equals("naver")) {
-            String username = O_id;
 
-            log.info(username);
-            Member member = new Member();
-            member.setEmail(O_email);
-            Optional<Member> existData = memberRepository.findByEmail(member);
+            Optional<Member> existData = memberRepository.findMemberId(O_id);
 
 
             if (existData.isEmpty()) {
 
-                log.info("네이버 존재");
                 Member member1 = new Member();
                 member1.setName(O_name);
                 member1.setMemberId(O_id);
                 member1.setEmail(O_email);
-                member1.setRoleType(RoleType.OAU);
+                member1.setRoleType(RoleType.OAUTH_USER);
                 member1.setPoint(0L);
                 member1.setProfile("basic2.png");
 
@@ -117,6 +112,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 memberRepository.save(member1);
             } else {
 
+                log.info("기존 네이버 사용자");
             }
 
 
@@ -124,32 +120,29 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             naverResponse.setId(O_id);
             naverResponse.setName(O_name);
             naverResponse.setEmail(O_email);
-            role="User";
+            role="OAUTH_USER";
 
             //로그인 성공
             success(naverResponse);
 
         } else {
-            Member member = new Member();
-            member.setEmail(k_email);
-            Optional<Member> existData = memberRepository.findByEmail(member);
+
+            Optional<Member> existData = memberRepository.findMemberId(k_id);
 
 
             if (existData.isEmpty()) {
 
-                log.info("카카오존재");
                 Member member1 = new Member();
                 member1.setName(k_name);
                 member1.setMemberId(k_id);
                 member1.setEmail(k_email);
-                member1.setRoleType(RoleType.OAU);
+                member1.setRoleType(RoleType.OAUTH_USER);
                 member1.setPoint(0L);
                 member1.setProfile("basic2.png");
 
                 memberRepository.save(member1);
             } else {
-
-                log.info("gd");
+                log.info("기존 카카오 사용자");
             }
 
 
@@ -157,7 +150,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             naverResponse.setId(k_id);
             naverResponse.setName(k_name);
             naverResponse.setEmail(k_email);
-            role="User";
+            role="OAUTH_USER";
 
             //로그인 성공
             success(naverResponse);
@@ -178,7 +171,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             member.setMemberId(naverResponse.getId());
             member.setName(naverResponse.getName());
             member.setEmail(naverResponse.getEmail());
-            member.setRoleType(RoleType.OAU);
+            member.setRoleType(RoleType.OAUTH_USER);
 
             session.setAttribute(SessionConst.LOGIN_MEMBER, member);
         } else {

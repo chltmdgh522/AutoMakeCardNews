@@ -4,6 +4,7 @@ package amcn.amcn.member.web.password;
 import amcn.amcn.mail.NaverMailIdService;
 import amcn.amcn.mail.NaverMailPasswordService;
 import amcn.amcn.member.domain.member.Member;
+import amcn.amcn.member.domain.member.RoleType;
 import amcn.amcn.member.domain.password.ChangePassword;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.service.password.PasswordService;
@@ -40,6 +41,10 @@ public class PasswordController {
                                     @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                     Member loginMember,
                                     Model model) {
+
+        if(loginMember.getRoleType().equals(RoleType.OAUTH_USER)){
+            return "redirect:/";
+        }
         return "member/password/change-password";
     }
 
