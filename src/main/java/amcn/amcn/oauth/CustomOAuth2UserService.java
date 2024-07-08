@@ -40,9 +40,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String O_name="";
         String O_id="";
 
+        String k_email="";
+        String k_name="";
+        String k_id="";
+
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
+
+        //네이버
         Object responseObj = oAuth2User.getAttributes().get("response");
+
         if (responseObj instanceof Map) {
             Map<String, Object> responseMap = (Map<String, Object>) responseObj;
             Object emailObj = responseMap.get("email");
@@ -53,6 +60,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 O_email = emailObj.toString();
                 O_name=nameObj.toString();
                 O_id=idObj.toString();
+                log.info(O_email);
+                log.info("zzzz");
             } else {
                 log.error("Email not found in response");
             }
@@ -60,59 +69,101 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             log.error("Invalid response object type");
         }
 
+
+        //카카오
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+
+        Object idObj = attributes.get("id");
+        Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+        Object nicknameObj = properties != null ? properties.get("nickname") : null;
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+        Object emailObj = kakaoAccount != null ? kakaoAccount.get("email") : null;
+
+        if (idObj != null && nicknameObj != null && emailObj != null) {
+            k_id = idObj.toString();
+            k_name = nicknameObj.toString();
+            k_email = emailObj.toString();
+        } else {
+            log.error("Some required fields are missing in the response");
+        }
+
+
         OAuth2Response oAuth2Response = null;
 
-        if (registrationId.equals("naver")) {
-
-
-//            log.info("gdgdgdgdg");
-//            log.info(oAuth2User.getAttributes().get("email").toString());
-//            oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
-//            log.info(oAuth2Response.getEmail());
-//            log.info(oAuth2Response.getProviderId());
-
-        } else {
-            return null;
-        }
-
-// 구글과 네이버 서비스마다 인증 규격이 상이하기 때문에 서로 다른 DTO로 담아야 한다.
-// 따라서 OAuth2 DTO 객체 격인 OAuth2Response 객체를 인터페이스로 만든다.
-// 네이버로 인터페이스를 구현, 구글 타입으로 인터페이스를 구현하는 식으로 진행한다.
-
-        String username = O_id;
-
-        log.info(username);
-        Member member = new Member();
-        member.setEmail(O_email);
-        Optional<Member> existData = memberRepository.findByEmail(member);
-
-
         String role = null;
-
-        if (existData.isEmpty()) {
-
-            Member member1 = new Member();
-            member1.setName(O_name);
-            member1.setMemberId(O_id);
-            member1.setEmail(O_email);
-            member1.setRoleType(RoleType.O_USER);
-            log.info("gkdl");
-            memberRepository.save(member1);
-        } else {
-
-            log.info("zzzzzzz");
-            existData.get().setEmail(O_email);
-        }
-
         NaverResponse naverResponse=new NaverResponse();
 
-        naverResponse.setId(O_id);
-        naverResponse.setName(O_name);
-        naverResponse.setEmail(O_email);
-        role="User";
+        if (registrationId.equals("naver")) {
+            String username = O_id;
 
-        //로그인 성공
-        success(naverResponse);
+            log.info(username);
+            Member member = new Member();
+            member.setEmail(O_email);
+            Optional<Member> existData = memberRepository.findByEmail(member);
+
+
+            if (existData.isEmpty()) {
+
+                log.info("네이버 존재");
+                Member member1 = new Member();
+                member1.setName(O_name);
+                member1.setMemberId(O_id);
+                member1.setEmail(O_email);
+                member1.setRoleType(RoleType.OAU);
+                member1.setPoint(0L);
+                member1.setProfile("basic2.png");
+
+
+                memberRepository.save(member1);
+            } else {
+
+            }
+
+
+
+            naverResponse.setId(O_id);
+            naverResponse.setName(O_name);
+            naverResponse.setEmail(O_email);
+            role="User";
+
+            //로그인 성공
+            success(naverResponse);
+
+        } else {
+            Member member = new Member();
+            member.setEmail(k_email);
+            Optional<Member> existData = memberRepository.findByEmail(member);
+
+
+            if (existData.isEmpty()) {
+
+                log.info("카카오존재");
+                Member member1 = new Member();
+                member1.setName(k_name);
+                member1.setMemberId(k_id);
+                member1.setEmail(k_email);
+                member1.setRoleType(RoleType.OAU);
+                member1.setPoint(0L);
+                member1.setProfile("basic2.png");
+
+                memberRepository.save(member1);
+            } else {
+
+                log.info("gd");
+            }
+
+
+
+            naverResponse.setId(k_id);
+            naverResponse.setName(k_name);
+            naverResponse.setEmail(k_email);
+            role="User";
+
+            //로그인 성공
+            success(naverResponse);
+
+        }
+
 
         return new CustomOAuth2User(naverResponse, role);
     }
@@ -127,7 +178,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             member.setMemberId(naverResponse.getId());
             member.setName(naverResponse.getName());
             member.setEmail(naverResponse.getEmail());
-            member.setRoleType(RoleType.O_USER);
+            member.setRoleType(RoleType.OAU);
 
             session.setAttribute(SessionConst.LOGIN_MEMBER, member);
         } else {
