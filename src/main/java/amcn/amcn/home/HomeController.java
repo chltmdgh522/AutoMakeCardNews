@@ -48,6 +48,7 @@ public class HomeController {
             // 편집
             List<CardNews> myCard = cardNewsRepository.findMyCard(loginMember);
             model.addAttribute("myCardnews",myCard);
+            model.addAttribute("cardPop", popAll);
 
             log.info(String.valueOf(member.getHello()));
 

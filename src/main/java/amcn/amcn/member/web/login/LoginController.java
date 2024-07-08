@@ -66,6 +66,7 @@ public class LoginController {
     public String logout(HttpServletRequest request,
                          @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                          Member loginMember){
+        log.info("못들어와ㅏ?????");
         loginMember.setHello(0);
         loginService.logoutService(loginMember);
         HttpSession session = request.getSession(false);
