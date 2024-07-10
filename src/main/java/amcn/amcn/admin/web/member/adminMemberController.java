@@ -11,10 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -49,5 +46,40 @@ public class adminMemberController {
         model.addAttribute("paging", list);
 
         return "admin/member";
+    }
+
+    @PostMapping("/system/{memberId}/point")
+    public String postPoint(@PathVariable String memberId,
+                            @ModelAttribute Member pointMember){
+        Optional<Member> findMember = memberRepository.findMemberId(memberId);
+
+        log.info(String.valueOf(pointMember.getPoint()));
+        if (findMember.isPresent()) {
+            Member member = findMember.get();
+            member.setPoint(pointMember.getPoint());
+            memberRepository.updatePoint2(member);
+
+        } else {
+            return null;
+        }
+
+        return "redirect:/system/member";
+    }
+
+    @PostMapping("/system/{memberId}/delete")
+    public String postDelete(@PathVariable String memberId,
+                            @ModelAttribute Member pointMember){
+        Optional<Member> findMember = memberRepository.findMemberId(memberId);
+
+        log.info(String.valueOf(pointMember.getPoint()));
+        if (findMember.isPresent()) {
+            Member member = findMember.get();
+            memberRepository.delete(member);
+
+        } else {
+            return null;
+        }
+
+        return "redirect:/system/member";
     }
 }

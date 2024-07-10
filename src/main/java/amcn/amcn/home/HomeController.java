@@ -43,12 +43,17 @@ public class HomeController {
             model.addAttribute("type", member.getRoleType().name());
             model.addAttribute("member", member);
 
-            // 추천테마
-            model.addAttribute("cardnews", newAll);
-            // 편집
+            // 인기테마
+            model.addAttribute("cardnews", popAll);
+            // 내가 만든거 및 없으면 최근 테마
             List<CardNews> myCard = cardNewsRepository.findMyCard(loginMember);
+            String exist="O";
+            if(myCard.isEmpty()){
+                exist="X";
+                model.addAttribute("exist",exist);
+            }
             model.addAttribute("myCardnews",myCard);
-            model.addAttribute("cardPop", popAll);
+            model.addAttribute("cardPop", newAll);
 
             log.info(String.valueOf(member.getHello()));
 
