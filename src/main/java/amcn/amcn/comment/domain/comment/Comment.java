@@ -36,5 +36,12 @@ public class Comment {
     private LocalDate date; // 댓글 달린 시간
 
 
+    public Comment(){
 
+    }
+    public Comment(Member member, Board board, String substance) {
+        this.member = member;
+        this.board = board;
+        this.substance = substance;
+    }
 }

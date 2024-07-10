@@ -2,8 +2,11 @@ package amcn.amcn.config;
 
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
 import amcn.amcn.cardnews.repository.CardNewsRepository;
+import amcn.amcn.comment.domain.comment.Comment;
+import amcn.amcn.comment.repository.CommentRepository;
 import amcn.amcn.community.domain.board.Board;
 import amcn.amcn.community.repository.BoardRepository;
+import amcn.amcn.like.repository.LikeRepository;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.domain.member.MemberType;
 import amcn.amcn.member.domain.member.RoleType;
@@ -25,6 +28,10 @@ public class DataInitializer {
     private final BoardRepository boardRepository;
 
     private final CardNewsRepository cardNewsRepository;
+
+    private final CommentRepository commentRepository;
+
+    private final LikeRepository likeRepository;
     @Bean
     public CommandLineRunner initDatabase() {
         return args -> {
@@ -55,7 +62,7 @@ public class DataInitializer {
                 "test1",
                 "$2a$10$Bmhj8oQATwHAVPedShSjAOvBdx/WUCW0f.KVynRaKQJNjoy6JGh0K",
                 "test1@naver.com",
-                LocalDate.of(2000, 5, 22),
+                LocalDate.of(2000, 5, 31),
                 LocalDate.of(2022, 7, 2),
                 "basic2.png",
                 RoleType.USER,
@@ -1724,6 +1731,543 @@ public class DataInitializer {
                 "경제"
 
         );
+        CardNews cardNews37 = new CardNews(
+                member6,
+                "우체국 업무",
+                "우체국 업무에 관한 뉴스",
+                "X",
+                "X",
+                0L,
+                "우체국.json",
+                "우체국.png",
+                "우체국.png",
+                "경제"
+
+        );
+        CardNews cardNews38 = new CardNews(
+                member4,
+                "헬스의 재미",
+                "헬스 살리기",
+                "X",
+                "X",
+                0L,
+                "헬스.json",
+                "헬스.png",
+                "헬스.png",
+                "스포츠"
+
+        );
+
+
+
+
+        //댓글
+        Comment comment1 =new Comment(
+                member1,
+                board1,
+                "좋은 글 감사해요!"
+        );
+        Comment comment2 =new Comment(
+                member2,
+                board1,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment3 =new Comment(
+                member3,
+                board2,
+                "좋은 글 감사해요!"
+        );
+        Comment comment4 =new Comment(
+                member4,
+                board2,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment5 =new Comment(
+                member5,
+                board3,
+                "좋은 글 감사해요!"
+        );
+        Comment comment6 =new Comment(
+                member6,
+                board3,
+                "글 솜씨가 멋있습니다!"
+        );Comment comment7 =new Comment(
+                member7,
+                board4,
+                "좋은 글 감사해요!"
+        );
+        Comment comment8 =new Comment(
+                member8,
+                board4,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment9 =new Comment(
+                member9,
+                board5,
+                "좋은 글 감사해요!"
+        );
+        Comment comment10 =new Comment(
+                member10,
+                board5,
+                "글 솜씨가 멋있습니다!"
+        );
+
+
+
+        Comment comment11 =new Comment(
+                member1,
+                board11,
+                "좋은 글 감사해요!"
+        );
+        Comment comment12 =new Comment(
+                member2,
+                board11,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment13 =new Comment(
+                member3,
+                board12,
+                "좋은 글 감사해요!"
+        );
+        Comment comment14 =new Comment(
+                member4,
+                board12,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment15 =new Comment(
+                member5,
+                board13,
+                "좋은 글 감사해요!"
+        );
+        Comment comment16 =new Comment(
+                member6,
+                board13,
+                "글 솜씨가 멋있습니다!"
+        );Comment comment17 =new Comment(
+                member7,
+                board14,
+                "좋은 글 감사해요!"
+        );
+        Comment comment18 =new Comment(
+                member8,
+                board14,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment19 =new Comment(
+                member9,
+                board15,
+                "좋은 글 감사해요!"
+        );
+        Comment comment20 =new Comment(
+                member10,
+                board15,
+                "글 솜씨가 멋있습니다!"
+        );
+
+
+        Comment comment21 =new Comment(
+                member1,
+                board21,
+                "좋은 글 감사해요!"
+        );
+        Comment comment22 =new Comment(
+                member2,
+                board21,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment23 =new Comment(
+                member3,
+                board22,
+                "좋은 글 감사해요!"
+        );
+        Comment comment24 =new Comment(
+                member4,
+                board22,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment25 =new Comment(
+                member5,
+                board23,
+                "좋은 글 감사해요!"
+        );
+        Comment comment26 =new Comment(
+                member6,
+                board23,
+                "글 솜씨가 멋있습니다!"
+        );Comment comment27 =new Comment(
+                member7,
+                board24,
+                "좋은 글 감사해요!"
+        );
+        Comment comment28 =new Comment(
+                member8,
+                board24,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment29 =new Comment(
+                member9,
+                board25,
+                "좋은 글 감사해요!"
+        );
+        Comment comment30 =new Comment(
+                member10,
+                board25,
+                "글 솜씨가 멋있습니다!"
+        );
+
+        Comment comment31 =new Comment(
+                member1,
+                board31,
+                "좋은 글 감사해요!"
+        );
+        Comment comment32 =new Comment(
+                member2,
+                board31,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment33 =new Comment(
+                member3,
+                board32,
+                "좋은 글 감사해요!"
+        );
+        Comment comment34 =new Comment(
+                member4,
+                board32,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment35 =new Comment(
+                member5,
+                board33,
+                "좋은 글 감사해요!"
+        );
+        Comment comment36 =new Comment(
+                member6,
+                board33,
+                "글 솜씨가 멋있습니다!"
+        );Comment comment37 =new Comment(
+                member7,
+                board34,
+                "좋은 글 감사해요!"
+        );
+        Comment comment38 =new Comment(
+                member8,
+                board34,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment39 =new Comment(
+                member9,
+                board35,
+                "좋은 글 감사해요!"
+        );
+        Comment comment40 =new Comment(
+                member10,
+                board35,
+                "글 솜씨가 멋있습니다!"
+        );
+
+        Comment comment41 =new Comment(
+                member1,
+                board41,
+                "좋은 글 감사해요!"
+        );
+        Comment comment42 =new Comment(
+                member2,
+                board41,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment43 =new Comment(
+                member3,
+                board42,
+                "좋은 글 감사해요!"
+        );
+        Comment comment44 =new Comment(
+                member4,
+                board42,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment45 =new Comment(
+                member5,
+                board43,
+                "좋은 글 감사해요!"
+        );
+        Comment comment46 =new Comment(
+                member6,
+                board43,
+                "글 솜씨가 멋있습니다!"
+        );Comment comment47 =new Comment(
+                member7,
+                board44,
+                "좋은 글 감사해요!"
+        );
+        Comment comment48 =new Comment(
+                member8,
+                board44,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment49 =new Comment(
+                member9,
+                board45,
+                "좋은 글 감사해요!"
+        );
+        Comment comment50 =new Comment(
+                member10,
+                board45,
+                "글 솜씨가 멋있습니다!"
+        );
+
+
+        Comment comment51 =new Comment(
+                member1,
+                board6,
+                "좋은 글 감사해요!"
+        );
+        Comment comment52 =new Comment(
+                member2,
+                board6,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment53 =new Comment(
+                member3,
+                board7,
+                "좋은 글 감사해요!"
+        );
+        Comment comment54 =new Comment(
+                member4,
+                board7,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment55 =new Comment(
+                member5,
+                board8,
+                "좋은 글 감사해요!"
+        );
+        Comment comment56 =new Comment(
+                member6,
+                board8,
+                "글 솜씨가 멋있습니다!"
+        );Comment comment57 =new Comment(
+                member7,
+                board9,
+                "좋은 글 감사해요!"
+        );
+        Comment comment58 =new Comment(
+                member8,
+                board9,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment59 =new Comment(
+                member9,
+                board10,
+                "좋은 글 감사해요!"
+        );
+        Comment comment60 =new Comment(
+                member10,
+                board10,
+                "글 솜씨가 멋있습니다!"
+        );
+
+        Comment comment61 =new Comment(
+                member1,
+                board16,
+                "좋은 글 감사해요!"
+        );
+        Comment comment62 =new Comment(
+                member2,
+                board16,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment63 =new Comment(
+                member3,
+                board17,
+                "좋은 글 감사해요!"
+        );
+        Comment comment64 =new Comment(
+                member4,
+                board17,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment65 =new Comment(
+                member5,
+                board18,
+                "좋은 글 감사해요!"
+        );
+        Comment comment66 =new Comment(
+                member6,
+                board18,
+                "글 솜씨가 멋있습니다!"
+        );Comment comment67 =new Comment(
+                member7,
+                board19,
+                "좋은 글 감사해요!"
+        );
+        Comment comment68 =new Comment(
+                member8,
+                board19,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment69 =new Comment(
+                member9,
+                board20,
+                "좋은 글 감사해요!"
+        );
+        Comment comment70 =new Comment(
+                member10,
+                board20,
+                "글 솜씨가 멋있습니다!"
+        );
+
+        Comment comment71 =new Comment(
+                member1,
+                board26,
+                "좋은 글 감사해요!"
+        );
+        Comment comment72 =new Comment(
+                member2,
+                board26,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment73 =new Comment(
+                member3,
+                board27,
+                "좋은 글 감사해요!"
+        );
+        Comment comment74 =new Comment(
+                member4,
+                board27,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment75 =new Comment(
+                member5,
+                board28,
+                "좋은 글 감사해요!"
+        );
+        Comment comment76 =new Comment(
+                member6,
+                board28,
+                "글 솜씨가 멋있습니다!"
+        );Comment comment77 =new Comment(
+                member7,
+                board29,
+                "좋은 글 감사해요!"
+        );
+        Comment comment78 =new Comment(
+                member8,
+                board29,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment79 =new Comment(
+                member9,
+                board30,
+                "좋은 글 감사해요!"
+        );
+        Comment comment80 =new Comment(
+                member10,
+                board30,
+                "글 솜씨가 멋있습니다!"
+        );
+
+        Comment comment81 =new Comment(
+                member1,
+                board36,
+                "좋은 글 감사해요!"
+        );
+        Comment comment82 =new Comment(
+                member2,
+                board36,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment83 =new Comment(
+                member3,
+                board37,
+                "좋은 글 감사해요!"
+        );
+        Comment comment84 =new Comment(
+                member4,
+                board37,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment85 =new Comment(
+                member5,
+                board38,
+                "좋은 글 감사해요!"
+        );
+        Comment comment86 =new Comment(
+                member6,
+                board38,
+                "글 솜씨가 멋있습니다!"
+        );Comment comment87 =new Comment(
+                member7,
+                board39,
+                "좋은 글 감사해요!"
+        );
+        Comment comment88 =new Comment(
+                member8,
+                board39,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment89 =new Comment(
+                member9,
+                board40,
+                "좋은 글 감사해요!"
+        );
+        Comment comment90 =new Comment(
+                member10,
+                board40,
+                "글 솜씨가 멋있습니다!"
+        );
+
+        Comment comment91 =new Comment(
+                member1,
+                board46,
+                "좋은 글 감사해요!"
+        );
+        Comment comment92 =new Comment(
+                member2,
+                board46,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment93 =new Comment(
+                member3,
+                board47,
+                "좋은 글 감사해요!"
+        );
+        Comment comment94 =new Comment(
+                member4,
+                board47,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment95 =new Comment(
+                member5,
+                board48,
+                "좋은 글 감사해요!"
+        );
+        Comment comment96 =new Comment(
+                member6,
+                board48,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment97 =new Comment(
+                member7,
+                board49,
+                "좋은 글 감사해요!"
+        );
+        Comment comment98 =new Comment(
+                member8,
+                board49,
+                "글 솜씨가 멋있습니다!"
+        );
+        Comment comment99 =new Comment(
+                member9,
+                board50,
+                "좋은 글 감사해요!"
+        );
+        Comment comment100 =new Comment(
+                member10,
+                board50,
+                "글 솜씨가 멋있습니다!"
+        );
+
+
 
 
 
@@ -1839,6 +2383,112 @@ public class DataInitializer {
         cardNewsRepository.save(cardNews34);
         cardNewsRepository.save(cardNews35);
         cardNewsRepository.save(cardNews36);
+        cardNewsRepository.save(cardNews37);
+        cardNewsRepository.save(cardNews38);
+
+
+        //댓글
+        commentRepository.save(comment1);
+        commentRepository.save(comment2);
+        commentRepository.save(comment3);
+        commentRepository.save(comment4);
+        commentRepository.save(comment5);
+        commentRepository.save(comment6);
+        commentRepository.save(comment7);
+        commentRepository.save(comment8);
+        commentRepository.save(comment9);
+        commentRepository.save(comment10);
+        commentRepository.save(comment11);
+        commentRepository.save(comment12);
+        commentRepository.save(comment13);
+        commentRepository.save(comment14);
+        commentRepository.save(comment15);
+        commentRepository.save(comment16);
+        commentRepository.save(comment17);
+        commentRepository.save(comment18);
+        commentRepository.save(comment19);
+        commentRepository.save(comment20);
+        commentRepository.save(comment21);
+        commentRepository.save(comment22);
+        commentRepository.save(comment23);
+        commentRepository.save(comment24);
+        commentRepository.save(comment25);
+        commentRepository.save(comment26);
+        commentRepository.save(comment27);
+        commentRepository.save(comment28);
+        commentRepository.save(comment29);
+        commentRepository.save(comment30);
+        commentRepository.save(comment31);
+        commentRepository.save(comment32);
+        commentRepository.save(comment33);
+        commentRepository.save(comment34);
+        commentRepository.save(comment35);
+        commentRepository.save(comment36);
+        commentRepository.save(comment37);
+        commentRepository.save(comment38);
+        commentRepository.save(comment39);
+        commentRepository.save(comment40);
+        commentRepository.save(comment41);
+        commentRepository.save(comment42);
+        commentRepository.save(comment43);
+        commentRepository.save(comment44);
+        commentRepository.save(comment45);
+        commentRepository.save(comment46);
+        commentRepository.save(comment47);
+        commentRepository.save(comment48);
+        commentRepository.save(comment49);
+        commentRepository.save(comment50);
+        commentRepository.save(comment51);
+        commentRepository.save(comment52);
+        commentRepository.save(comment53);
+        commentRepository.save(comment54);
+        commentRepository.save(comment55);
+        commentRepository.save(comment56);
+        commentRepository.save(comment57);
+        commentRepository.save(comment58);
+        commentRepository.save(comment59);
+        commentRepository.save(comment60);
+        commentRepository.save(comment61);
+        commentRepository.save(comment62);
+        commentRepository.save(comment63);
+        commentRepository.save(comment64);
+        commentRepository.save(comment65);
+        commentRepository.save(comment66);
+        commentRepository.save(comment67);
+        commentRepository.save(comment68);
+        commentRepository.save(comment69);
+        commentRepository.save(comment70);
+        commentRepository.save(comment71);
+        commentRepository.save(comment72);
+        commentRepository.save(comment73);
+        commentRepository.save(comment74);
+        commentRepository.save(comment75);
+        commentRepository.save(comment76);
+        commentRepository.save(comment77);
+        commentRepository.save(comment78);
+        commentRepository.save(comment79);
+        commentRepository.save(comment80);
+        commentRepository.save(comment81);
+        commentRepository.save(comment82);
+        commentRepository.save(comment83);
+        commentRepository.save(comment84);
+        commentRepository.save(comment85);
+        commentRepository.save(comment86);
+        commentRepository.save(comment87);
+        commentRepository.save(comment88);
+        commentRepository.save(comment89);
+        commentRepository.save(comment90);
+        commentRepository.save(comment91);
+        commentRepository.save(comment92);
+        commentRepository.save(comment93);
+        commentRepository.save(comment94);
+        commentRepository.save(comment95);
+        commentRepository.save(comment96);
+        commentRepository.save(comment97);
+        commentRepository.save(comment98);
+        commentRepository.save(comment99);
+        commentRepository.save(comment100);
+
 
 
 
