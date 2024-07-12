@@ -26,6 +26,7 @@ public interface MemberRepository{
 
     void updatePoint(Member member);
 
+    void updatePoint2(Member member);
 
     Optional<Member> findMemberId(String memberId);
 

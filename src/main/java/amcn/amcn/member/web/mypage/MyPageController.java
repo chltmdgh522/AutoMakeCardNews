@@ -34,8 +34,8 @@ public class MyPageController {
 
 
     @ModelAttribute("et")
-    public List<EmailType> deliveryCodes(){
-        List<EmailType> emalCodes=new ArrayList<>();
+    public List<EmailType> deliveryCodes() {
+        List<EmailType> emalCodes = new ArrayList<>();
         emalCodes.add(new EmailType("naver.com"));
         emalCodes.add(new EmailType("gmail.com"));
         emalCodes.add(new EmailType("gs.anyang.ac.kr"));
@@ -63,8 +63,6 @@ public class MyPageController {
             Model model,
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
 
-        model.addAttribute("loginMember", loginMember);
-
 
         Optional<Member> findMember = myPageService.memberIdCheck(loginMember.getMemberId());
         if (findMember.isPresent()) {
@@ -79,7 +77,7 @@ public class MyPageController {
             // 이메일 아이디 얻기
             String emailFirst = email.substring(0, i);
             member.setEmailF(emailFirst);
-            model.addAttribute("type",member.getRoleType().name());
+            model.addAttribute("type", member.getRoleType().name());
 
             model.addAttribute("member", member);
         } else {
@@ -97,9 +95,19 @@ public class MyPageController {
             BindingResult bindingResult,
             Model model,
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) throws IOException {
-        model.addAttribute("member",loginMember);
 
-        Member member=new Member();
+        String role = "";
+
+        Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
+        if (findMember.isPresent()) {
+            Member member = findMember.get();
+            role = member.getRoleType().name();
+        } else {
+            return null;
+        }
+
+
+        Member member = new Member();
         // 프로필사진
         String uploadImage = fileStore.storeFile(myPageMember.getProfile());
         member.setProfile(uploadImage);
@@ -110,59 +118,67 @@ public class MyPageController {
         }
 
         // 이름
-        member.setName(myPageMember.getName());
+
 
         // 이메일
-        String Final_email = myPageMember.getEmailF() + "@" + myPageMember.getEmailType().getEmailCode();
-        member.setEmail(Final_email);
-        member.setEmailF(myPageMember.getEmailF());
-        member.setDomain(myPageMember.getEmailType().getEmailCode());
+        if (!(loginMember.getRoleType() == RoleType.OAUTH_USER)) {
+            member.setName(myPageMember.getName());
+            log.info("gd" + myPageMember.getEmailF());
+            String Final_email = myPageMember.getEmailF() + "@" + myPageMember.getEmailType().getEmailCode();
+            member.setEmail(Final_email);
+            member.setEmailF(myPageMember.getEmailF());
+            member.setDomain(myPageMember.getEmailType().getEmailCode());
 
 
-        //멤버 고유 id
-        member.setMemberId(loginMember.getMemberId());
+            //멤버 고유 id
+            member.setMemberId(loginMember.getMemberId());
 
-        //세션 이메일 업데이트 왜냐하면 같은거 중복허용
-
-
+            //세션 이메일 업데이트 왜냐하면 같은거 중복허용
 
 
-        String email_msg = myPageService.email(member);
-        log.info("넘어온:"+Final_email);
-        log.info(loginMember.getEmail());
+            String email_msg = myPageService.email(member);
+            log.info("넘어온:" + Final_email);
+            log.info(loginMember.getEmail());
 
-        if(!Final_email.equals(loginMember.getEmail())) {
 
-            if (Objects.equals(email_msg, "email")) {
-                model.addAttribute("error_email", "이메일이 존재합니다");
-                log.info("이메일");
-                model.addAttribute("member", member);
-                model.addAttribute("emailDomain", member.getDomain());
-                return "member/mypage-edit";
+            if (!Final_email.equals(loginMember.getEmail())) {
+
+                if (Objects.equals(email_msg, "email")) {
+                    model.addAttribute("error_email", "이메일이 존재합니다");
+                    log.info("이메일");
+                    model.addAttribute("member", member);
+                    model.addAttribute("emailDomain", member.getDomain());
+                    return "member/mypage-edit";
+                }
+                if (Objects.equals(email_msg, "emailF")) {
+                    model.addAttribute("error_email", "올바른 이메일 형식이 아닙니다");
+                    model.addAttribute("member", member);
+                    model.addAttribute("emailDomain", member.getDomain());
+
+                    return "member/mypage-edit";
+                }
             }
-            if (Objects.equals(email_msg, "emailF")) {
-                model.addAttribute("error_email", "올바른 이메일 형식이 아닙니다");
-                model.addAttribute("member", member);
-                model.addAttribute("emailDomain", member.getDomain());
 
-                return "member/mypage-edit";
+            member.setRoleType(RoleType.valueOf(role));
+            Optional<Member> findeMember = memberRepository.findMemberId(loginMember.getMemberId());
+            if (findeMember.isPresent()) {
+                Member member1 = findeMember.get();
+                if (!Objects.equals(member1.getEmail(), member.getEmail())) {
+                    member.setRoleType(RoleType.USER);
+                }
+            } else {
+                return null;
             }
+            loginMember.setEmail(member.getEmail());
         }
-
-        member.setRoleType(RoleType.valueOf(loginMember.getRoleType().name()));
-        Optional<Member> findeMember = memberRepository.findMemberId(loginMember.getMemberId());
-        if(findeMember.isPresent()){
-            Member member1 = findeMember.get();
-            if(!Objects.equals(member1.getEmail(), member.getEmail())){
-                member.setRoleType(RoleType.USER);
-            }
-        }else{
-            return null;
+        else{
+            member.setEmail(loginMember.getEmail());
+            member.setMemberId(loginMember.getMemberId());
+            member.setName(loginMember.getName());
+            member.setRoleType(RoleType.OAUTH_USER);
         }
-
-
         myPageService.updateMyPage(member);
-        loginMember.setEmail(member.getEmail());
+
 
         return "redirect:/mypage";
 
