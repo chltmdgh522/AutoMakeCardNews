@@ -45,7 +45,6 @@ let penStrokes = [];
 function setBackgroundImage(imageUrl) {
     const img = new Image();
 
-console.log(imageUrl)
 //    img.crossOrigin = 'anonymous'; // CORS 설정
     img.src =`/ai/imageone/${imageUrl}`;
     img.onload = function() {
