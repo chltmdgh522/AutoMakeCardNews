@@ -20,11 +20,13 @@ ctx.lineWidth = lineWidth.value;
 
 let cPushArray = [];
 let cStep = -1;
+let rectangles = [];
 
 let isPainting = false;
 let isDrawing = false;
 let isBrushing = false;
 let isErasing = false;
+let issquare = false;
 
 const textInput = document.getElementById('textInput');  // Changed from input to textarea
 
@@ -36,8 +38,13 @@ const addTextButton = document.getElementById('addTextButton');
 
 let texts = [];
 let isDragging = false;
+let isDragging2 = false;
+
 let selectedTextIndex = -1;
-let backgroundImage=null;
+let selectedRectIndex = -1;
+
+let resizeHandleSize = 10;
+let backgroundImage = null;
 
 let brushStrokes = [];
 let penStrokes = [];
@@ -45,9 +52,9 @@ let penStrokes = [];
 function setBackgroundImage(imageUrl) {
     const img = new Image();
 
-//    img.crossOrigin = 'anonymous'; // CORS 설정
-    img.src =`/ai/imageone/${imageUrl}`;
-    img.onload = function() {
+    //    img.crossOrigin = 'anonymous'; // CORS 설정
+    img.src = `/ai/imageone/${imageUrl}`;
+    img.onload = function () {
         backgroundImage = img;
         // 이미지가 설정될 때마다 펜 스트로크와 브러시 스트로크를 지우고 다시 그립니다.
         redrawCanvas();
@@ -66,7 +73,7 @@ function onImg(event) {
         data: formData,
         processData: false,
         contentType: false,
-        success: function(response) {
+        success: function (response) {
             console.log('Image uploaded successfully');
             // 서버로부터의 응답에 따른 작업을 수행할 수 있음
             const url = URL.createObjectURL(files);
@@ -78,7 +85,7 @@ function onImg(event) {
                 inputImage.value = null;
             };
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Error uploading image:', error);
             // 에러 처리를 수행할 수 있음
         }
@@ -103,6 +110,7 @@ function addTextToCanvas() {
     });
     redrawCanvas();
 }
+
 function redrawCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -111,7 +119,6 @@ function redrawCanvas() {
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     }
 
-    // 펜 스트로크 그리기
     penStrokes.forEach(stroke => {
         ctx.save();
         ctx.beginPath();
@@ -125,7 +132,6 @@ function redrawCanvas() {
         ctx.restore();
     });
 
-    // 브러쉬 스트로크 그리기
     brushStrokes.forEach(stroke => {
         ctx.save();
         ctx.globalAlpha = stroke.alpha;
@@ -136,7 +142,6 @@ function redrawCanvas() {
         ctx.restore();
     });
 
-    // 텍스트 그리기
     texts.forEach(textObj => {
         const lines = textObj.text.split('\n');
         ctx.fillStyle = textObj.color;
@@ -146,8 +151,35 @@ function redrawCanvas() {
             ctx.fillText(line, textObj.x, textObj.y + (index * lineHeight));
         });
     });
+
+    rectangles.forEach(rect => {
+        ctx.save();
+        ctx.beginPath();
+        ctx.strokeStyle = rect.color;
+        ctx.lineWidth = rect.lineWidth;
+        ctx.rect(rect.x, rect.y, rect.width, rect.height);
+        ctx.stroke();
+        ctx.restore();
+
+        // Draw resize handle
+        ctx.save();
+        ctx.fillStyle = 'red';
+        ctx.fillRect(rect.x + rect.width - resizeHandleSize / 2, rect.y + rect.height - resizeHandleSize / 2, resizeHandleSize, resizeHandleSize);
+        ctx.restore();
+    });
 }
 
+function isMouseOnRectangle(mouseX, mouseY, rect) {
+    console.log("asdfasdf");
+    const padding = 1; // 클릭 범위를 확장하기 위한 여유 공간
+    return mouseX >= rect.x - padding && mouseX <= rect.x + rect.width + padding &&
+        mouseY >= rect.y - padding && mouseY <= rect.y + rect.height + padding;
+}
+
+function isMouseOnResizeHandle(mouseX, mouseY, rect) {
+    return mouseX >= rect.x + rect.width - resizeHandleSize && mouseX <= rect.x + rect.width + resizeHandleSize &&
+        mouseY >= rect.y + rect.height - resizeHandleSize && mouseY <= rect.y + rect.height + resizeHandleSize;
+}
 
 
 
@@ -164,9 +196,21 @@ function isMouseOnText(mouseX, mouseY, textObj) {
 }
 
 // 캔버스에서 클릭 이벤트 처리
-canvas.addEventListener('mousedown', function(event) {
+canvas.addEventListener('mousedown', function (event) {
     const mouseX = event.offsetX;
     const mouseY = event.offsetY;
+
+    // Check if mouse is on resize handle of any rectangle
+    for (let i = 0; i < rectangles.length; i++) {
+        if (isMouseOnResizeHandle(mouseX, mouseY, rectangles[i])) {
+            isResizing = true;
+            selectedRectIndex = i;
+            initialMouseX = mouseX;
+            initialMouseY = mouseY;
+            initialRect = { ...rectangles[i] }; // Copy the initial state of the rectangle
+            return;
+        }
+    }
 
     for (let i = 0; i < texts.length; i++) {
         if (isMouseOnText(mouseX, mouseY, texts[i])) {
@@ -175,13 +219,43 @@ canvas.addEventListener('mousedown', function(event) {
             return;
         }
     }
+
+    // 사각형 드래그
+    for (let i = 0; i < rectangles.length; i++) {
+        if (isMouseOnRectangle(mouseX, mouseY, rectangles[i])) {
+            isDragging2 = true;
+            selectedRectIndex = i;
+            initialMouseX = mouseX;
+            initialMouseY = mouseY;
+            initialRect = { ...rectangles[i] }; // Copy the initial state of the rectangle
+            return;
+        }
+    }
 });
 
 // 캔버스에서 마우스 이동 이벤트 처리
-canvas.addEventListener('mousemove', function(event) {
+canvas.addEventListener('mousemove', function (event) {
+    const mouseX = event.offsetX;
+    const mouseY = event.offsetY;
+
+    if (isDragging2 && selectedRectIndex !== -1) {
+        const dx = mouseX - initialMouseX;
+        const dy = mouseY - initialMouseY;
+        rectangles[selectedRectIndex].x = initialRect.x + dx;
+        rectangles[selectedRectIndex].y = initialRect.y + dy;
+        redrawCanvas();
+    }
+
+    if (isResizing && selectedRectIndex !== -1) {
+        const dx = mouseX - initialMouseX;
+        const dy = mouseY - initialMouseY;
+        const rect = rectangles[selectedRectIndex];
+        rect.width = initialRect.width + dx;
+        rect.height = initialRect.height + dy;
+        redrawCanvas();
+    }
+
     if (isDragging && selectedTextIndex !== -1) {
-        const mouseX = event.offsetX;
-        const mouseY = event.offsetY;
         texts[selectedTextIndex].x = mouseX;
         texts[selectedTextIndex].y = mouseY;
         redrawCanvas();
@@ -189,9 +263,12 @@ canvas.addEventListener('mousemove', function(event) {
 });
 
 // 캔버스에서 마우스 버튼을 놓는 이벤트 처리
-canvas.addEventListener('mouseup', function(event) {
+canvas.addEventListener('mouseup', function (event) {
     isDragging = false;
     selectedTextIndex = -1;
+    selectedRectIndex = -1;
+    isResizing = false;
+    isDragging2 = false;
 });
 
 // 텍스트 추가 버튼에 이벤트 리스너 등록
@@ -315,26 +392,36 @@ function onMouseMove(event) {
 function onMouseDown(event) {
     isPainting = true;
     lastPoint = { x: event.offsetX, y: event.offsetY };
-    if (isDrawing || isErasing || isBrushing) {
+    if (isDrawing || isErasing || issquare || isBrushing ) {
         cStep++;
+
+
         cPushArray.push(canvas.toDataURL());
         if (isDrawing) {
             penStrokes.push({ points: [{ x: event.offsetX, y: event.offsetY }], color: ctx.strokeStyle, width: ctx.lineWidth });
         }
+        if (issquare) {
+            const lineWidth = ctx.lineWidth * 20;
+            const rect = {
+                x: event.offsetX - lineWidth / 2,
+                y: event.offsetY - lineWidth / 2,
+                width: lineWidth,
+                height: lineWidth,
+                color: ctx.strokeStyle,
+                lineWidth: ctx.lineWidth
+            };
+            rectangles.push(rect);
+            redrawCanvas();
+        }
     }
+
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(event.offsetX, event.offsetY);
 }
 
-function onMouseUp(event) {
+function onMouseUp() {
     isPainting = false;
-    if (isDrawing || isErasing || isBrushing) {
-        ctx.closePath();
-        cStep++;
-        cPushArray.push(canvas.toDataURL());
-    }
-    ctx.save();
     ctx.beginPath();
 }
 
@@ -343,9 +430,11 @@ function onBrush() {
     isBrushing = !isBrushing;
     isErasing = false;
     isDrawing = false;
+    issquare = false;
     brush.style.backgroundColor = isBrushing ? 'gray' : '#171717';
     eraser.style.backgroundColor = '#171717';
     drawing.style.backgroundColor = '#171717';
+    square.style.backgroundColor = '#171717';
     redrawCanvas();
 }
 
@@ -363,9 +452,11 @@ function onDraw() {
     isDrawing = !isDrawing;
     isBrushing = false;
     isErasing = false;
+    issquare = false;
     drawing.style.backgroundColor = isDrawing ? 'gray' : '#171717';
     brush.style.backgroundColor = '#171717';
     eraser.style.backgroundColor = '#171717';
+    square.style.backgroundColor = '#171717';
     redrawCanvas();
 }
 
@@ -389,10 +480,21 @@ function onDelete() {
     }
 }
 
+function onSquare() {
+    issquare = true;
+    isBrushing = false;
+    isErasing = false;
+    isDrawing = false;
+    square.style.backgroundColor = 'gray';
+    brush.style.backgroundColor = '#171717';
+    eraser.style.backgroundColor = '#171717';
+    drawing.style.backgroundColor = '#171717';
+
+}
 
 
 // 텍스트 더블 클릭 시 모달 열기
-canvas.addEventListener('dblclick', function(event) {
+canvas.addEventListener('dblclick', function (event) {
     const mouseX = event.offsetX;
     const mouseY = event.offsetY;
 
@@ -413,7 +515,7 @@ canvas.addEventListener('dblclick', function(event) {
 });
 
 // 모달에서 업데이트 버튼 클릭 시 텍스트 수정
-document.getElementById('updateTextButton').addEventListener('click', function(event) {
+document.getElementById('updateTextButton').addEventListener('click', function (event) {
     if (editingTextIndex !== -1) {
         const textObj = texts[editingTextIndex];
         textObj.text = document.getElementById('popupTextInput').value;
@@ -428,7 +530,7 @@ document.getElementById('updateTextButton').addEventListener('click', function(e
 });
 
 // 모달 닫기 버튼 클릭 시 모달 닫기
-document.getElementById('closeTextPopup').addEventListener('click', function(event) {
+document.getElementById('closeTextPopup').addEventListener('click', function (event) {
     document.getElementById('textEditPopup').style.display = 'none';
     editingTextIndex = -1;
 });
@@ -481,20 +583,26 @@ function onHeightChange(event) {
 
 
 
+
 canvas.addEventListener('mousemove', onMouseMove);
 canvas.addEventListener('mousedown', onMouseDown);
 canvas.addEventListener('mouseup', onMouseUp);
 canvas.addEventListener('mouseleave', onMouseUp);
-brush.addEventListener('click', function() {
+brush.addEventListener('click', function () {
     onBrush();
     redrawCanvas();
 });
-eraser.addEventListener('click', function() {
+eraser.addEventListener('click', function () {
     onErase();
     redrawCanvas();
 });
-drawing.addEventListener('click', function() {
+drawing.addEventListener('click', function () {
     onDraw();
+    redrawCanvas();
+});
+
+square.addEventListener('click', function () {
+    onSquare();
     redrawCanvas();
 });
 color.addEventListener('change', onColorChange);
@@ -512,7 +620,7 @@ function saveCanvasAsJSONV2() {
     };
     const json = JSON.stringify(canvasState);
     const a = document.createElement('a');
-    const file = new Blob([json], {type: 'application/json'});
+    const file = new Blob([json], { type: 'application/json' });
     a.href = URL.createObjectURL(file);
     a.download = 'canvasState.json';
     a.click();
@@ -552,7 +660,7 @@ function saveCanvasAsJSON() {
 function loadCanvasFromJSON(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         const json = e.target.result;
         const canvasState = JSON.parse(json);
 
@@ -564,7 +672,7 @@ function loadCanvasFromJSON(event) {
         if (canvasState.backgroundImage) {
             const img = new Image();
             img.src = canvasState.backgroundImage;
-            img.onload = function() {
+            img.onload = function () {
                 backgroundImage = img;
                 redrawCanvas();
             };
@@ -576,7 +684,7 @@ function loadCanvasFromJSON(event) {
 }
 
 // "Load from JSON" 버튼 클릭 시 파일 선택 창이 열리도록 설정
-document.getElementById('loadJson').addEventListener('click', function() {
+document.getElementById('loadJson').addEventListener('click', function () {
     document.getElementById('loadJsonFile').click();
 });
 
@@ -585,4 +693,6 @@ document.getElementById('loadJsonFile').addEventListener('change', loadCanvasFro
 
 // "Save as JSON" 버튼 클릭 시 캔버스 상태를 JSON 파일로 저장하는 함수 등록
 document.getElementById('saveJson').addEventListener('click', saveCanvasAsJSON);
+
+
 
