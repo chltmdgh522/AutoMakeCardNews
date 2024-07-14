@@ -12,7 +12,7 @@ const brush = document.getElementById('brush');
 const canvasWidth = document.getElementById('canvas_width');
 const canvasHeight = document.getElementById('canvas_height');
 const square = document.getElementById('square');
-const triangle = document.getElementById('triangle');
+const fill_square = document.getElementById('fill_square');
 const circle = document.getElementById('circle');
 canvas.width = canvasWidth.value;
 canvas.height = canvasHeight.value;
@@ -20,13 +20,17 @@ ctx.lineWidth = lineWidth.value;
 
 let cPushArray = [];
 let cStep = -1;
+// 경계선 색 square
 let rectangles = [];
+
+let rectfillangles = [];
 
 let isPainting = false;
 let isDrawing = false;
 let isBrushing = false;
 let isErasing = false;
 let issquare = false;
+let isfill_square = false;
 
 const textInput = document.getElementById('textInput');  // Changed from input to textarea
 
@@ -36,18 +40,43 @@ const fontWeightSelect = document.getElementById('fontWeightSelect');
 const fontFamilySelect = document.getElementById('fontFamilySelect');
 const addTextButton = document.getElementById('addTextButton');
 
+
+// 팝업창 요소 선택
+const colorPopup = document.getElementById('colorPopup');
+const closeColorPopup = document.getElementById('closeColorPopup');
+const rectColorPicker = document.getElementById('rectColorPicker');
+const updateColorButton = document.getElementById('updateColorButton');
+
+const colorPopup2 = document.getElementById('colorPopup2');
+const closeColorPopup2 = document.getElementById('closeColorPopup2');
+const rectColorPicker2 = document.getElementById('rectColorPicker2');
+const updateColorButton2 = document.getElementById('updateColorButton2');
+
+
+let editingRectIndex = -1;
+let editingRectIndex2 = -1;
+
+
 let texts = [];
 let isDragging = false;
 let isDragging2 = false;
+let isDragging3 = false;
 
 let selectedTextIndex = -1;
 let selectedRectIndex = -1;
+let selectedfillRectIndex = -1;
 
 let resizeHandleSize = 10;
+let resizeHandleSize2 = 10;
 let backgroundImage = null;
 
 let brushStrokes = [];
 let penStrokes = [];
+
+
+
+
+
 
 function setBackgroundImage(imageUrl) {
     const img = new Image();
@@ -152,7 +181,8 @@ function redrawCanvas() {
         });
     });
 
-    rectangles.forEach(rect => {
+
+    rectangles.forEach((rect, index) => {
         ctx.save();
         ctx.beginPath();
         ctx.strokeStyle = rect.color;
@@ -161,16 +191,39 @@ function redrawCanvas() {
         ctx.stroke();
         ctx.restore();
 
-        // Draw resize handle
-        ctx.save();
-        ctx.fillStyle = 'red';
-        ctx.fillRect(rect.x + rect.width - resizeHandleSize / 2, rect.y + rect.height - resizeHandleSize / 2, resizeHandleSize, resizeHandleSize);
-        ctx.restore();
+        // Draw resize handle for the selected rectangle only
+        if (index === selectedRectIndex) {
+            ctx.save();
+            ctx.fillStyle = 'red';
+            ctx.fillRect(rect.x + rect.width - resizeHandleSize / 2, rect.y + rect.height - resizeHandleSize / 2, resizeHandleSize, resizeHandleSize);
+            ctx.restore();
+        }
+    });
+
+    rectfillangles.forEach((rect, index) => {
+        ctx.fillStyle = rect.color;
+        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+
+        ctx.strokeStyle = rect.color;
+        ctx.lineWidth = rect.lineWidth;
+        ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+
+
+
+        // Draw resize handle for the selected rectangle only
+        if (index === selectedfillRectIndex) {
+            ctx.save();
+            ctx.fillStyle = 'red';
+            ctx.fillRect(rect.x + rect.width - resizeHandleSize2 / 2, rect.y + rect.height - resizeHandleSize2 / 2, resizeHandleSize2, resizeHandleSize2);
+            ctx.restore();
+        }
     });
 }
 
+
+
 function isMouseOnRectangle(mouseX, mouseY, rect) {
-    console.log("asdfasdf");
+
     const padding = 1; // 클릭 범위를 확장하기 위한 여유 공간
     return mouseX >= rect.x - padding && mouseX <= rect.x + rect.width + padding &&
         mouseY >= rect.y - padding && mouseY <= rect.y + rect.height + padding;
@@ -181,7 +234,16 @@ function isMouseOnResizeHandle(mouseX, mouseY, rect) {
         mouseY >= rect.y + rect.height - resizeHandleSize && mouseY <= rect.y + rect.height + resizeHandleSize;
 }
 
+function isMouseOnRectangle2(mouseX, mouseY, rect) {
 
+    const padding2 = 1; // 클릭 범위를 확장하기 위한 여유 공간
+    return mouseX >= rect.x - padding2 && mouseX <= rect.x + rect.width + padding2 && mouseY >= rect.y - padding2 && mouseY <= rect.y + rect.height + padding2;
+}
+
+function isMouseOnResizeHandle2(mouseX, mouseY, rect) {
+    return mouseX >= rect.x + rect.width - resizeHandleSize2 && mouseX <= rect.x + rect.width + resizeHandleSize2 &&
+        mouseY >= rect.y + rect.height - resizeHandleSize2 && mouseY <= rect.y + rect.height + resizeHandleSize2;
+}
 
 // 텍스트 클릭 확인
 function isMouseOnText(mouseX, mouseY, textObj) {
@@ -208,6 +270,7 @@ canvas.addEventListener('mousedown', function (event) {
             initialMouseX = mouseX;
             initialMouseY = mouseY;
             initialRect = { ...rectangles[i] }; // Copy the initial state of the rectangle
+            redrawCanvas();
             return;
         }
     }
@@ -228,9 +291,41 @@ canvas.addEventListener('mousedown', function (event) {
             initialMouseX = mouseX;
             initialMouseY = mouseY;
             initialRect = { ...rectangles[i] }; // Copy the initial state of the rectangle
+            redrawCanvas();
             return;
         }
     }
+
+    // Check if mouse is on resize handle of any rectangle
+    for (let i = 0; i < rectfillangles.length; i++) {
+        if (isMouseOnResizeHandle2(mouseX, mouseY, rectfillangles[i])) {
+            isResizing2 = true;
+            selectedfillRectIndex = i;
+            initialMouseX = mouseX;
+            initialMouseY = mouseY;
+            initialRect = { ...rectfillangles[i] }; // Copy the initial state of the rectangle
+            redrawCanvas();
+            return;
+        }
+    }
+
+    // 사각형 드래그
+    for (let i = 0; i < rectfillangles.length; i++) {
+        if (isMouseOnRectangle2(mouseX, mouseY, rectfillangles[i])) {
+            isDragging3 = true;
+            selectedfillRectIndex = i;
+            initialMouseX = mouseX;
+            initialMouseY = mouseY;
+            initialRect = { ...rectfillangles[i] }; // Copy the initial state of the rectangle
+            redrawCanvas();
+            return;
+        }
+    }
+
+
+
+    //selectedfillRectIndex = -1;
+    redrawCanvas();
 });
 
 // 캔버스에서 마우스 이동 이벤트 처리
@@ -239,6 +334,7 @@ canvas.addEventListener('mousemove', function (event) {
     const mouseY = event.offsetY;
 
     if (isDragging2 && selectedRectIndex !== -1) {
+        console.log(selectedRectIndex)
         const dx = mouseX - initialMouseX;
         const dy = mouseY - initialMouseY;
         rectangles[selectedRectIndex].x = initialRect.x + dx;
@@ -255,6 +351,25 @@ canvas.addEventListener('mousemove', function (event) {
         redrawCanvas();
     }
 
+
+    if (isDragging3 && selectedfillRectIndex !== -1) {
+        const dx = mouseX - initialMouseX;
+        const dy = mouseY - initialMouseY;
+        rectfillangles[selectedfillRectIndex].x = initialRect.x + dx;
+        rectfillangles[selectedfillRectIndex].y = initialRect.y + dy;
+        redrawCanvas();
+    }
+
+    if (isResizing2 && selectedfillRectIndex !== -1) {
+        const dx = mouseX - initialMouseX;
+        const dy = mouseY - initialMouseY;
+        const rect = rectfillangles[selectedfillRectIndex];
+        rect.width = initialRect.width + dx;
+        rect.height = initialRect.height + dy;
+        redrawCanvas();
+    }
+
+
     if (isDragging && selectedTextIndex !== -1) {
         texts[selectedTextIndex].x = mouseX;
         texts[selectedTextIndex].y = mouseY;
@@ -266,9 +381,16 @@ canvas.addEventListener('mousemove', function (event) {
 canvas.addEventListener('mouseup', function (event) {
     isDragging = false;
     selectedTextIndex = -1;
-    selectedRectIndex = -1;
+
     isResizing = false;
     isDragging2 = false;
+
+    //   selectedfillRectIndex = -1;
+    isResizing2 = false;
+    isDragging3 = false;
+
+
+
 });
 
 // 텍스트 추가 버튼에 이벤트 리스너 등록
@@ -325,8 +447,13 @@ function onKeyboard(event) {
                 onReturn();
             }
             break;
+
         case 46:
             onDelete();
+            console.log("gd")
+            break;
+        case 8: // 'b' 키 (사각형 삭제)
+            deleteSelectedRectangle();
             break;
     }
 }
@@ -392,7 +519,7 @@ function onMouseMove(event) {
 function onMouseDown(event) {
     isPainting = true;
     lastPoint = { x: event.offsetX, y: event.offsetY };
-    if (isDrawing || isErasing || issquare || isBrushing ) {
+    if (isDrawing || isErasing || issquare || isBrushing || isfill_square) {
         cStep++;
 
 
@@ -413,6 +540,20 @@ function onMouseDown(event) {
             rectangles.push(rect);
             redrawCanvas();
         }
+        if (isfill_square) {
+            const lineWidth = ctx.lineWidth * 20;
+            const rect = {
+                x: event.offsetX - lineWidth / 2,
+                y: event.offsetY - lineWidth / 2,
+                width: lineWidth,
+                height: lineWidth,
+                strokeColor: ctx.strokeStyle,
+                fillColor: ctx.fillStyle,
+                lineWidth: ctx.lineWidth
+            };
+            rectfillangles.push(rect);
+            redrawCanvas();
+        }
     }
 
     ctx.save();
@@ -431,10 +572,13 @@ function onBrush() {
     isErasing = false;
     isDrawing = false;
     issquare = false;
+    isfill_square = false;
     brush.style.backgroundColor = isBrushing ? 'gray' : '#171717';
     eraser.style.backgroundColor = '#171717';
     drawing.style.backgroundColor = '#171717';
     square.style.backgroundColor = '#171717';
+    fill_square.style.backgroundColor = '#171717';
+
     redrawCanvas();
 }
 
@@ -445,6 +589,8 @@ function onErase() {
     eraser.style.backgroundColor = isErasing ? 'gray' : '#171717';
     brush.style.backgroundColor = '#171717';
     drawing.style.backgroundColor = '#171717';
+    fill_square.style.backgroundColor = '#171717';
+
     redrawCanvas();
 }
 
@@ -452,15 +598,31 @@ function onDraw() {
     isDrawing = !isDrawing;
     isBrushing = false;
     isErasing = false;
+    isfill_square = false;
     issquare = false;
     drawing.style.backgroundColor = isDrawing ? 'gray' : '#171717';
     brush.style.backgroundColor = '#171717';
     eraser.style.backgroundColor = '#171717';
     square.style.backgroundColor = '#171717';
+    fill_square.style.backgroundColor = '#171717';
+
     redrawCanvas();
 }
 
-
+// 사각형 삭제 함수
+function deleteSelectedRectangle() {
+    console.log("deleteSelectedRectangle called");
+    console.log("selectedRectIndex:", selectedRectIndex);
+    if (selectedRectIndex !== -1) {
+        rectangles.splice(selectedRectIndex, 1); // 선택된 사각형 삭제
+        selectedRectIndex = -1; // 선택 상태 초기화
+        redrawCanvas(); // 캔버스 다시 그리기
+    }else if (selectedfillRectIndex !== -1) {
+        rectfillangles.splice(selectedfillRectIndex, 1); // 선택된 사각형 삭제
+        selectedfillRectIndex = -1; // 선택 상태 초기화
+        redrawCanvas(); // 캔버스 다시 그리기
+    }
+}
 function onColorChange(event) {
     ctx.strokeStyle = event.target.value;
     ctx.fillStyle = event.target.value;
@@ -481,16 +643,105 @@ function onDelete() {
 }
 
 function onSquare() {
-    issquare = true;
+    issquare = !issquare;
+    isfill_square = false;
     isBrushing = false;
     isErasing = false;
     isDrawing = false;
-    square.style.backgroundColor = 'gray';
+    square.style.backgroundColor = issquare ? 'gray' : '#171717';
+    brush.style.backgroundColor = '#171717';
+    eraser.style.backgroundColor = '#171717';
+    drawing.style.backgroundColor = '#171717';
+    fill_square.style.backgroundColor = '#171717';
+
+
+}
+
+
+function onFill_square() {
+    isfill_square = !isfill_square;
+    issquare = false;
+    isBrushing = false;
+    isErasing = false;
+    isDrawing = false;
+
+    fill_square.style.backgroundColor = isfill_square ? 'gray' : '#171717';
+    square.style.backgroundColor = '#171717';
     brush.style.backgroundColor = '#171717';
     eraser.style.backgroundColor = '#171717';
     drawing.style.backgroundColor = '#171717';
 
 }
+
+// 사각형 더블 클릭 시 팝업 열기
+canvas.addEventListener('dblclick', function (event) {
+    const mouseX = event.offsetX;
+    const mouseY = event.offsetY;
+
+    for (let i = 0; i < rectangles.length; i++) {
+        if (isMouseOnRectangle(mouseX, mouseY, rectangles[i])) {
+            editingRectIndex = i;
+            const rect = rectangles[i];
+            rectColorPicker.value = rect.color;
+            colorPopup.style.display = 'block';
+            return;
+        }
+    }
+});
+
+// 팝업 닫기
+closeColorPopup.addEventListener('click', function () {
+    colorPopup.style.display = 'none';
+    editingRectIndex = -1;
+});
+
+// 색깔 변경 버튼 클릭 시
+updateColorButton.addEventListener('click', function () {
+    if (editingRectIndex !== -1) {
+        const rect = rectangles[editingRectIndex];
+        rect.color = rectColorPicker.value;
+        redrawCanvas();
+        colorPopup.style.display = 'none';
+        editingRectIndex = -1;
+    }
+});
+
+
+
+
+
+// 색채운사각형 더블 클릭 시 팝업 열기
+canvas.addEventListener('dblclick', function (event) {
+    const mouseX = event.offsetX;
+    const mouseY = event.offsetY;
+
+    for (let i = 0; i < rectfillangles.length; i++) {
+        if (isMouseOnRectangle2(mouseX, mouseY, rectfillangles[i])) {
+            editingRectIndex2 = i;
+            const rect = rectfillangles[i];
+            rectColorPicker2.value = rect.color;
+            colorPopup2.style.display = 'block';
+            return;
+        }
+    }
+});
+
+// 팝업 닫기
+closeColorPopup2.addEventListener('click', function () {
+    colorPopup2.style.display = 'none';
+    editingRectIndex2 = -1;
+});
+
+// 색깔 변경 버튼 클릭 시
+updateColorButton2.addEventListener('click', function () {
+    if (editingRectIndex2 !== -1) {
+        const rect = rectfillangles[editingRectIndex2];
+        rect.color = rectColorPicker2.value;
+        redrawCanvas();
+        colorPopup2.style.display = 'none';
+        editingRectIndex2 = -1;
+    }
+});
 
 
 // 텍스트 더블 클릭 시 모달 열기
@@ -605,6 +856,12 @@ square.addEventListener('click', function () {
     onSquare();
     redrawCanvas();
 });
+
+
+fill_square.addEventListener('click', function () {
+    onFill_square();
+    redrawCanvas();
+});
 color.addEventListener('change', onColorChange);
 resetBtn.addEventListener('click', onDelete);
 canvasWidth.addEventListener('change', onWidthChange);
@@ -693,6 +950,5 @@ document.getElementById('loadJsonFile').addEventListener('change', loadCanvasFro
 
 // "Save as JSON" 버튼 클릭 시 캔버스 상태를 JSON 파일로 저장하는 함수 등록
 document.getElementById('saveJson').addEventListener('click', saveCanvasAsJSON);
-
 
 
