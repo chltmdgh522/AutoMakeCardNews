@@ -25,6 +25,7 @@ let rectangles = [];
 
 let rectfillangles = [];
 
+
 let isPainting = false;
 let isDrawing = false;
 let isBrushing = false;
@@ -52,19 +53,29 @@ const closeColorPopup2 = document.getElementById('closeColorPopup2');
 const rectColorPicker2 = document.getElementById('rectColorPicker2');
 const updateColorButton2 = document.getElementById('updateColorButton2');
 
+const colorPopup3 = document.getElementById('colorPopup3');
+const closeColorPopup3 = document.getElementById('closeColorPopup3');
+const rectColorPicker3 = document.getElementById('rectColorPicker3');
+const updateColorButton3 = document.getElementById('updateColorButton3');
+
 
 let editingRectIndex = -1;
 let editingRectIndex2 = -1;
+let editingRectIndex3 = -1;
 
 
 let texts = [];
 let isDragging = false;
 let isDragging2 = false;
 let isDragging3 = false;
+let isDragging4 = false;
 
 let selectedTextIndex = -1;
 let selectedRectIndex = -1;
 let selectedfillRectIndex = -1;
+let selectedpen = -1;
+
+
 
 let resizeHandleSize = 10;
 let resizeHandleSize2 = 10;
@@ -148,7 +159,7 @@ function redrawCanvas() {
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     }
 
-    penStrokes.forEach(stroke => {
+    penStrokes.forEach((stroke, index) => {
         ctx.save();
         ctx.beginPath();
         ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
@@ -159,6 +170,20 @@ function redrawCanvas() {
         ctx.lineWidth = stroke.width;
         ctx.stroke();
         ctx.restore();
+
+        // Draw highlight for the selected pen stroke
+        if (index === selectedpen) {
+            ctx.save();
+            ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
+            ctx.lineWidth = stroke.width + 5; // Make the highlight slightly thicker
+            ctx.beginPath();
+            ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+            for (let i = 1; i < stroke.points.length; i++) {
+                ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+            }
+            ctx.stroke();
+            ctx.restore();
+        }
     });
 
     brushStrokes.forEach(stroke => {
@@ -201,13 +226,15 @@ function redrawCanvas() {
     });
 
     rectfillangles.forEach((rect, index) => {
+        ctx.save();
+        ctx.beginPath();
         ctx.fillStyle = rect.color;
         ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
 
         ctx.strokeStyle = rect.color;
         ctx.lineWidth = rect.lineWidth;
         ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
-
+        ctx.restore();
 
 
         // Draw resize handle for the selected rectangle only
@@ -244,6 +271,58 @@ function isMouseOnResizeHandle2(mouseX, mouseY, rect) {
     return mouseX >= rect.x + rect.width - resizeHandleSize2 && mouseX <= rect.x + rect.width + resizeHandleSize2 &&
         mouseY >= rect.y + rect.height - resizeHandleSize2 && mouseY <= rect.y + rect.height + resizeHandleSize2;
 }
+
+
+function isMouseOnPen(mouseX, mouseY, stroke) {
+    const padding = 5; // 클릭 범위를 확장하기 위한 여유 공간
+    for (let i = 0; i < stroke.points.length - 1; i++) {
+        const p1 = stroke.points[i];
+        const p2 = stroke.points[i + 1];
+        if (distanceToSegment(mouseX, mouseY, p1, p2) <= padding) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function distanceToSegment(px, py, p1, p2) {
+    const x = px;
+    const y = py;
+    const x1 = p1.x;
+    const y1 = p1.y;
+    const x2 = p2.x;
+    const y2 = p2.y;
+
+    const A = x - x1;
+    const B = y - y1;
+    const C = x2 - x1;
+    const D = y2 - y1;
+
+    const dot = A * C + B * D;
+    const len_sq = C * C + D * D;
+    let param = -1;
+    if (len_sq !== 0) { // in case of 0 length line
+        param = dot / len_sq;
+    }
+
+    let xx, yy;
+
+    if (param < 0) {
+        xx = x1;
+        yy = y1;
+    } else if (param > 1) {
+        xx = x2;
+        yy = y2;
+    } else {
+        xx = x1 + param * C;
+        yy = y1 + param * D;
+    }
+
+    const dx = x - xx;
+    const dy = y - yy;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
 
 // 텍스트 클릭 확인
 function isMouseOnText(mouseX, mouseY, textObj) {
@@ -322,9 +401,23 @@ canvas.addEventListener('mousedown', function (event) {
         }
     }
 
+    // 펜 드래그
+    for (let i = 0; i < penStrokes.length; i++) {
+        if (isMouseOnPen(mouseX, mouseY, penStrokes[i])) {
+            console.log("ㅋㅋㅋㅋ1");
+            isDragging4 = true;
+            selectedpen=i;
+            initialMouseX = mouseX;
+            initialMouseY = mouseY;
+            initialStroke = { ...penStrokes[i] }; // Copy the initial state of the pen stroke
+            redrawCanvas();
+            return;
+        }
+    }
 
-
-    //selectedfillRectIndex = -1;
+    selectedRectIndex = -1;
+    selectedpen = -1;
+    selectedfillRectIndex = -1;
     redrawCanvas();
 });
 
@@ -353,6 +446,7 @@ canvas.addEventListener('mousemove', function (event) {
 
 
     if (isDragging3 && selectedfillRectIndex !== -1) {
+
         const dx = mouseX - initialMouseX;
         const dy = mouseY - initialMouseY;
         rectfillangles[selectedfillRectIndex].x = initialRect.x + dx;
@@ -361,11 +455,33 @@ canvas.addEventListener('mousemove', function (event) {
     }
 
     if (isResizing2 && selectedfillRectIndex !== -1) {
+
         const dx = mouseX - initialMouseX;
         const dy = mouseY - initialMouseY;
         const rect = rectfillangles[selectedfillRectIndex];
         rect.width = initialRect.width + dx;
         rect.height = initialRect.height + dy;
+        redrawCanvas();
+    }
+
+    console.log(isDragging4)
+    console.log(selectedpen)
+
+    if (isDragging4 && selectedpen !== -1) {
+
+        const mouseX = event.offsetX;
+        const mouseY = event.offsetY;
+        const dx = mouseX - initialMouseX;
+        const dy = mouseY - initialMouseY;
+
+        penStrokes[selectedpen].points.forEach(point => {
+            point.x += dx;
+            point.y += dy;
+        });
+
+        initialMouseX = mouseX;
+        initialMouseY = mouseY;
+
         redrawCanvas();
     }
 
@@ -389,7 +505,7 @@ canvas.addEventListener('mouseup', function (event) {
     isResizing2 = false;
     isDragging3 = false;
 
-
+    isDragging4=false;
 
 });
 
@@ -563,9 +679,9 @@ function onMouseDown(event) {
 
 function onMouseUp() {
     isPainting = false;
+
     ctx.beginPath();
 }
-
 
 function onBrush() {
     isBrushing = !isBrushing;
@@ -617,9 +733,13 @@ function deleteSelectedRectangle() {
         rectangles.splice(selectedRectIndex, 1); // 선택된 사각형 삭제
         selectedRectIndex = -1; // 선택 상태 초기화
         redrawCanvas(); // 캔버스 다시 그리기
-    }else if (selectedfillRectIndex !== -1) {
+    } else if (selectedfillRectIndex !== -1) {
         rectfillangles.splice(selectedfillRectIndex, 1); // 선택된 사각형 삭제
         selectedfillRectIndex = -1; // 선택 상태 초기화
+        redrawCanvas(); // 캔버스 다시 그리기
+    } else if (selectedpen !== -1) {
+        penStrokes.splice(selectedpen, 1); // 선택된 사각형 삭제
+        selectedpen = -1; // 선택 상태 초기화
         redrawCanvas(); // 캔버스 다시 그리기
     }
 }
@@ -735,6 +855,7 @@ closeColorPopup2.addEventListener('click', function () {
 // 색깔 변경 버튼 클릭 시
 updateColorButton2.addEventListener('click', function () {
     if (editingRectIndex2 !== -1) {
+        console.log(editingRectIndex2)
         const rect = rectfillangles[editingRectIndex2];
         rect.color = rectColorPicker2.value;
         redrawCanvas();
@@ -742,6 +863,52 @@ updateColorButton2.addEventListener('click', function () {
         editingRectIndex2 = -1;
     }
 });
+
+
+
+
+
+
+// 펜으로 그린거 더블 클릭 시 팝업 열기
+canvas.addEventListener('dblclick', function (event) {
+    const mouseX = event.offsetX;
+    const mouseY = event.offsetY;
+
+    for (let i = 0; i < penStrokes.length; i++) {
+        if (isMouseOnPen(mouseX, mouseY, penStrokes[i])) {
+            editingRectIndex3 = i;
+            const rect = penStrokes[i];
+            rectColorPicker3.value = rect.color;
+            colorPopup3.style.display = 'block';
+            return;
+        }
+    }
+});
+
+// 팝업 닫기
+closeColorPopup3.addEventListener('click', function () {
+    colorPopup3.style.display = 'none';
+    editingRectIndex3 = -1;
+});
+
+// 색깔 변경 버튼 클릭 시
+updateColorButton3.addEventListener('click', function () {
+    if (editingRectIndex3 !== -1) {
+        console.log(editingRectIndex3)
+        const rect = penStrokes[editingRectIndex3];
+        rect.color = rectColorPicker3.value;
+        redrawCanvas();
+        colorPopup3.style.display = 'none';
+        editingRectIndex3 = -1;
+    }
+});
+
+
+
+
+
+
+
 
 
 // 텍스트 더블 클릭 시 모달 열기
