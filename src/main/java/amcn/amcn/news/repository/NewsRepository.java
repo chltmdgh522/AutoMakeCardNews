@@ -31,6 +31,11 @@ public class NewsRepository {
         }
     }
 
+    public Long save(News news) {
+        em.persist(news);
+        return news.getNewsId();
+    }
+
 
     public List<News> findAll() {
         return em.createQuery("SELECT new amcn.amcn.news.repository.dto.NewsDto(n.title, SUBSTRING(n.originalContent, 1, 20)) FROM News n", News.class)

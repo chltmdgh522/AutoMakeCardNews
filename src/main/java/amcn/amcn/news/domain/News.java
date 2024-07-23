@@ -38,7 +38,7 @@ public class News {
     private String title; // 뉴스 제목
 
     @Lob
-    private String summary_content; //  뉴스 요약
+    private String summaryContent; //  뉴스 요약
 
     private String keyword; // 원본에서 요약한 문장중 키워드 뽑기
 
