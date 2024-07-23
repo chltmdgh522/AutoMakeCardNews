@@ -14,6 +14,13 @@ const canvasHeight = document.getElementById('canvas_height');
 const square = document.getElementById('square');
 const fill_square = document.getElementById('fill_square');
 const circle = document.getElementById('circle');
+
+const fillSquareButton = document.getElementById('filter');
+const filterPopup = document.getElementById('filterPopup5');
+const overlay = document.getElementById('overlay5');
+const closePopupButton = document.getElementById('closePopup5');
+const applyFilterButton = document.getElementById('applyFilter5');
+const filterForm = document.getElementById('filterForm5');
 canvas.width = canvasWidth.value;
 canvas.height = canvasHeight.value;
 ctx.lineWidth = lineWidth.value;
@@ -32,6 +39,7 @@ let isBrushing = false;
 let isErasing = false;
 let issquare = false;
 let isfill_square = false;
+let backgroundColor = '#FFFFFF'; // 기본 배경색을 검정색으로 설정
 
 const textInput = document.getElementById('textInput');  // Changed from input to textarea
 
@@ -69,13 +77,15 @@ let isDragging = false;
 let isDragging2 = false;
 let isDragging3 = false;
 let isDragging4 = false;
+let isDragging5 = false;
 
 let selectedTextIndex = -1;
 let selectedRectIndex = -1;
 let selectedfillRectIndex = -1;
 let selectedpen = -1;
+let selectedbrush = -1;
 
-
+let currentFilter = 'none';
 
 let resizeHandleSize = 10;
 let resizeHandleSize2 = 10;
@@ -85,8 +95,26 @@ let brushStrokes = [];
 let penStrokes = [];
 
 
+fillSquareButton.addEventListener('click', () => {
+    filterPopup.style.display = 'block';
+    overlay.style.display = 'block';
+    isDrawing = false;
+    isfill_square = false;
+    issquare = false;
+    drawing.style.backgroundColor = '#171717';
+    square.style.backgroundColor = '#171717';
+    fill_square.style.backgroundColor = '#171717';
+});
 
+closePopupButton.addEventListener('click', () => {
+    filterPopup.style.display = 'none';
+    overlay.style.display = 'none';
+});
 
+overlay.addEventListener('click', () => {
+    filterPopup.style.display = 'none';
+    overlay.style.display = 'none';
+});
 
 
 function setBackgroundImage(imageUrl) {
@@ -150,15 +178,30 @@ function addTextToCanvas() {
     });
     redrawCanvas();
 }
+function onBColorChange(event) {
+    backgroundColor = event.target.value;
+    redrawCanvas();
+}
 
-function redrawCanvas() {
+
+function redrawCanvas(filter = currentFilter) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-    if (backgroundImage) {
-        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-    }
+    let finalcolor=backgroundColor;
 
+    // 배경색 설정
+    ctx.save();
+    ctx.fillStyle = finalcolor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
+
+
+    if (backgroundImage) {
+        ctx.filter = filter; // Set the filter before drawing the image
+        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+        ctx.filter = 'none'; // Reset filter after drawing the image
+    }
     penStrokes.forEach((stroke, index) => {
         ctx.save();
         ctx.beginPath();
@@ -248,6 +291,44 @@ function redrawCanvas() {
 }
 
 
+// Apply selected filter
+applyFilterButton.addEventListener('click', () => {
+    const selectedFilter = filterForm.querySelector('input[name="filter5"]:checked');
+    if (selectedFilter) {
+        applyFilter(selectedFilter.value);
+    } else {
+        alert('필터를 선택하세요.');
+    }
+});
+
+// Function to apply the selected filter
+function applyFilter(filter) {
+    currentFilter = filter; // 현재 필터 상태 업데이트
+    let filterValue;
+
+    switch (filter) {
+        case 'blur':
+            filterValue = 'blur(5px)';
+            break;
+        case 'brighten':
+            filterValue = 'brightness(150%)';
+            break;
+        case 'contrast':
+            filterValue = 'contrast(150%)';
+            break;
+        case 'invert': // 반전 효과
+            filterValue = 'invert(100%)';
+            break;
+        case 'sepia':
+            filterValue = 'sepia(100%)';
+            break;
+        default:
+            filterValue = 'none';
+    }
+
+    redrawCanvas(filterValue); // Pass the filter to redrawCanvas
+}
+
 
 function isMouseOnRectangle(mouseX, mouseY, rect) {
 
@@ -283,6 +364,14 @@ function isMouseOnPen(mouseX, mouseY, stroke) {
         }
     }
     return false;
+}
+
+function isMouseOnBrush(mouseX, mouseY, stroke) {
+    console.log("dddd");
+    const dx = mouseX - stroke.x;
+    const dy = mouseY - stroke.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    return distance <= stroke.radius + 5; // 클릭 범위를 확장하기 위한 여유 공간
 }
 
 function distanceToSegment(px, py, p1, p2) {
@@ -348,7 +437,7 @@ canvas.addEventListener('mousedown', function (event) {
             selectedRectIndex = i;
             initialMouseX = mouseX;
             initialMouseY = mouseY;
-            initialRect = { ...rectangles[i] }; // Copy the initial state of the rectangle
+            initialRect = {...rectangles[i]}; // Copy the initial state of the rectangle
             redrawCanvas();
             return;
         }
@@ -369,7 +458,7 @@ canvas.addEventListener('mousedown', function (event) {
             selectedRectIndex = i;
             initialMouseX = mouseX;
             initialMouseY = mouseY;
-            initialRect = { ...rectangles[i] }; // Copy the initial state of the rectangle
+            initialRect = {...rectangles[i]}; // Copy the initial state of the rectangle
             redrawCanvas();
             return;
         }
@@ -382,7 +471,7 @@ canvas.addEventListener('mousedown', function (event) {
             selectedfillRectIndex = i;
             initialMouseX = mouseX;
             initialMouseY = mouseY;
-            initialRect = { ...rectfillangles[i] }; // Copy the initial state of the rectangle
+            initialRect = {...rectfillangles[i]}; // Copy the initial state of the rectangle
             redrawCanvas();
             return;
         }
@@ -395,7 +484,7 @@ canvas.addEventListener('mousedown', function (event) {
             selectedfillRectIndex = i;
             initialMouseX = mouseX;
             initialMouseY = mouseY;
-            initialRect = { ...rectfillangles[i] }; // Copy the initial state of the rectangle
+            initialRect = {...rectfillangles[i]}; // Copy the initial state of the rectangle
             redrawCanvas();
             return;
         }
@@ -404,17 +493,31 @@ canvas.addEventListener('mousedown', function (event) {
     // 펜 드래그
     for (let i = 0; i < penStrokes.length; i++) {
         if (isMouseOnPen(mouseX, mouseY, penStrokes[i])) {
-            console.log("ㅋㅋㅋㅋ1");
+
             isDragging4 = true;
-            selectedpen=i;
+            selectedpen = i;
             initialMouseX = mouseX;
             initialMouseY = mouseY;
-            initialStroke = { ...penStrokes[i] }; // Copy the initial state of the pen stroke
+            initialStroke = {...penStrokes[i]}; // Copy the initial state of the pen stroke
             redrawCanvas();
             return;
         }
     }
 
+    // 브러쉬 드래그
+    for (let i = 0; i < brushStrokes.length; i++) {
+        if (isMouseOnBrush(mouseX, mouseY, brushStrokes[i])) {
+            isDragging5 = true;
+            selectedbrush = i;
+            initialMouseX = mouseX;
+            initialMouseY = mouseY;
+            initialStroke = {...brushStrokes[i]}; // Copy the initial state of the pen stroke
+            redrawCanvas();
+            return;
+        }
+    }
+
+    selectedbrush = -1;
     selectedRectIndex = -1;
     selectedpen = -1;
     selectedfillRectIndex = -1;
@@ -464,8 +567,6 @@ canvas.addEventListener('mousemove', function (event) {
         redrawCanvas();
     }
 
-    console.log(isDragging4)
-    console.log(selectedpen)
 
     if (isDragging4 && selectedpen !== -1) {
 
@@ -478,6 +579,20 @@ canvas.addEventListener('mousemove', function (event) {
             point.x += dx;
             point.y += dy;
         });
+
+        initialMouseX = mouseX;
+        initialMouseY = mouseY;
+
+        redrawCanvas();
+    }
+    if (isDragging5 && selectedbrush !== -1) {
+        const mouseX = event.offsetX;
+        const mouseY = event.offsetY;
+        const dx = mouseX - initialMouseX;
+        const dy = mouseY - initialMouseY;
+
+        brushStrokes[selectedbrush].x += dx;
+        brushStrokes[selectedbrush].y += dy;
 
         initialMouseX = mouseX;
         initialMouseY = mouseY;
@@ -505,7 +620,8 @@ canvas.addEventListener('mouseup', function (event) {
     isResizing2 = false;
     isDragging3 = false;
 
-    isDragging4=false;
+    isDragging4 = false;
+    isDragging5 = false;
 
 });
 
@@ -515,6 +631,7 @@ addTextButton.addEventListener('click', addTextToCanvas);
 function onReset() {
     ctx.save();
     ctx.fillStyle = 'white';
+    backgroundColor='#FFFFFF';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.restore();
     backColor.value = '#ffffff';
@@ -524,6 +641,8 @@ function onReset() {
     texts = [];
     brushStrokes = [];
     penStrokes = [];
+    rectangles = [];
+    rectfillangles = [];
 }
 
 function onSave() {
@@ -538,6 +657,9 @@ function onSave() {
     }
 }
 
+
+
+backColor.addEventListener('change', onBColorChange);
 function onKeyboard(event) {
     switch (event.keyCode) {
         case 81:
@@ -592,22 +714,25 @@ function onMouseMove(event) {
         ctx.stroke();
 
         if (penStrokes.length > 0 && penStrokes[penStrokes.length - 1].points) {
-            penStrokes[penStrokes.length - 1].points.push({ x: event.offsetX, y: event.offsetY });
+            penStrokes[penStrokes.length - 1].points.push({x: event.offsetX, y: event.offsetY});
         }
     } else if (isPainting && isBrushing) {
         ctx.save();
+
         function distanceBetween(point1, point2) {
             return Math.sqrt(
                 Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2)
             );
         }
+
         function angleBetween(point1, point2) {
             return Math.atan2(point2.x - point1.x, point2.y - point1.y);
         }
+
         ctx.globalAlpha = '0.02';
         ctx.lineWidth = 0;
         ctx.globalCompositeOperation = 'source-over';
-        var currentPoint = { x: event.offsetX, y: event.offsetY };
+        var currentPoint = {x: event.offsetX, y: event.offsetY};
         var dist = distanceBetween(lastPoint, currentPoint);
         var angle = angleBetween(lastPoint, currentPoint);
         for (var i = 0; i < dist; i += 3) {
@@ -634,14 +759,18 @@ function onMouseMove(event) {
 
 function onMouseDown(event) {
     isPainting = true;
-    lastPoint = { x: event.offsetX, y: event.offsetY };
+    lastPoint = {x: event.offsetX, y: event.offsetY};
     if (isDrawing || isErasing || issquare || isBrushing || isfill_square) {
         cStep++;
 
 
         cPushArray.push(canvas.toDataURL());
         if (isDrawing) {
-            penStrokes.push({ points: [{ x: event.offsetX, y: event.offsetY }], color: ctx.strokeStyle, width: ctx.lineWidth });
+            penStrokes.push({
+                points: [{x: event.offsetX, y: event.offsetY}],
+                color: ctx.strokeStyle,
+                width: ctx.lineWidth
+            });
         }
         if (issquare) {
             const lineWidth = ctx.lineWidth * 20;
@@ -722,6 +851,7 @@ function onDraw() {
     square.style.backgroundColor = '#171717';
     fill_square.style.backgroundColor = '#171717';
 
+
     redrawCanvas();
 }
 
@@ -743,20 +873,28 @@ function deleteSelectedRectangle() {
         redrawCanvas(); // 캔버스 다시 그리기
     }
 }
+
 function onColorChange(event) {
     ctx.strokeStyle = event.target.value;
     ctx.fillStyle = event.target.value;
 }
 
-function onBColorChange(event) {
-    ctx.save();
-    ctx.fillStyle = event.target.value;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.restore();
-}
+
 
 function onDelete() {
+    isDrawing = false;
+    isBrushing = false;
+    isErasing = false;
+    isfill_square = false;
+    issquare = false;
+    drawing.style.backgroundColor = '#171717';
+    brush.style.backgroundColor = '#171717';
+    eraser.style.backgroundColor = '#171717';
+    square.style.backgroundColor = '#171717';
+    fill_square.style.backgroundColor = '#171717';
+
     let tf = confirm('내용을 삭제하시겠습니까?');
+
     if (tf) {
         onReset();
     }
@@ -827,9 +965,6 @@ updateColorButton.addEventListener('click', function () {
 });
 
 
-
-
-
 // 색채운사각형 더블 클릭 시 팝업 열기
 canvas.addEventListener('dblclick', function (event) {
     const mouseX = event.offsetX;
@@ -865,10 +1000,6 @@ updateColorButton2.addEventListener('click', function () {
 });
 
 
-
-
-
-
 // 펜으로 그린거 더블 클릭 시 팝업 열기
 canvas.addEventListener('dblclick', function (event) {
     const mouseX = event.offsetX;
@@ -902,13 +1033,6 @@ updateColorButton3.addEventListener('click', function () {
         editingRectIndex3 = -1;
     }
 });
-
-
-
-
-
-
-
 
 
 // 텍스트 더블 클릭 시 모달 열기
@@ -957,7 +1081,6 @@ document.getElementById('closeTextPopup').addEventListener('click', function (ev
 let editingTextIndex = -1;
 
 
-
 function onWidthChange(event) {
     if (!isNaN(event.target.value)) {
         if (event.target.value <= 1400) {
@@ -997,9 +1120,6 @@ function onHeightChange(event) {
     redrawCanvas();
     ctx.translate(0, canvas.height - canvas.clientHeight); // 추가된 라인
 }
-
-
-
 
 
 canvas.addEventListener('mousemove', onMouseMove);
@@ -1044,11 +1164,12 @@ function saveCanvasAsJSONV2() {
     };
     const json = JSON.stringify(canvasState);
     const a = document.createElement('a');
-    const file = new Blob([json], { type: 'application/json' });
+    const file = new Blob([json], {type: 'application/json'});
     a.href = URL.createObjectURL(file);
     a.download = 'canvasState.json';
     a.click();
 }
+
 function saveCanvasAsJSON() {
     const canvasState = {
         backgroundImage: backgroundImage ? backgroundImage.src : null,
@@ -1075,8 +1196,6 @@ function saveCanvasAsJSON() {
             });
     }
 }
-
-
 
 
 // JSON 불러오기 기능
