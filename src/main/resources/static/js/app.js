@@ -1175,7 +1175,12 @@ function saveCanvasAsJSON() {
         backgroundImage: backgroundImage ? backgroundImage.src : null,
         penStrokes: penStrokes,
         brushStrokes: brushStrokes,
-        texts: texts
+        texts: texts,
+        rectangles: rectangles,
+        rectfillangles: rectfillangles,
+        backgroundColor: backgroundColor,
+
+
     };
     const json = JSON.stringify(canvasState);
 

@@ -22,6 +22,7 @@ public class CardNewsService {
 
     @Value("${openai.key}")
     private String openaiApiKey;
+
     public String generatePictureV2(String prompt) throws IOException, InterruptedException {
         String url = "https://api.openai.com/v1/images/generations";
 

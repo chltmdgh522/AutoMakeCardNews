@@ -79,7 +79,6 @@ public class CardNewsMakeController {
                             Model model,
                             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
                             RedirectAttributes redirectAttributes) {
-
         if (cardNews.getTitle().isEmpty()) {
             bindingResult.reject("fail", "제목을 입력해주세요");
             model.addAttribute("member", loginMember);
@@ -125,6 +124,8 @@ public class CardNewsMakeController {
             cardNews.setOriginalUrl(loginMember.getOriginalUrl());
             Long cardId = cardNewsRepository.save(cardNews);
             redirectAttributes.addAttribute("id", cardId);
+
+            loginMember.setOriginalUrl("");
             return "redirect:/cardnews/{id}";
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,6 +138,7 @@ public class CardNewsMakeController {
     public String saveJsonData(@RequestBody Map<String, Object> jsonData,
                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                Member loginMember) {
+
         try {
             log.info("JSON 데이터가 도착했습니다.");
 

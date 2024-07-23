@@ -16,6 +16,10 @@ import javax.swing.text.html.parser.Entity;
 
 public interface NewsSpringDataRepository extends JpaRepository<News, Long> {
 
+
+
+
+
     @Query("SELECT new amcn.amcn.news.repository.dto.NewsDto(n.newsId, n.title, SUBSTRING(n.originalContent, 1, 40),n.category) " +
             "FROM News n")
     Page<News> findAll(Pageable pageable);

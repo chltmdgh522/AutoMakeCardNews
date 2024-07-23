@@ -40,10 +40,11 @@ public class NewsPageController {
     public String getNewsPage(@PathVariable Long id, Model model,
                               @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
 
-        Likes likes=new Likes();
+        Likes likes = new Likes();
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
-            Member member = findMember.get();;
+            Member member = findMember.get();
+
             model.addAttribute("type", member.getRoleType().name());
             model.addAttribute("member", member);
         } else {
@@ -63,23 +64,23 @@ public class NewsPageController {
 
         // 좋아요 확인
         String correct = likeRepository.findByNewsLike(likes);
-        model.addAttribute("newslike",correct);
+        model.addAttribute("newslike", correct);
 
         // 좋아요  갯수
-        int newsLike=likeRepository.findByBookmarkNewsLike(likes).size();
-        model.addAttribute("newsLike",newsLike);
+        int newsLike = likeRepository.findByBookmarkNewsLike(likes).size();
+        model.addAttribute("newsLike", newsLike);
 
         return "news/newspage";
     }
-
 
 
     @PostMapping("/run-tts")
     @ResponseBody
     public void postTTSScript(@RequestParam("newsId") String content) {
         try {
+            // "C:/Users/chltm/PycharmProjects/amcn_AI/tts/tts.py"
             // 파이썬 스크립트를 실행하는 명령어
-            String[] command = {"python", "C:/Users/chltm/PycharmProjects/amcn_AI/tts/tts.py", content};
+            String[] command = {"python", "C:/Users/chltm/Github/amcn/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py", content};
 
             // 프로세스 빌더를 사용하여 명령어 실행
             ProcessBuilder processBuilder = new ProcessBuilder(command);
@@ -95,7 +96,7 @@ public class NewsPageController {
             // 에러 출력 읽기
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(ttsProcess.getErrorStream()));
             while ((line = errorReader.readLine()) != null) {
-               log.info(line);
+                log.info(line);
             }
 
             // 프로세스 종료 상태 확인
