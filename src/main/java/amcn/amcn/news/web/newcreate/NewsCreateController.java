@@ -28,6 +28,7 @@ public class NewsCreateController {
     private final NewsRepository newsRepository;
     private final MemberRepository memberRepository;
 
+
     @GetMapping("/news/create")
     public String getNewsCreate(Model model,
                                 @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
