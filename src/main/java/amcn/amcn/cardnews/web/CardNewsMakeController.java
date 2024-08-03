@@ -110,17 +110,25 @@ public class CardNewsMakeController {
             }
 
             String fileName = UUID.randomUUID().toString() + ".png";
-            ;
+
             Path destinationPath = Paths.get(fileDir, fileName);
             // 파일로 저장
             File outputfile = new File(fileName);
             ImageIO.write(img, "png", destinationPath.toFile());
 
+
+            if(loginMember.isAiImg()) {
+                cardNews.setEdit("X");
+                loginMember.setAiImg(false);
+            }else{
+                cardNews.setEdit("O");
+            }
+
             cardNews.setJsonUrl(jsonname);
             cardNews.setImageUrl(fileName);
             cardNews.setMember(loginMember);
             cardNews.setTrash("X");
-            cardNews.setEdit("X");
+
             cardNews.setOriginalUrl(loginMember.getOriginalUrl());
             Long cardId = cardNewsRepository.save(cardNews);
             redirectAttributes.addAttribute("id", cardId);
@@ -180,6 +188,7 @@ public class CardNewsMakeController {
         String substring_path = replace.substring(56);
         log.info(substring_path);
         loginMember.setOriginalUrl(substring_path);
+        loginMember.setAiImg(true);
         memberRepository.updateUrl(loginMember);
         return substring_path;
     }

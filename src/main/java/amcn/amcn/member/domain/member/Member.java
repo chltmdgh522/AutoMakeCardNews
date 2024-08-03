@@ -65,7 +65,7 @@ public class Member {
     @Transient
     private String domain;
 
-    private String phone;
+    private boolean aiImg;
 
     @Lob
     private String originalUrl;
