@@ -178,6 +178,7 @@ function addTextToCanvas() {
     });
     redrawCanvas();
 }
+
 function onBColorChange(event) {
     backgroundColor = event.target.value;
     redrawCanvas();
@@ -188,7 +189,8 @@ function redrawCanvas(filter = currentFilter) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-    let finalcolor=backgroundColor;
+    filterLastValue=currentFilter;
+    let finalcolor = backgroundColor;
 
     // 배경색 설정
     ctx.save();
@@ -201,6 +203,7 @@ function redrawCanvas(filter = currentFilter) {
         ctx.filter = filter; // Set the filter before drawing the image
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
         ctx.filter = 'none'; // Reset filter after drawing the image
+
     }
     penStrokes.forEach((stroke, index) => {
         ctx.save();
@@ -302,6 +305,8 @@ applyFilterButton.addEventListener('click', () => {
 });
 
 // Function to apply the selected filter
+let filterLastValue;
+
 function applyFilter(filter) {
     currentFilter = filter; // 현재 필터 상태 업데이트
     let filterValue;
@@ -326,6 +331,7 @@ function applyFilter(filter) {
             filterValue = 'none';
     }
 
+    filterLastValue = filterValue;
     redrawCanvas(filterValue); // Pass the filter to redrawCanvas
 }
 
@@ -631,7 +637,7 @@ addTextButton.addEventListener('click', addTextToCanvas);
 function onReset() {
     ctx.save();
     ctx.fillStyle = 'white';
-    backgroundColor='#FFFFFF';
+    backgroundColor = '#FFFFFF';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.restore();
     backColor.value = '#ffffff';
@@ -658,8 +664,8 @@ function onSave() {
 }
 
 
-
 backColor.addEventListener('change', onBColorChange);
+
 function onKeyboard(event) {
     switch (event.keyCode) {
         case 81:
@@ -878,7 +884,6 @@ function onColorChange(event) {
     ctx.strokeStyle = event.target.value;
     ctx.fillStyle = event.target.value;
 }
-
 
 
 function onDelete() {
@@ -1180,6 +1185,7 @@ function saveCanvasAsJSON() {
         rectangles: rectangles,
         rectfillangles: rectfillangles,
         backgroundColor: backgroundColor,
+        currentFilter: filterLastValue,
 
 
     };

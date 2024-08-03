@@ -112,7 +112,7 @@ public class CardNewsEditController {
             }
 
             String fileName = UUID.randomUUID().toString() + ".png";
-            ;
+
             Path destinationPath = Paths.get(fileDir, fileName);
             // 파일로 저장
             File outputfile = new File(fileName);
