@@ -6,21 +6,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style_em.css">
-    <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
-        .field-error {
-            color: #ff0000;
+        /* 오버레이 스타일 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            justify-content: center; /* 수평 중앙 정렬 */
+            align-items: center; /* 수직 중앙 정렬 */
+            color: white;
+            font-size: 30px;
         }
+
     </style>
 </head>
 
 <body>
 <header id="header">
-    <img src="yamyamIcon.png" alt="">
-    <p id="yamlogo">AMCN</p>
+    <a href="/">
+        <!--    <img src="/logo/AMCNicon.png" alt="">-->
+        <p id="yamlogo">AMCN</p>
+    </a>
 </header>
 
 <div id="main_display">
@@ -84,7 +99,7 @@
         </ul>
         <li>
             <button id="category" class="tool">
-                🌠
+                🗝️
                 <span class="tooltip">Category(post)</span>
             </button>
 
@@ -94,7 +109,7 @@
                       th:object="${cardNews}">
 
                     <input type="hidden" id="imageData" name="imageData">
-                    <h3 style="font-weight: bold">카드 뉴스 편집</h3>
+                    <h3 style="font-weight: bold">카드 뉴스 게시</h3>
                     <div th:if="${#fields.hasGlobalErrors()}">
                         <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                            th:text="${err}">전체 오류 메시지</p>
@@ -114,17 +129,17 @@
                     <div>
                         <label for="title">제목</label>
                         <input type="text" th:field="*{title}" id="title" name="title"
-                               th:value="${cardNews.title}"
+
                                required>
                     </div>
                     <div>
                         <label for="content">내용</label>
                         <textarea id="content" name="content" th:field="*{content}"
                                   rows="4"
-                                  required th:text="${cardNews.content}"></textarea>
+                                  required></textarea>
                     </div>
                     <button type="button" id="postButton"
-                            onclick="saveImage1()">업데이트 완료
+                            onclick="saveImage()">게시
                     </button>
                 </form>
             </div>
@@ -132,7 +147,8 @@
 
         </li>
         <ul class='files'>
-
+            <li><input type="file" accept="image/*" id='file'/></li>
+            <li><label for="file">📂</label></li>
             <li>
                 <button id="save">💾</button>
             </li>
@@ -162,6 +178,10 @@
         </div>
         <div>
             <div class="styled-section">
+                <div class="input-group">
+                    <input name="imageCreate" id="imageCreate" class="styled-input"/>
+                    <button id="imageButton" class="styled-button">이미지 생성</button>
+                </div>
                 <div class="text-button-group" style="margin-top: 75px;">
                     <button id="textbutton" class="styled-button">텍스트 추가</button>
                 </div>
@@ -182,13 +202,14 @@
                     <!-- 추가 폰트 옵션들 -->
                 </select>
                 <button id="addTextButton">텍스트 추가</button>
+
+
             </div>
         </div>
 
-        <div id="jsonurl" style="display: none" th:text="${cardNews.jsonUrl}">
-        </div>
-        <div id="jsonimage" style="display: none" th:text="${cardNews.originalUrl}">
-        </div>
+        <!--        <input type="file" id="loadJsonFile" accept="application/json">-->
+        <!--        <button id="loadJson">Load from JSON</button>-->
+        <!--        <button id="saveJson">Save as JSON</button>-->
 
     </aside>
 </div>
@@ -297,21 +318,21 @@
     <button id="applyFilter5">적용</button>
     <button id="closePopup5">닫기</button>
 </div>
-<script src="/js/app2.js"></script>
+<div style="display: flex">
+    <div class="overlay">이미지를 생성 중입니다. 잠시만 기다려주세요...</div>
+</div>
+<script src="/js/app.js"></script>
 <script>
     // 이미지 저장 함수
-    function saveImage1() {
+    function saveImage() {
         var canvas = document.getElementById("imageCanvas");
         var imageData = canvas.toDataURL("image/png");
 
         document.getElementById("imageData").value = imageData;
         document.getElementById("imageForm").submit();
 
-        // 서버에서 받은 타임리프 변수를 JavaScript 변수로 가져오기
-        var backgroundImage2 = document.getElementById("jsonimage").textContent;
-
         const canvasState = {
-            backgroundImage: backgroundImage ? backgroundImage2 : null,
+            backgroundImage: backgroundImage ? backgroundImage.src : null,
             penStrokes: penStrokes,
             brushStrokes: brushStrokes,
             texts: texts,
@@ -319,13 +340,13 @@
             rectfillangles: rectfillangles,
             backgroundColor: backgroundColor,
             currentFilter: filterLastValue,
+
         };
         const json = JSON.stringify(canvasState);
 
-        console.log("gasdfasdfasdfasdfasdfasdf");
         // 서버로 JSON 데이터 전송
         if (json) { // null 체크
-            fetch('/ai-editJson', {
+            fetch('/ai-Json', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -399,42 +420,32 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var jsonName = document.getElementById('jsonurl').textContent.trim();
-        var filePath = `/ai/json/${jsonName}`;
-        loadCanvasFromJSON(filePath);
+    $(document).ready(function () {
+        $("#imageButton").click(function () {
+            // alert("이미지를 생성하는데에 있어서 시간이 약 20초 정도 소요됩니다. \n 잠시만 기다려주세요.");
+
+            // 오버레이 표시
+            $(".overlay").css("display", "flex");
+
+            $.ajax({
+                type: "POST",
+                url: "/image-create",
+                data: {
+                    "prompt": $("#imageCreate").val()
+                },
+                success: function (data) {
+                    setBackgroundImage(data);
+                },
+                complete: function () {
+                    // 오버레이 숨김
+                    $(".overlay").hide();
+                }
+            });
+        });
     });
 
-    function loadCanvasFromJSON(jsonFilePath) {
-        fetch(jsonFilePath)
-            .then(response => response.json())
-            .then(data => {
-                const canvasState = data;
 
-                backgroundImage = null;
-                penStrokes = canvasState.penStrokes || [];
-                brushStrokes = canvasState.brushStrokes || [];
-                texts = canvasState.texts || [];
-                rectangles = canvasState.rectangles || [];
-                rectfillangles = canvasState.rectfillangles || [];
-                backgroundColor = canvasState.backgroundColor || [];
-                currentFilter = canvasState.currentFilter || 'none';
-
-                if (canvasState.backgroundImage) {
-                    const img = new Image();
-                    img.src = `/ai/imageone/${canvasState.backgroundImage}`;
-                    img.onload = function () {
-                        backgroundImage = img;
-                        redrawCanvas(currentFilter); // 필터를 적용하여 캔버스를 다시 그립니다
-                    };
-                } else {
-                    redrawCanvas();
-                }
-            })
-            .catch(error => console.error('Error loading JSON:', error));
-    }
 </script>
-
 
 </body>
 

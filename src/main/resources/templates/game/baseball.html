@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <title>A.M.C.N</title>
+    <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
+    <!-- Custom fonts for this template-->
+    <script src="https://kit.fontawesome.com/def66b134a.js" crossorigin="anonymous"></script>
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <style>
+        *{
+            font-family: "Jua",sans-serif;
+        }
+
+        .header {
+            background-color: lightgreen;
+            color: black;
+            text-align: center;
+            padding: 10px 0;
+
+            border-radius: 20px;
+        }
+        .game-board {
+            text-align: center;
+            padding: 20px;
+        }
+        .input-field {
+            padding: 10px;
+            width: 200px;
+            margin: 10px 0;
+        }
+        .submit-button {
+            padding: 10px 20px;
+            background-color: lightblue;
+            color: black;
+            border: none;
+            cursor: pointer;
+
+            font-size: 16px;
+
+            border-radius: 10px;
+        }
+        .result-display {
+            background-color: #eeeeee;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        #containerbase{
+
+            padding: 25px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .input-box > input{
+            width: 50px;
+            height: 50px;
+
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+
+            border-radius: 10px;
+        }
+        .out{
+            background-color: red;
+            color: white;
+            font-weight: bold;
+        }
+        .ball{
+            background-color: yellow;
+            color: black;
+            font-weight: bold;
+        }
+        .strike{
+            background-color: green;
+            color: white;
+            font-weight: bold;
+        }
+        .num-result{
+            display: inline;
+
+            padding: 8px;
+            border-radius: 50%;
+        }
+        .check-result{
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+        .footer{
+            display: flex; justify-content: center;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper" th:object="${member}">
+    <div th:replace="~{/header/header1 :: copyParam (${member})}"></div>
+
+
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <div th:replace="~{/header/header2 :: copyParam (${member})}"></div>
+            <!-- header -->
+
+
+            <!-- 배경 블러 -->
+            <div class="overlay" id="overlay"></div>
+
+            <!-- End of Topbar -->
+            <div style="background-color: white;">
+                <!-- Begin Page Content -->
+                <div class="container-fluid" id="contnet">
+                    <div style="color: white">as dfasdfasdf</div>
+
+                    <div id="containerbase">
+                        <div class="header">
+                            <h1>⚾ AMCN의 숫자야구 ⚾</h1>
+                        </div>
+                        <div class="game-board">
+                            <div class="input-box">
+                                <input type="text" class="input-field" maxlength="1" id="number1" autofocus>
+                                <input type="text" class="input-field" maxlength="1" id="number2">
+                                <input type="text" class="input-field" maxlength="1" id="number3">
+                            </div>
+                            <button class="submit-button" onclick="check_numbers()">확인하기</button>
+                        </div>
+                        <div class="game-result">
+                            <img src="" id="game-result-img">
+                        </div>
+                        <div class="remaining-attempts">
+                            💣남은 목숨💣: <span id="attempts">${attempts}</span>
+                        </div>
+                        <div class="result-display">
+                            <div class="check-result">
+                                <div id="results"></div>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            ⚾AMCN의 숫자야구⚾
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+
+</div>
+<!-- End of Page Wrapper -->
+
+<script>
+    // 0~9 사이의 중복되지 않는 3개의 난수를 생성하는 함수
+    function generateUniqueRandomNumbers() {
+        let numbers = [];
+        while (numbers.length < 3) {
+            let randomNumber = Math.floor(Math.random() * 10);
+            if (!numbers.includes(randomNumber)) {
+                numbers.push(randomNumber);
+            }
+        }
+        return numbers;
+    }
+
+    // 답 미리보기
+    let answer = generateUniqueRandomNumbers();
+    console.log(answer);
+
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && attempts > 0) {
+            document.getElementsByClassName('submit-button')[0].click();
+        }
+    });
+
+    // 입력칸 간 자동 이동을 위한 함수
+    function autoFocus(current, next) {
+        if (current.value.length === 1) {
+            next.focus();
+        }
+    }
+
+
+    document.getElementById('number1').addEventListener('input', () => {
+        autoFocus(document.getElementById('number1'), document.getElementById('number2'));
+    });
+
+    document.getElementById('number2').addEventListener('input', () => {
+        autoFocus(document.getElementById('number2'), document.getElementById('number3'));
+    });
+
+    // 남은 시도 횟수 초기화
+    let attempts = 10;
+    document.getElementById('attempts').textContent = attempts;
+
+    // 숫자 확인 및 결과 처리 함수
+    function check_numbers() {
+        let number1 = document.getElementById('number1').value;
+        let number2 = document.getElementById('number2').value;
+        let number3 = document.getElementById('number3').value;
+
+        if ((number1 === '' || number2 === '' || number3 === '')) {
+            document.getElementById('number1').value = '';
+            document.getElementById('number2').value = '';
+            document.getElementById('number3').value = '';
+            document.getElementById('number1').focus();
+            return;
+        }
+
+        let inputs = [parseInt(number1), parseInt(number2), parseInt(number3)];
+        let strike = 0;
+        let ball = 0;
+
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i] === answer[i]) {
+                strike++;
+            } else if (answer.includes(inputs[i])) {
+                ball++;
+            }
+        }
+
+        const resultDisplay = document.querySelector('.result-display');
+        const resultDiv = document.getElementById('results');
+        const resultText = document.createElement('div');
+        resultText.classList.add('check-result');
+        resultDiv.appendChild(resultText);
+
+        setTimeout(() => {
+            resultDisplay.scrollTop = resultDisplay.scrollHeight;
+        }, 0);
+
+        if (strike === 0 && ball === 0) {
+            resultText.innerHTML = `
+        <div class="left">${number1} ${number2} ${number3}</div>
+        :
+        <div class="right">
+          <div class="out num-result">O</div>
+        </div>
+      `;
+        } else {
+            resultText.innerHTML = `
+        <div class="left">${number1} ${number2} ${number3}</div>
+        :
+        <div class="right">
+          ${strike} <div class="strike num-result">S</div>
+          ${ball} <div class="ball num-result">B</div>
+        </div>
+      `;
+        }
+
+        attempts--;
+        document.getElementById('attempts').innerText = attempts;
+
+        if (strike === 3) {
+            document.getElementById('game-result-img').src = '/logo/success.png';
+            document.getElementsByClassName('submit-button')[0].style.display = 'none';
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "/game/point", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Point added successfully");
+
+                    setTimeout(function() {
+                        window.location.reload(); // 5초 후에 페이지 새로고침
+                    }, 3000); // 5000 밀리초 = 5초
+                }
+            };
+            xhr.send();
+
+        } else if (attempts <= 0) {
+            document.getElementById('game-result-img').src = '/logo/fail.png';
+            document.getElementsByClassName('submit-button')[0].style.display = 'none';
+        }
+
+        document.getElementById('number1').value = '';
+        document.getElementById('number2').value = '';
+        document.getElementById('number3').value = '';
+        document.getElementById('number1').focus();
+    }
+
+</script>
+
+
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
+
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+</body>
+
+</html>

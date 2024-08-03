@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <title>A.M.C.N</title>
     <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
     <!-- Custom fonts for this template-->
@@ -24,6 +24,15 @@
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <style>
+
+        .section {
+
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover{
+            transform: scale(1.1);
+        }
         .custom-search .form-control {
             margin-right: 10px; /* 여백 추가 */
         }
@@ -145,7 +154,7 @@
 
                         <div class="col-md-6" th:each="boards : ${board}">
                             <a th:href="|/community/${boards.boardId}|">
-                                <div class="col-md-12">
+                                <div class="col-md-12 section" >
                                     <div class="row">
                                         <div class="col-md-6 d-flex align-items-center justify-content-start">
 

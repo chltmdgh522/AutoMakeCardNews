@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style_em.css">
     <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
@@ -50,9 +51,16 @@
                 </button>
             </li>
             <li>
-                <button id="triangle" class="tool">
-                    △
-                    <span class="tooltip">Triangle(S)</span>
+                <button id="fill_square" class="tool">
+                    ■
+                    <span class="tooltip">fill_square(S)</span>
+                </button>
+            </li>
+
+            <li>
+                <button id="filter" class="tool">
+                    ▥
+                    <span class="tooltip">Filter(D)</span>
                 </button>
             </li>
             <li>
@@ -86,7 +94,7 @@
                       th:object="${cardNews}">
 
                     <input type="hidden" id="imageData" name="imageData">
-                    <h3 style="font-weight: bold">카드 뉴스 편집</h3>
+                    <h3 style="font-weight: bold">카드 뉴스 포크</h3>
                     <div th:if="${#fields.hasGlobalErrors()}">
                         <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                            th:text="${err}">전체 오류 메시지</p>
@@ -226,7 +234,69 @@
     </button>
 </div>
 
+<!-- 사각형 지정 팝업 -->
+<div id="colorPopup" class="popup3">
+    <div class="popup3-content">
+        <span id="closeColorPopup" class="close">X</span>
+        <label for="rectColorPicker">사각형 색깔:</label>
+        <input type="color" id="rectColorPicker">
+        <button class="rect_button" id="updateColorButton">변경</button>
+    </div>
+</div>
 
+<!-- 색채운 사각형 지정 팝업 -->
+<div id="colorPopup2" class="popup4">
+    <div class="popup4-content">
+        <span id="closeColorPopup2" class="close2">X</span>
+        <label for="rectColorPicker2">사각형 색깔:</label>
+        <input type="color" id="rectColorPicker2">
+        <button class="rect_button2" id="updateColorButton2">변경</button>
+    </div>
+</div>
+
+<!-- 펜 색깔 지정 팝업 -->
+<div id="colorPopup3" class="popup5">
+    <div class="popup5-content">
+        <span id="closeColorPopup3" class="close3">X</span>
+        <label for="rectColorPicker3">펜 색깔:</label>
+        <input type="color" id="rectColorPicker3">
+        <button class="rect_button3" id="updateColorButton3">변경</button>
+    </div>
+</div>
+
+
+<div id="overlay5"></div>
+<div id="filterPopup5">
+    <h3>필터 선택</h3>
+    <form id="filterForm5">
+        <div class="filter-option5">
+            <input type="radio" id="blur5" name="filter5" value="blur">
+            <label for="blur5">흐리게</label>
+        </div>
+        <div class="filter-option5">
+            <input type="radio" id="brighten5" name="filter5" value="brighten">
+            <label for="brighten5">밝게</label>
+        </div>
+        <div class="filter-option5">
+            <input type="radio" id="contrast5" name="filter5" value="contrast">
+            <label for="contrast5">대비 조정</label>
+        </div>
+        <div class="filter-option5">
+            <input type="radio" id="grayscale5" name="filter5" value="invert">
+            <label for="grayscale5">흑백</label>
+        </div>
+        <div class="filter-option5">
+            <input type="radio" id="sepia5" name="filter5" value="sepia">
+            <label for="sepia5">세피아</label>
+        </div>
+        <div class="filter-option5">
+            <input type="radio" id="default" name="filter5" value="default">
+            <label for="default">없음</label>
+        </div>
+    </form>
+    <button id="applyFilter5">적용</button>
+    <button id="closePopup5">닫기</button>
+</div>
 <script src="/js/app2.js"></script>
 <script>
     // 이미지 저장 함수
@@ -244,7 +314,11 @@
             backgroundImage: backgroundImage ? backgroundImage2 : null,
             penStrokes: penStrokes,
             brushStrokes: brushStrokes,
-            texts: texts
+            texts: texts,
+            rectangles: rectangles,
+            rectfillangles: rectfillangles,
+            backgroundColor: backgroundColor,
+            currentFilter: filterLastValue,
         };
         const json = JSON.stringify(canvasState);
 
@@ -326,7 +400,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var jsonName = document.getElementById('jsonurl').textContent.trim();
-        var filePath =`/ai/json/${jsonName}`;
+        var filePath = `/ai/json/${jsonName}`;
         loadCanvasFromJSON(filePath);
     });
 
@@ -340,13 +414,17 @@
                 penStrokes = canvasState.penStrokes || [];
                 brushStrokes = canvasState.brushStrokes || [];
                 texts = canvasState.texts || [];
+                rectangles = canvasState.rectangles || [];
+                rectfillangles = canvasState.rectfillangles || [];
+                backgroundColor = canvasState.backgroundColor || [];
+                currentFilter = canvasState.currentFilter || 'none';
 
                 if (canvasState.backgroundImage) {
                     const img = new Image();
                     img.src = `/ai/imageone/${canvasState.backgroundImage}`;
                     img.onload = function () {
                         backgroundImage = img;
-                        redrawCanvas();
+                        redrawCanvas(currentFilter); // 필터를 적용하여 캔버스를 다시 그립니다
                     };
                 } else {
                     redrawCanvas();

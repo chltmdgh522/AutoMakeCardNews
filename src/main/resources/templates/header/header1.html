@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Custom styles for this template-->
+    <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+    <style>
+
+    </style>
+</head>
+<body>
+<header th:fragment="copyParam (member)">
+<sidebar class="sidebar-pos" >
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-white sidebar bg-whisidebar-dark accordion" id="accordionSidebar">
+
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center header-menu " href="/">
+
+            <img src="/logo/AMCNicon.png" alt="로고" width="50" height="50">
+            <div class="sidebar-brand-text mx-3 text-dark" style="font-size:larger;">A.M.C.N</div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0 border-dark">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link">
+
+                <span class="text-dark font-weight-bold" style="font-size: 20px;">MY PROJECT</span>
+                <span>&nbsp;</span>
+                <i class="fas fa-plus-square"></i>
+            </a>
+
+        </li>
+
+
+
+        <!-- Nav Item - Pages Collapse Menu -->
+
+        <li class="nav-item header-menu">
+            <a class="nav-link menu" href="/">
+                <i class="fas fa-home fs-3x my-icon"></i>
+                <span class="text-dark" style="font-size: large;">Home</span></a>
+        </li>
+
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item header-menu">
+            <a class="nav-link" href="/cardnews/project">
+                <i class="fas fa-file fs-2x my-icon"></i>
+                <span class="text-dark" style="font-size: large;">Project</span></a>
+        </li>
+
+
+
+
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item header-menu">
+            <a class="nav-link" href="/cardnews/template">
+                <i class="fas fa-copy my-icon"></i>
+                <span class="text-dark" style="font-size: large;">Template</span></a>
+        </li>
+
+
+        <!-- Nav Item - Charts -->
+        <li class="nav-item header-menu">
+            <a class="nav-link" href="/members">
+                <i class="fas fa-user my-icon"></i>
+                <span class="text-dark" style="font-size: large;">Members</span></a>
+        </li>
+
+        <!-- Nav Item - Tables -->
+        <li class="nav-item header-menu">
+            <a class="nav-link" href="/trash">
+                <i class="fas fa-trash my-icon"></i>
+                <span class="text-dark" style="font-size: large;">Trash</span></a>
+        </li>
+
+        <!-- Nav Item - Tables -->
+        <li class="nav-item header-menu">
+            <a class="nav-link" href="/game">
+                <i class="fas fa-dice my-icon"></i>
+                <span class="text-dark" style="font-size: large;">Game</span></a>
+        </li>
+
+        <!-- Nav Item - Tables -->
+        <li class="nav-item header-menu">
+            <a class="nav-link" th:href="@{/mypage}">
+                <i class="fas fa-cog my-icon"></i>
+                <span class="text-dark" style="font-size: large;">Setting</span></a>
+        </li>
+
+        <!-- Nav Item - Tables -->
+        <li class="nav-item header-menu" th:if="${member.roleType == T(amcn.amcn.member.domain.member.RoleType).MASTER}">
+            <a class="nav-link" th:href="@{/system}">
+                <i class="fas fa-wrench my-icon"></i>
+                <span class="text-dark" style="font-size: large; color: red">Super</span></a>
+        </li>
+
+        <form th:action="@{/logout}" method="post" style="color: black; font-weight: bold; text-decoration: none;"
+              class="logout-button mt-5 ml-3" >
+            <button type="submit" style="background-color: transparent; border: none; font-weight: bold">
+                로그아웃
+            </button>
+        </form>
+
+
+    </ul>
+
+
+
+</sidebar>
+</header>
+</body>
+</html>

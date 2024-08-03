@@ -23,6 +23,7 @@
     <p id="yamlogo">AMCN</p>
 </header>
 
+
 <div id="main_display">
     <aside class="tools">
         <ul>
@@ -94,34 +95,33 @@
                       th:object="${cardNews}">
 
                     <input type="hidden" id="imageData" name="imageData">
-                    <h3 style="font-weight: bold">카드 뉴스 편집</h3>
+                    <h3 style="font-weight: bold">카드 뉴스 템플릿</h3>
                     <div th:if="${#fields.hasGlobalErrors()}">
                         <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                            th:text="${err}">전체 오류 메시지</p>
                     </div>
                     <div class="category">
-                        <label><input type="radio" th:field="*{category}" name="category" value="IT" th:checked
+                        <label><input type="radio" name="category" value="IT" th:checked
                                       required> IT</label>
-                        <label><input type="radio" th:field="*{category}" name="category" value="과학" required>
+                        <label><input type="radio"  name="category" value="과학" required>
                             과학</label>
-                        <label><input type="radio" th:field="*{category}" name="category" value="스포츠" required>
+                        <label><input type="radio"  name="category" value="스포츠" required>
                             스포츠</label>
-                        <label><input type="radio" th:field="*{category}" name="category" value="경제" required>
+                        <label><input type="radio"  name="category" value="경제" required>
                             경제</label>
-                        <label><input type="radio" th:field="*{category}" name="category" value="예술" required>
+                        <label><input type="radio"  name="category" value="예술" required>
                             예술</label>
                     </div>
                     <div>
                         <label for="title">제목</label>
-                        <input type="text" th:field="*{title}" id="title" name="title"
-                               th:value="${cardNews.title}"
+                        <input type="text"  id="title" name="title"
                                required>
                     </div>
                     <div>
                         <label for="content">내용</label>
-                        <textarea id="content" name="content" th:field="*{content}"
+                        <textarea id="content" name="content"
                                   rows="4"
-                                  required th:text="${cardNews.content}"></textarea>
+                                  required></textarea>
                     </div>
                     <button type="button" id="postButton"
                             onclick="saveImage1()">업데이트 완료
@@ -297,6 +297,7 @@
     <button id="applyFilter5">적용</button>
     <button id="closePopup5">닫기</button>
 </div>
+
 <script src="/js/app2.js"></script>
 <script>
     // 이미지 저장 함수
@@ -322,10 +323,9 @@
         };
         const json = JSON.stringify(canvasState);
 
-        console.log("gasdfasdfasdfasdfasdfasdf");
         // 서버로 JSON 데이터 전송
         if (json) { // null 체크
-            fetch('/ai-editJson', {
+            fetch('/ai-template/editJson', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -400,39 +400,23 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var jsonName = document.getElementById('jsonurl').textContent.trim();
-        var filePath = `/ai/json/${jsonName}`;
-        loadCanvasFromJSON(filePath);
+        var image = document.getElementById('jsonimage').textContent.trim();
+        setBackgroundImage(image);
     });
 
-    function loadCanvasFromJSON(jsonFilePath) {
-        fetch(jsonFilePath)
-            .then(response => response.json())
-            .then(data => {
-                const canvasState = data;
+    function setBackgroundImage(imageUrl) {
+        const img = new Image();
 
-                backgroundImage = null;
-                penStrokes = canvasState.penStrokes || [];
-                brushStrokes = canvasState.brushStrokes || [];
-                texts = canvasState.texts || [];
-                rectangles = canvasState.rectangles || [];
-                rectfillangles = canvasState.rectfillangles || [];
-                backgroundColor = canvasState.backgroundColor || [];
-                currentFilter = canvasState.currentFilter || 'none';
-
-                if (canvasState.backgroundImage) {
-                    const img = new Image();
-                    img.src = `/ai/imageone/${canvasState.backgroundImage}`;
-                    img.onload = function () {
-                        backgroundImage = img;
-                        redrawCanvas(currentFilter); // 필터를 적용하여 캔버스를 다시 그립니다
-                    };
-                } else {
-                    redrawCanvas();
-                }
-            })
-            .catch(error => console.error('Error loading JSON:', error));
+//    img.crossOrigin = 'anonymous'; // CORS 설정
+        img.src =`/ai/imageone/${imageUrl}`;
+        img.onload = function() {
+            backgroundImage = img;
+            // 이미지가 설정될 때마다 펜 스트로크와 브러시 스트로크를 지우고 다시 그립니다.
+            redrawCanvas();
+            inputImage.value = null;
+        };
     }
+
 </script>
 
 

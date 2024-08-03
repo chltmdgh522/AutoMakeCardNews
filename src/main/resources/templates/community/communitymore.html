@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <title>A.M.C.N</title>
+    <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
+    <!-- Custom fonts for this template-->
+    <script src="https://kit.fontawesome.com/def66b134a.js" crossorigin="anonymous"></script>
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <style>
+        .all-section {
+            display: flex;
+            flex-wrap: wrap; /* 여러 줄로 자동으로 배치되도록 */
+            justify-content: space-between; /* 섹션 사이 간격 균등하게 */
+        }
+
+        .section {
+            flex: 0 0 calc(50% - 10px); /* 각 섹션을 50% 너비로 설정하고, 사이 간격을 위해 마진을 고려 */
+            margin-bottom: 20px; /* 섹션들 사이의 간격 조절 */
+
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover{
+            transform: scale(1.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-button {
+            cursor: pointer;
+            font-size: large;
+            font-weight: 600;
+            color: black; /* 기본 색상 */
+
+        }
+
+        .tab-button.active {
+            color: red; /* 활성화된 경우의 색상 */
+        }
+
+        .tab-button{
+            transition: transform 0.3s ease;
+        }
+        .tab-button:hover{
+            transform: scale(1.1);
+        }
+
+
+        .custom-search .form-control {
+            margin-right: 10px; /* 여백 추가 */
+        }
+
+        .custom-search .input-group-prepend .input-group-text {
+            background-color: white;
+            border-right: 0;
+        }
+
+        .custom-search .form-control {
+            border-left: 0;
+        }
+
+        .custom-search .btn-search {
+            font-weight: bold;
+            background-color: white;
+            color: black;
+            border: none;
+        }
+
+        .custom-search .btn-search:hover {
+            background-color: white;
+        }
+
+        .btn-write {
+            background-color: black;
+            color: white;
+            border: none;
+            margin-left: 80px; /* 여백 추가 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 15px;
+        }
+
+        .btn-write i {
+            font-size: 1.2em;
+        }
+
+        .btn-write:hover {
+            background-color: black;
+        }
+
+        a {
+            color: black;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        a:hover {
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper" th:object="${member}">
+    <div th:replace="~{/header/header1 :: copyParam (${member})}"></div>
+
+
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+
+        <div id="content">
+            <!-- header -->
+            <div th:replace="~{/header/header2 :: copyParam (${member})}"></div>
+
+            <!-- End of Topbar -->
+            <div style="background-color: white;">
+                <!-- 카테고리 -->
+                <div class="container-fluid" id="contnet">
+
+                    <!-- 검색창 -->
+                    <div class="container mb-1">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+
+                                <div class="d-flex mt-5 align-items-center">
+                                    <form class="col-md-10" method="get" th:action="@{/community/search}">
+                                        <div class="input-group custom-search" style="margin-right: 55px;">
+                                            <!-- 왼쪽 아이콘 -->
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                            </div>
+                                            <!-- 검색창 -->
+                                            <input type="text" class="form-control" placeholder="검색어를 입력하세요..."
+                                                   name="query">
+                                            <!-- 검색 버튼 -->
+                                            <div class="input-group-append">
+                                                <button class="btn btn-search" type="submit">검색</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- 글작성 아이콘 버튼 -->
+                                    <a href="/community/add">
+                                        <button class="btn btn-write ml-3" type="button">
+                                            <i class="fas fa-pen"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container mt-4">
+                        <div class="col-md-12">
+
+                            <div class="row" style="padding-top: 8px;">
+                                <div class="col-md-2 d-flex align-items-center justify-content-center tab-button"
+                                     data-tab="all" style="padding-top: 10px;">
+                                    <!-- 각 요소가 6개씩 총 12개를 차지하므로 2씩 차지하도록 설정 -->
+                                    <i class="fas fa-chess-king" style="font-size: 25px; "></i>
+                                    <div style="padding-top: 11px;">
+                                        <span style="font-size: large; font-weight: 600; ">&nbsp;토픽 전체</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-center justify-content-center tab-button"
+                                     data-tab="it" style="padding-top: 15px;">
+                                    <i class="fas fa-laptop-code" style="font-size: 25px;"></i>
+                                    <div style="padding-top: 11px;">
+                                        <span style="font-size: large; font-weight: 600; ">&nbsp;IT</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-center justify-content-center tab-button"
+                                     data-tab="sports" style="padding-top: 15px;">
+                                    <i class="fas fa-futbol" style="font-size: 25px;"></i>
+                                    <div style="padding-top: 11px;">
+                                        <span style="font-size: large; font-weight: 600;">&nbsp;스포츠</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-center justify-content-center tab-button"
+                                     data-tab="science" style="padding-top: 15px;">
+                                    <i class="fas fa-flask" style="font-size: 25px;"></i>
+                                    <div style="padding-top: 11px;">
+                                        <span style="font-size: large; font-weight: 600;">&nbsp;과학</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-center justify-content-center tab-button"
+                                     data-tab="art" style="padding-top: 15px;">
+                                    <i class="fas fa-paint-brush" style="font-size: 25px; "></i>
+                                    <div style="padding-top: 11px;">
+                                        <span style="font-size: large; font-weight: 600; ">&nbsp;예술</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-center justify-content-center tab-button"
+                                     data-tab="economy" style="padding-top: 20px;">
+                                    <i class="fas fa-chart-bar" style="font-size: 25px; "></i>
+                                    <div style="padding-top: 5px;">
+                                        <span style="font-size: large; font-weight: 600;">&nbsp;경제</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <hr style="height: 2px; background-color: black; margin: 10px 0;">
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="container mt-4">
+                    <div class="">
+
+                        <div class="col-md-12 all-section tab-content"
+                             style="display: flex" id="all">
+                            <div class="col-md-12 section" th:each="its : ${all}">
+                                <a th:href="|/community/${its.boardId}|">
+                                    <div class="row">
+                                        <div class="col-md-6 d-flex align-items-center justify-content-start">
+
+                                            <div style="padding-top: 5px;">
+                                                <span style="font-size: large;
+                                                font-weight: 600; color: black;"
+                                                      th:text="'&nbsp;&nbsp;' + ${its.title}">제목1</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                    <div class="container">
+                                        <div class="row custom-row">
+                                            <div class="col-md-12"> <!-- 첫 번째 row에 마진을 추가 -->
+                                                <div class="card border-0">
+                                                    <div class="card-body d-flex align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+
+                                                        <div class="mr-auto" style="font-size: 14px;"
+                                                             th:text="${its.substance}"></div>
+
+                                                    </div>
+                                                    <div class="card-body d-flex align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+
+                                                        <div class="mr-auto" style="font-size: 14px;"
+                                                             th:text="${its.member.name}">최승호
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="far fa-thumbs-up mr-2"></i>
+                                                            <span th:text="${its.getLikes().size()}">좋아요</span>
+                                                        </div>
+                                                        <div class="ml-4 d-flex align-items-center">
+                                                            <i class="far fa-comment mr-2"></i>
+                                                            <span th:text="${its.getComments().size()}">댓글</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body d-flex justify-content-between align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+                                                        <div class="d-flex align-items-center">
+                                                        </div>
+
+                                                        <div class="ml-4">
+                                                            <!-- 댓글 아이콘을 여기에 추가합니다. -->
+                                                            <span th:text="${its.createdDate}">20241-11-07</span>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 all-section tab-content" style="display: flex" id="it">
+                            <div class="col-md-12 section" th:each="its : ${it}">
+                                <a th:href="|/community/${its.boardId}|">
+                                    <div class="row">
+                                        <div class="col-md-6 d-flex align-items-center justify-content-start">
+
+                                            <div style="padding-top: 5px;">
+                                                <span style="font-size: large;
+                                                font-weight: 600; color: black;"
+                                                      th:text="'&nbsp;&nbsp;' + ${its.title}">제목1</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                    <div class="container">
+                                        <div class="row custom-row">
+                                            <div class="col-md-12"> <!-- 첫 번째 row에 마진을 추가 -->
+                                                <div class="card border-0">
+                                                    <div class="card-body d-flex align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+
+                                                        <div class="mr-auto" style="font-size: 14px;"
+                                                             th:text="${its.substance}"></div>
+
+                                                    </div>
+                                                    <div class="card-body d-flex align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+
+                                                        <div class="mr-auto" style="font-size: 14px;"
+                                                             th:text="${its.member.name}">최승호
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="far fa-thumbs-up mr-2"></i>
+                                                            <span th:text="${its.getLikes().size()}">좋아요</span>
+                                                        </div>
+                                                        <div class="ml-4 d-flex align-items-center">
+                                                            <i class="far fa-comment mr-2"></i>
+                                                            <span th:text="${its.getComments().size()}">댓글</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body d-flex justify-content-between align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+                                                        <div class="d-flex align-items-center">
+                                                        </div>
+
+                                                        <div class="ml-4">
+                                                            <!-- 댓글 아이콘을 여기에 추가합니다. -->
+                                                            <span th:text="${its.createdDate}">20241-11-07</span>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12 all-section tab-content" style="display: flex" id="sports">
+                            <div class="col-md-12 section" th:each="its : ${sport}">
+                                <a th:href="|/community/${its.boardId}|">
+                                    <div class="row">
+                                        <div class="col-md-6 d-flex align-items-center justify-content-start">
+
+                                            <div style="padding-top: 5px;">
+                                                <span style="font-size: large;
+                                                font-weight: 600; color: black;"
+                                                      th:text="'&nbsp;&nbsp;' + ${its.title}">제목1</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                    <div class="container">
+                                        <div class="row custom-row">
+                                            <div class="col-md-12"> <!-- 첫 번째 row에 마진을 추가 -->
+                                                <div class="card border-0">
+                                                    <div class="card-body d-flex align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+
+                                                        <div class="mr-auto" style="font-size: 14px;"
+                                                             th:text="${its.substance}"></div>
+
+                                                    </div>
+                                                    <div class="card-body d-flex align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+
+                                                        <div class="mr-auto" style="font-size: 14px;"
+                                                             th:text="${its.member.name}">최승호
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="far fa-thumbs-up mr-2"></i>
+                                                            <span th:text="${its.getLikes().size()}">좋아요</span>
+                                                        </div>
+                                                        <div class="ml-4 d-flex align-items-center">
+                                                            <i class="far fa-comment mr-2"></i>
+                                                            <span th:text="${its.getComments().size()}">댓글</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body d-flex justify-content-between align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+                                                        <div class="d-flex align-items-center">
+                                                        </div>
+
+                                                        <div class="ml-4">
+                                                            <!-- 댓글 아이콘을 여기에 추가합니다. -->
+                                                            <span th:text="${its.createdDate}">20241-11-07</span>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12 all-section tab-content" style="display: flex" id="science">
+                            <div class="col-md-12 section" th:each="its : ${sci}">
+                                <a th:href="|/community/${its.boardId}|">
+                                    <div class="row">
+                                        <div class="col-md-6 d-flex align-items-center justify-content-start">
+
+                                            <div style="padding-top: 5px;">
+                                                <span style="font-size: large;
+                                                font-weight: 600; color: black;"
+                                                      th:text="'&nbsp;&nbsp;' + ${its.title}">제목1</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                    <div class="container">
+                                        <div class="row custom-row">
+                                            <div class="col-md-12"> <!-- 첫 번째 row에 마진을 추가 -->
+                                                <div class="card border-0">
+                                                    <div class="card-body d-flex align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+
+                                                        <div class="mr-auto" style="font-size: 14px;"
+                                                             th:text="${its.substance}"></div>
+
+                                                    </div>
+                                                    <div class="card-body d-flex align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+
+                                                        <div class="mr-auto" style="font-size: 14px;"
+                                                             th:text="${its.member.name}">최승호
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="far fa-thumbs-up mr-2"></i>
+                                                            <span th:text="${its.getLikes().size()}">좋아요</span>
+                                                        </div>
+                                                        <div class="ml-4 d-flex align-items-center">
+                                                            <i class="far fa-comment mr-2"></i>
+                                                            <span th:text="${its.getComments().size()}">댓글</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body d-flex justify-content-between align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+                                                        <div class="d-flex align-items-center">
+                                                        </div>
+
+                                                        <div class="ml-4">
+                                                            <!-- 댓글 아이콘을 여기에 추가합니다. -->
+                                                            <span th:text="${its.createdDate}">20241-11-07</span>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12 all-section tab-content" style="display: flex" id="art">
+                            <div class="col-md-12 section" th:each="its : ${art}">
+                                <a th:href="|/community/${its.boardId}|">
+                                    <div class="row">
+                                        <div class="col-md-6 d-flex align-items-center justify-content-start">
+
+                                            <div style="padding-top: 5px;">
+                                                <span style="font-size: large;
+                                                font-weight: 600; color: black;"
+                                                      th:text="'&nbsp;&nbsp;' + ${its.title}">제목1</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                    <div class="container">
+                                        <div class="row custom-row">
+                                            <div class="col-md-12"> <!-- 첫 번째 row에 마진을 추가 -->
+                                                <div class="card border-0">
+                                                    <div class="card-body d-flex align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+
+                                                        <div class="mr-auto" style="font-size: 14px;"
+                                                             th:text="${its.substance}"></div>
+
+                                                    </div>
+                                                    <div class="card-body d-flex align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+
+                                                        <div class="mr-auto" style="font-size: 14px;"
+                                                             th:text="${its.member.name}">최승호
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="far fa-thumbs-up mr-2"></i>
+                                                            <span th:text="${its.getLikes().size()}">좋아요</span>
+                                                        </div>
+                                                        <div class="ml-4 d-flex align-items-center">
+                                                            <i class="far fa-comment mr-2"></i>
+                                                            <span th:text="${its.getComments().size()}">댓글</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body d-flex justify-content-between align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+                                                        <div class="d-flex align-items-center">
+                                                        </div>
+
+                                                        <div class="ml-4">
+                                                            <!-- 댓글 아이콘을 여기에 추가합니다. -->
+                                                            <span th:text="${its.createdDate}">20241-11-07</span>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12 all-section tab-content" style="display: flex" id="economy">
+                            <div class="col-md-12 section" th:each="its : ${eco}">
+                                <a th:href="|/community/${its.boardId}|">
+                                    <div class="row">
+                                        <div class="col-md-6 d-flex align-items-center justify-content-start">
+
+                                            <div style="padding-top: 5px;">
+                                                <span style="font-size: large;
+                                                font-weight: 600; color: black;"
+                                                      th:text="'&nbsp;&nbsp;' + ${its.title}">제목1</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                    <div class="container">
+                                        <div class="row custom-row">
+                                            <div class="col-md-12"> <!-- 첫 번째 row에 마진을 추가 -->
+                                                <div class="card border-0">
+                                                    <div class="card-body d-flex align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+
+                                                        <div class="mr-auto" style="font-size: 14px;"
+                                                             th:text="${its.substance}"></div>
+
+                                                    </div>
+                                                    <div class="card-body d-flex align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+
+                                                        <div class="mr-auto" style="font-size: 14px;"
+                                                             th:text="${its.member.name}">최승호
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="far fa-thumbs-up mr-2"></i>
+                                                            <span th:text="${its.getLikes().size()}">좋아요</span>
+                                                        </div>
+                                                        <div class="ml-4 d-flex align-items-center">
+                                                            <i class="far fa-comment mr-2"></i>
+                                                            <span th:text="${its.getComments().size()}">댓글</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body d-flex justify-content-between align-items-center"
+                                                         style="padding-bottom: 10px; padding-top: 1px;">
+                                                        <div class="d-flex align-items-center">
+                                                        </div>
+
+                                                        <div class="ml-4">
+                                                            <!-- 댓글 아이콘을 여기에 추가합니다. -->
+                                                            <span th:text="${its.createdDate}">20241-11-07</span>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <!-- Bootstrap core JavaScript-->
+            <script src="vendor/jquery/jquery.min.js"></script>
+            <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+            <!-- Core plugin JavaScript-->
+            <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+            <!-- Custom scripts for all pages-->
+            <script src="js/sb-admin-2.min.js"></script>
+
+
+            <!-- Swiper JS -->
+            <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+            <!-- Initialize Swiper -->
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const tabButtons = document.querySelectorAll(".tab-button");
+                    const tabContents = document.querySelectorAll(".tab-content");
+
+                    tabButtons.forEach(button => {
+                        button.addEventListener("click", () => {
+                            const tab = button.getAttribute("data-tab");
+
+                            // 모든 탭 버튼의 활성화 상태 제어
+                            tabButtons.forEach(btn => {
+                                btn.classList.remove("active");
+                            });
+                            button.classList.add("active");
+
+                            // 모든 탭 콘텐츠 숨기기
+                            tabContents.forEach(content => {
+                                content.style.display = "none"; // 모든 탭 숨기기
+                            });
+
+                            // 클릭한 탭 콘텐츠 보이기
+                            const activeContents = document.querySelectorAll(`.tab-content#${tab}`);
+                            if (activeContents) {
+                                activeContents.forEach(content => {
+                                    content.style.display = "flex"; // 클릭한 탭 콘텐츠 보이기
+                                });
+                            }
+                        });
+                    });
+
+                    // 페이지 로드 시 첫 번째 탭 초기화
+                    if (tabButtons.length > 0) {
+                        tabButtons[0].click();
+                    }
+                });
+            </script>
+
+
+</body>
+
+</html>

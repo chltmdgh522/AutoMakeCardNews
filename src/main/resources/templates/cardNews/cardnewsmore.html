@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -20,11 +21,44 @@
 
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 
     <style>
+        .disabled-link {
+            pointer-events: auto; /* 기본 클릭 이벤트는 허용 */
+
+        }
+
+        #popup {
+            display: none; /* 처음에는 보이지 않게 */
+            position: absolute; /* 부모 요소에 상대적으로 위치 */
+            background: white; /* 배경색 */
+            border: 1px solid #ccc; /* 테두리 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+            z-index: 1000; /* 다른 요소들보다 위에 표시되도록 */
+            right: 0; /* 부모 요소의 오른쪽에 위치 */
+            margin-top: 10px; /* 아이콘 아래에 약간의 간격 */
+            margin-right: 50px; /* 아이콘 아래에 약간의 간격 */
+            padding: 5px; /* 내부 여백 */
+        }
+
+        #popup button {
+            display: block; /* 버튼들이 세로로 쌓이도록 */
+            padding: 10px; /* 버튼의 여백 */
+            font-size: 15px; /* 글씨 크기 */
+            font-weight: 600; /* 글씨 굵기 */
+            border: none; /* 버튼 테두리 제거 */
+            background: none; /* 버튼 배경 제거 */
+            cursor: pointer; /* 커서 모양 변경 */
+        }
+
+        #popup button:hover {
+            background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+        }
+
+
         button:focus,
         button:active {
             outline: none;
@@ -98,18 +132,55 @@
                                       th:text="${cardNews.member.name}">이름</span>
                                 </div>
                                 <div style="text-align: right;">
-                                    <div class="icon"  id="likes" name="likes"  style="margin-left: 15px; display: inline-block;"><!-- 스크랩 아이콘 -->
-                                        <i id="heartIcon" class="far fa-heart heart-icon" style="color: red"></i>
+
+                                    <div class="icon" type="button" style="margin-left: 15px; display: inline-block;"
+                                         th:if="${member.memberId==cardNews.member.memberId}">
+                                        <i id="editicon" class="fas fa-cog" style="color: black; cursor: pointer;"></i>
+
+                                        <!-- 팝업창 -->
+                                        <div id="popup"
+                                             style="display: none; position: absolute; background: white; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.1); z-index: 1000;">
+                                            <a th:href="@{/cardnews/edit/{id}(id=${cardNews.cardNewsId})}"
+                                               style="text-decoration: none;">
+                                                <button class="edit-button"
+                                                        style="display: block; padding: 10px; font-size: 15px; font-weight: 600; border: none; background: none; cursor: pointer;">
+                                                    수정
+                                                </button>
+                                            </a>
+                                            <form id="deleteForm"
+                                                  th:action="@{/cardnews/fake/{id}(id=${cardNews.cardNewsId})}"
+                                                  method="post" style="margin: 0;">
+                                                <button class="delete-button"
+                                                        style="display: block; padding: 10px; font-size: 15px; font-weight: 600; border: none; background: none; color: red; cursor: pointer;">
+                                                    삭제
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="icon" id="likes" name="likes"
+                                         style="margin-left: 15px; display: inline-block;"><!-- 공감 아이콘 -->
+                                        <!-- HTML with Thymeleaf -->
+                                        <i id="heartIcon"
+                                           th:class="${cardlike == 'O'} ? 'far fa-heart heart-icon' : 'fas fa-heart heart-icon'"
+                                           style="color: red"></i>
 
                                         <span style="font-size: 15px; font-weight: 600; color: black;"
                                               id="newsLike2" name="newsLike2"
                                               th:text="${cardNewsLike}"
-                                              >3&nbsp;</span>
+                                        >3&nbsp;</span>
                                     </div>
                                     <div class="icon" type="button" style="margin-left: 15px; display: inline-block;">
-                                        <i id="popupIcon" class="fas fa-robot" style="color: black;"></i>
-                                        <!-- 요약 아이콘 -->
-                                        <span style="font-size: 15px; font-weight: 600; color: black;"></span>
+                                        <!-- 포크 아이콘 -->
+                                        <a th:href="@{/cardnews/fork/{id}(id=${cardNews.cardNewsId})}"
+                                           style="text-decoration: none;"
+                                           th:classappend="${cardNews.member.memberId == member.memberId} ? ' disabled-link' : ''">
+                                            <i id="popupIcon" class="fas fa-code-branch" style="color: black;"></i>
+                                        </a>
+                                        <span style="font-size: 15px; font-weight: 600; color: black;"
+                                              id="fork" name="fork"
+                                              th:text="${forkcnt}">3&nbsp;</span>
                                     </div>
                                     <div class="icon" type="button" id="executeScript" name="executeScript"
                                          style="margin-left: 15px; display: inline-block;">
@@ -123,8 +194,28 @@
                             <hr style="background-color: black">
                             <div style="margin-left: 14px;   color: black;">
                                 <div class="post-content">
-                                    <div class="image-container" style="margin-left: 160px">
-                                        <img th:src="|/ai/image/${cardNews.image_url}|"/>
+
+                                    <p th:if="${orginame != null}">
+                                        <span style="color: red;" th:text="${orginame}"></span>
+                                        님이 만든 카드뉴스입니다.
+                                    </p>
+                                    <div th:if="${forkName != null and forkName.member != null and forkName.member.name != null}">
+
+                                        <span style="color: red;" th:text="${forkName.member.name}"></span>
+                                        님에 의해 만든 카드뉴스입니다.
+                                        <a th:href="|/cardnews/${forkName.cardNewsId}|" style="cursor: pointer;">원본을 보고
+                                            싶으면 해당 문구 클릭!</a>
+
+                                    </div>
+                                    <div class="image-container">
+                                        <img style="border: 20px ridge wheat;
+    padding: 10px;
+    background-color: #f8f8f8; /* 배경색을 추가하여 액자 효과 강화 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 그림자 추가 */
+    border-radius: 15px; /* 둥근 모서리 */
+    max-width: 100%; /* 이미지가 부모 요소를 넘어가지 않도록 */
+    display: block;
+    margin: 20px auto; /* 이미지 중앙 정렬 */" th:src="|/ai/image/${cardNews.imageUrl}|"/>
                                     </div>
                                     <p th:text="${cardNews.content}" id="originalContent" name="originalContent">
                                         여기에는 게시글의 내용이 들어갑니다. Lorem ipsum dolor sit amet, consectetur adipiscing
@@ -139,13 +230,13 @@
                             <hr style="background-color: black">
 
                             <div style="display: none">
-                                <span th:field="*{cardNewsId}" id="cardNewsId" name="cardNewsId" th:text="${cardNews.cardNewsId}">1</span>
+                                <span th:field="*{cardNewsId}" id="cardNewsId" name="cardNewsId"
+                                      th:text="${cardNews.cardNewsId}">1</span>
                             </div>
 
                             <div>
                                 <span>&nbsp;</span>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -163,6 +254,21 @@
 
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 모든 링크를 검색
+        var links = document.querySelectorAll('.disabled-link');
+
+        // 각 링크에 클릭 이벤트 리스너 추가
+        links.forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                // 클릭을 방지하고 경고 메시지 표시
+                alert('본인의 카드뉴스는 포크할 수 없습니다.');
+                e.preventDefault();
+            });
+        });
+    });
+</script>
 
 
 <script>
@@ -228,7 +334,7 @@
 
 
 <script>
-    var nlike = false;
+    var heartIcon = document.getElementById('heartIcon');
 
     $(document).ready(function () {
         // 카드뉴스 좋아요
@@ -241,7 +347,6 @@
                 },
                 success: function (data) {
                     $("#newsLike2").text(data);
-                    nlike = !nlike; // 클릭할 때마다 nlike 변수를 토글합니다.
                     updateHeartIcon(); // 하트 아이콘을 업데이트합니다.
                 }
             });
@@ -250,16 +355,62 @@
 
     // 하트 아이콘 업데이트 함수
     function updateHeartIcon() {
-        if (nlike) {
-            $("#heartIcon").removeClass("far fa-heart").addClass("fas fa-heart");
+        if (heartIcon.classList.contains('far')) {
+            heartIcon.classList.remove('far');
+            heartIcon.classList.add('fas');
+            // 여기서 상태를 서버에 저장하거나 처리하는 로직을 추가할 수 있습니다.
         } else {
-            $("#heartIcon").removeClass("fas fa-heart").addClass("far fa-heart");
+            heartIcon.classList.remove('fas');
+            heartIcon.classList.add('far');
+            // 여기서 상태를 서버에 저장하거나 처리하는 로직을 추가할 수 있습니다.
         }
     }
 
 
-
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // 아이콘 요소 가져오기
+        var icon = document.getElementById("editicon");
+
+        // 팝업 요소 가져오기
+        var popup = document.getElementById("popup");
+
+        // 아이콘 클릭 시 팝업 토글
+        icon.addEventListener("click", function (event) {
+            // 팝업창의 display 스타일을 토글
+            if (popup.style.display === "none" || popup.style.display === "") {
+                popup.style.display = "block";
+            } else {
+                popup.style.display = "none";
+            }
+        });
+
+        // 팝업창 외부를 클릭했을 때 팝업 숨기기
+        document.addEventListener("click", function (event) {
+            // 아이콘이나 팝업창이 아닌 다른 곳을 클릭했을 때
+            if (!popup.contains(event.target) && !icon.contains(event.target)) {
+                popup.style.display = "none";
+            }
+        });
+
+        // 삭제 버튼 클릭 시 확인 알림 창 표시
+        var deleteForm = document.getElementById("deleteForm");
+        deleteForm.addEventListener("submit", function (event) {
+            // 제출을 중지
+            event.preventDefault();
+
+            // 알림 창 표시
+            if (confirm("해당 카드뉴스는 휴지통으로 이동합니다. 휴지통에서 삭제해주세요")) {
+                // 확인을 클릭한 경우 폼 제출
+                deleteForm.submit();
+            }
+        });
+
+    });
+</script>
+
 
 <!-- 부트스트랩 JS 및 Popper.js, jQuery 스크립트 추가 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

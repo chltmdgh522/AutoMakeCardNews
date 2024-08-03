@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+    <title>A.M.C.N</title>
+    <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
+    <!-- Custom fonts for this template-->
+    <script src="https://kit.fontawesome.com/def66b134a.js" crossorigin="anonymous"></script>
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <style>
+
+        a {
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        a:hover {
+            text-decoration: none;
+            transform: scale(1.1);
+        }
+
+        .animation-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 50px; /* 원하는 높이로 조정하세요 */
+        }
+
+        .animate-text {
+            position: absolute;
+            right: 0;
+            animation: moveText 5s linear infinite; /* 원하는 애니메이션 지속 시간 및 타이밍 함수를 지정하세요 */
+        }
+
+        @keyframes moveText {
+            0% {
+                transform: translateX(100%);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(-100%);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+
+        .menu10 {
+            transition: transform 0.3s ease;
+        }
+
+        .menu10:hover {
+            transform: scale(1.1);
+
+            .menu-text {
+                color: white;
+                font-weight: bold;
+            }
+        }
+
+        a {
+            text-decoration: none
+        }
+    </style>
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <sidebar class="sidebar-pos">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-white sidebar bg-whisidebar-dark accordion" id="accordionSidebar">
+
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center " href="/">
+
+                <img src="/logo/AMCNicon.png" alt="로고" width="50" height="50">
+                <div class="sidebar-brand-text mx-3 text-dark" style="font-size:larger;">A.M.C.N</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0 border-dark">
+
+            <a href="/join" class="logout-button mt-5 ml-3"
+               style="color: black; font-weight: bold; text-decoration: none; "><span>회원가입</span></a>
+
+
+            <a href="/login" class="logout-button mt-5 ml-3"
+               style="color: black; font-weight: bold; text-decoration: none; "><span>로그인</span></a>
+        </ul>
+
+
+    </sidebar>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- header -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 header-border" id="header-pos">
+
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+
+
+                    <li class="nav-item dropdown no-arrow">
+
+                        <a class="nav-link dropdown-toggle" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">로그인 해주세요</span>
+                            <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </nav>
+
+            <!-- End of Topbar -->
+            <div style="background-color: white;">
+                <!-- Begin Page Content -->
+                <div class="container-fluid" id="contnet">
+
+
+                    <div class="mixed-color-box">
+                        <!-- 검색창 -->
+                        <div class="container mb-1">
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <!-- 추가한 문구 -->
+                                    <p class="text-center mt-2" style="font-size: 1.8em; color: white;">원하시는 카드뉴스를
+                                        검색해보세요!</p>
+                                    <form method="get" id="searchForm">
+                                        <div class="input-group mt-3 custom-search">
+                                            <!-- 왼쪽 아이콘 -->
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                            </div>
+                                            <!-- 검색창 -->
+                                            <input type="text" id="searchInput" class="form-control"
+                                                   placeholder="검색어를 입력하세요...">
+                                        </div>
+                                    </form>
+                                    <!-- 동그라미 아이콘들 -->
+                                    <div class="text-center mt-3 mb-1">
+                                        <!-- 첫 번째 그룹: 별 아이콘과 이미지 -->
+                                        <a href="/ai-image" style="text-decoration: none">
+                                            <div class="d-inline-block mr-5 menu10">
+                                                <span class="fa-stack fa-2x">
+                                                    <i class="fas fa-circle text-primary fa-stack-2x"></i>
+                                                    <i class="fas fa-star fa-stack-1x fa-inverse"></i> <!-- 별 아이콘 -->
+                                                </span>
+
+                                                <div class="mt-2" style="color: #4e73df">이미지 생성</div>
+                                            </div>
+                                        </a>
+
+                                        <!-- 두 번째 그룹: 문서 아이콘과 텍스트 -->
+                                        <a href="/news" style="text-decoration: none">
+                                            <div class="d-inline-block mr-5 menu10">
+                                                <span class="fa-stack fa-2x">
+                                                    <i class="fas fa-circle text-success fa-stack-2x"></i>
+                                                    <i class="far fa-file-alt fa-stack-1x fa-inverse"></i>
+                                                    <!-- 문서 아이콘 -->
+                                                </span>
+                                                <div class="mt-2" style="color: #1cc88a">뉴스</div>
+                                            </div>
+                                        </a>
+
+                                        <!-- 세 번째 그룹: 좋아요 아이콘과 텍스트 -->
+                                        <a href="/community" style="text-decoration: none">
+                                            <div class="d-inline-block mr-5 menu10">
+                                                <span class="fa-stack fa-2x">
+                                                    <i class="fas fa-circle text-warning fa-stack-2x"></i>
+                                                    <i class="far fa-thumbs-up fa-stack-1x fa-inverse"></i>
+                                                    <!-- 좋아요 아이콘 -->
+                                                </span>
+                                                <div class="mt-2" style="color: #f6c23e">소셜 미디어</div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="thema mt-3 mb-5" style="display: flex; justify-content: space-between;">
+                        <span style="color: black; font-weight: bold;">인기 테마</span>
+                        <a th:href="|/cardnews|">
+                            <span style="color: black; font-weight: bold;">더보기</span>
+                        </a>
+                    </div>
+
+                    <!-- 내용 -->
+                    <div class="swiper-container">
+
+
+                        <div class="swiper-wrapper" style="padding-bottom: 75px;">
+                            <div th:each="news : ${cardPop}" class="swiper-slide">
+                                <a th:href="|/cardnews/${news.cardNewsId}|">
+                                    <img th:src="|/ai/image/${news.imageUrl}|" th:alt="${news.title}" width="100px"
+                                         height="100px">
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Add Navigation Buttons -->
+                        <div class="swiper-button-prev" style="padding-bottom: 20px;"></div>
+                        <div class="swiper-button-next" style="padding-bottom: 20px;"></div>
+
+
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination"></div>
+
+                    </div>
+
+                    <div class="thema2 mt-5 mb-3">
+                        <span style="color: black; font-weight: bold;">최근 테마</span>
+                    </div>
+
+                    <div class="swiper-container myCardnews-swiper" style="margin-bottom: 20px;">
+                        <div class="swiper-wrapper" style="padding-bottom: 75px;">
+                            <div th:each="my : ${cardnews}" class="swiper-slide">
+                                <a th:href="|/cardnews/${my.cardNewsId}|">
+                                    <img th:src="|/ai/image/${my.imageUrl}|" alt="Image 1" width="100px" height="100px">
+
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="swiper-button-prev" style="padding-bottom: 20px;"></div>
+                        <div class="swiper-button-next" style="padding-bottom: 20px;"></div>
+
+                        <!-- Pagination -->
+                        <div class="swiper-pagination"></div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+
+    </div>
+
+
+</div>
+<!-- End of Content Wrapper -->
+
+
+</div>
+<!-- End of Page Wrapper -->
+
+
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
+
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- Initialize Swiper -->
+<script>
+    var swiper = new Swiper('.swiper-container:not(.myCardnews-swiper)', {
+        pagination: {
+            el: '.swiper-pagination',
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        slidesPerView: 5,
+        centeredSlides: true,
+        loop: true,
+        loopedSlides: 5,
+        autoplay: {
+            delay: 2000, // 3초 간격으로 슬라이드 넘김
+        },
+    });
+
+    var swiper2 = new Swiper('.myCardnews-swiper', {
+        pagination: {
+            el: '.swiper-pagination',
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        slidesPerView: 3,
+        centeredSlides: true,
+        loop: true,
+        loopedSlides: 3,
+        autoplay: {
+            delay: 3000, // 5초 간격으로 슬라이드 넘김
+        },
+    });
+</script>
+
+
+<script>
+    document.getElementById('searchForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // 폼의 기본 동작을 막음
+
+        const searchInput = document.getElementById('searchInput').value;
+        const baseUrl = '/cardnews?selected=인기&category=&title=';
+        const fullUrl = baseUrl + encodeURIComponent(searchInput);
+
+        window.location.href = fullUrl; // 해당 URL로 이동
+    });
+</script>
+</body>
+</html>

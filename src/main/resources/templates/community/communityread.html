@@ -20,10 +20,43 @@
 
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <style>
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-menu a, .dropdown-menu form {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-menu a:hover, .dropdown-menu form:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu form {
+            margin: 0;
+        }
         /* 폼 스타일 */
         .form-group {
             margin-bottom: 1rem;
@@ -34,18 +67,29 @@
             margin-bottom: .5rem;
         }
 
+        textarea {
+
+            /* 원하는 높이로 조정 */
+            resize: none;
+            /* 사용자가 크기 조절하지 못하도록 설정 */
+            width: 100%;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            border: none;
+        }
+
         .form-group input[type="text"],
         .form-group textarea {
             width: 100%;
             padding: .375rem .75rem;
             font-size: 1rem;
-            border: 1px solid #ced4da;
+            border: none;
             border-radius: .25rem;
             transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
         }
 
         .form-group textarea {
-            height: 150px;
+
             /* 원하는 높이로 조정 */
             resize: none;
             /* 사용자가 크기 조절하지 못하도록 설정 */
@@ -104,12 +148,13 @@
                                     <i class="fas fa-greater-than" style="font-size: 11px;"></i>
                                 </div>
                                 <div>
-                                    <span style="font-size: 13px; font-weight: 600; color: gray;" th:text="${board.category}">&nbsp;스포츠</span>
+                                    <span style="font-size: 13px; font-weight: 600; color: gray;"
+                                          th:text="${board.category}">&nbsp;스포츠</span>
                                 </div>
                             </div>
-                            <div >
+                            <div>
                                     <textarea th:text="${board.title}" style="font-size: 30px; font-weight: 600;
-                                                                  color: black;">&nbsp;Test
+                                                                  color: black;" class="dynamic-textarea" rows="1">&nbsp;Test
                                         제목</textarea>
                             </div>
                             <div style="margin-left: 10px;">
@@ -117,31 +162,38 @@
                             <div style="display: flex; margin-left: 9px; margin-top: 9px;">
 
                                 <div class="icon">
-                                        <span th:text="${board.member.name}" style="font-size: 12px; font-weight: 600; color: black;">&nbsp;
+                                        <span th:text="${board.member.name}"
+                                              style="font-size: 12px; font-weight: 600; color: black;">&nbsp;
                                             최승호 |</span>
 
                                     <span th:text="${board.createdDate}"
-                                            style="font-size: 13px; font-weight: 600; color: black;">&nbsp;2024.01.11&nbsp;</span>
+                                          style="font-size: 13px; font-weight: 600; color: black;">&nbsp;2024.01.11&nbsp;</span>
                                 </div>
                                 <div class="icon" style="margin-left: 10px;">
                                     <i class="far fa-eye visitor-icon" style="color: black;"></i> <!-- 방문자 아이콘 -->
-                                    <span style="font-size: 13px; font-weight: 600; color: black;" th:text="${board.viewCount}">3&nbsp;</span>
+                                    <span style="font-size: 13px; font-weight: 600; color: black;"
+                                          th:text="${board.viewCount}">3&nbsp;</span>
                                 </div>
                                 <div class="icon" style="margin-left: 10px;">
                                     <i class="far fa-comment" style="color: black;"></i> <!-- 댓글 아이콘 -->
-                                    <span style="font-size: 13px; font-weight: 600; color: black;" >3&nbsp;</span>
+                                    <span style="font-size: 13px; font-weight: 600; color: black;"
+                                          th:text="${listComment.size()}">3&nbsp;</span>
                                 </div>
-                                <div style="display: flex; margin-left: 5px;">
+                                <div style="display: flex; margin-left: 10px;" th:if="${member.memberId == board.member.memberId}">
                                     <div class="dropdown" style="position: relative;">
-                                        <button class="btn btn-secondary dropdown-toggle1" type="button" id="dropdownMenuButton" aria-expanded="false"
-                                                style="background-color: white; border-color: #cccccc;
-                                             color: black; width: 160px;" title="더보기">
+                                        <button class="btn btn-secondary dropdown-toggle1" type="button"
+                                                id="dropdownMenuButton" aria-expanded="false"
+                                                style="background-color: white; border-color: #cccccc; color: black; width: 160px;" title="더보기">
                                             <span> <i class="fas fa-cog"></i></span>
                                         </button>
                                         <ul class="dropdown-menu menu2" aria-labelledby="dropdownMenuButton" style="font-size: 12px;">
-
-                                            <li><a class="dropdown-item" href="#" style="font-weight: bold;">수정</a></li>
-                                            <li><a class="dropdown-item" href="#" style="font-weight: bold;">삭제</a></li>
+                                            <li><a class="dropdown-item" th:href="@{/community/edit/{id}(id=${board.boardId})}" style="font-weight: bold;">수정</a></li>
+                                            <li>
+                                                <form id="deleteForm" th:action="@{/community/delete/{id}(id=${board.boardId})}" method="POST">
+                                                    <button type="submit" class="dropdown-item" style="font-weight: bold; background: none; border: none;
+                                                    padding: 0; cursor: pointer; color: red;">삭제</button>
+                                                </form>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -150,9 +202,9 @@
 
 
                             <hr>
-                            <div  style="margin-left: 14px;   color: black;">
+                            <div style="margin-left: 14px;   color: black;">
                                 <div class="post-content">
-                                    <textarea th:text="${board.substance}">
+                                    <textarea th:text="${board.substance}" class="dynamic-textarea" rows="1">
                                         여기에는 게시글의 내용이 들어갑니다. Lorem ipsum dolor sit amet, consectetur adipiscing
                                         elit.
                                         Nulla vitae nisi nec est pulvinar congue non non enim. Curabitur interdum
@@ -171,26 +223,30 @@
                             <div style="display: flex; margin-left: 9px; margin-top: 9px;">
 
 
-                                <div class="icon" style="margin-left: 8px;">
-                                    <i class="far fa-thumbs-up" style="color: black;"></i> <!-- 좋아요 아이콘 -->
-                                    <span style="font-size: 13px; font-weight: 600; color: black;">3&nbsp;</span>
+                                <div class="icon" id="likes" name="likes" style="margin-left: 8px; cursor: pointer;">
+                                    <i id="likeIcon"
+                                       th:class="${boardlikes == 'O'} ? 'far fa-thumbs-up like-icon' : 'fas fa-thumbs-up like-icon'"
+                                       style="color: black"></i>
+                                    <span style="font-size: 13px; font-weight: 600; color: black;" id="boardLike2"
+                                          th:text="${boardLike}">3&nbsp;</span>
                                 </div>
                                 <div class="icon" style="margin-left: 10px;">
                                     <i class="far fa-comment" style="color: black;"></i> <!-- 댓글 아이콘 -->
-                                    <span style="font-size: 13px; font-weight: 600; color: black;">3&nbsp;</span>
+                                    <span style="font-size: 13px; font-weight: 600; color: black; "
+                                          th:text="${listComment.size()}">3&nbsp;</span>
                                 </div>
 
                             </div>
                             <hr>
                             <div class="ml-3">
-                                <h6 style="color: black;">댓글 3</h6>
-                                <form>
+                                <h6 style="color: black;" th:text="|댓글 ${listComment.size()}|">댓글 3</h6>
+                                <form th:action="@{/comment/{id}(id=${board.boardId})}" th:object="${comment}"
+                                      method="post">
                                     <div class="input-group">
-
                                         <textarea class="form-control custom-textarea" style=" border: 1px solid black;  border-radius: 8px;
 
                                         padding: .375rem .75rem;" rows="2"
-                                                  placeholder="댓글을 입력하세요" required></textarea>
+                                                  placeholder="댓글을 입력하세요" required th:field="*{substance}"></textarea>
                                         <div class="input-group-append" style="margin-left: 5px;">
                                             <button type="submit" class="btn btn-dark">댓글 남기기</button>
                                         </div>
@@ -199,8 +255,7 @@
                             </div>
 
 
-                            <div class="container mt-1" style="margin-right: 50px;">
-
+                            <div class="container mt-1" style="margin-right: 50px;" th:each="list : ${listComment}">
 
                                 <li class="list-group-item border-0">
                                     <a style="color: black;">
@@ -209,81 +264,38 @@
                                             <div>
                                                 <img class="rounded-circle" style="color: black;"
                                                      width="30"
-                                                     height="30" />
+                                                     height="30"/>
                                             </div>
                                             <div style="margin: 10px;">
-                                                    <span style="font-size: 13px; font-weight: 600; color: black;">최승호
+                                                    <span style="font-size: 13px; font-weight: 600; color: black;"
+                                                          th:text="${list.member.name}">최승호
                                                         &nbsp;</span>
                                             </div>
-                                            <div style="margin: 10px -10px;">
-                                                    <span style="font-size: 13px; font-weight: 600; color: red;">작성자
+                                            <div style="margin: 10px -10px;"
+                                                 th:if="${list.member.memberId == board.member.memberId}">
+                                                    <span style="font-size: 13px; font-weight: 600; color: red;">&nbsp; 작성자
                                                         &nbsp;</span>
                                             </div>
 
                                         </div>
                                     </a>
                                     <div class="mt-2"></div>
-                                    <p style="font-weight: bold; color: black;">안녕하세요 반가워요</p>
+                                    <textarea style="font-weight: bold; color: black;" th:text="${list.substance}"
+                                              class="dynamic-textarea" rows="1">안녕하세요 반가워요</textarea>
                                     <div class="icon">
                                         <i class="far fa-clock" style="color: black;"></i> <!-- 시간 아이콘 -->
                                         <span
-                                                style="font-size: 13px; font-weight: 600; color: black;">&nbsp;2024.01.11&nbsp;</span>
+                                                style="font-size: 13px; font-weight: 600; color: black;"
+                                                th:text="${list.date}">&nbsp;2024.01.11&nbsp;</span>
                                     </div>
                                 </li>
-                                <li class="list-group-item border-0">
-                                    <a style="color: black;">
 
-                                        <div style="display: flex;">
-                                            <div>
-                                                <img class="rounded-circle" style="color: black;"
-                                                      width="30"
-                                                     height="30" />
-                                            </div>
-                                            <div style="margin: 10px;">
-                                                    <span style="font-size: 13px; font-weight: 600; color: black;">최승호1
-                                                        &nbsp;</span>
-                                            </div>
-
-
-                                        </div>
-                                    </a>
-                                    <div class="mt-2"></div>
-                                    <p style="font-weight: bold; color: black;">안녕하세요 반가워요1212312</p>
-                                    <div class="icon">
-                                        <i class="far fa-clock" style="color: black;"></i> <!-- 시간 아이콘 -->
-                                        <span
-                                                style="font-size: 13px; font-weight: 600; color: black;">&nbsp;2024.01.11&nbsp;</span>
-                                    </div>
-                                </li>
-                                <li class="list-group-item border-0">
-                                    <a style="color: black;">
-
-                                        <div style="display: flex;">
-                                            <div>
-                                                <img class="rounded-circle" style="color: black;"
-                                             width="30"
-                                                     height="30" />
-                                            </div>
-                                            <div style="margin: 10px;">
-                                                    <span style="font-size: 13px; font-weight: 600; color: black;">최승호2
-                                                        &nbsp;</span>
-                                            </div>
-
-
-                                        </div>
-                                    </a>
-                                    <div class="mt-2"></div>
-                                    <p style="font-weight: bold; color: black;">안녕하세요 반가워요1212312</p>
-                                    <div class="icon">
-                                        <i class="far fa-clock" style="color: black;"></i> <!-- 시간 아이콘 -->
-                                        <span
-                                                style="font-size: 13px; font-weight: 600; color: black;">&nbsp;2024.01.11&nbsp;</span>
-                                    </div>
-                                </li>
 
                             </div>
                             <div></div>
-
+                            <div style="display: none">
+                                <span id="boardId" name="boardId" th:text="${board.boardId}">1</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -292,29 +304,110 @@
 
 
         </div>
-        <!-- End of Content Wrapper -->
-
-
     </div>
-    <!-- End of Page Wrapper -->
+    <!-- End of Content Wrapper -->
 
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</div>
+<!-- End of Page Wrapper -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownButton = document.querySelector('.dropdown-toggle1');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+        const deleteForm = document.getElementById('deleteForm');
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        dropdownButton.addEventListener('click', function (event) {
+            event.stopPropagation();
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+        document.addEventListener('click', function (event) {
+            if (!dropdownButton.contains(event.target)) {
+                dropdownMenu.style.display = 'none';
+            }
+        });
 
+        deleteForm.addEventListener('submit', function (event) {
+            if (confirm('정말 삭제하시겠습니까?')) {
+                alert('삭제되었습니다.');
+                // 실제 삭제 처리를 수행하는 코드 추가
+            } else {
+                alert('삭제가 취소되었습니다.');
+            }
+        });
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Swiper JS -->
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <!-- Initialize Swiper -->
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- Initialize Swiper -->
+<script>
+    var bookIcon = document.getElementById('likeIcon');
+
+    $(document).ready(function () {
+        // 뉴스 스크랩
+        $("#likes").click(function () {
+            console.log("gd");
+            $.ajax({
+                type: "POST",
+                url: "/board-like",
+                data: {
+                    "boardId": $("#boardId").text()
+                },
+                success: function (data) {
+                    $("#boardLike2").text(data)
+                    updateHeartIcon();
+                }
+            })
+        });
+    });
+
+    function updateHeartIcon() {
+        if (bookIcon.classList.contains('far')) {
+            bookIcon.classList.remove('far');
+            bookIcon.classList.add('fas');
+            // 여기서 상태를 서버에 저장하거나 처리하는 로직을 추가할 수 있습니다.
+        } else {
+            bookIcon.classList.remove('fas');
+            bookIcon.classList.add('far');
+            // 여기서 상태를 서버에 저장하거나 처리하는 로직을 추가할 수 있습니다.
+        }
+    }
+
+</script>
+<script>
+    function autoHeight(textarea) {
+        textarea.style.height = 'auto'; // 높이를 초기화하여 콘텐츠에 맞게 조정할 준비
+        textarea.style.height = `${textarea.scrollHeight}px`; // 콘텐츠에 맞게 높이 조정
+    }
+
+    // 페이지 로드 시 높이 조정
+    window.addEventListener('load', function () {
+        const textareas = document.getElementsByClassName('dynamic-textarea');
+        for (let textarea of textareas) {
+            autoHeight(textarea);
+        }
+    });
+
+    // 사용자가 텍스트를 수정할 때 높이 조정
+    document.addEventListener('input', function (event) {
+        if (event.target.classList.contains('dynamic-textarea')) {
+            autoHeight(event.target);
+        }
+    });
+
+</script>
 
 </body>
 
