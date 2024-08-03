@@ -666,7 +666,24 @@ backColor.addEventListener('change', onBColorChange);
 
 function onKeyboard(event) {
     switch (event.keyCode) {
-
+        case 81:
+            onDraw();
+            break;
+        case 87:
+            onBrush();
+            break;
+        case 69:
+            onErase();
+            break;
+        case 65:
+            onSquare();
+            break;
+        case 83:
+            onTriangle();
+            break;
+        case 68:
+            onCircle();
+            break;
         case 90:
             if (event.ctrlKey) {
                 onReturn();
