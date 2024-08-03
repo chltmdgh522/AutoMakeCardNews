@@ -696,7 +696,7 @@ function onKeyboard(event) {
     }
 }
 
-inputImage.addEventListener('change', onImg);
+//inputImage.addEventListener('change', onImg);
 resetBtn.addEventListener('click', onReset);
 save.addEventListener('click', onSave);
 document.addEventListener('keydown', onKeyboard);
@@ -1127,6 +1127,7 @@ canvas.addEventListener('mousedown', onMouseDown);
 canvas.addEventListener('mouseup', onMouseUp);
 canvas.addEventListener('mouseleave', onMouseUp);
 brush.addEventListener('click', function () {
+    console.log("gd")
     onBrush();
     redrawCanvas();
 });
