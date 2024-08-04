@@ -23,7 +23,7 @@ public class CardNewsService {
     @Value("${openai.key}")
     private String openaiApiKey;
 
-    public String generatePictureV2(String prompt) throws IOException, InterruptedException {
+    public String generatePictureV2(String prompt) throws IOException, InterruptedException{
         String url = "https://api.openai.com/v1/images/generations";
 
         // JSON 문자열 생성
@@ -42,8 +42,14 @@ public class CardNewsService {
 
         // 응답 본문에서 URL 추출
         String responseBody = response.body();
-        int startIndex = responseBody.indexOf("https://"); // URL이 "https://"로 시작함
-        int endIndex = responseBody.indexOf("\"", startIndex); // URL이 큰 따옴표로 끝남
+        int startIndex = responseBody.indexOf("https://");
+        if (startIndex == -1) {
+            throw new RuntimeException("URL이 응답 본문에 포함되어 있지 않습니다.");
+        }
+        int endIndex = responseBody.indexOf("\"", startIndex);
+        if (endIndex == -1) {
+            throw new RuntimeException("URL의 끝을 찾을 수 없습니다.");
+        }
         String imageUrl = responseBody.substring(startIndex, endIndex);
 
         log.info(response.body());

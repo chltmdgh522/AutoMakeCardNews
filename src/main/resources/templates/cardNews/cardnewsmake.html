@@ -416,8 +416,6 @@
 <script>
     $(document).ready(function () {
         $("#imageButton").click(function () {
-            // alert("이미지를 생성하는데에 있어서 시간이 약 20초 정도 소요됩니다. \n 잠시만 기다려주세요.");
-
             // 오버레이 표시
             $(".overlay").css("display", "flex");
 
@@ -430,6 +428,9 @@
                 success: function (data) {
                     setBackgroundImage(data);
                 },
+                error: function (xhr, status, error) {
+                    alert("이미지 생성 중 오류가 발생했습니다: " + xhr.responseText);
+                },
                 complete: function () {
                     // 오버레이 숨김
                     $(".overlay").hide();
@@ -438,9 +439,7 @@
         });
     });
 
-
 </script>
-
 </body>
 
 </html>

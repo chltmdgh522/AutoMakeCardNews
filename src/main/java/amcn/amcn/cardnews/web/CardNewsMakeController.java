@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -174,23 +176,27 @@ public class CardNewsMakeController {
 
     @PostMapping("/image-create")
     @ResponseBody
-    public String generateImage(@RequestParam String prompt, Model model,
-                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+    public ResponseEntity<String> generateImage(@RequestParam String prompt, Model model,
+                                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                 Member loginMember)
             throws IOException, InterruptedException {
-        String url = cardNewsService.
-                generatePictureV2(prompt);
+        try {
+            String url = cardNewsService.generatePictureV2(prompt);
+            String path = fileService.saveImageFromUrl(url);
 
-        String path = fileService.saveImageFromUrl(url);
+            log.info(path);
+            String replace = path.replace('\\', '/');
+            String substring_path = replace.substring(56);
+            log.info(substring_path);
 
-        log.info(path);
-        String replace = path.replace('\\', '/');
-        String substring_path = replace.substring(56);
-        log.info(substring_path);
-        loginMember.setOriginalUrl(substring_path);
-        loginMember.setAiImg(true);
-        memberRepository.updateUrl(loginMember);
-        return substring_path;
+            loginMember.setOriginalUrl(substring_path);
+            loginMember.setAiImg(true);
+            memberRepository.updateUrl(loginMember);
+
+            return ResponseEntity.ok(substring_path);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("특정 인물은 보안 때문에 AI가 생성을 못합니다.");
+        }
     }
 
     @PostMapping("/uploadImage")
