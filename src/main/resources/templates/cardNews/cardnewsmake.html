@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/css/style_em.css">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
+    <!-- Google Fonts 링크 추가 -->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR&family=Do+Hyeon&family=Gugi&family=Jua&family=Black+Han+Sans&family=Gamja+Flower&family=Dokdo&family=Sunflower:wght@300;500;700&family=Poor+Story&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
@@ -32,7 +34,7 @@
 
 <body>
 <header id="header">
-    <a href="/">
+    <a href="/" style="text-decoration: none">
         <!--    <img src="/logo/AMCNicon.png" alt="">-->
         <p id="yamlogo">AMCN</p>
     </a>
@@ -47,18 +49,7 @@
                     <span class="tooltip">Pen(Q)</span>
                 </button>
             </li>
-            <li>
-                <button id="brush" class="tool">
-                    🖌
-                    <span class="tooltip">Brush(W)</span>
-                </button>
-            </li>
-            <li>
-                <button id="eraser" class="tool">
-                    ✏
-                    <span class="tooltip">Eraser(E)</span>
-                </button>
-            </li>
+
             <li>
                 <button id="square" class="tool">
                     □
@@ -78,18 +69,7 @@
                     <span class="tooltip">Filter(D)</span>
                 </button>
             </li>
-            <li>
-                <button id="circle" class="tool">
-                    ○
-                    <span class="tooltip">Circle(D)</span>
-                </button>
-            </li>
-            <li>
-                <button id="return_button" class="tool">
-                    ↩
-                    <span class="tooltip">Undo(Ctrl+Z)</span>
-                </button>
-            </li>
+
             <li>
                 <button id="reset" class="tool">
                     🗑
@@ -191,15 +171,22 @@
                 <h3 style="font-weight: bold">텍스트 추가</h3>
                 <textarea id="textInput" placeholder="텍스트 입력"></textarea>
                 <input type="color" id="textColorPicker" value="#000000">
-                <input type="number" id="textSizeInput" placeholder="텍스트 크기" min="10" max="100" value="20">
+                <input type="number" id="textSizeInput" placeholder="텍스트 크기" min="10" max="100" value="40">
                 <select id="fontWeightSelect">
                     <option value="normal">Normal</option>
                     <option value="bold">Bold</option>
                 </select>
                 <select id="fontFamilySelect">
-                    <option value="Arial">Arial</option>
-                    <option value="Courier">Courier</option>
-                    <!-- 추가 폰트 옵션들 -->
+                    <option value="Nanum Gothic">Nanum Gothic</option>
+                    <option value="Noto Sans KR">Noto Sans KR</option>
+                    <option value="Do Hyeon">Do Hyeon</option>
+                    <option value="Gugi">Gugi</option>
+                    <option value="Jua">Jua</option>
+                    <option value="Black Han Sans">Black Han Sans</option>
+                    <option value="Gamja Flower">Gamja Flower</option>
+                    <option value="Dokdo">Dokdo</option>
+                    <option value="Sunflower">Sunflower</option>
+                    <option value="Poor Story">Poor Story</option>
                 </select>
                 <button id="addTextButton">텍스트 추가</button>
 
@@ -235,9 +222,16 @@
     </div>
     <div style="margin-bottom: 10px;">
         <select id="popupFontFamilySelect" style="padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
-            <option value="Arial">Arial</option>
-            <option value="Courier">Courier</option>
-            <!-- 추가 폰트 옵션들 -->
+            <option value="Nanum Gothic">Nanum Gothic</option>
+            <option value="Noto Sans KR">Noto Sans KR</option>
+            <option value="Do Hyeon">Do Hyeon</option>
+            <option value="Gugi">Gugi</option>
+            <option value="Jua">Jua</option>
+            <option value="Black Han Sans">Black Han Sans</option>
+            <option value="Gamja Flower">Gamja Flower</option>
+            <option value="Dokdo">Dokdo</option>
+            <option value="Sunflower">Sunflower</option>
+            <option value="Poor Story">Poor Story</option>
         </select>
     </div>
     <button id="updateTextButton">업데이트</button>

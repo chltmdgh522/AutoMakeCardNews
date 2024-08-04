@@ -7,13 +7,10 @@ const resetBtn = document.getElementById('reset');
 const inputImage = document.getElementById('file');
 const save = document.getElementById('save');
 const drawing = document.getElementById('drawing');
-const eraser = document.getElementById('eraser');
-const brush = document.getElementById('brush');
 const canvasWidth = document.getElementById('canvas_width');
 const canvasHeight = document.getElementById('canvas_height');
 const square = document.getElementById('square');
 const fill_square = document.getElementById('fill_square');
-const circle = document.getElementById('circle');
 
 const fillSquareButton = document.getElementById('filter');
 const filterPopup = document.getElementById('filterPopup5');
@@ -189,7 +186,9 @@ function redrawCanvas(filter = currentFilter) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-    filterLastValue=currentFilter;
+    filterLastValue = filter;
+
+    console.log(filterLastValue+"asdfasdfasdfasdf");
     let finalcolor = backgroundColor;
 
     // 배경색 설정
@@ -847,13 +846,9 @@ function onErase() {
 
 function onDraw() {
     isDrawing = !isDrawing;
-    isBrushing = false;
-    isErasing = false;
     isfill_square = false;
     issquare = false;
     drawing.style.backgroundColor = isDrawing ? 'gray' : '#171717';
-    brush.style.backgroundColor = '#171717';
-    eraser.style.backgroundColor = '#171717';
     square.style.backgroundColor = '#171717';
     fill_square.style.backgroundColor = '#171717';
 
@@ -888,13 +883,9 @@ function onColorChange(event) {
 
 function onDelete() {
     isDrawing = false;
-    isBrushing = false;
-    isErasing = false;
     isfill_square = false;
     issquare = false;
     drawing.style.backgroundColor = '#171717';
-    brush.style.backgroundColor = '#171717';
-    eraser.style.backgroundColor = '#171717';
     square.style.backgroundColor = '#171717';
     fill_square.style.backgroundColor = '#171717';
 
@@ -904,16 +895,12 @@ function onDelete() {
         onReset();
     }
 }
-
 function onSquare() {
     issquare = !issquare;
     isfill_square = false;
-    isBrushing = false;
-    isErasing = false;
+
     isDrawing = false;
     square.style.backgroundColor = issquare ? 'gray' : '#171717';
-    brush.style.backgroundColor = '#171717';
-    eraser.style.backgroundColor = '#171717';
     drawing.style.backgroundColor = '#171717';
     fill_square.style.backgroundColor = '#171717';
 
@@ -924,14 +911,11 @@ function onSquare() {
 function onFill_square() {
     isfill_square = !isfill_square;
     issquare = false;
-    isBrushing = false;
-    isErasing = false;
+
     isDrawing = false;
 
     fill_square.style.backgroundColor = isfill_square ? 'gray' : '#171717';
     square.style.backgroundColor = '#171717';
-    brush.style.backgroundColor = '#171717';
-    eraser.style.backgroundColor = '#171717';
     drawing.style.backgroundColor = '#171717';
 
 }
@@ -1131,15 +1115,7 @@ canvas.addEventListener('mousemove', onMouseMove);
 canvas.addEventListener('mousedown', onMouseDown);
 canvas.addEventListener('mouseup', onMouseUp);
 canvas.addEventListener('mouseleave', onMouseUp);
-brush.addEventListener('click', function () {
-    console.log("gd")
-    onBrush();
-    redrawCanvas();
-});
-eraser.addEventListener('click', function () {
-    onErase();
-    redrawCanvas();
-});
+
 drawing.addEventListener('click', function () {
     onDraw();
     redrawCanvas();
