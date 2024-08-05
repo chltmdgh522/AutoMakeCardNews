@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 
+
 //@Component
 @RequiredArgsConstructor
 public class DataInitializer2 {
