@@ -24,6 +24,14 @@
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <style>
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        a:hover{
+            text-decoration: none;
+            color: blue;
+        }
         /* 커스텀 스타일 */
         .card {
             margin-bottom: 20px;
@@ -85,27 +93,27 @@
                 <ul class="nav nav-tabs mt-3" id="activityTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts"
-                                type="button" role="tab" aria-controls="posts" aria-selected="false">Posts
+                                type="button" role="tab" aria-controls="posts" aria-selected="false">게시물
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="likes-tab" data-bs-toggle="tab" data-bs-target="#likes"
-                                type="button" role="tab" aria-controls="likes" aria-selected="false">Likes
+                                type="button" role="tab" aria-controls="likes" aria-selected="false">게시물 공감
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments"
-                                type="button" role="tab" aria-controls="comments" aria-selected="false">Comments
+                                type="button" role="tab" aria-controls="comments" aria-selected="false">댓글
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="scraps-tab" data-bs-toggle="tab" data-bs-target="#scraps"
-                                type="button" role="tab" aria-controls="scraps" aria-selected="false">Scraps
+                                type="button" role="tab" aria-controls="scraps" aria-selected="false">뉴스 스크랩
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="news-tab" data-bs-toggle="tab" data-bs-target="#news" type="button"
-                                role="tab" aria-controls="news" aria-selected="false">News
+                                role="tab" aria-controls="news" aria-selected="false">뉴스 게시물
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -127,15 +135,17 @@
                     <div class="tab-pane fade" id="posts" role="tabpanel" aria-labelledby="posts-tab">
                         <div class="row mt-3">
                             <!-- Example Post Card -->
-                            <div class="col-md-4">
+                            <div class="col-md-4" th:each="board : ${postBoard} ">
                                 <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Post Title</h5>
-                                        <p class="card-text">Brief description of the post content.</p>
-                                        <button class="btn btn-primary"><i class="icon bi bi-heart"></i> Like</button>
-                                        <button class="btn btn-secondary"><i class="icon bi bi-chat"></i> Comment
-                                        </button>
-                                    </div>
+                                    <a th:href="|/community/${board.boardId}|">
+                                        <div class="card-body">
+                                            <h5 class="card-title" th:text="${board.title}">Post Title</h5>
+                                            <p class="card-text" th:text="${board.substance}">Brief description of the post content.</p>
+                                            <button class="btn btn-primary" th:text="|Like ${board.likes.size()}|"><i class="icon bi bi-heart"></i> Like</button>
+                                            <button class="btn btn-secondary" th:text="|댓글 ${board.comments.size()}|"><i class="icon bi bi-chat"></i> Comment
+                                            </button>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                             <!-- Repeat as needed -->
@@ -146,14 +156,17 @@
                     <div class="tab-pane fade" id="likes" role="tabpanel" aria-labelledby="likes-tab">
                         <div class="row mt-3">
                             <!-- Example Liked Content Card -->
-                            <div class="col-md-4">
+                            <div class="col-md-4" th:each="likeboard : ${likeBoards}">
                                 <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Liked Content Title</h5>
-                                        <p class="card-text">Brief description of the liked content.</p>
-                                        <button class="btn btn-secondary"><i class="icon bi bi-chat"></i> Comment
-                                        </button>
-                                    </div>
+                                    <a th:href="|/community/${likeboard.boardId}|">
+                                        <div class="card-body">
+                                            <h5 class="card-title" th:text="${likeboard.title}">Liked Content Title</h5>
+                                            <p class="card-text" th:text="${likeboard.substance}">Brief description of the liked content.</p>
+                                            <button class="btn btn-secondary" th:text="|댓글 ${likeboard.comments.size()}|"><i class="icon bi bi-chat"></i>
+                                                Comment
+                                            </button>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                             <!-- Repeat as needed -->
@@ -164,13 +177,16 @@
                     <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
                         <div class="row mt-3">
                             <!-- Example Commented Content Card -->
-                            <div class="col-md-4">
+                            <div class="col-md-4" th:each="comment : ${commentBoard}">
                                 <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Commented Content Title</h5>
-                                        <p class="card-text">Brief description of the content with comments.</p>
-                                        <button class="btn btn-primary"><i class="icon bi bi-heart"></i> Like</button>
-                                    </div>
+                                    <a th:href="|/community/${comment.board.boardId}|">
+                                        <div class="card-body">
+                                            <h5 class="card-title" th:text="${comment.board.title}">Commented Content Title</h5>
+                                            <p class="card-text" th:text="${comment.substance}">Brief description of the content with comments.</p>
+                                            <button class="btn btn-primary" th:text="|Like ${comment.board.likes.size()}|"><i class="icon bi bi-heart"></i> Like
+                                            </button>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                             <!-- Repeat as needed -->
@@ -223,14 +239,14 @@
                             <div class="col-md-4" th:each="heart :${heartCardNews}">
                                 <div class="card">
                                     <a th:href="|/cardnews/${heart.cardNewsId}|">
-                                    <img th:src="|/ai/image/${heart.imageUrl}|" class="card-img-top" alt="Card News Image">
-                                    <div class="card-body">
-                                        <h5 class="card-title" th:text="${heart.title}">Card News Title</h5>
-                                        <p class="card-text" th:text="${heart.content}">Brief summary of the card news content. Includes engaging
-                                            visuals.</p>
-                                        <button class="btn btn-primary"><i class="icon bi bi-heart"></i> Like</button>
-                                        </button>
-                                    </div>
+                                        <img th:src="|/ai/image/${heart.imageUrl}|" class="card-img-top" alt="Card News Image">
+                                        <div class="card-body">
+                                            <h5 class="card-title" th:text="${heart.title}">Card News Title</h5>
+                                            <p class="card-text" th:text="${heart.content}">Brief summary of the card news content. Includes engaging
+                                                visuals.</p>
+                                            <button class="btn btn-primary"><i class="icon bi bi-heart"></i> Like</button>
+                                            </button>
+                                        </div>
                                     </a>
                                 </div>
                             </div>
@@ -248,11 +264,11 @@
 
                                     <div class="card" th:each="fork : ${forkCardNews}">
                                         <a th:href="|/cardnews/${fork.cardNewsId}|">
-                                        <img th:src="|/ai/image/${fork.imageUrl}|" class="card-img-top" alt="Card News Image">
-                                        <div class="card-body">
-                                            <h5 class="card-title" th:text="${fork.title}">Card News Title</h5>
-                                            <p class="card-text" th:text="${fork.content}">Brief summary of the card news content. Includes engaging visuals.</p>
-                                                 </div>
+                                            <img th:src="|/ai/image/${fork.imageUrl}|" class="card-img-top" alt="Card News Image">
+                                            <div class="card-body">
+                                                <h5 class="card-title" th:text="${fork.title}">Card News Title</h5>
+                                                <p class="card-text" th:text="${fork.content}">Brief summary of the card news content. Includes engaging visuals.</p>
+                                            </div>
                                         </a>
                                     </div>
 
