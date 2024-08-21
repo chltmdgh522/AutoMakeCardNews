@@ -5,6 +5,7 @@ import amcn.amcn.cardnews.repository.CardNewsRepository;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,13 +22,16 @@ import java.util.Optional;
 public class HomeController {
     private final MemberRepository memberRepository;
     private final CardNewsRepository cardNewsRepository;
-
+    private final Dotenv dotenv;
 
     @GetMapping("/")
     public String home(Model model,
                        @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                        Member loginMember) {
 
+        String apiKey = dotenv.get("OPENAI_API_KEY");
+
+        log.info(apiKey);
         List<CardNews> newAll = cardNewsRepository.findNewAll();
         List<CardNews> popAll = cardNewsRepository.findPopAll();
 
