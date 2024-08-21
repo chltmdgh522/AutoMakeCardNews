@@ -68,6 +68,9 @@
 </head>
 
 <body id="page-top">
+<div id="loadingMessage" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.8); color: white; padding: 20px; border-radius: 10px; z-index: 9999;">
+    현재 뉴스 요약문 생성 중입니다. 잠시만 기다려주세요.
+</div>
 
 <!-- Page Wrapper -->
 <div id="wrapper" th:object="${member}">
@@ -163,7 +166,12 @@
 </div>
     <script>
         function showAlert() {
-            alert('뉴스 작성이 완료되었습니다. 요약문이 생성되는데에 시간이 좀 걸립니다. 잠시만 기다려주세요');
+
+            // 화면 중앙에 메시지를 표시
+            document.getElementById('loadingMessage').style.display = 'block';
+
+            // 화면 잠금
+            document.body.style.pointerEvents = 'none';
         }
     </script>
     <script>
