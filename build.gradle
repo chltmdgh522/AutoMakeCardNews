@@ -58,6 +58,9 @@ dependencies {
 	//gif
 	implementation 'com.madgag:animated-gif-lib:1.4'
 
+	//env
+	implementation 'io.github.cdimascio:java-dotenv:5.2.2'
+
 
 	//소셜
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
