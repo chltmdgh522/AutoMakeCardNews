@@ -10,10 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class AmcnApplication {
 
 	public static void main(String[] args) {
-		// Load the .env file
+		// env
 		Dotenv dotenv = Dotenv.load();
-
-		// Set the environment variables as system properties
 		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
 
 		// Run the Spring Boot application

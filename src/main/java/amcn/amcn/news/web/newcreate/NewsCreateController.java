@@ -74,7 +74,7 @@ public class NewsCreateController {
     }
 
 
-    private static String summary_py(String content) {
+    private String summary_py(String content) {
         String[] command = {
                 "C:/Users/chltm/Github/amcn/src/main/java/amcn/amcn/python/pythonai/venv/Scripts/python.exe",
                 "C:/Users/chltm/Github/amcn/src/main/java/amcn/amcn/Python/pythonAI/summary/main/runmain.py",
