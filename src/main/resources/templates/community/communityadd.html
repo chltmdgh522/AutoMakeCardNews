@@ -52,17 +52,7 @@
             /* 사용자가 크기 조절하지 못하도록 설정 */
         }
 
-        /* Quill 에디터 스타일 */
-        .quill-editor {
-            border: 1px solid #ced4da;
-            border-radius: .25rem;
-            box-shadow: 0 0 0 rgba(0, 0, 0, 0.125);
-        }
 
-        /* Quill 에디터 내 높이 설정 */
-        .quill-editor .ql-editor {
-            min-height: 300px;
-        }
 
         /* input, textarea 포커스 시 그림자 제거 */
         input:focus,
@@ -91,6 +81,60 @@
         .editor-container .hidden-input {
             display: none;
         }
+
+        /* 퀼 에디터 배경 색상 변경 및 텍스트 색상 조정 */
+        .ql-editor {
+            background-color: #ffffff; /* 에디터 배경을 화이트로 설정 */
+            color: #333; /* 텍스트 색상 */
+            font-size: 16px; /* 폰트 사이즈 조정 */
+            padding: 15px; /* 패딩 추가 */
+        }
+
+        /* 퀼 툴바 스타일 조정 */
+        .ql-toolbar {
+            background-color: #e9ecef; /* 툴바 배경을 밝은 회색으로 설정 */
+            border: 1px solid #dee2e6; /* 툴바 테두리 색상 */
+            border-radius: .25rem; /* 둥근 테두리 */
+            margin-bottom: 10px; /* 툴바와 에디터 간격 */
+            padding: 5px; /* 패딩 추가 */
+        }
+
+        /* 툴바 버튼 스타일 조정 */
+        .ql-toolbar .ql-formats {
+            margin-right: 5px; /* 버튼 간격 조정 */
+        }
+
+        .ql-toolbar .ql-formats button {
+            background-color: #ffffff; /* 버튼 배경을 흰색으로 설정 */
+            color: #333; /* 버튼 텍스트 색상 */
+            border: 1px solid #ced4da; /* 버튼 테두리 색상 */
+            border-radius: .25rem; /* 둥근 테두리 */
+            padding: 5px 10px; /* 버튼 패딩 */
+            transition: background-color 0.3s, border-color 0.3s; /* 부드러운 색상 변경 효과 */
+        }
+
+        .ql-toolbar .ql-formats button:hover {
+            background-color: #f8f9fa; /* 버튼 호버 시 배경 색상 */
+            border-color: #adb5bd; /* 버튼 호버 시 테두리 색상 */
+        }
+
+        /* 툴바 버튼의 아이콘 색상 변경 */
+        .ql-toolbar .ql-formats button .ql-icon {
+            color: #333; /* 아이콘 색상 */
+        }
+
+        /* 에디터의 글꼴 크기 및 여백 조정 */
+        .ql-editor {
+            font-size: 16px; /* 폰트 사이즈 조정 */
+            line-height: 1.5; /* 줄 간격 조정 */
+        }
+
+        /* 툴바와 에디터의 여백 조정 */
+        .editor-container {
+            margin-bottom: 20px; /* 에디터와 아래 요소 간의 간격 조정 */
+        }
+
+
     </style>
 </head>
 
@@ -176,8 +220,7 @@
 
 <script>
 
-
-    // Initialize Quill editor for substance
+    // Quill 에디터 초기화
     var quill = new Quill('#substance-editor', {
         theme: 'snow',
         placeholder: '내용을 입력하세요',
@@ -186,6 +229,7 @@
                 [{ 'font': [] }],
                 [{ 'size': [] }],
                 ['bold', 'italic', 'underline'],
+                [{ 'color': ['#000000', '#ff0000', '#ffa500', '#0000ff', '#ffff00'] }], // 색상 목록 추가
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 [{ 'align': [] }],
                 ['link']
