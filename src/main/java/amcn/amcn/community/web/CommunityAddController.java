@@ -49,7 +49,8 @@ public class CommunityAddController {
                                   Member loginMember,
                                    RedirectAttributes redirectAttributes){
         board.setMember(loginMember);
-
+        log.info("========asdfasdfasdfasdfasdf");
+        log.info(board.getSubstance());
         Long id = boardRepository.save(board);
 
         redirectAttributes.addAttribute("id", id);

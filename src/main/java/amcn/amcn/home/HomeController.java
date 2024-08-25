@@ -29,9 +29,7 @@ public class HomeController {
                        @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                        Member loginMember) {
 
-        String apiKey = dotenv.get("OPENAI_API_KEY");
 
-        log.info(apiKey);
         List<CardNews> newAll = cardNewsRepository.findNewAll();
         List<CardNews> popAll = cardNewsRepository.findPopAll();
 
