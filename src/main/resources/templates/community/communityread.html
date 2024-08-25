@@ -17,6 +17,11 @@
             rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <!-- Quill CSS 파일을 포함합니다. -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+
+    <!-- Include the Quill library -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
@@ -204,7 +209,7 @@
                             <hr>
                             <div style="margin-left: 14px;   color: black;">
                                 <div class="post-content">
-                                    <textarea th:text="${board.substance}" class="dynamic-textarea" rows="1">
+                                    <div th:utext="${board.substance}" class="dynamic-textarea ql-editor">
                                         여기에는 게시글의 내용이 들어갑니다. Lorem ipsum dolor sit amet, consectetur adipiscing
                                         elit.
                                         Nulla vitae nisi nec est pulvinar congue non non enim. Curabitur interdum
@@ -217,7 +222,7 @@
                                         eget ligula vitae erat rhoncus
                                         venenatis eget et justo. Nulla facilisi. Ut id mauris auctor, sollicitudin
                                         leo nec, ullamcorper leo.
-                                    </textarea>
+                                    </div>
                                 </div>
                             </div>
                             <div style="display: flex; margin-left: 9px; margin-top: 9px;">

@@ -5,6 +5,7 @@ import amcn.amcn.comment.domain.comment.Comment;
 import amcn.amcn.community.domain.board.Board;
 import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.member.domain.member.Member;
+import amcn.amcn.news.domain.News;
 import amcn.amcn.other.repository.OthersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,20 +25,19 @@ public class OthersService {
         List<Board> boards = othersRepository.findPostBoard(loginMember);
         List<Board> boards_copy = new ArrayList<>();
 
-        return titleSubstnaceModify(boards, boards_copy);
+        return titleSubstanceModify(boards, boards_copy);
     }
 
     public List<Comment> commentBoard(Member loginMember) {
         List<Comment> comments = othersRepository.findCommentBoard(loginMember);
         List<Comment> comments_copy = new ArrayList<>();
 
-        return commentSubstnaceModify(comments, comments_copy);
+        return commentSubstanceModify(comments, comments_copy);
     }
 
     public List<Board> likeBoard(Member loginMember) {
         List<Board> boards = new ArrayList<>();
         for (Likes likes : othersRepository.findHeartBoard(loginMember)) {
-
             Board newBoard = new Board();
             try {
                 newBoard.setBoardId(likes.getBoard().getBoardId());
@@ -72,6 +72,42 @@ public class OthersService {
     }
 
 
+    public List<News> postNews(Member loginMember) {
+        List<News> news = othersRepository.findPostNews(loginMember);
+        List<News> news_copy = new ArrayList<>();
+
+        return newsTitleSubstanceModify(news, news_copy);
+    }
+
+    public List<News> newsScrap(Member loginMember) {
+        List<News> news=new ArrayList<>();
+        for (Likes likes : othersRepository.findNewsScrap(loginMember) ){
+            News news2 =new News();
+            try {
+                news2.setNewsId(likes.getNews().getNewsId());
+                news2.setLikes(likes.getNews().getLikes());
+
+                if (likes.getNews().getTitle().length() >= 7) {
+                    news2.setTitle(likes.getNews().getTitle().substring(0, 7) + "...");
+                } else {
+                    news2.setTitle(likes.getNews().getTitle());
+                }
+
+                if (likes.getNews().getOriginalContent().length() >= 15) {
+                    news2.setOriginalContent(likes.getNews().getOriginalContent().substring(0, 15) + "...");
+                } else {
+                    news2.setOriginalContent(likes.getNews().getOriginalContent());
+                }
+                news.add(news2);
+
+            } catch (NullPointerException e) {
+                log.info(e.toString());
+            }
+
+        }
+        return news;
+    }
+
     public List<CardNews> findHeartCardNewsService(Member loginMember) {
         return othersRepository.findHeartCardNews(loginMember);
     }
@@ -80,7 +116,36 @@ public class OthersService {
         return othersRepository.findForkCardNews(loginMember);
     }
 
-    private List<Board> titleSubstnaceModify(List<Board> boards, List<Board> boards_copy) {
+
+    private List<News> newsTitleSubstanceModify(List<News> news, List<News> news_copy) {
+        for (News originalNews : news) {
+
+            News newNews = new News();
+            newNews.setNewsId(originalNews.getNewsId());
+            newNews.setMember(originalNews.getMember());
+            newNews.setLikes(originalNews.getLikes());
+
+            log.info(String.valueOf(newNews.getNewsId()));
+
+            if (originalNews.getTitle().length() >= 8) {
+                newNews.setTitle(originalNews.getTitle().substring(0, 8) + "...");
+            } else {
+                newNews.setTitle(originalNews.getTitle());
+            }
+
+            if (originalNews.getOriginalContent().length() >= 15) {
+                newNews.setOriginalContent(originalNews.getOriginalContent().substring(0, 15) + "...");
+            } else {
+                newNews.setOriginalContent(originalNews.getOriginalContent());
+            }
+
+            news_copy.add(newNews);
+        }
+        return news_copy;
+
+    }
+
+    private List<Board> titleSubstanceModify(List<Board> boards, List<Board> boards_copy) {
         for (Board board : boards) {
             Board newBoard = new Board();
             newBoard.setBoardId(board.getBoardId());
@@ -108,7 +173,7 @@ public class OthersService {
 
     }
 
-    private List<Comment> commentSubstnaceModify(List<Comment> comments, List<Comment> comments_copy) {
+    private List<Comment> commentSubstanceModify(List<Comment> comments, List<Comment> comments_copy) {
         for (Comment comment : comments) {
             Comment newComment = new Comment();
             newComment.setCommentId(comment.getCommentId());

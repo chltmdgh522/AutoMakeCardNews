@@ -5,6 +5,7 @@ import amcn.amcn.comment.domain.comment.Comment;
 import amcn.amcn.community.domain.board.Board;
 import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.member.domain.member.Member;
+import amcn.amcn.news.domain.News;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
@@ -25,39 +26,52 @@ public class OthersRepository {
 
 
     //game 포인트
-    public List<Member> memberPointList(){
+    public List<Member> memberPointList() {
         return em.createQuery("select m from Member m order by m.point desc", Member.class)
                 .setMaxResults(5)
                 .getResultList();
     }
 
 
-    public List<Board> findPostBoard(Member loginMember){
+    public List<Board> findPostBoard(Member loginMember) {
         return em.createQuery("select b from Board b where b.member.memberId = :id order by b.boardId desc", Board.class)
-                .setParameter("id",loginMember.getMemberId())
+                .setParameter("id", loginMember.getMemberId())
                 .getResultList();
     }
 
-    public List<Comment> findCommentBoard(Member loginMember){
+    public List<Comment> findCommentBoard(Member loginMember) {
         return em.createQuery("select c from Comment c where c.member.memberId = :id order by c.commentId desc", Comment.class)
-                .setParameter("id",loginMember.getMemberId())
+                .setParameter("id", loginMember.getMemberId())
                 .getResultList();
     }
 
-    public List<Likes> findHeartBoard(Member loginMember){
-        return em.createQuery("select l from Likes l where l.member.memberId = :id order by l.likeId desc", Likes.class)
-                .setParameter("id",loginMember.getMemberId())
+    public List<Likes> findHeartBoard(Member loginMember) {
+        return em.createQuery("select l from Likes l where l.member.memberId = :id and l.board IS NOT NULL order by l.likeId desc", Likes.class)
+                .setParameter("id", loginMember.getMemberId())
                 .getResultList();
     }
 
 
+    public List<News> findPostNews(Member loginMember) {
+        return em.createQuery("select n from News n where n.member.memberId = :id order by n.newsId desc", News.class)
+                .setParameter("id", loginMember.getMemberId())
+                .getResultList();
+    }
 
-    public List<CardNews> findHeartCardNews(Member loginMember){
-        List<Likes> findLikes = em.createQuery("select l from Likes l where l.member.memberId= :memberId", Likes.class)
+
+    public List<Likes> findNewsScrap(Member loginMember) {
+        return em.createQuery("select l from Likes l where l.member.memberId = :id and l.news IS NOT NULL order by l.likeId desc", Likes.class)
+                .setParameter("id", loginMember.getMemberId())
+                .getResultList();
+    }
+
+
+    public List<CardNews> findHeartCardNews(Member loginMember) {
+        List<Likes> findLikes = em.createQuery("select l from Likes l where l.member.memberId= :memberId and l.cardNews IS NOT NULL order by l.likeId desc", Likes.class)
                 .setParameter("memberId", loginMember.getMemberId())
                 .getResultList();
 
-        List<CardNews> list=new ArrayList<>();
+        List<CardNews> list = new ArrayList<>();
         for (Likes findLike : findLikes) {
             try {
                 if (findLike.getCardNews() != null) {
@@ -66,7 +80,7 @@ public class OthersRepository {
                             .setParameter("cardId", findLike.getCardNews().getCardNewsId())
                             .getSingleResult();
                     list.add(cardId);
-                }else{
+                } else {
                     log.info("널이라고?");
                 }
             } catch (NoResultException e) {
@@ -78,7 +92,7 @@ public class OthersRepository {
         return list;
     }
 
-    public List<CardNews> findForkCardNews(Member loginMember){
+    public List<CardNews> findForkCardNews(Member loginMember) {
         return em.createQuery("select c from CardNews c where c.fork != 0 and c.member.memberId = :memberId", CardNews.class)
                 .setParameter("memberId", loginMember.getMemberId())
                 .getResultList();

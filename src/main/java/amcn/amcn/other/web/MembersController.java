@@ -50,6 +50,11 @@ public class MembersController {
         //게시글 댓글
         model.addAttribute("commentBoard",othersService.commentBoard(loginMember));
 
+        //뉴스 스크랩
+        model.addAttribute("likeNews",othersService.newsScrap(loginMember));
+
+        //뉴스
+        model.addAttribute("postNews",othersService.postNews(loginMember));
 
         // 카드뉴스 공감
         List<CardNews> heartCardNews = othersService.findHeartCardNewsService(loginMember);

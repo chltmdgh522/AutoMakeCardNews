@@ -5,18 +5,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-
+import org.springframework.beans.factory.annotation.Value;
 import java.util.Properties;
 
 @Configuration
 public class NaverMailConfig {
+
+    @Value("${naver.mail.password}")
+    private String naverMailPassword;
     @Bean(name = "naverMail")
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 
         javaMailSender.setHost("smtp.naver.com"); // 메인 도메인 서버 주소 => 정확히는 smtp 서버 주소
         javaMailSender.setUsername("chltmdgh522@naver.com"); // 네이버 아이디
-        javaMailSender.setPassword(); // 네이버 비밀번호
+        javaMailSender.setPassword(naverMailPassword); // 네이버 비밀번호
 
 
         javaMailSender.setPort(465); // 메일 인증서버 포트
