@@ -11,6 +11,7 @@ import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.domain.member.MemberType;
 import amcn.amcn.member.domain.member.RoleType;
 import amcn.amcn.member.repository.MemberRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -32,15 +33,16 @@ public class DataInitializer {
     private final CommentRepository commentRepository;
 
     private final LikeRepository likeRepository;
-    @Bean
-    public CommandLineRunner initDatabase() {
-        return args -> {
-            // 서버 시작 시 데이터베이스에 초기값을 삽입합니다.
-            initializeMembers();
-        };
-    }
+//    @Bean
+//    public CommandLineRunner initDatabase() {
+//        return args -> {
+//            // 서버 시작 시 데이터베이스에 초기값을 삽입합니다.
+//            initializeMembers();
+//        };
+//    }
 
-    @Transactional
+
+    @PostConstruct
     public void initializeMembers() {
         // 데이터베이스 초기화를 위한 코드 작성
         Member member0 = new Member(
