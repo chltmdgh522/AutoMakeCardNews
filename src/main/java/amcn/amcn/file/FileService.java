@@ -36,7 +36,6 @@ public class FileService {
 
         String uuid = UUID.randomUUID().toString() + "." + fileExtension;
         Path destinationPath = Paths.get(fileDir, uuid);
-        log.info("서비스:" + uuid);
 
         try (InputStream in = url.openStream()) {
             BufferedImage image = ImageIO.read(in);
@@ -55,7 +54,6 @@ public class FileService {
                     return "png";
                 // 다른 이미지 형식에 대한 처리 추가
                 default:
-                    log.info("왔ㄴ구나");
                     return "png";
             }
         }
