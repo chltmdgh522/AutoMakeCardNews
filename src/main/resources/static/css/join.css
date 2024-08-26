@@ -1,0 +1,146 @@
+/* Made with love by Mutiullah Samim*/
+
+@import url('https://fonts.googleapis.com/css?family=Numans');
+
+html, body {
+    position: relative;
+    height: 100%;
+    font-family: 'Numans', sans-serif;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('로그회원배경.png');
+    background-size: cover; /* 배경 이미지를 화면에 맞게 조절 */
+    background-position: center; /* 이미지를 가운데로 정렬 */
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    z-index: -1;
+}
+
+
+
+
+.container{
+height: 100%;
+align-content: center;
+opacity: 1;
+}
+
+.card{
+height: 370px;
+margin-top: auto;
+margin-bottom: auto;
+width: 400px;
+background-color: white !important;
+}
+
+.social_icon span{
+font-size: 60px;
+margin-left: 10px;
+color: white;
+}
+
+.social_icon span:hover{
+color: white;
+cursor: pointer;
+}
+
+.social_icon{
+position: absolute;
+right: 20px;
+top: -45px;
+}
+
+.input-group-prepend span{
+width: 50px;
+background-color:white;
+color: black;
+border:0 !important;
+}
+
+input:focus{
+outline: 0 0 0 0 !important;
+box-shadow: 0 0 0 0 !important;
+
+}
+
+.remember{
+color: white;
+}
+
+.remember input
+{
+width: 20px;
+height: 20px;
+margin-left: 15px;
+margin-right: 5px;
+}
+
+.login_btn{
+    color: white;
+    background-color: #aa9bec;
+    width: 410px;
+}
+
+
+.login_btn:hover{
+color: black;
+background-color: #7058d6;
+}
+
+.email-btn:hover{
+    color: black;
+    background-color: #7058d6;
+}
+
+
+
+
+.input-group.form-group input.form-control {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0; /* 필요에 따라 경계선이 연결된 부분의 모서리를 조정할 수 있습니다. */
+    border-bottom: 2px solid #ced4da; /* 아래쪽 경계선 추가 */
+}
+
+a{
+    color: #aa9bec;
+    font-weight: bold;
+}
+
+i{
+    position: absolute;
+    margin-left: 385px;
+    margin-top: 5px;
+}
+*{
+    font-family: "Jua",sans-serif;
+}
+
+.social_icon span{
+    font-size: 60px;
+    margin-left: 10px;
+    color: #FFC312;
+}
+
+.social_icon span:hover{
+    color: white;
+    cursor: pointer;
+}
+
+.card-header{
+    color: white;
+}
+
+.social_icon{
+    position: absolute;
+    right: 20px;
+    top: -45px;
+}
