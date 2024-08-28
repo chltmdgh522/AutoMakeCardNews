@@ -7,9 +7,12 @@ import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.news.domain.News;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Likes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

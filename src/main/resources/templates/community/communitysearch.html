@@ -93,7 +93,7 @@
 
 <!-- Page Wrapper -->
 <div id="wrapper" th:object="${member}">
-    <div th:replace="~{/header/header1 :: copyParam (${member})}"></div>
+    <div th:replace="~{header/header1 :: copyParam (${member})}"></div>
 
 
     <!-- End of Sidebar -->
@@ -105,7 +105,7 @@
 
         <div id="content">
             <!-- header -->
-            <div th:replace="~{/header/header2 :: copyParam (${member})}"></div>
+            <div th:replace="~{header/header2 :: copyParam (${member})}"></div>
 
             <!-- End of Topbar -->
             <div style="background-color: white;">

@@ -67,7 +67,7 @@
 
 <!-- Page Wrapper -->
 <div id="wrapper" th:object="${member}">
-    <div th:replace="~{/header/header1 :: copyParam (${member})}"></div>
+    <div th:replace="~{header/header1 :: copyParam (${member})}"></div>
 
 
     <!-- End of Sidebar -->
@@ -76,7 +76,7 @@
     <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
-            <div th:replace="~{/header/header2 :: copyParam (${member})}"></div>
+            <div th:replace="~{header/header2 :: copyParam (${member})}"></div>
             <!-- Main Content -->
             <div class="container mt-4">
 

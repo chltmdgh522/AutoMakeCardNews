@@ -5,13 +5,16 @@ import amcn.amcn.community.domain.careerboard.CareerBoard;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
 @Entity
-@Data
+@Getter
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 public class Comment {
     @Id

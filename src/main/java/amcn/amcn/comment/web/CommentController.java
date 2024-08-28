@@ -10,11 +10,15 @@ import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -57,20 +61,24 @@ public class CommentController {
     }
 
     @PostMapping("/comment/delete/{commentId}")
-    public String deleteComment(@PathVariable Long commentId,
-                              RedirectAttributes redirectAttributes){
-        log.info("gd");
+    @ResponseBody // JSON으로 응답하기 위해 추가
+    public ResponseEntity<Map<String, String>> deleteComment(@PathVariable Long commentId) {
         Optional<Comment> comment = commentRepository.findComment(commentId);
-        if(comment.isPresent()){
+        Map<String, String> response = new HashMap<>();
+
+        if (comment.isPresent()) {
             Comment findComment = comment.get();
             commentRepository.delete(findComment);
-            redirectAttributes.addAttribute("id",findComment.getBoard().getBoardId());
 
-        }else{
-            return null;
+            // 리다이렉트할 URL 설정
+            String redirectUrl = "/community/" + findComment.getBoard().getBoardId();
+            response.put("redirectUrl", redirectUrl);
+
+            return ResponseEntity.ok(response);
+        } else {
+            // 실패한 경우 404 상태 코드 반환
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-
-
-        return "redirect:/community/{id}";
     }
+
 }

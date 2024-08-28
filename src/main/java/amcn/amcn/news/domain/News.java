@@ -4,13 +4,16 @@ import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.member.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class News {
 
     @Id

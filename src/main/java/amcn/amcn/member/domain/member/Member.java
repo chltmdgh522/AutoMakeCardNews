@@ -9,6 +9,8 @@ import amcn.amcn.news.domain.News;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -18,7 +20,8 @@ import java.util.List;
 
 
 @Entity
-@Data
+@Getter
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 public class Member {
 
