@@ -63,10 +63,13 @@ public class NewsCreateController {
         news.setMember(loginMember);
 
         String summary = summary_py(news.getOriginalContent());
+        log.info(summary);
+        log.info(String.valueOf(summary.length()));
         news.setSummaryContent(summary);
 
         Long id = newsRepository.save(news);
 
+        log.info("asdfasdf:"+String.valueOf(id));
         redirectAttributes.addAttribute("id", id);
 
         return "redirect:/news/{id}";

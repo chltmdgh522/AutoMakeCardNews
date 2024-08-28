@@ -195,6 +195,7 @@ public class CardNewsMakeController {
 
             return ResponseEntity.ok(substring_path);
         } catch (RuntimeException e) {
+            log.info(e.toString());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("특정 인물은 보안 때문에 AI가 생성을 못합니다.");
         }
     }

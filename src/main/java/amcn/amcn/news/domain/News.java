@@ -37,7 +37,7 @@ public class News {
     @Lob
     private String title; // 뉴스 제목
 
-    @Lob
+    @Column(columnDefinition = "TEXT") //@Lob보다 더클때
     private String summaryContent; //  뉴스 요약
 
     private String keyword; // 원본에서 요약한 문장중 키워드 뽑기
