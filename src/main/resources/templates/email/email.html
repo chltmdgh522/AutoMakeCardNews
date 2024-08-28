@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>A.M.C.N</title>
+    <!--Made with love by Mutiullah Samim -->
+
+    <!--Bootsrap 4 CDN-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <!--Custom styles-->
+    <link href="/css/login.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
+    <style>
+        /* CSS 추가 */
+        .align-center {
+            display: flex;
+            justify-content: center;
+        }
+        .card-body {
+            padding-bottom: 1px;
+            background-color: white;
+            text-align: center;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="d-flex justify-content-center h-100" >
+        <div class="card">
+            <div class="card-body">
+                <h3 style="color: black; font-weight: bold;">이메일 인증 해주세요</h3>
+                <form th:object="${member}" method="post" class="align-center">
+                    <div th:if="${#fields.hasGlobalErrors()}" style="text-align: center">
+                        <p class="field-error" style="color:red;" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
+                    </div>
+                    <div class="form-row align-items-center">
+                        <div class="col-auto">
+                            <label class="sr-only" for="inputVerificationCode">인증번호</label>
+                            <input type="text" class="form-control mb-2" id="inputVerificationCode" th:field="*{authPassword}" placeholder="인증번호 입력 (8자리)" maxlength="8">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary mb-2">확인</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
