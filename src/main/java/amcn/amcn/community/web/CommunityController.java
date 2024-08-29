@@ -48,6 +48,12 @@ public class CommunityController {
         model.addAttribute("art", boardRepository.boardList("예술"));
         model.addAttribute("science", boardRepository.boardList("과학"));
 
+        model.addAttribute("it1", boardRepository.boardList("IT").getFirst());
+        model.addAttribute("sports1", boardRepository.boardList("스포츠").getFirst());
+        model.addAttribute("eco1", boardRepository.boardList("경제").getFirst());
+        model.addAttribute("art1", boardRepository.boardList("예술").getFirst());
+        model.addAttribute("science1", boardRepository.boardList("과학").getFirst());
+
 
         return "community/community";
     }
