@@ -284,7 +284,8 @@
 
                                         <div style="display: flex;">
                                             <div>
-                                                <img class="rounded-circle" style="color: black;"
+                                                <img th:src="|/my-page/image/${list.member.profile}|"
+                                                     class="rounded-circle" style="color: black;"
                                                      width="30"
                                                      height="30"/>
                                             </div>
