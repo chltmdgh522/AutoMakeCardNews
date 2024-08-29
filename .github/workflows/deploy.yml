@@ -19,8 +19,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'  # JDK 배포판 지정
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew  # gradlew에 실행 권한 추가
+
       - name: Build with Gradle
-        run: ./gradlew build --no-daemon -x test
+        run: ./gradlew build --no-daemon -x test  # 테스트를 생략하고 빌드
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
