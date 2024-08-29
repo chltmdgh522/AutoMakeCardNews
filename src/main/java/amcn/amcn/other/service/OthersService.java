@@ -22,17 +22,17 @@ public class OthersService {
     private final OthersRepository othersRepository;
 
     public List<Board> postBoard(Member loginMember) {
-        List<Board> boards = othersRepository.findPostBoard(loginMember);
-        List<Board> boards_copy = new ArrayList<>();
-
-        return titleSubstanceModify(boards, boards_copy);
+       return othersRepository.findPostBoard(loginMember);
+//        List<Board> boards_copy = new ArrayList<>();
+//
+//        return titleSubstanceModify(boards, boards_copy);
     }
 
     public List<Comment> commentBoard(Member loginMember) {
-        List<Comment> comments = othersRepository.findCommentBoard(loginMember);
-        List<Comment> comments_copy = new ArrayList<>();
-
-        return commentSubstanceModify(comments, comments_copy);
+        return othersRepository.findCommentBoard(loginMember);
+//        List<Comment> comments_copy = new ArrayList<>();
+//
+//        return commentSubstanceModify(comments, comments_copy);
     }
 
     public List<Board> likeBoard(Member loginMember) {
@@ -44,19 +44,8 @@ public class OthersService {
                 newBoard.setComments(likes.getBoard().getComments());
                 newBoard.setMember(likes.getMember());
                 newBoard.setLikes(likes.getBoard().getLikes());
-
-
-                if (likes.getBoard().getTitle().length() >= 7) {
-                    newBoard.setTitle(likes.getBoard().getTitle().substring(0, 7) + "...");
-                } else {
-                    newBoard.setTitle(likes.getBoard().getTitle());
-                }
-
-                if (likes.getBoard().getSubstance().length() >= 15) {
-                    newBoard.setSubstance(likes.getBoard().getSubstance().substring(0, 15) + "...");
-                } else {
-                    newBoard.setSubstance(likes.getBoard().getSubstance());
-                }
+                newBoard.setTitle(likes.getBoard().getTitle());
+                newBoard.setSubstance(likes.getBoard().getSubstance());
                 boards.add(newBoard);
 
             } catch (NullPointerException e) {
@@ -65,9 +54,6 @@ public class OthersService {
 
         }
 
-        for (Board board : boards) {
-            log.info(board.getTitle());
-        }
         return boards;
     }
 

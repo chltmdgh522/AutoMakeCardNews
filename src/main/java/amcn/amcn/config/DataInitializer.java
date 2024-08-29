@@ -1266,7 +1266,7 @@ public class DataInitializer {
                 "사과4.png",
                 "경제"
 
-                );
+        );
 
         CardNews cardNews2 = new CardNews(
                 member2,
