@@ -702,7 +702,7 @@ function onKeyboard(event) {
 }
 
 //inputImage.addEventListener('change', onImg);
-resetBtn.addEventListener('click', onReset);
+resetBtn.addEventListener('click', onDelete);
 save.addEventListener('click', onSave);
 document.addEventListener('keydown', onKeyboard);
 

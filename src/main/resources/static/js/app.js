@@ -673,7 +673,6 @@ function onKeyboard(event) {
 
         case 46:
             onDelete();
-            console.log("gd")
             break;
         case 8: // 'b' 키 (사각형 삭제)
             deleteSelectedRectangle();
@@ -682,7 +681,7 @@ function onKeyboard(event) {
 }
 
 inputImage.addEventListener('change', onImg);
-resetBtn.addEventListener('click', onReset);
+resetBtn.addEventListener('click', onDelete);
 save.addEventListener('click', onSave);
 document.addEventListener('keydown', onKeyboard);
 
@@ -847,9 +846,11 @@ function onDelete() {
     fill_square.style.backgroundColor = '#171717';
 
     let tf = confirm('내용을 삭제하시겠습니까?');
-
+    console.log('Confirm returned:', tf); // tf 값 출력
     if (tf) {
         onReset();
+    }else{
+
     }
 }
 
