@@ -251,44 +251,40 @@
 </script>
 <script>
     var speaker = false;
+    var synth = window.speechSynthesis; // Access the SpeechSynthesis interface
+    var utterance; // To store the SpeechSynthesisUtterance object
 
     $(document).ready(function () {
         $('#executeScript').click(function () {
             if (!speaker) {
-                // speaker가 false일 때만 실행되도록
+                // If speaker is false, start TTS
                 speaker = true;
-                $.ajax({
-                    type: "POST",
-                    url: "/run-tts",
-                    data: {
-                        "newsId": $("#originalContent").text()
-                    },
-                    success: function (data) {
-                        alert("TTS 종료합니다.")
-                    }
-                });
-            } else {
-                // speaker가 이미 true인 경우에 실행되도록
-                speaker = false;
-                // speaker를 false로 변경할 때 해당 URL을 끊습니다.
-                $.ajax({
-                    type: "POST",
-                    url: "/cancel-tts",
-                    success: function (data) {
-                        // 성공적으로 취소되었을 때 실행되는 코드를 작성합니다.
+                var textToSpeak = $("#originalContent").text(); // Get the text to speak
 
-                    },
-                    error: function (xhr, status, error) {
-                        // 오류가 발생했을 때 실행되는 코드를 작성합니다.
-                        console.error("TTS 취소 요청 중 오류가 발생하였습니다.", error);
-                    }
-                });
+                alert("TTS 실행합니다.")
+                // Create a new utterance for the text
+                utterance = new SpeechSynthesisUtterance(textToSpeak);
+
+                // Speak the utterance
+                synth.speak(utterance);
+            } else {
+                alert("TTS 종료합니다.")
+                // If speaker is true, stop TTS
+                speaker = false;
+
+                // Cancel the speech
+                synth.cancel();
             }
         });
+
+        // Stop TTS when navigating away from the page or reloading
+        window.addEventListener('beforeunload', function () {
+            synth.cancel(); // Stop the speech synthesis
+        });
     });
-
-
 </script>
+
+
 
 <script>
     // 페이지 이동을 감지하는 이벤트 핸들러
