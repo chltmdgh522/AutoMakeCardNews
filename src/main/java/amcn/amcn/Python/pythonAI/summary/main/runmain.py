@@ -29,4 +29,3 @@ if __name__ == "__main__":
     else:
         print("No content provided", file=sys.stderr)
         sys.exit(1)
-\
