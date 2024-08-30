@@ -189,7 +189,7 @@ public class CardNewsMakeController {
 
             log.info(path);
             String replace = path.replace('\\', '/');
-            String substring_path = replace.substring(56);
+            String substring_path = replace.substring(59);
             log.info(substring_path);
 
             loginMember.setOriginalUrl(substring_path);
