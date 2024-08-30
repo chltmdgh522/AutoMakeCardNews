@@ -62,14 +62,13 @@ public class NewsCreateController {
 
         news.setMember(loginMember);
 
+        log.info("왔니");
         String summary = summary_py(news.getOriginalContent());
-        log.info(summary);
-        log.info(String.valueOf(summary.length()));
+        log.info("히ㅏㅇ");
         news.setSummaryContent(summary);
 
         Long id = newsRepository.save(news);
 
-        log.info("asdfasdf:"+String.valueOf(id));
         redirectAttributes.addAttribute("id", id);
 
         return "redirect:/news/{id}";
@@ -79,16 +78,17 @@ public class NewsCreateController {
 
     private String summary_py(String content) {
         String[] command = {
-                "C:/Users/chltm/Github/amcn/src/main/java/amcn/amcn/python/pythonai/venv/Scripts/python.exe",
-                "C:/Users/chltm/Github/amcn/src/main/java/amcn/amcn/Python/pythonAI/summary/main/runmain.py",
+                "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python",
+                "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/summary/main/runmain.py",
                 content
         };
+        log.info("111111111");
         StringBuilder summary = new StringBuilder();
         StringBuilder errors = new StringBuilder();
         try {
             ProcessBuilder pb = new ProcessBuilder(command);
             Process process = pb.start();
-
+            log.info("1111111112222222222222222");
             // Read the standard output
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
