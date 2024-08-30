@@ -35,6 +35,9 @@ public class CardNewsProjectController {
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
             Member member = findMember.get();
+            if(member.getRoleType().name().equals("USER")){
+                return "redirect:/";
+            }
             model.addAttribute("type", member.getRoleType().name());
             model.addAttribute("member", member);
         } else {
