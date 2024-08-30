@@ -1,21 +1,29 @@
 package amcn.amcn.oauth;
 
 import amcn.amcn.member.domain.member.Member;
+import amcn.amcn.member.domain.member.MemberType;
 import amcn.amcn.member.domain.member.RoleType;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
+import amcn.amcn.oauth.exception.AccountAlreadyExistsException;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,13 +44,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         //부모 클래스 loadUser로 부터 유저 정보를 가지고 오는 메서드 ( OAuth2 공급업체로 부터 사용자 정보를 가져오는 것 )     ;
         log.info(oAuth2User.getAttributes().toString());
-        String O_email="";
-        String O_name="";
-        String O_id="";
+        String O_email = "";
+        String O_name = "";
+        String O_id = "";
+        String O_sex = "";
+        String O_day = "";
+        String O_year = "";
 
-        String k_email="";
-        String k_name="";
-        String k_id="";
+        String k_email = "";
+        String k_name = "";
+        String k_id = "";
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
@@ -55,13 +66,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             Object emailObj = responseMap.get("email");
             Object nameObj = responseMap.get("name");
             Object idObj = responseMap.get("id");
+            Object genderObj = responseMap.get("gender");
+            Object birthdayObj = responseMap.get("birthday");
+            Object birthyearObj = responseMap.get("birthyear");
 
-            if (emailObj != null && nameObj !=null && idObj !=null) {
+            if (emailObj != null && nameObj != null && idObj != null) {
                 O_email = emailObj.toString();
-                O_name=nameObj.toString();
-                O_id=idObj.toString();
-                log.info(O_email);
-                log.info("zzzz");
+                O_name = nameObj.toString();
+                O_id = idObj.toString();
+                O_sex = genderObj.toString();
+                O_day = birthdayObj.toString();
+                O_year = birthyearObj.toString();
             } else {
                 log.error("Email not found in response");
             }
@@ -91,7 +106,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2Response oAuth2Response = null;
 
         String role = null;
-        NaverResponse naverResponse=new NaverResponse();
+        NaverResponse naverResponse = new NaverResponse();
+
 
         if (registrationId.equals("naver")) {
 
@@ -106,21 +122,47 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 member1.setEmail(O_email);
                 member1.setRoleType(RoleType.OAUTH_USER);
                 member1.setPoint(0L);
+                member1.setLoginId("Naver");
                 member1.setProfile("basic2.png");
 
+                String birth = O_year + "-" + O_day;
+                member1.setBirthday(LocalDate.parse(birth));
 
-                memberRepository.save(member1);
+                if (O_sex.equals("M")) {
+                    member1.setMemberSex(MemberType.남자);
+                } else {
+                    member1.setMemberSex(MemberType.여자);
+
+                }
+
+                Optional<Member> byEmailMember = memberRepository.findByEmail(member1);
+                String errorMessage = "";
+
+
+                if (byEmailMember.isPresent()) {
+                    Member member = byEmailMember.get();
+                    log.info(member.getLoginId());
+                    if (member.getLoginId().equals("Kakao")) {
+                        log.info("카카오 계정이 존재합니다.");
+                        errorMessage = "카카오 계정이 이미 존재합니다.";
+
+                    } else {
+                        log.info("일반회원 계정이 존재합니다.");
+                        errorMessage = "일반 회원 계정이 이미 존재합니다.";
+                    }
+                    throw new AccountAlreadyExistsException(errorMessage);
+                } else {
+                    memberRepository.save(member1);
+                }
             } else {
-
                 log.info("기존 네이버 사용자");
             }
-
 
 
             naverResponse.setId(O_id);
             naverResponse.setName(O_name);
             naverResponse.setEmail(O_email);
-            role="OAUTH_USER";
+            role = "OAUTH_USER";
 
             //로그인 성공
             success(naverResponse);
@@ -136,21 +178,34 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 member1.setName(k_name);
                 member1.setMemberId(k_id);
                 member1.setEmail(k_email);
+                member1.setLoginId("Kakao");
                 member1.setRoleType(RoleType.OAUTH_USER);
                 member1.setPoint(0L);
                 member1.setProfile("basic2.png");
+                Optional<Member> byEmailMember = memberRepository.findByEmail(member1);
+                String errorMessage = "";
+                if (byEmailMember.isPresent()) {
+                    if (byEmailMember.get().getLoginId().equals("Naver")) {
+                        log.info("네이버 계정이 존재합니다.");
+                        errorMessage = "네이버 계정이 이미 존재합니다.";
 
-                memberRepository.save(member1);
+                    } else {
+                        log.info("일반회원 계정이 존재합니다.");
+                        errorMessage = "일반 회원 계정이 이미 존재합니다.";
+                    }
+                    throw new AccountAlreadyExistsException(errorMessage);
+                } else {
+                    memberRepository.save(member1);
+                }
             } else {
                 log.info("기존 카카오 사용자");
             }
 
 
-
             naverResponse.setId(k_id);
             naverResponse.setName(k_name);
             naverResponse.setEmail(k_email);
-            role="OAUTH_USER";
+            role = "OAUTH_USER";
 
             //로그인 성공
             success(naverResponse);
@@ -160,6 +215,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         return new CustomOAuth2User(naverResponse, role);
     }
+
     private static void success(NaverResponse naverResponse) {
         // 현재 요청 가져오기
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

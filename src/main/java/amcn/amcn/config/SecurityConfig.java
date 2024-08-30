@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -51,6 +52,8 @@ public class SecurityConfig {
                 .requestMatchers("/oauth2/**", "/**").permitAll()
                 .anyRequest().authenticated()
         );
+        // CustomOAuth2ExceptionFilter 등록
+        http.addFilterBefore(new AuthFilter(), OAuth2LoginAuthenticationFilter.class);
 
         return http.build();
     }

@@ -97,7 +97,7 @@ public class MemberJPARepository implements MemberRepository {
     public Optional<Member> findByEmail(Member member) {
 
         try {
-            Member findMember = em.createQuery("select m from Member m where m.email = :email and m.roleType !='OAUTH_USER'", Member.class)
+            Member findMember = em.createQuery("select m from Member m where m.email = :email", Member.class)
                     .setParameter("email", member.getEmail())
                     .getSingleResult();
             log.info("repo:"+findMember.getEmail());
