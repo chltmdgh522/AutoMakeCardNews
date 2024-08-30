@@ -22,8 +22,8 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build --no-daemon -x test
+      - name: Clean and Build with Gradle
+        run: ./gradlew clean build --no-daemon -x test
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
