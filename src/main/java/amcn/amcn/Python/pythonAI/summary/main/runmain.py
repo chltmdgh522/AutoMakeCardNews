@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/home/ununtu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/Lib/site-packages')
+sys.path.append('C:/Users/chltm/Github/amcn/src/main/java/amcn/amcn/python/pythonai/venv/Lib/site-packages')
 
 from transformers import PreTrainedTokenizerFast, BartForConditionalGeneration
 import torch
@@ -17,6 +17,7 @@ def summary(content):
 
         summary_ids = model.generate(torch.tensor([input_ids]), num_beams=4, max_length=512, eos_token_id=1)
         decode = tokenizer.decode(summary_ids.squeeze().tolist(), skip_special_tokens=True)
+
         return decode
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
