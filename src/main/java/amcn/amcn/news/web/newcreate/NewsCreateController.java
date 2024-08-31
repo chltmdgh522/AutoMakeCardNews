@@ -82,9 +82,10 @@ public class NewsCreateController {
         String[] command = {
                 "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python",
                 "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/summary/main/runmain.py",
-                content
+                content.substring(0,2000)
         };
         log.info("111111111");
+        log.info(content);
         StringBuilder summary = new StringBuilder();
         StringBuilder errors = new StringBuilder();
         try {
@@ -96,6 +97,7 @@ public class NewsCreateController {
             String line;
             while ((line = reader.readLine()) != null) {
                 summary.append(line);
+                log.info(String.valueOf(summary));
             }
 
             // Read the standard error
