@@ -33,7 +33,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build --no-daemon -x test
+        run: ./gradlew build -x test  # --no-daemon 플래그 제거
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
