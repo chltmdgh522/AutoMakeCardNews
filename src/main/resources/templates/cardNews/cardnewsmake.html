@@ -9,7 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
     <!-- Google Fonts 링크 추가 -->
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR&family=Do+Hyeon&family=Gugi&family=Jua&family=Black+Han+Sans&family=Gamja+Flower&family=Dokdo&family=Sunflower:wght@300;500;700&family=Poor+Story&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR&family=Do+Hyeon&family=Gugi&family=Jua&family=Black+Han+Sans&family=Gamja+Flower&family=Dokdo&family=Sunflower:wght@300;500;700&family=Poor+Story&display=swap"
+          rel="stylesheet">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
@@ -172,13 +173,13 @@
                 <input type="color" id="textColorPicker" value="#000000">
                 <input type="number" id="textSizeInput" placeholder="텍스트 크기" min="10" max="100" value="40">
                 <select id="fontWeightSelect">
-                    <option value="normal">Normal</option>
                     <option value="bold">Bold</option>
+                    <option value="normal">Normal</option>
                 </select>
                 <select id="fontFamilySelect">
+                    <option value="Do Hyeon">Do Hyeon</option>
                     <option value="Nanum Gothic">Nanum Gothic</option>
                     <option value="Noto Sans KR">Noto Sans KR</option>
-                    <option value="Do Hyeon">Do Hyeon</option>
                     <option value="Gugi">Gugi</option>
                     <option value="Jua">Jua</option>
                     <option value="Black Han Sans">Black Han Sans</option>
@@ -187,6 +188,7 @@
                     <option value="Sunflower">Sunflower</option>
                     <option value="Poor Story">Poor Story</option>
                 </select>
+                <button id="addTexTAIButton2" style="background-color: red; margin-bottom: 5px;">AI 문구 생성</button>
                 <button id="addTextButton">텍스트 추가</button>
 
 
@@ -414,6 +416,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
+
+        let textList = []; // 텍스트 리스트 저장 변수
+        let textIndex = 0; // 현재 텍스트 인덱스
         $("#imageButton").click(function () {
             // 오버레이 표시
             $(".overlay").css("display", "flex");
@@ -425,7 +430,20 @@
                     "prompt": $("#imageCreate").val()
                 },
                 success: function (data) {
-                    setBackgroundImage(data);
+                    // JSON 응답 데이터 처리
+                    if (data.imagePath) {
+                        setBackgroundImage(data.imagePath);
+                    }
+                    if (data.message) {
+                        $("#textInput").val(data.message);
+
+                        textList = data.text; // 서버에서 받은 텍스트 리스트 저장
+
+                        textIndex = 0; // 인덱스 초기화
+                        addFilledSquare(100,100);
+                        // addTextToCanvas 함수 호출
+                        addTextToCanvas();
+                    }
                 },
                 error: function (xhr, status, error) {
                     alert("이미지 생성 중 오류가 발생했습니다: " + xhr.responseText);
@@ -436,8 +454,39 @@
                 }
             });
         });
+        $("#addTexTAIButton2").click(function () {
+            if (textList.length > 0) {
+                console.log("리스트다!!!")
+                if (textIndex < textList.length) {
+                    $("#textInput").val(textList[textIndex]); // 텍스트 출력
+                    textIndex++;
+                    if (textIndex >= textList.length) {
+                        textIndex = 0; // 인덱스를 처음으로 리셋
+                    }
+                }
+            } else {
+                $("#textInput").val("사용할 수 있는 AI 문구가 없습니다.");
+            }
+        });
     });
 
+
+</script>
+
+<script>
+    function addFilledSquare(x, y) {
+        const lineWidth = ctx.lineWidth * 20; // Adjust size as needed
+        const rect = {
+            x: 10,
+            y: 600,
+            width: 720,
+            height: lineWidth,
+            color: 'white',
+            lineWidth: ctx.lineWidth
+        };
+        rectfillangles.push(rect);
+        redrawCanvas();
+    }
 </script>
 </body>
 

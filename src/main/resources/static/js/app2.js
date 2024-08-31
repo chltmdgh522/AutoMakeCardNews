@@ -186,9 +186,6 @@ function redrawCanvas(filter = currentFilter) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-    filterLastValue = filter;
-
-    console.log(filterLastValue+"asdfasdfasdfasdf");
     let finalcolor = backgroundColor;
 
     // 배경색 설정
@@ -197,13 +194,13 @@ function redrawCanvas(filter = currentFilter) {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.restore();
 
-
     if (backgroundImage) {
         ctx.filter = filter; // Set the filter before drawing the image
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
         ctx.filter = 'none'; // Reset filter after drawing the image
-
     }
+
+    // Draw pen strokes
     penStrokes.forEach((stroke, index) => {
         ctx.save();
         ctx.beginPath();
@@ -231,6 +228,7 @@ function redrawCanvas(filter = currentFilter) {
         }
     });
 
+    // Draw brush strokes
     brushStrokes.forEach(stroke => {
         ctx.save();
         ctx.globalAlpha = stroke.alpha;
@@ -241,17 +239,29 @@ function redrawCanvas(filter = currentFilter) {
         ctx.restore();
     });
 
-    texts.forEach(textObj => {
-        const lines = textObj.text.split('\n');
-        ctx.fillStyle = textObj.color;
-        ctx.font = `${textObj.weight} ${textObj.size}px ${textObj.font}`;
-        const lineHeight = textObj.size * 1.2;
-        lines.forEach((line, index) => {
-            ctx.fillText(line, textObj.x, textObj.y + (index * lineHeight));
-        });
+    // Draw filled rectangles
+    rectfillangles.forEach((rect, index) => {
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle = rect.color;
+        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+
+        ctx.strokeStyle = rect.color;
+        ctx.lineWidth = rect.lineWidth;
+        ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+        ctx.stroke();
+        ctx.restore();
+
+        // Draw resize handle for the selected rectangle only
+        if (index === selectedfillRectIndex) {
+            ctx.save();
+            ctx.fillStyle = 'red';
+            ctx.fillRect(rect.x + rect.width - resizeHandleSize2 / 2, rect.y + rect.height - resizeHandleSize2 / 2, resizeHandleSize2, resizeHandleSize2);
+            ctx.restore();
+        }
     });
 
-
+    // Draw rectangles
     rectangles.forEach((rect, index) => {
         ctx.save();
         ctx.beginPath();
@@ -270,28 +280,17 @@ function redrawCanvas(filter = currentFilter) {
         }
     });
 
-    rectfillangles.forEach((rect, index) => {
-        ctx.save();
-        ctx.beginPath();
-        ctx.fillStyle = rect.color;
-        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-
-        ctx.strokeStyle = rect.color;
-        ctx.lineWidth = rect.lineWidth;
-        ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
-        ctx.restore();
-
-
-        // Draw resize handle for the selected rectangle only
-        if (index === selectedfillRectIndex) {
-            ctx.save();
-            ctx.fillStyle = 'red';
-            ctx.fillRect(rect.x + rect.width - resizeHandleSize2 / 2, rect.y + rect.height - resizeHandleSize2 / 2, resizeHandleSize2, resizeHandleSize2);
-            ctx.restore();
-        }
+    // Draw texts (this should be after shapes and lines)
+    texts.forEach(textObj => {
+        const lines = textObj.text.split('\n');
+        ctx.fillStyle = textObj.color;
+        ctx.font = `${textObj.weight} ${textObj.size}px ${textObj.font}`;
+        const lineHeight = textObj.size * 1.2;
+        lines.forEach((line, index) => {
+            ctx.fillText(line, textObj.x, textObj.y + (index * lineHeight));
+        });
     });
 }
-
 
 // Apply selected filter
 applyFilterButton.addEventListener('click', () => {
@@ -797,8 +796,7 @@ function onMouseDown(event) {
                 y: event.offsetY - lineWidth / 2,
                 width: lineWidth,
                 height: lineWidth,
-                strokeColor: ctx.strokeStyle,
-                fillColor: ctx.fillStyle,
+                color: ctx.strokeStyle,
                 lineWidth: ctx.lineWidth
             };
             rectfillangles.push(rect);
@@ -1224,5 +1222,3 @@ document.getElementById('loadJsonFile').addEventListener('change', loadCanvasFro
 
 // "Save as JSON" 버튼 클릭 시 캔버스 상태를 JSON 파일로 저장하는 함수 등록
 document.getElementById('saveJson').addEventListener('click', saveCanvasAsJSON);
-
-
