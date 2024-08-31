@@ -82,7 +82,7 @@ public class NewsCreateController {
         String[] command = {
                 "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python",
                 "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/summary/main/runmain.py",
-                content.substring(0,2000)
+                content
         };
         log.info("111111111");
         log.info(content);
