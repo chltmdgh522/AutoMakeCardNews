@@ -64,7 +64,8 @@ dependencies {
 
 	//소셜
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
+	//ai 문자 때문에 추가
+	implementation 'org.json:json:20211205'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'

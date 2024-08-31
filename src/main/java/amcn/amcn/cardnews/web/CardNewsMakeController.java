@@ -1,6 +1,7 @@
 package amcn.amcn.cardnews.web;
 
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
+import amcn.amcn.cardnews.domain.cardnews.ImageResponse;
 import amcn.amcn.cardnews.repository.CardNewsRepository;
 import amcn.amcn.cardnews.service.CardNewsService;
 import amcn.amcn.file.FileService;
@@ -30,10 +31,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -179,12 +177,14 @@ public class CardNewsMakeController {
 
     @PostMapping("/image-create")
     @ResponseBody
-    public ResponseEntity<String> generateImage(@RequestParam String prompt, Model model,
+    public ResponseEntity<ImageResponse> generateImage(@RequestParam String prompt, Model model,
                                                 @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                 Member loginMember)
             throws IOException, InterruptedException {
         try {
-            String url = cardNewsService.generatePictureV2(prompt);
+
+            //사진
+            String url = cardNewsService.generatePicture(prompt);
             String path = fileService.saveImageFromUrl(url);
 
             log.info(path);
@@ -196,10 +196,21 @@ public class CardNewsMakeController {
             loginMember.setAiImg(true);
             memberRepository.updateUrl(loginMember);
 
-            return ResponseEntity.ok(substring_path);
+            //문구
+            List<String> text = cardNewsService.generateText(prompt);
+
+            for (String s : text) {
+                log.info(s);
+                log.info("\n");
+            }
+
+
+            ImageResponse response = new ImageResponse(substring_path, text.get(0),text);
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             log.info(e.toString());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("특정 인물은 보안 때문에 AI가 생성을 못합니다.");
+            ImageResponse response = new ImageResponse(null, "특정 인물은 보안 때문에 AI가 생성을 못합니다.",null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
