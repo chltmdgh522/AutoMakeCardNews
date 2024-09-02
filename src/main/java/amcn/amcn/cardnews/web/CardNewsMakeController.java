@@ -201,6 +201,11 @@ public class CardNewsMakeController {
 
             // 결과 가져오기
             List<String> text = textFuture.get();
+            for (String s : text) {
+                log.info(s);
+                log.info("\n");
+            }
+
             String url = imageUrlFuture.get();
 
             // 사진 저장
