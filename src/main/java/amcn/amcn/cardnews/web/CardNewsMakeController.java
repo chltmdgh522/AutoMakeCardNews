@@ -32,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Controller
 @Slf4j
@@ -173,46 +174,93 @@ public class CardNewsMakeController {
             return "Error occurred while saving JSON data.";
         }
     }
-
-
     @PostMapping("/image-create")
     @ResponseBody
     public ResponseEntity<ImageResponse> generateImage(@RequestParam String prompt, Model model,
-                                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                Member loginMember)
-            throws IOException, InterruptedException {
+                                                       @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
         try {
+            // 비동기 호출
+            CompletableFuture<List<String>> textFuture = CompletableFuture.supplyAsync(() -> {
+                try {
+                    return cardNewsService.generateText(prompt);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
-            //사진
-            String url = cardNewsService.generatePicture(prompt);
+            CompletableFuture<String> imageUrlFuture = CompletableFuture.supplyAsync(() -> {
+                try {
+                    return cardNewsService.generatePicture(prompt);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            // 두 작업 완료 대기
+            CompletableFuture.allOf(textFuture, imageUrlFuture).join();
+
+            // 결과 가져오기
+            List<String> text = textFuture.get();
+            String url = imageUrlFuture.get();
+
+            // 사진 저장
             String path = fileService.saveImageFromUrl(url);
 
-            log.info(path);
             String replace = path.replace('\\', '/');
-            String substring_path = replace.substring(59);
-            log.info(substring_path);
-
-            loginMember.setOriginalUrl(substring_path);
+            String substringPath = replace.substring(59);
+            loginMember.setOriginalUrl(substringPath);
             loginMember.setAiImg(true);
             memberRepository.updateUrl(loginMember);
 
-            //문구
-            List<String> text = cardNewsService.generateText(prompt);
-
-            for (String s : text) {
-                log.info(s);
-                log.info("\n");
-            }
-
-
-            ImageResponse response = new ImageResponse(substring_path, text.get(0),text);
+            ImageResponse response = new ImageResponse(substringPath, text.get(0), text);
             return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
+
+        } catch (Exception e) {
             log.info(e.toString());
-            ImageResponse response = new ImageResponse(null, "특정 인물은 보안 때문에 AI가 생성을 못합니다.",null);
+            ImageResponse response = new ImageResponse(null, "특정 인물은 보안 때문에 AI가 생성을 못합니다.", null);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+//    @PostMapping("/image-create")
+//    @ResponseBody
+//    public ResponseEntity<ImageResponse> generateImage(@RequestParam String prompt, Model model,
+//                                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+//                                Member loginMember)
+//            throws IOException, InterruptedException {
+//        try {
+//
+//            //문구
+//            List<String> text = cardNewsService.generateText(prompt);
+//
+//            for (String s : text) {
+//                log.info(s);
+//                log.info("\n");
+//            }
+//
+//            //사진
+//            String url = cardNewsService.generatePicture(prompt);
+//            String path = fileService.saveImageFromUrl(url);
+//
+//            log.info(path);
+//            String replace = path.replace('\\', '/');
+//            String substring_path = replace.substring(59);
+//            log.info(substring_path);
+//
+//            loginMember.setOriginalUrl(substring_path);
+//            loginMember.setAiImg(true);
+//            memberRepository.updateUrl(loginMember);
+//
+//
+//
+//            ImageResponse response = new ImageResponse(substring_path, text.get(0),text);
+//            return ResponseEntity.ok(response);
+//        } catch (RuntimeException e) {
+//            log.info(e.toString());
+//            ImageResponse response = new ImageResponse(null, "특정 인물은 보안 때문에 AI가 생성을 못합니다.",null);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+//        }
+//    }
 
     @PostMapping("/uploadImage")
     @ResponseBody

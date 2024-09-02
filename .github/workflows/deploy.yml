@@ -62,8 +62,6 @@ jobs:
             if ! command -v nginx &> /dev/null
             then
               echo "Nginx could not be found, installing..."
-              sudo apt-get update
-              sudo apt-get install -y nginx
               sudo systemctl start nginx
               sudo systemctl enable nginx
             else
