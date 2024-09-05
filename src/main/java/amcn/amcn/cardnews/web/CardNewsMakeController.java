@@ -306,35 +306,45 @@ public class CardNewsMakeController {
     @PostMapping("/tts")
     public void generateTTS(@RequestBody Map<String, String> request, HttpServletResponse response) {
         String text = request.get("text");
-        String outputFileName = "output.mp3";  // 생성할 MP3 파일명
+        String outputFileName = "/home/ubuntu/AutoMakeCardNews/output.mp3";  // 생성할 MP3 파일명
         String pythonScriptPath = "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py"; // Python 스크립트 경로
 
         try {
             // Python 스크립트를 호출하여 TTS 파일 생성
             log.info("tts1");
 
-            String[] command = {"/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python", pythonScriptPath, text, outputFileName};
+            String[] command = {"/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python",
+                    "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py",
+                    text, outputFileName};
             log.info("tts2");
             ProcessBuilder processBuilder = new ProcessBuilder(command);
-            processBuilder.start().waitFor();
+            Process process = processBuilder.start();
+            process.waitFor();
 
             // 생성된 파일을 클라이언트에게 전송
             File mp3File = new File(outputFileName);
-            response.setContentType("audio/mpeg");
-            response.setHeader("Content-Disposition", "attachment; filename=" + outputFileName);
-            Files.copy(mp3File.toPath(), response.getOutputStream());
-            response.getOutputStream().flush();
-            log.info("tts3");
+            if (mp3File.exists()) {
+                response.setContentType("audio/mpeg");
+                response.setHeader("Content-Disposition", "attachment; filename=tts.mp3");
 
-            // 생성된 파일 삭제 (선택 사항)
-            mp3File.delete();
-            log.info("tts4");
+                Files.copy(mp3File.toPath(), response.getOutputStream());
+                response.getOutputStream().flush();
+                log.info("tts3");
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                // 생성된 파일 삭제
+                if (mp3File.delete()) {
+                    log.info("File {} deleted successfully", outputFileName);
+                } else {
+                    log.warn("Failed to delete file {}", outputFileName);
+                }
+            } else {
+                log.error("File {} does not exist", outputFileName);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
+        } catch (IOException | InterruptedException e) {
+            log.error("Error during TTS processing", e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
-
 }
 

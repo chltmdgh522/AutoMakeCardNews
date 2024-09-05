@@ -56,7 +56,6 @@ import sys
 
 def generate_tts(text, output_file):
     tts = gTTS(text, lang='ko')
-    print("나느 파이썬 tts")
     tts.save(output_file)
 
 if __name__ == '__main__':

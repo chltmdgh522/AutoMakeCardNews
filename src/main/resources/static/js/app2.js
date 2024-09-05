@@ -767,7 +767,7 @@ function onKeyboard(event) {
 
 //inputImage.addEventListener('change', onImg);
 resetBtn.addEventListener('click', onDelete);
-save.addEventListener('click', onSave);
+//save.addEventListener('click', onSave);
 document.addEventListener('keydown', onKeyboard);
 
 function onMouseMove(event) {

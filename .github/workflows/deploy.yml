@@ -47,17 +47,22 @@ jobs:
 
             # Stop the running JAR process
             pkill -f 'java -jar amcn-0.0.1-SNAPSHOT.jar'
+            sleep 5  # 5초 대기
 
-            # Clean up old JAR files and logs
-            find . -name '*.jar' -not -name 'amcn-0.0.1-SNAPSHOT.jar' -exec rm -f {} \;
+            # Clean up old logs and JAR files
             find . -name '*.log' -mtime +1 -exec rm -f {} \;
+            find . -name '*.jar' -not -name 'amcn-0.0.1-SNAPSHOT.jar' -exec rm -f {} \;
+
+            # Always remove old app.log
+            rm -f app.log
 
             # Unpack the new JAR file
             tar -xzf amcn-0.0.1-SNAPSHOT.tar.gz
 
             # Run the new JAR file with limited memory
             nohup java -Xmx512m -jar amcn-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
-
+            sleep 10  # 10초 대기
+          
             # Restart Nginx
             sudo systemctl restart nginx
           EOF
