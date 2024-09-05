@@ -14,8 +14,91 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
+
+
+
+
+        #save5 {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+
+        #popup5 {
+            display: none;
+            position: fixed;
+
+            left: -90px;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content5 {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .popup-content5 h2 {
+            margin-top: 0;
+        }
+
+        .popup-content5 label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .button-group5 {
+            margin-top: 20px;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            color: white;
+            margin-right: 10px;
+        }
+
+        .download-btn5 {
+            background-color: #4CAF50;
+        }
+
+        .cancel-btn5 {
+            background-color: #f44336;
+        }
+
+        .close-btn5 {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+
+
+
+
+
+
         /* 오버레이 스타일 */
-        .overlay {
+        .overlay-container {
             position: fixed;
             top: 0;
             left: 0;
@@ -24,12 +107,19 @@
             background: rgba(0, 0, 0, 0.5);
             z-index: 1000;
             display: none;
+            flex-direction: column; /* 수직 정렬 */
             justify-content: center; /* 수평 중앙 정렬 */
             align-items: center; /* 수직 중앙 정렬 */
             color: white;
             font-size: 30px;
         }
 
+        #time {
+            color: red;
+            font-weight: bold;
+            font-size: 40px; /* 타이머 크기 */
+            margin-bottom: 10px; /* 타이머와 문구 사이 간격 */
+        }
     </style>
 </head>
 
@@ -130,12 +220,13 @@
             <li><input type="file" accept="image/*" id='file'/></li>
             <li><label for="file">📂</label></li>
             <li>
-                <button id="save">💾</button>
+                <button id="save5">💾</button>
             </li>
         </ul>
     </aside>
     <main>
         <canvas id="imageCanvas"></canvas>
+        <button id="speakerButton" class="speaker-btn">🔊</button>
     </main>
     <aside class="tools_sett">
         <div class="container" style="margin-bottom: -138px;">
@@ -200,6 +291,27 @@
         <!--        <button id="saveJson">Save as JSON</button>-->
 
     </aside>
+</div>
+<!-- 이미지 및 오디오 저장 모달 -->
+<div id="popup5" class="popup5">
+    <div class="popup-content5">
+        <span id="close5" class="close-btn5">&times;</span>
+        <h2 style="font-weight: bold;">Choose Options</h2>
+        <form id="popup-form5" style="margin-top: 10px">
+            <label>
+                <input type="checkbox" name="options5" value="image">
+                카드뉴스
+            </label>
+            <label>
+                <input type="checkbox" name="options5" value="audio">
+                TTS
+            </label>
+            <div class="button-group5">
+                <button type="submit" class="btn download-btn5">Download</button>
+                <button type="button" id="cancel5" class="btn cancel-btn5">Cancel</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!-- 텍스트 편집 모달 -->
@@ -313,11 +425,16 @@
     <button id="applyFilter5">적용</button>
     <button id="closePopup5">닫기</button>
 </div>
-<div style="display: flex">
-    <div class="overlay">이미지를 생성 중입니다. 잠시만 기다려주세요...</div>
+<div class="overlay-container">
+    <div id="time">01:10</div>
+    <div>이미지를 생성 중입니다. 잠시만 기다려주세요...</div>
 </div>
+<script>
+
+</script>
 <script src="/js/app.js"></script>
 <script>
+
     // 이미지 저장 함수
     function saveImage() {
         var canvas = document.getElementById("imageCanvas");
@@ -415,14 +532,41 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
+    let interval; // 타이머 인터벌을 저장할 변수
+    function startTimer(duration, display) {
+        let timer = duration, minutes, seconds;
 
+        if (interval) {
+            clearInterval(interval); // 이전 타이머 정지
+        }
+
+        interval = setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(interval);
+                display.textContent = "00:00";
+            }
+        }, 1000);
+    }
+
+
+    $(document).ready(function () {
+        let timeDisplay = $("#time");
+        let duration = 70; // 1분 10초 = 70초
         let textList = []; // 텍스트 리스트 저장 변수
         let textIndex = 0; // 현재 텍스트 인덱스
         $("#imageButton").click(function () {
             // 오버레이 표시
-            $(".overlay").css("display", "flex");
-
+            $(".overlay-container").css("display", "flex");
+            // 타이머 시작
+            startTimer(duration, timeDisplay[0]);
             $.ajax({
                 type: "POST",
                 url: "/image-create",
@@ -440,17 +584,22 @@
                         textList = data.text; // 서버에서 받은 텍스트 리스트 저장
 
                         textIndex = 0; // 인덱스 초기화
-                        addFilledSquare(100,100);
+                        addFilledSquare(100, 100);
                         // addTextToCanvas 함수 호출
                         addTextToCanvas();
                     }
                 },
                 error: function (xhr, status, error) {
-                    alert("이미지 생성 중 오류가 발생했습니다: " + xhr.responseText);
+                    alert("이미지 생성 중 오류가 발생했습니다 귀하가 작성한 문구는 AI 보안에 위배되어 실패했습니다. 확인을 눌러주시면 바로 새로고침 진행됩니다.");
+                    console.log(xhr.responseText);
+                    // 5초 후에 페이지 새로고침
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000); // 5000ms = 5초
                 },
                 complete: function () {
                     // 오버레이 숨김
-                    $(".overlay").hide();
+                    $(".overlay-container").hide();
                 }
             });
         });
@@ -487,6 +636,28 @@
         rectfillangles.push(rect);
         redrawCanvas();
     }
+</script>
+
+
+<script>
+    document.getElementById('save5').addEventListener('click', function() {
+        document.getElementById('popup5').style.display = 'flex';
+    });
+
+    document.getElementById('close5').addEventListener('click', function() {
+        document.getElementById('popup5').style.display = 'none';
+    });
+
+    document.getElementById('cancel5').addEventListener('click', function() {
+        document.getElementById('popup5').style.display = 'none';
+    });
+
+    document.getElementById('popup-form5').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        document.getElementById('popup5').style.display = 'none';
+    });
+
 </script>
 </body>
 

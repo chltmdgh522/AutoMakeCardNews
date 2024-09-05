@@ -9,6 +9,7 @@ import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Controller
 @Slf4j
@@ -173,46 +175,98 @@ public class CardNewsMakeController {
             return "Error occurred while saving JSON data.";
         }
     }
-
-
     @PostMapping("/image-create")
     @ResponseBody
     public ResponseEntity<ImageResponse> generateImage(@RequestParam String prompt, Model model,
-                                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                Member loginMember)
-            throws IOException, InterruptedException {
+                                                       @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
         try {
+            // 비동기 호출
+            CompletableFuture<List<String>> textFuture = CompletableFuture.supplyAsync(() -> {
+                try {
+                    return cardNewsService.generateText(prompt);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
-            //사진
-            String url = cardNewsService.generatePicture(prompt);
-            String path = fileService.saveImageFromUrl(url);
+            CompletableFuture<String> imageUrlFuture = CompletableFuture.supplyAsync(() -> {
+                try {
+                    return cardNewsService.generatePicture(prompt);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
-            log.info(path);
-            String replace = path.replace('\\', '/');
-            String substring_path = replace.substring(59);
-            log.info(substring_path);
+            // 두 작업 완료 대기
+            CompletableFuture.allOf(textFuture, imageUrlFuture).join();
 
-            loginMember.setOriginalUrl(substring_path);
-            loginMember.setAiImg(true);
-            memberRepository.updateUrl(loginMember);
-
-            //문구
-            List<String> text = cardNewsService.generateText(prompt);
-
+            // 결과 가져오기
+            List<String> text = textFuture.get();
             for (String s : text) {
                 log.info(s);
                 log.info("\n");
             }
 
+            String url = imageUrlFuture.get();
 
-            ImageResponse response = new ImageResponse(substring_path, text.get(0),text);
+            // 사진 저장
+            String path = fileService.saveImageFromUrl(url);
+
+            String replace = path.replace('\\', '/');
+            String substringPath = replace.substring(59);
+            loginMember.setOriginalUrl(substringPath);
+            loginMember.setAiImg(true);
+            memberRepository.updateUrl(loginMember);
+
+            ImageResponse response = new ImageResponse(substringPath, text.get(0), text);
             return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
+
+        } catch (Exception e) {
             log.info(e.toString());
-            ImageResponse response = new ImageResponse(null, "특정 인물은 보안 때문에 AI가 생성을 못합니다.",null);
+            ImageResponse response = new ImageResponse(null, "특정 인물은 보안 때문에 AI가 생성을 못합니다.", null);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+//    @PostMapping("/image-create")
+//    @ResponseBody
+//    public ResponseEntity<ImageResponse> generateImage(@RequestParam String prompt, Model model,
+//                                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+//                                Member loginMember)
+//            throws IOException, InterruptedException {
+//        try {
+//
+//            //문구
+//            List<String> text = cardNewsService.generateText(prompt);
+//
+//            for (String s : text) {
+//                log.info(s);
+//                log.info("\n");
+//            }
+//
+//            //사진
+//            String url = cardNewsService.generatePicture(prompt);
+//            String path = fileService.saveImageFromUrl(url);
+//
+//            log.info(path);
+//            String replace = path.replace('\\', '/');
+//            String substring_path = replace.substring(59);
+//            log.info(substring_path);
+//
+//            loginMember.setOriginalUrl(substring_path);
+//            loginMember.setAiImg(true);
+//            memberRepository.updateUrl(loginMember);
+//
+//
+//
+//            ImageResponse response = new ImageResponse(substring_path, text.get(0),text);
+//            return ResponseEntity.ok(response);
+//        } catch (RuntimeException e) {
+//            log.info(e.toString());
+//            ImageResponse response = new ImageResponse(null, "특정 인물은 보안 때문에 AI가 생성을 못합니다.",null);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+//        }
+//    }
 
     @PostMapping("/uploadImage")
     @ResponseBody
@@ -245,5 +299,41 @@ public class CardNewsMakeController {
             return "업로드 실패";
         }
     }
+
+
+    @ResponseBody
+    @PostMapping("/tts")
+    public void generateTTS(@RequestBody Map<String, String> request, HttpServletResponse response) {
+        String text = request.get("text");
+        String outputFileName = "output.mp3";  // 생성할 MP3 파일명
+        String pythonScriptPath = "C:/Users/chltm/Github/amcn/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py"; // Python 스크립트 경로
+
+        try {
+            // Python 스크립트를 호출하여 TTS 파일 생성
+            log.info("tts1");
+
+            String[] command = {"python", pythonScriptPath, text, outputFileName};
+            log.info("tts2");
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            processBuilder.start().waitFor();
+
+            // 생성된 파일을 클라이언트에게 전송
+            File mp3File = new File(outputFileName);
+            response.setContentType("audio/mpeg");
+            response.setHeader("Content-Disposition", "attachment; filename=" + outputFileName);
+            Files.copy(mp3File.toPath(), response.getOutputStream());
+            response.getOutputStream().flush();
+            log.info("tts3");
+
+            // 생성된 파일 삭제 (선택 사항)
+            mp3File.delete();
+            log.info("tts4");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
 

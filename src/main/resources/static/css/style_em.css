@@ -842,3 +842,20 @@ input[type="color"] {
 *{
     font-family: "Jua",sans-serif;
 }
+
+
+
+
+.speaker-btn {
+    position: absolute;
+    top: 45px;
+    left: 265px;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

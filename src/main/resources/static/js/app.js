@@ -292,6 +292,7 @@ function redrawCanvas(filter = currentFilter) {
         });
     });
 }
+
 // Apply selected filter
 applyFilterButton.addEventListener('click', () => {
     const selectedFilter = filterForm.querySelector('input[name="filter5"]:checked');
@@ -649,6 +650,32 @@ function onReset() {
     rectfillangles = [];
 }
 
+// form 제출 시 이벤트 처리
+document.getElementById('popup-form5').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    // 선택된 체크박스 값 가져오기
+    const selectedOptions = document.querySelectorAll('input[name="options5"]:checked');
+    const selectedValues = Array.from(selectedOptions).map(option => option.value);
+
+    // 선택한 옵션이 없을 경우 경고
+    if (selectedValues.length === 0) {
+        alert('옵션을 하나 이상 선택해야 합니다.');
+        return;
+    }
+
+    // 카드뉴스 이미지 다운로드 처리
+    if (selectedValues.includes('image')) {
+        onSave();
+    }
+
+    // TTS 전송 처리
+    if (selectedValues.includes('audio')) {
+        await sendTTS();
+    }
+});
+
+// 이미지 다운로드 함수
 function onSave() {
     try {
         const url = canvas.toDataURL();
@@ -660,6 +687,48 @@ function onSave() {
         console.error('Error exporting canvas as image', error);
     }
 }
+
+// TTS 요청을 서버로 보내는 함수 (비동기 처리)
+async function sendTTS() {
+    if (texts.length > 0) {
+        const allTexts = texts.map(item => item.text).join(' '); // 모든 텍스트 연결
+
+        try {
+            const response = await fetch('/tts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: allTexts })
+            });
+
+            if (response.ok) {
+                // MP3 파일이 blob 형식으로 반환되므로 이를 처리
+                const blob = await response.blob();
+
+                // 다운로드 링크를 만들어 클릭 이벤트 트리거
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'tts_audio.mp3'; // 파일명을 지정
+                a.click();
+
+                // URL 해제
+                window.URL.revokeObjectURL(url);
+                console.log('TTS 파일 다운로드 완료');
+            } else {
+                console.error('TTS 요청 실패:', response.status);
+            }
+        } catch (error) {
+            console.error('TTS 요청 중 오류 발생:', error);
+        }
+    } else {
+        alert('추가된 텍스트가 없습니다.');
+    }
+}
+
+
+
 
 
 backColor.addEventListener('change', onBColorChange);
@@ -684,7 +753,7 @@ function onKeyboard(event) {
 
 inputImage.addEventListener('change', onImg);
 resetBtn.addEventListener('click', onDelete);
-save.addEventListener('click', onSave);
+//save.addEventListener('click', onSave);
 document.addEventListener('keydown', onKeyboard);
 
 function onMouseMove(event) {
@@ -798,9 +867,6 @@ function onMouseUp() {
 }
 
 
-
-
-
 function onDraw() {
     isDrawing = !isDrawing;
     isfill_square = false;
@@ -850,7 +916,7 @@ function onDelete() {
     console.log('Confirm returned:', tf); // tf 값 출력
     if (tf) {
         onReset();
-    }else{
+    } else {
 
     }
 }
@@ -1047,6 +1113,27 @@ function onWidthChange(event) {
     redrawCanvas();
     ctx.translate(0, canvas.height - canvas.clientHeight); // 추가된 라인
 }
+
+// 확성기 버튼 클릭 시 모든 텍스트를 읽어주는 기능
+document.getElementById('speakerButton').addEventListener('click', function () {
+    if (texts.length > 0) {
+        const allTexts = texts.map(item => item.text).join(' '); // 모든 텍스트를 공백으로 구분하여 연결
+        speakText(allTexts); // 모든 텍스트 읽기
+    } else {
+        alert('추가된 텍스트가 없습니다.');
+    }
+});
+
+// 텍스트를 읽어주는 함수
+function speakText(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    window.speechSynthesis.speak(utterance);
+}
+
+// 페이지 이동 또는 새로고침 시 TTS 종료
+window.addEventListener('beforeunload', function () {
+    window.speechSynthesis.cancel(); // TTS 종료
+});
 
 function onHeightChange(event) {
     if (!isNaN(event.target.value)) {

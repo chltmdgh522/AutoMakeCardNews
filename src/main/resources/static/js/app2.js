@@ -797,7 +797,7 @@ function onMouseDown(event) {
                 width: lineWidth,
                 height: lineWidth,
                 color: ctx.strokeStyle,
-                lineWidth: ctx.lineWidth
+                 lineWidth: ctx.lineWidth
             };
             rectfillangles.push(rect);
             redrawCanvas();
@@ -1222,3 +1222,5 @@ document.getElementById('loadJsonFile').addEventListener('change', loadCanvasFro
 
 // "Save as JSON" 버튼 클릭 시 캔버스 상태를 JSON 파일로 저장하는 함수 등록
 document.getElementById('saveJson').addEventListener('click', saveCanvasAsJSON);
+
+

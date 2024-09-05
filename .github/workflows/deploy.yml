@@ -13,6 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
@@ -23,7 +33,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build --no-daemon -x test
+        run: ./gradlew build -x test  # --no-daemon 플래그 제거
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -52,8 +62,6 @@ jobs:
             if ! command -v nginx &> /dev/null
             then
               echo "Nginx could not be found, installing..."
-              sudo apt-get update
-              sudo apt-get install -y nginx
               sudo systemctl start nginx
               sudo systemctl enable nginx
             else
