@@ -312,7 +312,7 @@ public class CardNewsMakeController {
             // Python 스크립트를 호출하여 TTS 파일 생성
             log.info("tts1");
 
-            String[] command = {"python", pythonScriptPath, text, outputFileName};
+            String[] command = {"python3", pythonScriptPath, text, outputFileName};
             log.info("tts2");
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             processBuilder.start().waitFor();
