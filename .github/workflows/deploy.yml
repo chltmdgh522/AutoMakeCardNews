@@ -19,21 +19,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper/
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
       - name: Build with Gradle (without tests)
         run: ./gradlew build -x test
+
+      - name: Create tarball
+        run: tar -czf amcn-0.0.1-SNAPSHOT.tar.gz -C build/libs amcn-0.0.1-SNAPSHOT.jar
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -45,7 +38,7 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          # Copy JAR file to EC2
+          # Copy tarball to EC2
           scp -C -o StrictHostKeyChecking=no amcn-0.0.1-SNAPSHOT.tar.gz $EC2_USER@$EC2_HOST:/home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.tar.gz
 
           # Connect to EC2 and deploy
@@ -68,4 +61,3 @@ jobs:
             # Restart Nginx
             sudo systemctl restart nginx
           EOF
-      
