@@ -306,7 +306,7 @@ public class CardNewsMakeController {
     public void generateTTS(@RequestBody Map<String, String> request, HttpServletResponse response) {
         String text = request.get("text");
         String outputFileName = "output.mp3";  // 생성할 MP3 파일명
-        String pythonScriptPath = "C:/Users/chltm/Github/amcn/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py"; // Python 스크립트 경로
+        String pythonScriptPath = "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py"; // Python 스크립트 경로
 
         try {
             // Python 스크립트를 호출하여 TTS 파일 생성
