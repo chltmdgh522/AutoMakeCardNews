@@ -35,10 +35,23 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
+          # Copy JAR file to EC2
           scp -o StrictHostKeyChecking=no build/libs/amcn-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.jar
+
+          # Connect to EC2 and deploy
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
             cd /home/ubuntu/AutoMakeCardNews
+
+            # Stop the running JAR process
             pkill -f 'java -jar amcn-0.0.1-SNAPSHOT.jar'
-            nohup java -jar amcn-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+
+            # Clean up old JAR files and logs
+            find . -name '*.jar' -not -name 'amcn-0.0.1-SNAPSHOT.jar' -exec rm -f {} \;
+            find . -name '*.log' -mtime +1 -exec rm -f {} \;
+
+            # Run the new JAR file with limited memory
+            nohup java -Xmx512m -jar amcn-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+
+            # Restart Nginx
             sudo systemctl restart nginx
           EOF
