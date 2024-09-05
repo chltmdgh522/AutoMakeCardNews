@@ -61,7 +61,7 @@ public class CardNewsMakeController {
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
             Member member = findMember.get();
-            if(member.getRoleType().name().equals("USER")){
+            if (member.getRoleType().name().equals("USER")) {
                 return "redirect:/";
             }
             model.addAttribute("type", member.getRoleType().name());
@@ -122,10 +122,10 @@ public class CardNewsMakeController {
             ImageIO.write(img, "png", destinationPath.toFile());
 
 
-            if(loginMember.isAiImg()) {
+            if (loginMember.isAiImg()) {
                 cardNews.setEdit("X");
                 loginMember.setAiImg(false);
-            }else{
+            } else {
                 cardNews.setEdit("O");
             }
 
@@ -175,6 +175,7 @@ public class CardNewsMakeController {
             return "Error occurred while saving JSON data.";
         }
     }
+
     @PostMapping("/image-create")
     @ResponseBody
     public ResponseEntity<ImageResponse> generateImage(@RequestParam String prompt, Model model,
@@ -312,7 +313,7 @@ public class CardNewsMakeController {
             // Python 스크립트를 호출하여 TTS 파일 생성
             log.info("tts1");
 
-            String[] command = {"python3", pythonScriptPath, text, outputFileName};
+            String[] command = {"/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python", pythonScriptPath, text, outputFileName};
             log.info("tts2");
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             processBuilder.start().waitFor();

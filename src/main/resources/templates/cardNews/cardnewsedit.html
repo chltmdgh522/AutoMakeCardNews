@@ -115,12 +115,13 @@
         <ul class='files'>
 
             <li>
-                <button id="save">💾</button>
+                <button id="save5">💾</button>
             </li>
         </ul>
     </aside>
     <main>
         <canvas id="imageCanvas"></canvas>
+        <button id="speakerButton" class="speaker-btn">🔊</button>
     </main>
     <aside class="tools_sett">
         <div class="container" style="margin-bottom: -138px;">
@@ -260,7 +261,27 @@
         <button class="rect_button3" id="updateColorButton3">변경</button>
     </div>
 </div>
-
+<!-- 이미지 및 오디오 저장 모달 -->
+<div id="popup5" class="popup5">
+    <div class="popup-content5">
+        <span id="close5" class="close-btn5">&times;</span>
+        <h2 style="font-weight: bold;">Choose Options</h2>
+        <form id="popup-form5" style="margin-top: 10px">
+            <label>
+                <input type="checkbox" name="options5" value="image">
+                카드뉴스
+            </label>
+            <label>
+                <input type="checkbox" name="options5" value="audio">
+                TTS
+            </label>
+            <div class="button-group5">
+                <button type="submit" class="btn download-btn5">Download</button>
+                <button type="button" id="cancel5" class="btn cancel-btn5">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <div id="overlay5"></div>
 <div id="filterPopup5">
@@ -431,7 +452,26 @@
     }
 </script>
 
+<script>
+    document.getElementById('save5').addEventListener('click', function() {
+        document.getElementById('popup5').style.display = 'flex';
+    });
 
+    document.getElementById('close5').addEventListener('click', function() {
+        document.getElementById('popup5').style.display = 'none';
+    });
+
+    document.getElementById('cancel5').addEventListener('click', function() {
+        document.getElementById('popup5').style.display = 'none';
+    });
+
+    document.getElementById('popup-form5').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        document.getElementById('popup5').style.display = 'none';
+    });
+
+</script>
 </body>
 
 </html>
