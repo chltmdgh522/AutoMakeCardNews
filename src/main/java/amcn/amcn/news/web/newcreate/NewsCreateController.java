@@ -80,8 +80,8 @@ public class NewsCreateController {
 
     private String summary_py(String content) {
         String[] command = {
-                "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python",
-                "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/summary/main/runmain.py",
+                "C:/Users/82103/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python",
+                "C:/Users/82103/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/summary/main/runmain.py",
                 content
         };
         log.info("111111111");

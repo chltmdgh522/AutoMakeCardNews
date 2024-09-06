@@ -214,7 +214,7 @@ public class CardNewsMakeController {
             String path = fileService.saveImageFromUrl(url);
 
             String replace = path.replace('\\', '/');
-            String substringPath = replace.substring(59);
+            String substringPath = replace.substring(61);
             loginMember.setOriginalUrl(substringPath);
             loginMember.setAiImg(true);
             memberRepository.updateUrl(loginMember);
@@ -306,15 +306,15 @@ public class CardNewsMakeController {
     @PostMapping("/tts")
     public void generateTTS(@RequestBody Map<String, String> request, HttpServletResponse response) {
         String text = request.get("text");
-        String outputFileName = "/home/ubuntu/AutoMakeCardNews/output.mp3";  // 생성할 MP3 파일명
-        String pythonScriptPath = "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py"; // Python 스크립트 경로
+        String outputFileName = "C:/Users/82103/AutoMakeCardNews/output.mp3";  // 생성할 MP3 파일명
+        String pythonScriptPath = "C:/Users/82103/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py"; // Python 스크립트 경로
 
         try {
             // Python 스크립트를 호출하여 TTS 파일 생성
             log.info("tts1");
 
-            String[] command = {"/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python",
-                    "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py",
+            String[] command = {"C:/Users/82103/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python",
+                    "C:/Users/82103/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py",
                     text, outputFileName};
             log.info("tts2");
             ProcessBuilder processBuilder = new ProcessBuilder(command);
