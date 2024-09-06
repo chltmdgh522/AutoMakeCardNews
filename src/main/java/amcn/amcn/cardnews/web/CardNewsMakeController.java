@@ -319,12 +319,12 @@ public class CardNewsMakeController {
             log.info("tts2");
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             Process process = processBuilder.start();
-            process.waitFor();
+                process.waitFor();
 
-            // 생성된 파일을 클라이언트에게 전송
-            File mp3File = new File(outputFileName);
-            if (mp3File.exists()) {
-                response.setContentType("audio/mpeg");
+                // 생성된 파일을 클라이언트에게 전송
+                File mp3File = new File(outputFileName);
+                if (mp3File.exists()) {
+                    response.setContentType("audio/mpeg");
                 response.setHeader("Content-Disposition", "attachment; filename=tts.mp3");
 
                 Files.copy(mp3File.toPath(), response.getOutputStream());

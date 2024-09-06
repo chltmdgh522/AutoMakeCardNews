@@ -2348,45 +2348,45 @@ public class DataInitializer {
         boardRepository.save(board50);
 
 
-        // 카드뉴스
-        cardNewsRepository.save(cardNews1);
-        cardNewsRepository.save(cardNews2);
-        cardNewsRepository.save(cardNews3);
-        cardNewsRepository.save(cardNews4);
-        cardNewsRepository.save(cardNews5);
-        cardNewsRepository.save(cardNews6);
-        cardNewsRepository.save(cardNews7);
-        cardNewsRepository.save(cardNews8);
-        cardNewsRepository.save(cardNews9);
-        cardNewsRepository.save(cardNews10);
-        cardNewsRepository.save(cardNews11);
-        cardNewsRepository.save(cardNews12);
-        cardNewsRepository.save(cardNews13);
-        cardNewsRepository.save(cardNews14);
-        cardNewsRepository.save(cardNews15);
-        cardNewsRepository.save(cardNews16);
-        cardNewsRepository.save(cardNews17);
-        cardNewsRepository.save(cardNews18);
-        cardNewsRepository.save(cardNews19);
-        cardNewsRepository.save(cardNews20);
-        cardNewsRepository.save(cardNews21);
-        cardNewsRepository.save(cardNews22);
-        cardNewsRepository.save(cardNews23);
-        cardNewsRepository.save(cardNews24);
-        cardNewsRepository.save(cardNews25);
-        cardNewsRepository.save(cardNews26);
-        cardNewsRepository.save(cardNews27);
-        cardNewsRepository.save(cardNews28);
-        cardNewsRepository.save(cardNews29);
-        cardNewsRepository.save(cardNews30);
-        cardNewsRepository.save(cardNews31);
-        cardNewsRepository.save(cardNews32);
-        cardNewsRepository.save(cardNews33);
-        cardNewsRepository.save(cardNews34);
-        cardNewsRepository.save(cardNews35);
-        cardNewsRepository.save(cardNews36);
-        cardNewsRepository.save(cardNews37);
-        cardNewsRepository.save(cardNews38);
+//        // 카드뉴스
+//        cardNewsRepository.save(cardNews1);
+//        cardNewsRepository.save(cardNews2);
+//        cardNewsRepository.save(cardNews3);
+//        cardNewsRepository.save(cardNews4);
+//        cardNewsRepository.save(cardNews5);
+//        cardNewsRepository.save(cardNews6);
+//        cardNewsRepository.save(cardNews7);
+//        cardNewsRepository.save(cardNews8);
+//        cardNewsRepository.save(cardNews9);
+//        cardNewsRepository.save(cardNews10);
+//        cardNewsRepository.save(cardNews11);
+//        cardNewsRepository.save(cardNews12);
+//        cardNewsRepository.save(cardNews13);
+//        cardNewsRepository.save(cardNews14);
+//        cardNewsRepository.save(cardNews15);
+//        cardNewsRepository.save(cardNews16);
+//        cardNewsRepository.save(cardNews17);
+//        cardNewsRepository.save(cardNews18);
+//        cardNewsRepository.save(cardNews19);
+//        cardNewsRepository.save(cardNews20);
+//        cardNewsRepository.save(cardNews21);
+//        cardNewsRepository.save(cardNews22);
+//        cardNewsRepository.save(cardNews23);
+//        cardNewsRepository.save(cardNews24);
+//        cardNewsRepository.save(cardNews25);
+//        cardNewsRepository.save(cardNews26);
+//        cardNewsRepository.save(cardNews27);
+//        cardNewsRepository.save(cardNews28);
+//        cardNewsRepository.save(cardNews29);
+//        cardNewsRepository.save(cardNews30);
+//        cardNewsRepository.save(cardNews31);
+//        cardNewsRepository.save(cardNews32);
+//        cardNewsRepository.save(cardNews33);
+//        cardNewsRepository.save(cardNews34);
+//        cardNewsRepository.save(cardNews35);
+//        cardNewsRepository.save(cardNews36);
+//        cardNewsRepository.save(cardNews37);
+//        cardNewsRepository.save(cardNews38);
 
 
         //댓글
