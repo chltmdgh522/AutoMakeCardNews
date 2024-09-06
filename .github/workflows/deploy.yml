@@ -3,63 +3,41 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - master
+      - master  # master 브랜치에 커밋이 발생할 때 트리거
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Check out code
+      uses: actions/checkout@v3
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'  # Java 17로 설정
 
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
+    - name: Build with Gradle
+      run: ./gradlew build
 
-      - name: Build with Gradle (without tests)
-        run: ./gradlew build -x test
+    - name: Copy JAR file to EC2
+      env:
+        EC2_USER: ${{ secrets.EC2_USER }}
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+      run: |
+        # Add the SSH key to the agent
+        echo "${{ secrets.EC2_KEY }}" > ec2_key.pem
+        chmod 600 ec2_key.pem
+        eval $(ssh-agent)
+        ssh-add ec2_key.pem
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.EC2_KEY }}
+        # Copy JAR file to EC2
+        scp -o StrictHostKeyChecking=no -i ec2_key.pem build/libs/amcn-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.jar
 
-      - name: Deploy to EC2
-        env:
-          EC2_USER: ${{ secrets.EC2_USER }}
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-        run: |
-          # Copy JAR file to EC2
-          scp -o StrictHostKeyChecking=no build/libs/amcn-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.jar
+        # Restart Nginx on EC2
+        ssh -o StrictHostKeyChecking=no -i ec2_key.pem $EC2_USER@$EC2_HOST 'sudo systemctl restart nginx'
 
-          # Connect to EC2 and deploy
-          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
-            cd /home/ubuntu/AutoMakeCardNews
-
-            # Stop the running JAR process
-            pkill -f 'java -jar amcn-0.0.1-SNAPSHOT.jar'
-            sleep 5  # 5초 대기
-
-            # Clean up old logs and JAR files
-            find . -name '*.log' -mtime +1 -exec rm -f {} \;
-            find . -name '*.jar' -not -name 'amcn-0.0.1-SNAPSHOT.jar' -exec rm -f {} \;
-
-            # Always remove old app.log
-            rm -f app.log
-
-            # Deploy the new JAR file
-            mv amcn-0.0.1-SNAPSHOT.jar /home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.jar
-
-            # Run the new JAR file with limited memory
-            nohup java -Xmx512m -jar amcn-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
-            sleep 10  # 10초 대기
-
-            # Restart Nginx
-            sudo systemctl restart nginx
-          EOF
+    - name: Clean up
+      run: |
+        rm -f ec2_key.pem
