@@ -25,9 +25,6 @@ jobs:
       - name: Build with Gradle (without tests)
         run: ./gradlew build -x test
 
-      - name: Create tarball
-        run: tar -czf amcn-0.0.1-SNAPSHOT.tar.gz -C build/libs amcn-0.0.1-SNAPSHOT.jar
-
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
@@ -38,8 +35,8 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          # Copy tarball to EC2
-          scp -C -o StrictHostKeyChecking=no amcn-0.0.1-SNAPSHOT.tar.gz $EC2_USER@$EC2_HOST:/home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.tar.gz
+          # Copy JAR file to EC2
+          scp -o StrictHostKeyChecking=no build/libs/amcn-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.jar
 
           # Connect to EC2 and deploy
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
@@ -56,13 +53,13 @@ jobs:
             # Always remove old app.log
             rm -f app.log
 
-            # Unpack the new JAR file
-            tar -xzf amcn-0.0.1-SNAPSHOT.tar.gz
+            # Deploy the new JAR file
+            mv amcn-0.0.1-SNAPSHOT.jar /home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.jar
 
             # Run the new JAR file with limited memory
             nohup java -Xmx512m -jar amcn-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
             sleep 10  # 10초 대기
-          
+
             # Restart Nginx
             sudo systemctl restart nginx
           EOF
