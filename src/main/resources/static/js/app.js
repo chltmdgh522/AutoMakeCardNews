@@ -673,6 +673,11 @@ document.getElementById('popup-form5').addEventListener('submit', async function
     if (selectedValues.includes('audio')) {
         await sendTTS();
     }
+
+    // 동영상 전송 처리
+    if (selectedValues.includes('video')) {
+        await sendVideo();
+    }
 });
 
 // 이미지 다운로드 함수
@@ -728,6 +733,74 @@ async function sendTTS() {
 }
 
 
+async function sendVideo() {
+    if (texts.length === 0) {
+        alert('추가된 텍스트가 없습니다.');
+        return;
+    }
+
+    // canvas 이미지가 없는 경우 처리
+    const imageData = canvas.toDataURL();
+    if (!imageData) {
+        alert('이미지가 없습니다.');
+        return;
+    }
+
+    alert("5초 정도 기다려주세요");
+    if (texts.length > 0) {
+        const allTexts = texts.map(item => item.text).join(' ');
+
+        // canvas 이미지를 base64로 변환
+        const imageData = canvas.toDataURL();
+
+        try {
+            // TTS 파일 생성 후 비디오 요청
+            const ttsResponse = await fetch('/tts2', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: allTexts })
+            });
+
+            if (ttsResponse.ok) {
+                const audioBlob = await ttsResponse.blob();
+
+                // 폼 데이터에 이미지와 TTS 파일 추가
+                const formData = new FormData();
+                formData.append('imageData', imageData); // 이미지 데이터 추가
+                formData.append('audioFile', audioBlob, 'video_tts.mp3'); // TTS 파일 추가
+
+                const videoResponse = await fetch('/video', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (videoResponse.ok) {
+                    const videoBlob = await videoResponse.blob();
+
+                    // 비디오 파일 다운로드
+                    const url = window.URL.createObjectURL(videoBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'video.mp4';
+                    a.click();
+
+                    window.URL.revokeObjectURL(url);
+                    console.log('동영상 파일 다운로드 완료');
+                } else {
+                    console.error('비디오 생성 실패:', videoResponse.status);
+                }
+            } else {
+                console.error('TTS 요청 실패:', ttsResponse.status);
+            }
+        } catch (error) {
+            console.error('비디오 요청 중 오류 발생:', error);
+        }
+    } else {
+        alert('추가된 텍스트가 없습니다.');
+    }
+}
 
 
 

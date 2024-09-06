@@ -12614,7 +12614,7 @@ body.sidebar-toggled footer.sticky-footer {
 
 }
 
-/* 현재 슬라이드만 원래 밝게, 이전 및 다음 슬라이드 어둡게 
+/* 현재 슬라이드만 원래 밝게, 이전 및 다음 슬라이드 어둡게
         .swiper-slide-prev:not(.swiper-slide-duplicate) img,
         .swiper-slide-next:not(.swiper-slide-duplicate) img {
             filter: brightness(0.5);
