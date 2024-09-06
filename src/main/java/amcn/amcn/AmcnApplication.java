@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 public class AmcnApplication {
 
-
 	public static void main(String[] args) {
 		// env
 		Dotenv dotenv = Dotenv.load();
