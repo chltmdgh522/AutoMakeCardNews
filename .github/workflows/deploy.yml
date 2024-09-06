@@ -17,6 +17,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '17'  # Java 17로 설정
+        distribution: 'temurin'  # 배포판 설정 (temurin 또는 다른 배포판 선택)
 
     - name: Build with Gradle
       run: ./gradlew build
