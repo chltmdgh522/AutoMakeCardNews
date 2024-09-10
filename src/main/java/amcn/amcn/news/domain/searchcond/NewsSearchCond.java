@@ -8,4 +8,6 @@ public class NewsSearchCond {
     String title = "";
 
     String category = "";
+
+    String selected = "";
 }
