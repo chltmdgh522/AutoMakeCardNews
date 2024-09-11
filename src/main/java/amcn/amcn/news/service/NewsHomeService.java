@@ -21,18 +21,27 @@ public class NewsHomeService {
     private final NewsSpringDataRepository newsRepository;
 
     //페이징
-    public Page<News> getList(String category, String title, int page) {
+    public Page<News> getList(String category, String title,String selected, int page) {
 
         List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("date"));
+        //sorts.add(Sort.Order.desc("date"));
+        // selected 값에 따라 정렬 기준 설정
+        if ("최신".equals(selected)) {
+            sorts.add(Sort.Order.desc("date")); // 최신순
+        } else if ("과거".equals(selected)) {
+            sorts.add(Sort.Order.asc("date"));  // 과거순
+        } else {
+            sorts.add(Sort.Order.desc("date")); // 기본적으로 최신순
+        }
         Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
         log.info("a={}", category);
         log.info("b={}", title);
+        log.info("c={}", selected);
 
         if (category.equals("") && title.equals("")) {
             return newsRepository.findAll(pageable);
         }
 
-        return newsRepository.searchByTitleAndCategory(title,category,pageable);
+        return newsRepository.searchByTitleAndCategory(title, category, pageable);
     }
 }
