@@ -12732,10 +12732,10 @@ body.sidebar-toggled footer.sticky-footer {
 
 /* 완료 버튼 스타일 조정 */
 #completeBtn {
-    position: fixed; /* 화면 하단에 고정 */
-    bottom: 0; /* 아래 여백 없애기 */
-    right: 20px; /* 오른쪽 여백 조정 */
-    margin-bottom: 1rem; /* 하단 여백 */
+    position: fixed;
+    top: 95px; /* 상단으로 이동 */
+    right: 35px; /* 오른쪽 여백 */
+    margin-top: 0; /* 상단 여백 초기화 */
 }
 
 /* TEXTAREA 아래 표시 제거 */
