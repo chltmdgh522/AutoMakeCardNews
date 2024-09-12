@@ -318,8 +318,7 @@
                                            class="delete-comment">삭제</a>
                                     </div>
                                 </li>
-
-
+                                <hr style="border: 1px solid #ccc; margin-top: 10px; margin-bottom: 10px;">
                             </div>
                             <div></div>
                             <div style="display: none">
@@ -340,10 +339,10 @@
 </div>
 <!-- End of Page Wrapper -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // 모든 '삭제' 링크에 클릭 이벤트 리스너를 추가
-        document.querySelectorAll('.delete-comment').forEach(function(element) {
-            element.addEventListener('click', function(event) {
+        document.querySelectorAll('.delete-comment').forEach(function (element) {
+            element.addEventListener('click', function (event) {
                 event.preventDefault();  // 기본 동작 막기
 
                 // commentId 가져오기
