@@ -55,6 +55,7 @@
             text-align: center;
             border-radius: 10px;
         }
+
         textarea {
 
             /* 원하는 높이로 조정 */
@@ -65,6 +66,7 @@
             font-size: 1rem;
             border: none;
         }
+
         /* 배경 블러 효과 */
         .overlay {
             position: fixed;
@@ -76,6 +78,7 @@
             z-index: 999;
             display: none;
         }
+
         textarea {
             width: 100%;
             padding: .375rem .75rem;
@@ -88,6 +91,7 @@
             resize: none;
             /* 사용자가 크기 조절하지 못하도록 설정 */
         }
+
         /* 버튼 스타일 */
         #closeBtn {
             background-color: black;
@@ -172,7 +176,7 @@
                                     </div>
                                     <div class="icon" type="button" id="executeScript" name="executeScript"
                                          style="margin-left: 15px; display: inline-block;">
-                                        <i class="fas fa-bullhorn tts-icon" style="color: black;"></i><!-- 음성 아이콘 -->
+                                        <i class="fas fa-bullhorn" style="color: black;"></i><!-- 음성 아이콘 -->
                                         <span style="font-size: 15px; font-weight: 600; color: black;"></span>
                                     </div>
                                 </div>
@@ -193,19 +197,25 @@
                             <div style="margin-left: 14px;   color: black;">
                                 <div class="post-content">
                                     <textarea th:text="${news.originalContent}" id="originalContent"
-                                              name="originalContent"
-                                              class="dynamic-textarea"
-                                    readonly>
+                                              name="originalContent" class="dynamic-textarea">
                                         asdf
                                     </textarea>
                                 </div>
                             </div>
+
                             <div style="display: flex; margin-left: 9px; margin-top: 9px;">
 
 
                             </div>
                             <hr style="background-color: black">
 
+                            <div style="text-align: center; margin-top: 20px;">
+                                <button onclick="goToNewPage()" style="font-size: 18px; font-weight: 400; color: white; background-color: black; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px; transition: background-color 0.3s, box-shadow 0.3s;"
+                                        onmouseover="this.style.backgroundColor='#333'; this.style.boxShadow='0px 4px 8px rgba(0, 0, 0, 0.2)';"
+                                        onmouseout="this.style.backgroundColor='black'; this.style.boxShadow='none';">
+                                    목록으로 이동
+                                </button>
+                            </div>
                             <div style="display: none">
                                 <span th:field="*{newsId}" id="newsId" name="newsId" th:text="${news.newsId}">1</span>
                             </div>
@@ -228,6 +238,11 @@
     </div>
     <!-- End of Page Wrapper -->
 </div>
+<script>
+    function goToNewPage() {
+        window.location.href = '/news';
+    }
+</script>
 
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -270,7 +285,6 @@
 
                 // Speak the utterance
                 synth.speak(utterance);
-
             } else {
                 alert("TTS 종료합니다.")
                 // If speaker is true, stop TTS
@@ -278,7 +292,6 @@
 
                 // Cancel the speech
                 synth.cancel();
-
             }
         });
 
@@ -288,7 +301,6 @@
         });
     });
 </script>
-
 
 
 <script>
@@ -353,7 +365,7 @@
     }
 
     // 페이지 로드 시 높이 조정
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         const textareas = document.getElementsByClassName('dynamic-textarea');
         for (let textarea of textareas) {
             autoHeight(textarea);
@@ -361,7 +373,7 @@
     });
 
     // 사용자가 텍스트를 수정할 때 높이 조정
-    document.addEventListener('input', function(event) {
+    document.addEventListener('input', function (event) {
         if (event.target.classList.contains('dynamic-textarea')) {
             autoHeight(event.target);
         }

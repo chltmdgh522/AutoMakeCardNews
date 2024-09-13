@@ -106,9 +106,15 @@
                     </div>
                     <div class="container mb-1">
                         <div class="row justify-content-center">
-                            <div class="col-md-7" style="margin-left: 100px; display: flex;">
+                            <div class="col-md-9" style="margin-left: 100px; display: flex;">
 
                                 <form class="row" method="get" th:object="${newsSearchCond}">
+                                    <div class="col-auto">
+                                        <select class="form-select" th:field="*{selected}">
+                                            <option value="최신" selected>최신순</option>
+                                            <option value="과거">과거순</option>
+                                        </select>
+                                    </div>
                                     <div class="col-auto">
                                         <select class="form-select" id="category" name="category"
                                                 th:field="*{category}">
@@ -133,7 +139,7 @@
                                     </div>
                                 </form>
 
-                                <a type="button" class="btn btn-primary" style="margin-left: 30px;"
+                                <a type="button" class="btn btn-primary" style="margin-left: 15px;"
                                    th:href="@{/news/create}">뉴스 작성</a>
 
                             </div>

@@ -48,7 +48,9 @@ public class NewsHomeController {
 
         String title = newsSearchCond.getTitle();
         String category = newsSearchCond.getCategory();
-        Page<News> paging = newsHomeService.getList(category, title, page);
+        String selected = newsSearchCond.getSelected();
+
+        Page<News> paging = newsHomeService.getList(category, title, selected, page);
         model.addAttribute("paging", paging);
 
         //model.addAttribute("news", newsRepository.findAll());

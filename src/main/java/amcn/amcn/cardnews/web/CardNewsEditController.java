@@ -28,7 +28,6 @@ import java.util.*;
 @Slf4j
 @Controller
 public class CardNewsEditController {
-
     private final CardNewsRepository cardNewsRepository;
     private final MemberRepository memberRepository;
 

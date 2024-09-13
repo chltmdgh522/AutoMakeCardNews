@@ -155,19 +155,25 @@
                     <div class="container" style="padding-top: 20px;">
                         <div class="col-md-12">
 
-                            <div style="display: flex; margin-left: 5px;">
-                                <div>
-                                        <span
-                                                style="font-size: 13px; font-weight: 600; color: gray;">&nbsp;카테고리&nbsp;&nbsp;</span>
+                            <div style="display: flex; justify-content: space-between; margin-left: 5px; align-items: center; width: 100%;">
+                                <div style="display: flex; align-items: center;">
+                                    <div>
+                                        <span style="font-size: 13px; font-weight: 600; color: gray;">&nbsp;카테고리&nbsp;&nbsp;</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-greater-than" style="font-size: 11px;"></i>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 13px; font-weight: 600; color: gray;" th:text="${board.category}">&nbsp;스포츠</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <i class="fas fa-greater-than" style="font-size: 11px;"></i>
-                                </div>
-                                <div>
-                                    <span style="font-size: 13px; font-weight: 600; color: gray;"
-                                          th:text="${board.category}">&nbsp;스포츠</span>
+                                <div style="display: flex; align-items: center; margin-right: 15px;">
+                                    <a href="/community/more" style="font-size: 16px; font-weight: 600; color: gray; text-decoration: none; display: flex; align-items: center; transition: color 0.3s, text-decoration 0.3s;" onmouseover="this.style.color='black'; this.style.textDecoration='underline';" onmouseout="this.style.color='gray'; this.style.textDecoration='none';">
+                                        <i class="fas fa-list" style="margin-right: 5px;"></i> 전체글 보기
+                                    </a>
                                 </div>
                             </div>
+
                             <div>
                                     <textarea th:text="${board.title}" style="font-size: 30px; font-weight: 600;
                                                                   color: black;" class="dynamic-textarea" rows="1">&nbsp;Test
@@ -280,7 +286,6 @@
                                 </form>
                             </div>
 
-
                             <div class="container mt-1" style="margin-right: 50px;" th:each="list : ${listComment}">
 
                                 <li class="list-group-item border-0">
@@ -322,13 +327,17 @@
                                            class="delete-comment">삭제</a>
                                     </div>
                                 </li>
-
-
+                                <hr style="border: 1px solid #ccc; margin-top: 10px; margin-bottom: 10px;">
                             </div>
+
                             <div></div>
                             <div style="display: none">
                                 <span id="boardId" name="boardId" th:text="${board.boardId}">1</span>
                             </div>
+                            <button onclick="scrollToTop()" id="topBtn" title="Go to top"
+                                    style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 99; font-size: 18px; border: none; outline: none; background-color: black; color: white; cursor: pointer; padding: 15px; border-radius: 10px; transition: background-color 0.3s;">
+                                TOP
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -344,10 +353,10 @@
 </div>
 <!-- End of Page Wrapper -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // 모든 '삭제' 링크에 클릭 이벤트 리스너를 추가
-        document.querySelectorAll('.delete-comment').forEach(function(element) {
-            element.addEventListener('click', function(event) {
+        document.querySelectorAll('.delete-comment').forEach(function (element) {
+            element.addEventListener('click', function (event) {
                 event.preventDefault();  // 기본 동작 막기
 
                 // commentId 가져오기
@@ -485,6 +494,28 @@
         }
     });
 
+</script>
+
+<script>
+    // 페이지가 스크롤될 때 TOP 버튼 표시/숨기기
+    window.onscroll = function () {
+        scrollFunction()
+    };
+
+    function scrollFunction() {
+        var topBtn = document.getElementById("topBtn");
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            topBtn.style.display = "block"; // 스크롤이 100px 이상일 때 버튼을 보이게
+        } else {
+            topBtn.style.display = "none";  // 그 이하일 때 버튼을 숨김
+        }
+    }
+
+    // TOP 버튼 클릭 시 페이지 상단으로 스크롤
+    function scrollToTop() {
+        document.body.scrollTop = 0; // Safari 브라우저에서 상단으로 스크롤
+        document.documentElement.scrollTop = 0; // 크롬, 파이어폭스, IE 브라우저에서 상단으로 스크롤
+    }
 </script>
 
 </body>

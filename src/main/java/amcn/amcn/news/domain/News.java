@@ -47,6 +47,8 @@ public class News {
 
     private String category; //타입으로 넣은것보다 string이 나은듯
 
+    @Transient
+    private String selected;
     //@Enumerated(EnumType.STRING)
     //private NewsType NewsType; // 뉴스 카테고리 IT, 스포츠 등 등
 
