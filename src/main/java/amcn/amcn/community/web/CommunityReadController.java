@@ -33,7 +33,7 @@ public class CommunityReadController {
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                Member loginMember, Model model){
 
-        Likes likes=new Likes();
+        Likes likes= new Likes();
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
             Member member = findMember.get();
