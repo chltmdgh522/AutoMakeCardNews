@@ -27,40 +27,193 @@
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <style>
-        a {
-            text-decoration: none;
-            color: black;
+        body {
+            font-family: 'Jua', sans-serif;
         }
 
-        a:hover {
-            text-decoration: none;
-            color: blue;
+        h2 {
+            font-size: 1.75rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #000;
         }
 
-        /* 커스텀 스타일 */
-        .card {
-            margin-bottom: 20px;
+        p {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #555;
         }
 
-        .icon {
-            margin-right: 10px;
-        }
-
-        .circle-btn {
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            font-size: 20px;
+        /* Container for the main cards */
+        .class-card-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 5px;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        /* Main Card Styles (Community, News, Card News) */
+        .class-card {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: left;
+            border-bottom: 2px dotted white;
+            margin-bottom: 0;
+            position: relative;
+        }
+
+        .class-card h4 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: left;
+            color: #333;
+        }
+
+        .class-card h8 {
+            font-size: 1.1rem;
+            font-weight: normal;
+            margin-bottom: 10px;
+            text-align: left;
+            color: #666;
+        }
+
+        /* Style for character image */
+        .class-card img {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 150px;
+            height: auto;
+            margin-bottom: 0;
+        }
+
+        .community-img {
+            width: 200px;
+            height: 400px;
+            margin-bottom: 0;
+        }
+
+        .cardnews img {
+            width: 100px;
+            height: 130px;
+        }
+
+        /* Button Section */
+        .btn-section {
+            width: 100%;
+            margin: 0;
             padding: 0;
         }
 
-        /* 탭 가운데 정렬 */
-        .nav-tabs {
-            justify-content: center;
+        .button-wrapper {
+            display: block;
+            margin: 0;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            background-color: transparent;
+            color: white;
+            border: none;
+            border-top: 2px dotted white;
+            padding: 10px; /* 버튼 높이 줄이기 */
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-wrapper:first-child .btn {
+            border-top: none;
+        }
+
+        /* Color customizations for each card */
+        .class-card.community {
+            background-color: #90c3e0;
+        }
+
+        .class-card.news {
+            background-color: #f2bb60;
+        }
+
+        .class-card.cardnews {
+            background-color: #a688d9;
+        }
+
+        /* Button colors for each section */
+        .class-card.community ~ .btn-section .btn {
+            background-color: #74b4e0;
+        }
+
+        .class-card.news ~ .btn-section .btn {
+            background-color: #f5b14d;
+            height: calc(200px / 3); /* 뉴스 버튼 높이 줄이기 */
+        }
+
+        .class-card.cardnews ~ .btn-section .btn {
+            background-color: #8c77d9;
+            height: calc(200px / 3); /* 카드뉴스 버튼 높이 줄이기 */
+        }
+
+        /* Ensure buttons span full card width */
+        .btn-section {
+            width: 100%;
+        }
+
+        /* Main Card Hover Effect */
+        .class-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Tab content styling */
+        .tab-content-container {
+            margin-top: 30px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-body h5 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .card-body p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .btn {
+            border-radius: 5px;
+            font-size: 1rem;
         }
 
     </style>
@@ -68,330 +221,280 @@
 
 <body id="page-top">
 
-<!-- Page Wrapper -->
 <div id="wrapper" th:object="${member}">
     <div th:replace="~{header/header1 :: copyParam (${member})}"></div>
 
-
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
         <div id="content">
             <div th:replace="~{header/header2 :: copyParam (${member})}"></div>
-            <!-- Main Content -->
             <div class="container mt-4">
+                <h2>"모두의 이야기, 함께하는 정보!"</h2>
 
-                <!-- Button Group -->
-                <div class="d-flex justify-content-center">
+                <div class="container">
+                    <!-- Main card section -->
+                    <div class="row class-card-container">
+                        <!-- Community Card -->
+                        <div class="col-md-4">
+                            <div class="class-card community">
+                                <div class="text-container">
+                                    <h4>커뮤니티</h4>
+                                    <h8>소통의 장, 함께 만들어가요!</h8>
+                                </div>
+                                <img src="/logo/com3.png" alt="Community Character" class="character-img community-img">
+                            </div>
+                            <!-- Buttons directly below the card, full width matching the card -->
+                            <div class="btn-section">
+                                <div class="button-wrapper">
+                                    <button class="btn btn-primary" id="postsBtn">게시물</button>
+                                </div>
+                                <div class="button-wrapper">
+                                    <button class="btn btn-primary" id="likesBtn">게시물 공감</button>
+                                </div>
+                                <div class="button-wrapper">
+                                    <button class="btn btn-primary" id="commentsBtn">댓글</button>
+                                </div>
+                            </div>
+                        </div>
 
-                    <button type="button" class="btn btn-secondary circle-btn" id="communityBtn">커뮤니티</button>
-                    <button type="button" class="btn btn-secondary circle-btn" id="newsBtn" style="margin-left: 10px;">
-                        뉴스
-                    </button> <!-- Changed -->
-                    <button type="button" class="btn btn-secondary circle-btn" id="cardNewsBtn"
-                            style="margin-left: 10px;">카드뉴스
-                    </button> <!-- Changed -->
+                        <!-- News Card -->
+                        <div class="col-md-4">
+                            <div class="class-card news">
+                                <div class="text-container">
+                                    <h4>뉴스</h4>
+                                    <h8>뉴스 정보를 확인해 보세요!</h8>
+                                </div>
+                                <img src="/logo/news.png" alt="News Character">
+                            </div>
+                            <!-- Buttons directly below the card, full width matching the card -->
+                            <div class="btn-section">
+                                <div class="button-wrapper">
+                                    <button class="btn btn-success" id="scrapsBtn">뉴스 스크랩</button>
+                                </div>
+                                <div class="button-wrapper">
+                                    <button class="btn btn-success" id="newsPostsBtn">뉴스 게시물</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card News Card -->
+                        <div class="col-md-4">
+                            <div class="class-card cardnews">
+                                <div class="text-container">
+                                    <h4>카드 뉴스</h4>
+                                    <h8>생생한 카드 뉴스로 확인해보세요!</h8>
+                                </div>
+                                <img src="/logo/card.png" alt="Card News Character">
+                            </div>
+                            <!-- Buttons directly below the card, full width matching the card -->
+                            <div class="btn-section">
+                                <div class="button-wrapper">
+                                    <button class="btn btn-warning" id="cardNewsLikesBtn">카드뉴스 공감</button>
+                                </div>
+                                <div class="button-wrapper">
+                                    <button class="btn btn-warning" id="cardNewsForkBtn">카드뉴스 포크</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Tab Navigation -->
-                <ul class="nav nav-tabs mt-3" id="activityTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts"
-                                type="button" role="tab" aria-controls="posts" aria-selected="false">게시물
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="likes-tab" data-bs-toggle="tab" data-bs-target="#likes"
-                                type="button" role="tab" aria-controls="likes" aria-selected="false">게시물 공감
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments"
-                                type="button" role="tab" aria-controls="comments" aria-selected="false">댓글
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="scraps-tab" data-bs-toggle="tab" data-bs-target="#scraps"
-                                type="button" role="tab" aria-controls="scraps" aria-selected="false">뉴스 스크랩
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="news-tab" data-bs-toggle="tab" data-bs-target="#news" type="button"
-                                role="tab" aria-controls="news" aria-selected="false">뉴스 게시물
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="card-news-tab" data-bs-toggle="tab" data-bs-target="#card-news"
-                                type="button" role="tab" aria-controls="card-news" aria-selected="false"> 카드뉴스 공감
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="sympathy-tab" data-bs-toggle="tab" data-bs-target="#sympathy"
-                                type="button" role="tab" aria-controls="sympathy" aria-selected="false"> 카드뉴스 포크
-                        </button> <!-- Added -->
-                    </li>
-                </ul>
-
-
-                <!-- Tab Content -->
-                <div class="tab-content" id="activityTabsContent">
-                    <!-- Posts Tab -->
-                    <div class="tab-pane fade" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                <!-- Tab Content Section -->
+                <div class="tab-content-container">
+                    <!-- Community Tabs -->
+                    <div id="postsTab" class="tab-pane">
                         <div class="row mt-3">
-                            <!-- Example Post Card -->
-                            <div class="col-md-4" th:each="board : ${postBoard} ">
+                            <div class="col-md-4" th:each="board : ${postBoard}">
                                 <div class="card">
                                     <a th:href="|/community/${board.boardId}|">
                                         <div class="card-body">
-                                            <h5 class="card-title" th:text="${#strings.length(board.title) > 7 ? #strings.substring(board.title, 0, 7) + '...' : board.title}">Liked Content Title</h5>
-
-                                            <button class="btn btn-primary" th:text="|Like ${board.likes.size()}|"><i
-                                                    class="icon bi bi-heart"></i> Like
-                                            </button>
-                                            <button class="btn btn-secondary" th:text="|댓글 ${board.comments.size()}|"><i
-                                                    class="icon bi bi-chat"></i> Comment
-                                            </button>
+                                            <h5 class="card-title" th:text="${#strings.length(board.title) > 7 ? #strings.substring(board.title, 0, 7) + '...' : board.title}"></h5>
+                                            <button class="btn btn-primary" th:text="|Like ${board.likes.size()}|"><i class="icon bi bi-heart"></i> Like</button>
+                                            <button class="btn btn-secondary" th:text="|댓글 ${board.comments.size()}|"><i class="icon bi bi-chat"></i> Comment</button>
                                         </div>
                                     </a>
                                 </div>
                             </div>
-                            <!-- Repeat as needed -->
                         </div>
                     </div>
-
                     <!-- Likes Tab -->
-                    <div class="tab-pane fade" id="likes" role="tabpanel" aria-labelledby="likes-tab">
+                    <div id="likesTab" class="tab-pane">
+                        <!-- 게시물 공감 탭 내용 -->
                         <div class="row mt-3">
-                            <!-- Example Liked Content Card -->
                             <div class="col-md-4" th:each="likeboard : ${likeBoards}">
                                 <div class="card">
                                     <a th:href="|/community/${likeboard.boardId}|">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${#strings.length(likeboard.title) > 7 ? #strings.substring(likeboard.title, 0, 7) + '...' : likeboard.title}">Liked Content Title</h5>
-
-                                            <button class="btn btn-secondary"
-                                                    th:text="|댓글 ${likeboard.comments.size()}|"><i
-                                                    class="icon bi bi-chat"></i>
-                                                Comment
-                                            </button>
+                                            <button class="btn btn-secondary" th:text="|댓글 ${likeboard.comments.size()}|"><i class="icon bi bi-chat"></i> Comment</button>
                                         </div>
                                     </a>
                                 </div>
                             </div>
-                            <!-- Repeat as needed -->
                         </div>
                     </div>
-
-                    <!-- Comments Tab -->
-                    <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+                    <div id="comments" class="tab-pane" role="tabpanel" aria-labelledby="comments-tab">
                         <div class="row mt-3">
-                            <!-- Example Commented Content Card -->
                             <div class="col-md-4" th:each="comment : ${commentBoard}">
                                 <div class="card">
                                     <a th:href="|/community/${comment.board.boardId}|">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${#strings.length(comment.board.title) > 7 ? #strings.substring(comment.board.title, 0, 7) + '...' : comment.board.title}">Liked Content Title</h5>
-
-                                            <p class="card-text"  th:text="${#strings.length(comment.substance) > 10 ? #strings.substring(comment.substance, 0, 10) + '...' : comment.substance}">Brief description of the
-                                                content with comments.</p>
-                                            <button class="btn btn-primary"
-                                                    th:text="|Like ${comment.board.likes.size()}|"><i
-                                                    class="icon bi bi-heart"></i> Like
-                                            </button>
+                                            <p class="card-text" th:text="${#strings.length(comment.substance) > 10 ? #strings.substring(comment.substance, 0, 10) + '...' : comment.substance}">Brief description of the content with comments.</p>
+                                            <button class="btn btn-primary" th:text="|Like ${comment.board.likes.size()}|"><i class="icon bi bi-heart"></i> Like</button>
                                         </div>
                                     </a>
                                 </div>
                             </div>
-                            <!-- Repeat as needed -->
                         </div>
                     </div>
 
                     <!-- Scraps Tab -->
-                    <div class="tab-pane fade" id="scraps" role="tabpanel" aria-labelledby="scraps-tab">
+                    <div class="tab-pane" id="scraps" role="tabpanel" aria-labelledby="scraps-tab">
                         <div class="row mt-3">
-                            <!-- Example Scrapped News Card -->
                             <div class="col-md-4" th:each="likeNew : ${likeNews}">
                                 <div class="card">
                                     <a th:href="|/news/${likeNew.newsId}|">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${likeNew.title}">Scrapped News Title</h5>
-                                            <p class="card-text" th:text="${likeNew.originalContent}">Brief description
-                                                of the scrapped news content.</p>
-                                            <button class="btn btn-primary" th:text="|Like ${likeNew.likes.size()}|"><i
-                                                    class="icon bi bi-heart"></i> Scrap
-                                            </button>
+                                            <p class="card-text" th:text="${likeNew.originalContent}">Brief description of the scrapped news content.</p>
+                                            <button class="btn btn-primary" th:text="|Like ${likeNew.likes.size()}|"><i class="icon bi bi-heart"></i> Scrap</button>
                                         </div>
                                     </a>
                                 </div>
                             </div>
-                            <!-- Repeat as needed -->
                         </div>
                     </div>
 
                     <!-- News Tab -->
-                    <div class="tab-pane fade" id="news" role="tabpanel" aria-labelledby="news-tab">
+                    <div class="tab-pane" id="news" role="tabpanel" aria-labelledby="news-tab">
                         <div class="row mt-3">
-                            <!-- Example News Card -->
                             <div class="col-md-4" th:each="likeNew : ${postNews}">
                                 <div class="card">
                                     <a th:href="|/news/${likeNew.newsId}|">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${likeNew.title}">Scrapped News Title</h5>
-                                            <p class="card-text" th:text="${likeNew.originalContent}">Brief description
-                                                of the scrapped news content.</p>
-                                            <button class="btn btn-primary" th:text="|Like ${likeNew.likes.size()}|"><i
-                                                    class="icon bi bi-heart"></i> Scrap
-                                            </button>
+                                            <p class="card-text" th:text="${likeNew.originalContent}">Brief description of the scrapped news content.</p>
+                                            <button class="btn btn-primary" th:text="|Like ${likeNew.likes.size()}|"><i class="icon bi bi-heart"></i> Scrap</button>
                                         </div>
                                     </a>
                                 </div>
                             </div>
-                            <!-- Repeat as needed -->
                         </div>
                     </div>
 
                     <!-- Card News Tab -->
-                    <div class="tab-pane fade" id="card-news" role="tabpanel" aria-labelledby="card-news-tab">
+                    <div class="tab-pane" id="card-news" role="tabpanel" aria-labelledby="card-news-tab">
                         <div class="row mt-3">
-                            <!-- Example Card News -->
                             <div class="col-md-4" th:each="heart :${heartCardNews}">
                                 <div class="card">
                                     <a th:href="|/cardnews/${heart.cardNewsId}|">
-                                        <img th:src="|/ai/image/${heart.imageUrl}|" class="card-img-top"
-                                             alt="Card News Image">
+                                        <img th:src="|/ai/image/${heart.imageUrl}|" class="card-img-top" alt="Card News Image">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${heart.title}">Card News Title</h5>
-                                            <p class="card-text" th:text="${heart.content}">Brief summary of the card
-                                                news content. Includes engaging
-                                                visuals.</p>
-                                            <button class="btn btn-primary"><i class="icon bi bi-heart"></i> Like
-                                            </button>
-                                            </button>
+                                            <p class="card-text" th:text="${heart.content}">Brief summary of the card news content. Includes engaging visuals.</p>
+                                            <button class="btn btn-primary"><i class="icon bi bi-heart"></i> Like</button>
                                         </div>
                                     </a>
                                 </div>
                             </div>
-                            <!-- Repeat as needed -->
                         </div>
                     </div>
 
-
                     <!-- Sympathy Tab -->
-                    <div class="tab-pane fade" id="sympathy" role="tabpanel" aria-labelledby="sympathy-tab">
+                    <div class="tab-pane" id="sympathy" role="tabpanel" aria-labelledby="sympathy-tab">
                         <div class="row mt-3">
-                            <!-- Example Sympathy Content -->
                             <div class="col-md-12">
                                 <div class="card-deck">
-
                                     <div class="card" th:each="fork : ${forkCardNews}">
                                         <a th:href="|/cardnews/${fork.cardNewsId}|">
-                                            <img th:src="|/ai/image/${fork.imageUrl}|" class="card-img-top"
-                                                 alt="Card News Image">
+                                            <img th:src="|/ai/image/${fork.imageUrl}|" class="card-img-top" alt="Card News Image">
                                             <div class="card-body">
                                                 <h5 class="card-title" th:text="${fork.title}">Card News Title</h5>
-                                                <p class="card-text" th:text="${fork.content}">Brief summary of the card
-                                                    news content. Includes engaging visuals.</p>
+                                                <p class="card-text" th:text="${fork.content}">Brief summary of the card news content. Includes engaging visuals.</p>
                                             </div>
                                         </a>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
+                </div>
                 </div>
             </div>
         </div>
-
     </div>
-    <!-- End of Page Wrapper -->
-
-
 </div>
+
+<!-- 스크롤 버튼 -->
+<button onclick="scrollToTop()" id="topBtn" title="Go to top" style="display: none;">Top</button>
+
 <!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Bootstrap Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
-<!-- Swiper JS -->
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<!-- Initialize Swiper -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Tab activation function
+        function activateTab(tabId) {
+            document.querySelectorAll('.tab-pane').forEach(function (tab) {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+
         // 커뮤니티 버튼 클릭 시
-        document.getElementById('communityBtn').addEventListener('click', function () {
-            showTabs(['posts', 'likes', 'comments']);
-            activateTab('posts');
-            document.getElementById('navbarTitle').textContent = "Posts";
+        document.getElementById('postsBtn').addEventListener('click', function () {
+            activateTab('postsTab');
+        });
+
+        document.getElementById('likesBtn').addEventListener('click', function () {
+            activateTab('likesTab');
+        });
+
+        document.getElementById('commentsBtn').addEventListener('click', function () {
+            activateTab('comments');
         });
 
         // 뉴스 버튼 클릭 시
-        document.getElementById('newsBtn').addEventListener('click', function () {
-            showTabs(['scraps', 'news']);
+        document.getElementById('scrapsBtn').addEventListener('click', function () {
             activateTab('scraps');
-            document.getElementById('navbarTitle').textContent = "Scraps & News";
+        });
+
+        document.getElementById('newsPostsBtn').addEventListener('click', function () {
+            activateTab('news');
         });
 
         // 카드뉴스 버튼 클릭 시
-        document.getElementById('cardNewsBtn').addEventListener('click', function () {
-            showTabs(['card-news', 'sympathy']); // Added 'sympathy'
+        document.getElementById('cardNewsLikesBtn').addEventListener('click', function () {
             activateTab('card-news');
-            document.getElementById('navbarTitle').textContent = "Card News";
         });
 
-        // 탭 활성화 함수
-        function activateTab(tabId) {
-            // 모든 탭 비활성화
-            document.querySelectorAll('.nav-link').forEach(function (el) {
-                el.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-pane').forEach(function (el) {
-                el.classList.remove('active', 'show');
-            });
-
-            // 선택한 탭 활성화
-            document.getElementById(tabId + '-tab').classList.add('active');
-            document.getElementById(tabId).classList.add('active', 'show');
-        }
-
-        // 선택한 탭만 보이게 하는 함수
-        function showTabs(tabsToShow) {
-            const allTabs = ['posts', 'likes', 'comments', 'scraps', 'news', 'card-news', 'sympathy']; // Added 'sympathy'
-
-            // 모든 탭 비활성화 및 숨기기
-            allTabs.forEach(function (tab) {
-                document.getElementById(tab + '-tab').style.display = 'none';
-                document.getElementById(tab).classList.remove('active', 'show');
-            });
-
-            // 선택한 탭만 표시
-            tabsToShow.forEach(function (tab, index) {
-                document.getElementById(tab + '-tab').style.display = 'block';
-
-                // 첫 번째 탭 활성화
-                if (index === 0) {
-                    document.getElementById(tab + '-tab').classList.add('active');
-                    document.getElementById(tab).classList.add('active', 'show');
-                }
-            });
-        }
+        document.getElementById('cardNewsForkBtn').addEventListener('click', function () {
+            activateTab('sympathy');
+        });
     });
-
 </script>
 
-</body>
+<script>
+    // 페이지가 스크롤될 때 TOP 버튼 표시/숨기기
+    window.onscroll = function () {
+        scrollFunction();
+    };
 
+    function scrollFunction() {
+        var topBtn = document.getElementById("topBtn");
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            topBtn.style.display = "block"; // 스크롤이 100px 이상일 때 버튼을 보이게
+        } else {
+            topBtn.style.display = "none";  // 그 이하일 때 버튼을 숨김
+        }
+    }
+
+    // TOP 버튼 클릭 시 페이지 상단으로 스크롤
+    function scrollToTop() {
+        document.body.scrollTop = 0; // Safari 브라우저에서 상단으로 스크롤
+        document.documentElement.scrollTop = 0; // 크롬, 파이어폭스, IE 브라우저에서 상단으로 스크롤
+    }
+</script>
+
+
+</body>
 </html>
