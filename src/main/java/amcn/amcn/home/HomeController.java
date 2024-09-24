@@ -5,6 +5,7 @@ import amcn.amcn.cardnews.repository.CardNewsRepository;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
+import amcn.amcn.socket.chatservice.ChatService;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ public class HomeController {
     private final MemberRepository memberRepository;
     private final CardNewsRepository cardNewsRepository;
     private final Dotenv dotenv;
+    private final ChatService chatService;
 
     @GetMapping("/")
     public String home(Model model,
@@ -54,6 +56,7 @@ public class HomeController {
                 exist="X";
                 model.addAttribute("exist",exist);
             }
+            model.addAttribute("messages",chatService.findChat());
             model.addAttribute("myCardnews",myCard);
             model.addAttribute("cardPop", newAll);
 

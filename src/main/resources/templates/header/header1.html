@@ -5,10 +5,63 @@
     <title>Title</title>
     <!-- Custom styles for this template-->
     <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/097a6f4f17.js" crossorigin="anonymous"></script>
     <style>
+        /* 채팅 창 스타일 */
+        #chatMessages {
+            height: 300px;
+            overflow-y: scroll;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f8f9fa;
+        }
 
+        /* 보낸 메시지 */
+        .sent-message {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        .sent-message .message-content {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        /* 받은 메시지 */
+        .received-message {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .received-message .message-content {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: black;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        /* 관리자가 보낸 메시지 */
+        .admin-message {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .admin-message .message-content {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
     </style>
 </head>
 <body>
@@ -89,6 +142,12 @@
                 <span class="text-dark" style="font-size: large;">Game</span></a>
         </li>
 
+        <li class="nav-item header-menu">
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#chatModal">
+                <i class="fas fa-comments my-icon"></i>
+                <span class="text-dark" style="font-size: large;">Chat</span></a>
+        </li>
+
         <!-- Nav Item - Tables -->
         <li class="nav-item header-menu">
             <a class="nav-link" th:href="@{/mypage}">
@@ -117,5 +176,8 @@
 
 </sidebar>
 </header>
+
+
+
 </body>
 </html>

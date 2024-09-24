@@ -6,6 +6,8 @@ import amcn.amcn.cardnews.domain.cardnews.CardNews;
 import amcn.amcn.comment.domain.comment.Comment;
 import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.news.domain.News;
+import amcn.amcn.socket.domain.AdminMessage;
+import amcn.amcn.socket.domain.UserMessage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -46,6 +48,11 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AdminMessage> adminMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserMessage> userMessages = new ArrayList<>();
 
     private String loginId;
 
