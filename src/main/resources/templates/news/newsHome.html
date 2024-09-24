@@ -183,7 +183,7 @@
                             th:classappend="${page == paging.number} ? 'active'"
                             class="page-item">
                             <a style="background-color: white; color: black;" th:text="${page+1}" class="page-link"
-                               th:href="@{|?category=${newsSearchCond.category}&title=${newsSearchCond.title}&page=${page}|}"></a>
+                               th:href="@{|?category=${newsSearchCond.category}&title=${newsSearchCond.title}&page=${page}&selected=${newsSearchCond.selected}|}"></a>
                         </li>
                         <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
                             <a class="page-link"
@@ -193,7 +193,6 @@
                             </a>
                         </li>
                     </ul>
-
                 </div>
                 <div>
                     <span>&nbsp;</span>
