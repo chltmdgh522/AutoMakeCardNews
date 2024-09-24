@@ -104,7 +104,7 @@
 
         .cardnews img {
             width: 100px;
-            height: 130px;
+            height: 120px;
         }
 
         /* Button Section */
@@ -432,43 +432,48 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Tab activation function
-        function activateTab(tabId) {
-            document.querySelectorAll('.tab-pane').forEach(function (tab) {
-                tab.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
+        // Tab toggle function
+        function toggleTab(tabId) {
+            const tab = document.getElementById(tabId);
+            if (tab.classList.contains('active')) {
+                tab.classList.remove('active'); // If active, remove active class to hide
+            } else {
+                document.querySelectorAll('.tab-pane').forEach(function (tab) {
+                    tab.classList.remove('active'); // Hide all other tabs
+                });
+                tab.classList.add('active'); // Show the clicked tab
+            }
         }
 
         // 커뮤니티 버튼 클릭 시
         document.getElementById('postsBtn').addEventListener('click', function () {
-            activateTab('postsTab');
+            toggleTab('postsTab'); // 게시물 탭 토글
         });
 
         document.getElementById('likesBtn').addEventListener('click', function () {
-            activateTab('likesTab');
+            toggleTab('likesTab'); // 게시물 공감 탭 토글
         });
 
         document.getElementById('commentsBtn').addEventListener('click', function () {
-            activateTab('comments');
+            toggleTab('comments'); // 댓글 탭 토글
         });
 
         // 뉴스 버튼 클릭 시
         document.getElementById('scrapsBtn').addEventListener('click', function () {
-            activateTab('scraps');
+            toggleTab('scraps'); // 뉴스 스크랩 탭 토글
         });
 
         document.getElementById('newsPostsBtn').addEventListener('click', function () {
-            activateTab('news');
+            toggleTab('news'); // 뉴스 게시물 탭 토글
         });
 
         // 카드뉴스 버튼 클릭 시
         document.getElementById('cardNewsLikesBtn').addEventListener('click', function () {
-            activateTab('card-news');
+            toggleTab('card-news'); // 카드뉴스 공감 탭 토글
         });
 
         document.getElementById('cardNewsForkBtn').addEventListener('click', function () {
-            activateTab('sympathy');
+            toggleTab('sympathy'); // 카드뉴스 포크 탭 토글
         });
     });
 </script>
@@ -494,7 +499,6 @@
         document.documentElement.scrollTop = 0; // 크롬, 파이어폭스, IE 브라우저에서 상단으로 스크롤
     }
 </script>
-
 
 </body>
 </html>
