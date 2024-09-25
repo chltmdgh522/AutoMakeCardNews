@@ -56,7 +56,7 @@ public class CommunityUpdateController {
                                     RedirectAttributes redirectAttributes) {
         board.setBoardId(id);
         boardRepository.update(board);
-
+        log.info("id"+id);
         redirectAttributes.addAttribute("id", id);
         return "redirect:/community/{id}";
 

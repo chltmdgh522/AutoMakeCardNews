@@ -142,8 +142,18 @@
                 <span class="text-dark" style="font-size: large;">Game</span></a>
         </li>
 
-        <li class="nav-item header-menu">
-            <a class="nav-link" href="#" data-toggle="modal" data-target="#chatModal">
+        <!-- MASTER 역할인 경우 -->
+        <li class="nav-item header-menu" th:if="${member.roleType == T(amcn.amcn.member.domain.member.RoleType).MASTER}">
+            <a class="nav-link" href="/superchat"
+               data-toggle="modal" data-target="#chatModal">
+                <i class="fas fa-comments my-icon"></i>
+                <span class="text-dark" style="font-size: large;">문의를 받아주세요!</span></a>
+        </li>
+
+        <!-- MASTER가 아닌 경우 -->
+        <li class="nav-item header-menu" th:unless="${member.roleType == T(amcn.amcn.member.domain.member.RoleType).MASTER}">
+            <a class="nav-link" href="/chat"
+               data-toggle="modal" data-target="#chatModal">
                 <i class="fas fa-comments my-icon"></i>
                 <span class="text-dark" style="font-size: large;">Chat</span></a>
         </li>
