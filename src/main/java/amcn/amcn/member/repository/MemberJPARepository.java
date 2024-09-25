@@ -19,6 +19,7 @@ import java.util.Optional;
 public class MemberJPARepository implements MemberRepository {
     private final EntityManager em;
 
+
     @Override
     public void save(Member member) {
         em.persist(member);
