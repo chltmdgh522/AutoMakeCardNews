@@ -200,20 +200,52 @@
             transform: translateY(-5px);
         }
 
+        /* Card body styles */
         .card-body h5 {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            color: #000;
+            color: #333;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .card-body h5:hover {
+            color: #4e73df; /* Hover color */
         }
 
         .card-body p {
             font-size: 1rem;
             color: #666;
+            margin-bottom: 15px;
         }
 
-        .btn {
+        /* Button Styles */
+        .btn-primary, .btn-secondary {
+            background-color: #4e73df;
+            color: white;
+            border: none;
+            padding: 10px 20px;
             border-radius: 5px;
             font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            background-color: #2e59d9;
+        }
+
+        .btn-secondary {
+            background-color: #858796;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a5c69;
+        }
+
+        /* Icon Styles */
+        .btn i {
+            margin-right: 5px;
         }
 
         #topBtn {
@@ -233,10 +265,12 @@
             cursor: pointer;
             transition: all 0.3s ease-in-out;
         }
+
         #topBtn:hover {
             background-color: #2e59d9; /* 호버 시 색상을 약간 진하게 변경 */
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
         }
+
 
     </style>
 </head>
@@ -267,13 +301,13 @@
                             <!-- Buttons directly below the card, full width matching the card -->
                             <div class="btn-section">
                                 <div class="button-wrapper">
-                                    <button class="btn btn-primary" id="postsBtn">게시물</button>
+                                    <button class="btn btn-com" id="postsBtn">게시물</button>
                                 </div>
                                 <div class="button-wrapper">
-                                    <button class="btn btn-primary" id="likesBtn">게시물 공감</button>
+                                    <button class="btn btn-com" id="likesBtn">게시물 공감</button>
                                 </div>
                                 <div class="button-wrapper">
-                                    <button class="btn btn-primary" id="commentsBtn">댓글</button>
+                                    <button class="btn btn-com" id="commentsBtn">댓글</button>
                                 </div>
                             </div>
                         </div>
