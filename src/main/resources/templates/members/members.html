@@ -179,6 +179,9 @@
         /* Tab content styling */
         .tab-content-container {
             margin-top: 30px;
+            max-width: 1300px;  /* 탭 콘텐츠의 최대 너비 */
+            margin: 0 auto;     /* 중앙 정렬 */
+            padding: 20px;      /* 좌우 여백 */
         }
 
         .tab-pane {
@@ -247,7 +250,17 @@
         .btn i {
             margin-right: 5px;
         }
+        /* 버튼 컨테이너를 Flexbox로 설정하여 가로로 배치 */
+        .card-body .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
 
+        .card-body .btn {
+            flex: 0 0 48%; /* 두 버튼이 한 줄에 배치되도록 설정 */
+            text-align: center; /* 버튼 텍스트 가운데 정렬 */
+        }
         #topBtn {
             position: fixed;
             bottom: 20px;
@@ -364,8 +377,15 @@
                                     <a th:href="|/community/${board.boardId}|">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${#strings.length(board.title) > 20 ? #strings.substring(board.title, 0, 20) + '...' : board.title}"></h5>
-                                            <button class="btn btn-primary" th:text="|Like ${board.likes.size()}|"><i class="icon bi bi-heart"></i> Like</button>
-                                            <button class="btn btn-secondary" th:text="|댓글 ${board.comments.size()}|"><i class="icon bi bi-chat"></i> Comment</button>
+                                            <!-- 버튼들을 감싸는 컨테이너 추가 -->
+                                            <div class="btn-container">
+                                                <button class="btn btn-primary" th:text="|Like ${board.likes.size()}|">
+                                                    <i class="icon bi bi-heart"></i> Like
+                                                </button>
+                                                <button class="btn btn-secondary" th:text="|댓글 ${board.comments.size()}|">
+                                                    <i class="icon bi bi-chat"></i> Comment
+                                                </button>
+                                            </div>
                                         </div>
                                     </a>
                                 </div>
