@@ -39,14 +39,7 @@
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <style>
-        .chat-list {
-            max-width: 400px;
-            margin: 50px auto;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+
         .chat-list h5 {
             text-align: center;
             margin-bottom: 20px;
@@ -82,6 +75,32 @@
             text-decoration: none;
             color: blue;
         }
+        .chat-list {
+            max-height: 400px;
+            overflow-y: auto;
+            scrollbar-width: thin; /* Firefox용 */
+            scrollbar-color: #888 #f1f1f1; /* Firefox용 */
+        }
+
+        /* Chrome, Edge, Safari 스타일링 */
+        .chat-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .chat-list::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 10px;
+            border: 2px solid #f1f1f1;
+        }
+
+        .chat-list::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
     </style>
 </head>
 
@@ -113,13 +132,16 @@
                 <div class="container-fluid" id="contnet">
 
                     <div class="container">
+                        <div>
+                            <input type="text" id="searchUser" placeholder="이름 검색" onkeyup="searchUser()">
+                        </div>
                         <div class="chat-list" style="max-height: 400px; overflow-y: auto;">
                             <h5>채팅 멤버 선택</h5>
                             <a class="chat-item" th:each="user : ${users}"
                                style="cursor: pointer;"
                                th:href="@{/superchat/{memberId}(memberId=${user.memberId})}">
                                 <img th:src="|/my-page/image/${user.profile}|" alt="프로필X">
-                                <span th:text="${user.name}">유저</span>
+                                <span class="user-name" th:text="${user.name}">유저</span>
                             </a>
                         </div>
                     </div>
@@ -137,7 +159,33 @@
 
 </div>
 <!-- End of Page Wrapper -->
+<!-- jQuery UI 추가 -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
+<!-- 컨테이너를 드래그 가능하게 하기 -->
+<script>
+    $(document).ready(function() {
+        $(".container").draggable();
+    });
+</script>
+
+<script>
+    function searchUser() {
+        let input = document.getElementById('searchUser').value.toLowerCase();
+        let chatItems = document.getElementsByClassName('chat-item');
+
+        for (let i = 0; i < chatItems.length; i++) {
+            let name = chatItems[i].querySelector('.user-name').textContent.toLowerCase();
+            if (name.includes(input)) {
+                chatItems[i].style.display = "";
+            } else {
+                chatItems[i].style.display = "none";
+            }
+        }
+    }
+</script>
 <script>
     function openChat(userId) {
         // AJAX나 URL 이동 로직을 여기에 추가
