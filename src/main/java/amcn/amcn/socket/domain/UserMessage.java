@@ -16,13 +16,17 @@ public class UserMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long userMessageId;
 
     @Column(nullable = false)
     private String content;
 
     @Column(nullable = false)
     private LocalDateTime timestamp;
+
+    @Column(nullable = false)
+    private boolean confirm;
+
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)

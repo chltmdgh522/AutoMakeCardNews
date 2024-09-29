@@ -4,16 +4,20 @@ import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.domain.member.RoleType;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
+import amcn.amcn.socket.domain.ListMessage;
 import amcn.amcn.socket.domain.dto.ChatMessage;
 import amcn.amcn.socket.reposiotry.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -90,6 +94,10 @@ public class ChatController {
             Optional<Member> findMember2 = memberRepository.findMemberId(memberId);
             if (findMember2.isPresent()) {
                 Member member1 = findMember2.get();
+                List<ListMessage> allMessage = chatRepository.findAllMessage(member1);
+                for (ListMessage listMessage : allMessage) {
+                    log.info(listMessage.);
+                }
                 model.addAttribute("messages", chatRepository.findAllMessage(member1));
                 model.addAttribute("mId",memberId);
                 model.addAttribute("userMember",member1);
@@ -124,6 +132,18 @@ public class ChatController {
             return null;
         }
         return "성공";
+    }
+
+
+    @ResponseBody
+    @PostMapping("/checkid")
+    public String checkMessageIds(@RequestBody Map<String, List<String>> payload) {
+        List<String> messageIds = payload.get("messageIds");
+
+        // 받은 messageIds 리스트 처리
+        messageIds.forEach(System.out::println);
+
+        return "ok";
     }
 
 

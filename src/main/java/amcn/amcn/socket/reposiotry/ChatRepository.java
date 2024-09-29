@@ -50,6 +50,7 @@ public class ChatRepository {
                         UserMessage.class)
                 .setParameter("id", member.getMemberId())
                 .getResultList();
+
         log.info(member.getMemberId());
         List<AdminMessage> adminMessages = em.createQuery("select l from AdminMessage l where l.member2.memberId=:id", AdminMessage.class)
                 .setParameter("id", member.getMemberId())
@@ -64,6 +65,7 @@ public class ChatRepository {
             listMessage.setType("user");
             listMessage.setMessage(userMessage.getContent());
             listMessage.setTimestamp(userMessage.getTimestamp());
+
             combinedMessages.add(listMessage);
         }
 

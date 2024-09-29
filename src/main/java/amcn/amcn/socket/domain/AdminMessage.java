@@ -17,7 +17,7 @@ public class AdminMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long adminMessageId;
 
     @Column(nullable = false)
     private String content;

@@ -194,6 +194,7 @@
                                     <div id="messages" class="messages">
                                         <div class="time">비방하지 말아주세요</div> <!-- 날짜 표시 -->
                                         <div th:each="message :${messages}">
+                                            <input type="hidden" class="message-id" th:value="${message.userMessageId}">
                                         <div class="message stark" th:if="${message.type=='user'}" th:text="${message.message}">{{ content.content }}</div>
                                         <div class="message parker" th:if="${message.type=='admin'}" th:text="${message.message}">{{ content.content }}</div>
                                         </div>
@@ -232,7 +233,33 @@
 
 </div>
 
+<script>
+    window.onload = function() {
+        // 모든 메시지 ID를 배열로 수집
+        var messageIds = [];
+        document.querySelectorAll('.message-id').forEach(function(input) {
+            messageIds.push(input.value);
+        });
 
+        // AJAX로 서버에 전송
+        if (messageIds.length > 0) {
+            $.ajax({
+                url: '/checkid', // 서버의 엔드포인트 설정
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ messageIds: messageIds }),
+                success: function(response) {
+                    console.log('Message IDs sent successfully:', response);
+                },
+                error: function(error) {
+                    console.error('Error sending message IDs:', error);
+                }
+            });
+        }
+    };
+
+
+</script>
 <script>
     $(document).ready(function () {
         function scrollChatBox() {
