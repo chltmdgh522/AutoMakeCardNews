@@ -9,6 +9,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -65,6 +68,7 @@ public class ChatRepository {
             listMessage.setType("user");
             listMessage.setMessage(userMessage.getContent());
             listMessage.setTimestamp(userMessage.getTimestamp());
+            listMessage.setUserMessageId(userMessage.getUserMessageId());
 
             combinedMessages.add(listMessage);
         }
@@ -84,6 +88,16 @@ public class ChatRepository {
         return combinedMessages;
 
     }
+
+    public void findConfirm(List<String> messages) {
+        for (String id : messages) {
+            em.createQuery("update UserMessage m set m.confirm=true where m.userMessageId = :id ")
+                    .setParameter("id",id)
+                    .executeUpdate();
+
+        }
+    }
+
 
     public List<Member> findAllMembers() {
         return em.createQuery("select m from Member m", Member.class).getResultList();

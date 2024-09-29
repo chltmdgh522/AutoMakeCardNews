@@ -16,7 +16,7 @@ public class UserMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long userMessageId;
+    private Long userMessageId;
 
     @Column(nullable = false)
     private String content;

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 public class ListMessage {
     private String type;
-
+    private Long userMessageId;
     private String message;
     private LocalDateTime timestamp;
 

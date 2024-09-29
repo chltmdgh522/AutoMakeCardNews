@@ -94,10 +94,7 @@ public class ChatController {
             Optional<Member> findMember2 = memberRepository.findMemberId(memberId);
             if (findMember2.isPresent()) {
                 Member member1 = findMember2.get();
-                List<ListMessage> allMessage = chatRepository.findAllMessage(member1);
-                for (ListMessage listMessage : allMessage) {
-                    log.info(listMessage.);
-                }
+
                 model.addAttribute("messages", chatRepository.findAllMessage(member1));
                 model.addAttribute("mId",memberId);
                 model.addAttribute("userMember",member1);
@@ -140,8 +137,7 @@ public class ChatController {
     public String checkMessageIds(@RequestBody Map<String, List<String>> payload) {
         List<String> messageIds = payload.get("messageIds");
 
-        // 받은 messageIds 리스트 처리
-        messageIds.forEach(System.out::println);
+        chatRepository.findConfirm(messageIds);
 
         return "ok";
     }

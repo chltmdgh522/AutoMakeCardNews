@@ -194,7 +194,7 @@
                                     <div id="messages" class="messages">
                                         <div class="time">비방하지 말아주세요</div> <!-- 날짜 표시 -->
                                         <div th:each="message :${messages}">
-                                            <input type="hidden" class="message-id" th:value="${message.userMessageId}">
+                                            <input type="hidden" class="message-id" th:if="${message.type=='user'}" th:value="${message.userMessageId}">
                                         <div class="message stark" th:if="${message.type=='user'}" th:text="${message.message}">{{ content.content }}</div>
                                         <div class="message parker" th:if="${message.type=='admin'}" th:text="${message.message}">{{ content.content }}</div>
                                         </div>
