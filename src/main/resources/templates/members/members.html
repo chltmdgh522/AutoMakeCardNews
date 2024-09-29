@@ -372,7 +372,7 @@
                     <!-- Community Tabs -->
                     <div id="postsTab" class="tab-pane">
                         <div class="row mt-3">
-                            <div class="col-md-4" th:each="board : ${postBoard}">
+                            <div class="col-md-4" th:each="board : ${postBoard}" style="margin-bottom: 20px;">
                                 <div class="card">
                                     <a th:href="|/community/${board.boardId}|">
                                         <div class="card-body">
@@ -396,7 +396,7 @@
                     <div id="likesTab" class="tab-pane">
                         <!-- 게시물 공감 탭 내용 -->
                         <div class="row mt-3">
-                            <div class="col-md-4" th:each="likeboard : ${likeBoards}">
+                            <div class="col-md-4" th:each="likeboard : ${likeBoards}" style="margin-bottom: 20px;">
                                 <div class="card">
                                     <a th:href="|/community/${likeboard.boardId}|">
                                         <div class="card-body">
@@ -408,14 +408,15 @@
                             </div>
                         </div>
                     </div>
+                    <!-- comments Tab -->
                     <div id="comments" class="tab-pane" role="tabpanel" aria-labelledby="comments-tab">
                         <div class="row mt-3">
-                            <div class="col-md-4" th:each="comment : ${commentBoard}">
+                            <div class="col-md-4" th:each="comment : ${commentBoard}" style="margin-bottom: 20px;">
                                 <div class="card">
                                     <a th:href="|/community/${comment.board.boardId}|">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${#strings.length(comment.board.title) > 20 ? #strings.substring(comment.board.title, 0, 20) + '...' : comment.board.title}">Liked Content Title</h5>
-                                            <p class="card-text" th:text="${#strings.length(comment.substance) > 10 ? #strings.substring(comment.substance, 0, 10) + '...' : comment.substance}">Brief description of the content with comments.</p>
+                                            <p class="card-text" th:text="${#strings.length(comment.substance) > 10 ? #strings.substring(comment.substance, 0, 10) + '...' : comment.substance}" style="text-align: left;">Brief description of the content with comments.</p>
                                             <button class="btn btn-primary" th:text="|Like ${comment.board.likes.size()}|"><i class="icon bi bi-heart"></i> Like</button>
                                         </div>
                                     </a>
@@ -427,12 +428,12 @@
                     <!-- Scraps Tab -->
                     <div class="tab-pane" id="scraps" role="tabpanel" aria-labelledby="scraps-tab">
                         <div class="row mt-3">
-                            <div class="col-md-4" th:each="likeNew : ${likeNews}">
+                            <div class="col-md-4" th:each="likeNew : ${likeNews}" style="margin-bottom: 20px;">
                                 <div class="card">
                                     <a th:href="|/news/${likeNew.newsId}|">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${likeNew.title}">Scrapped News Title</h5>
-                                            <p class="card-text" th:text="${likeNew.originalContent}">Brief description of the scrapped news content.</p>
+                                            <p class="card-text" th:text=   "${likeNew.originalContent}" style="text-align: left;">Brief description of the scrapped news content.</p>
                                             <button class="btn btn-primary" th:text="|Like ${likeNew.likes.size()}|"><i class="icon bi bi-heart"></i> Scrap</button>
                                         </div>
                                     </a>
@@ -444,12 +445,12 @@
                     <!-- News Tab -->
                     <div class="tab-pane" id="news" role="tabpanel" aria-labelledby="news-tab">
                         <div class="row mt-3">
-                            <div class="col-md-4" th:each="likeNew : ${postNews}">
+                            <div class="col-md-4" th:each="likeNew : ${postNews}" style="margin-bottom: 20px;">
                                 <div class="card">
                                     <a th:href="|/news/${likeNew.newsId}|">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${likeNew.title}">Scrapped News Title</h5>
-                                            <p class="card-text" th:text="${likeNew.originalContent}">Brief description of the scrapped news content.</p>
+                                            <p class="card-text" th:text="${likeNew.originalContent}" style="text-align: left;">Brief description of the scrapped news content.</p>
                                             <button class="btn btn-primary" th:text="|Like ${likeNew.likes.size()}|"><i class="icon bi bi-heart"></i> Scrap</button>
                                         </div>
                                     </a>
@@ -461,13 +462,13 @@
                     <!-- Card News Tab -->
                     <div class="tab-pane" id="card-news" role="tabpanel" aria-labelledby="card-news-tab">
                         <div class="row mt-3">
-                            <div class="col-md-4" th:each="heart :${heartCardNews}">
+                            <div class="col-md-4" th:each="heart :${heartCardNews}" style="margin-bottom: 20px;">
                                 <div class="card">
                                     <a th:href="|/cardnews/${heart.cardNewsId}|">
                                         <img th:src="|/ai/image/${heart.imageUrl}|" class="card-img-top" alt="Card News Image">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${heart.title}">Card News Title</h5>
-                                            <p class="card-text" th:text="${heart.content}">Brief summary of the card news content. Includes engaging visuals.</p>
+                                            <p class="card-text" th:text="${heart.content}" style="text-align: left;">Brief summary of the card news content. Includes engaging visuals.</p>
                                             <button class="btn btn-primary"><i class="icon bi bi-heart"></i> Like</button>
                                         </div>
                                     </a>
@@ -479,17 +480,15 @@
                     <!-- Sympathy Tab -->
                     <div class="tab-pane" id="sympathy" role="tabpanel" aria-labelledby="sympathy-tab">
                         <div class="row mt-3">
-                            <div class="col-md-12">
-                                <div class="card-deck">
-                                    <div class="card" th:each="fork : ${forkCardNews}">
-                                        <a th:href="|/cardnews/${fork.cardNewsId}|">
-                                            <img th:src="|/ai/image/${fork.imageUrl}|" class="card-img-top" alt="Card News Image">
-                                            <div class="card-body">
-                                                <h5 class="card-title" th:text="${fork.title}">Card News Title</h5>
-                                                <p class="card-text" th:text="${fork.content}">Brief summary of the card news content. Includes engaging visuals.</p>
-                                            </div>
-                                        </a>
-                                    </div>
+                            <div class="col-md-4" th:each="fork : ${forkCardNews}" style="margin-bottom: 20px;">
+                                <div class="card">
+                                    <a th:href="|/cardnews/${fork.cardNewsId}|">
+                                        <img th:src="|/ai/image/${fork.imageUrl}|" class="card-img-top" alt="Card News Image">
+                                        <div class="card-body">
+                                            <h5 class="card-title" th:text="${fork.title}">Card News Title</h5>
+                                            <p class="card-text" th:text="${fork.content}" style="text-align: left;">Brief summary of the card news content. Includes engaging visuals.</p>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
