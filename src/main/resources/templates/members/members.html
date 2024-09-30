@@ -157,12 +157,12 @@
 
         .class-card.news ~ .btn-section .btn {
             background-color: #f5b14d;
-            height: calc(200px / 3); /* 뉴스 버튼 높이 줄이기 */
+            height: 75px; /* 뉴스 버튼 높이 줄이기 */
         }
 
         .class-card.cardnews ~ .btn-section .btn {
             background-color: #8c77d9;
-            height: calc(200px / 3); /* 카드뉴스 버튼 높이 줄이기 */
+            height: 75px; /* 카드뉴스 버튼 높이 줄이기 */
         }
 
         /* Ensure buttons span full card width */
@@ -379,10 +379,10 @@
                                             <h5 class="card-title" th:text="${#strings.length(board.title) > 20 ? #strings.substring(board.title, 0, 20) + '...' : board.title}"></h5>
                                             <!-- 버튼들을 감싸는 컨테이너 추가 -->
                                             <div class="btn-container">
-                                                <button class="btn btn-primary" th:text="|Like ${board.likes.size()}|">
+                                                <button class="btn btn-primary" style="background-color: #74b4e0;" th:text="|Like ${board.likes.size()}|">
                                                     <i class="icon bi bi-heart"></i> Like
                                                 </button>
-                                                <button class="btn btn-secondary" th:text="|댓글 ${board.comments.size()}|">
+                                                <button class="btn btn-secondary" style="background-color: #74b4e0;"  th:text="|댓글 ${board.comments.size()}|">
                                                     <i class="icon bi bi-chat"></i> Comment
                                                 </button>
                                             </div>
@@ -401,7 +401,7 @@
                                     <a th:href="|/community/${likeboard.boardId}|">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${#strings.length(likeboard.title) > 20 ? #strings.substring(likeboard.title, 0, 20) + '...' : likeboard.title}">Liked Content Title</h5>
-                                            <button class="btn btn-secondary" th:text="|댓글 ${likeboard.comments.size()}|"><i class="icon bi bi-chat"></i> Comment</button>
+                                            <button class="btn btn-secondary"  style="background-color: #74b4e0;" th:text="|댓글 ${likeboard.comments.size()}|"><i class="icon bi bi-chat"></i> Comment</button>
                                         </div>
                                     </a>
                                 </div>
@@ -417,7 +417,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${#strings.length(comment.board.title) > 20 ? #strings.substring(comment.board.title, 0, 20) + '...' : comment.board.title}">Liked Content Title</h5>
                                             <p class="card-text" th:text="${#strings.length(comment.substance) > 10 ? #strings.substring(comment.substance, 0, 10) + '...' : comment.substance}" style="text-align: left;">Brief description of the content with comments.</p>
-                                            <button class="btn btn-primary" th:text="|Like ${comment.board.likes.size()}|"><i class="icon bi bi-heart"></i> Like</button>
+                                            <button class="btn btn-primary" style="background-color: #74b4e0;"  th:text="|Like ${comment.board.likes.size()}|"><i class="icon bi bi-heart"></i> Like</button>
                                         </div>
                                     </a>
                                 </div>
@@ -434,7 +434,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${likeNew.title}">Scrapped News Title</h5>
                                             <p class="card-text" th:text=   "${likeNew.originalContent}" style="text-align: left;">Brief description of the scrapped news content.</p>
-                                            <button class="btn btn-primary" th:text="|Like ${likeNew.likes.size()}|"><i class="icon bi bi-heart"></i> Scrap</button>
+                                            <button class="btn btn-primary" style="background-color: #f2bb60;" th:text="|Like ${likeNew.likes.size()}|"><i class="icon bi bi-heart"></i> Scrap</button>
                                         </div>
                                     </a>
                                 </div>
@@ -451,7 +451,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${likeNew.title}">Scrapped News Title</h5>
                                             <p class="card-text" th:text="${likeNew.originalContent}" style="text-align: left;">Brief description of the scrapped news content.</p>
-                                            <button class="btn btn-primary" th:text="|Like ${likeNew.likes.size()}|"><i class="icon bi bi-heart"></i> Scrap</button>
+                                            <button class="btn btn-primary" style="background-color: #f2bb60;" th:text="|Like ${likeNew.likes.size()}|"><i class="icon bi bi-heart"></i> Scrap</button>
                                         </div>
                                     </a>
                                 </div>
@@ -469,7 +469,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${heart.title}">Card News Title</h5>
                                             <p class="card-text" th:text="${heart.content}" style="text-align: left;">Brief summary of the card news content. Includes engaging visuals.</p>
-                                            <button class="btn btn-primary"><i class="icon bi bi-heart"></i> Like</button>
+                                            <button class="btn btn-primary" style="background-color: #a688d9;" ><i class="icon bi bi-heart"></i> Like</button>
                                         </div>
                                     </a>
                                 </div>
