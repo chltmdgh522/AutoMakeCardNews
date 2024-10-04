@@ -1,6 +1,7 @@
 package amcn.amcn.admin.web.home;
 
 import amcn.amcn.member.domain.member.Member;
+import amcn.amcn.member.domain.member.RoleType;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +19,13 @@ import java.util.Optional;
 public class AdminController {
 
     private final MemberRepository memberRepository;
+
     @GetMapping("/system")
     public String getAdmin(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                  Member loginMember, Model model) {
-
+                           Member loginMember, Model model) {
+        if (!loginMember.getRoleType().equals(RoleType.MASTER)) {
+            return "redirect:/";
+        }
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
             Member member = findMember.get();

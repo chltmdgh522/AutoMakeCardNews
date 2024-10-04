@@ -182,7 +182,6 @@
                             <div class="chat-center" id="chat-center">
 
 
-
                                 <div class="chat" id="chat">
 
 
@@ -194,9 +193,14 @@
                                     <div id="messages" class="messages">
                                         <div class="time">비방하지 말아주세요</div> <!-- 날짜 표시 -->
                                         <div th:each="message :${messages}">
-
-                                        <div class="message parker" th:if="${message.type=='user'}" th:text="${message.message}">{{ content.content }}</div>
-                                        <div class="message stark" th:if="${message.type=='admin'}" th:text="${message.message}">{{ content.content }}</div>
+                                            <input type="hidden" class="message-id" th:if="${message.type=='user'}"
+                                                   th:value="${message.userMessageId}">
+                                            <div class="message parker" th:if="${message.type=='user'}"
+                                                 th:text="${message.message}">{{ content.content }}
+                                            </div>
+                                            <div class="message stark" th:if="${message.type=='admin'}"
+                                                 th:text="${message.message}">{{ content.content }}
+                                            </div>
                                         </div>
                                     </div>
 
@@ -204,8 +208,9 @@
                                         <div class="type-message-bottom">
                                             <i class="fas fa-microphone" id="record-btn"></i>
                                             <input type="text" id="user-content2" placeholder="Type a message...">
-                                            <a class="send">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                            <a class="send" onclick="sendMessage2()">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                     fill="currentColor">
                                                     <path d="M1.94619 9.31543C1.42365 9.14125 1.41953 8.86022 1.95694 8.68108L21.0431 2.31901C21.5716 2.14285 21.8747 2.43866 21.7266 2.95694L16.2734 22.0432C16.1224 22.5716 15.8178 22.59 15.5945 22.0876L12 14L18 6.00005L10 12L1.94619 9.31543Z"></path>
                                                 </svg>
                                             </a>
@@ -220,7 +225,7 @@
             </div>
 
         </div>
-
+        <div style="display: none" id="socketMemberId" th:text="${member.memberId}"></div>
 
     </div>
     <!-- End of Content Wrapper -->
@@ -228,7 +233,6 @@
 
 </div>
 <!-- End of Page Wrapper -->
-
 
 
 <script>
@@ -317,7 +321,46 @@
 
 <!-- Swiper JS -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script>
+    var stompClient = null;
+    var userId = document.getElementById('socketMemberId').textContent;
+    function connect() {
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
 
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+
+            // 관리자 메시지 구독
+            stompClient.subscribe('/topic/user/' + userId, function (message) {
+                showMessage(JSON.parse(message.body));
+            });
+        });
+    }
+
+    function sendMessage2() {
+        var messageContent = document.querySelector('#user-content2').value;
+        var memberId = document.getElementById('socketMemberId').textContent;
+        if (messageContent && stompClient) {
+            var chatMessage = {
+                memberId: memberId,  // 사용자 ID
+                content: messageContent
+            };
+            stompClient.send("/app/chat.userToAdmin", {}, JSON.stringify(chatMessage));
+        }
+    }
+
+    function showMessage(message) {
+        var messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.innerHTML = message.content;
+        document.querySelector('#messages').appendChild(messageElement);
+    }
+
+    connect();
+</script>
 </body>
 
 </html>

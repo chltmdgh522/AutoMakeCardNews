@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,12 +35,17 @@ public class ChatController {
     public String getChat(Model model,
                           @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                           Member loginMember) {
+
+        if (loginMember.getRoleType().equals(RoleType.MASTER)) {
+            return "redirect:/";
+        }
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
             Member member = findMember.get();
             model.addAttribute("type", member.getRoleType().name());
             model.addAttribute("member", member);
             model.addAttribute("messages", chatRepository.findAllMessage(member));
+            model.addAttribute("userId", member.getMemberId());
 
 
         } else {
@@ -69,6 +75,9 @@ public class ChatController {
     public String getSuperChat(Model model,
                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                Member loginMember) {
+        if (!loginMember.getRoleType().equals(RoleType.MASTER)) {
+            return "redirect:/";
+        }
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
             Member member = findMember.get();
@@ -85,9 +94,14 @@ public class ChatController {
     public String getSuperChat2(@PathVariable String memberId, Model model,
                                 @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                 Member loginMember) {
+
+        if (!loginMember.getRoleType().equals(RoleType.MASTER)) {
+            return "redirect:/";
+        }
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
             Member member = findMember.get();
+
             model.addAttribute("type", member.getRoleType().name());
             model.addAttribute("member", member);
 
@@ -96,8 +110,8 @@ public class ChatController {
                 Member member1 = findMember2.get();
 
                 model.addAttribute("messages", chatRepository.findAllMessage(member1));
-                model.addAttribute("mId",memberId);
-                model.addAttribute("userMember",member1);
+                model.addAttribute("mId", memberId);
+                model.addAttribute("userMember", member1);
             } else {
                 return null;
             }
@@ -143,31 +157,21 @@ public class ChatController {
     }
 
 
-    @MessageMapping("/chat2")
-    public void handleChatMessage(ChatMessage chatMessage) {
-        log.info("Received message: {}", chatMessage.getContent());
-        log.info("Sender: {}", chatMessage.getSender());
-        log.info("Login member set in session: {}", chatMessage.getMemberId());
-
-        Optional<Member> findMember = memberRepository.findMemberId(chatMessage.getMemberId());
-        if (findMember.isPresent()) {
-            Member member = findMember.get();
-
-            // chatMessage 객체에서 sender 정보를 확인하여 관리자와 사용자 구분
-            if ("admin".equals(chatMessage.getSenderType())) {
-             //   chatRepository.saveAdminMessage(chatMessage.getContent(), member);
-            } else {
-                chatRepository.saveMemberMessage(chatMessage.getContent(), member);
-            }
-
-            // "master" 타입의 사용자에게만 메시지 전송
-            RoleType roleType = member.getRoleType();
-            String name = roleType.name();
-            if ("MASTER".equals(name)) {
-                messagingTemplate.convertAndSend("/topic/master-messages", chatMessage);
-            }
-        } else {
-            log.warn("Member not found for ID: {}", chatMessage.getMemberId());
-        }
+    // 사용자 메시지 전송
+    @MessageMapping("/chat.userToAdmin")
+    public void userToAdmin(@Payload ChatMessage chatMessage) {
+        log.info("안녕하세요!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        messagingTemplate.convertAndSend("/topic/admin/", chatMessage);
     }
+
+    // 관리자 메시지 전송
+    @MessageMapping("/chat.adminToUser")
+    public void adminToUser(@Payload ChatMessage chatMessage) {
+        log.info("ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ22222222222222");
+        log.info(chatMessage.getContent());
+        log.info(chatMessage.getMemberId());
+        messagingTemplate.convertAndSend("/topic/user/" + chatMessage.getMemberId(), chatMessage);
+    }
+
+
 }
