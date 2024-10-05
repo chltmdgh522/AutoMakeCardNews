@@ -248,7 +248,8 @@
         function sendMessage() {
             let userContent = $('#user-content2').val();
 
-            console.log(userContent);
+
+
             if (userContent.trim() !== "") {
                 // 사용자 메시지를 바로 추가하기
                 $('#messages').append(
@@ -278,8 +279,7 @@
                         'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
                     success: function () {
-                        // 서버 성공 요청 로직
-                        console.log("넴");
+
                     }
                 });
             }
@@ -288,7 +288,8 @@
         // Enter 키를 눌렀을 때 메시지 전송
         $('#user-content2').on('keypress', function (event) {
             if (event.which === 13) { // Enter 키를 감지
-                console.log("gd");
+
+                sendMessage2();
                 event.preventDefault(); // 기본 Enter 동작을 막기
                 sendMessage();
             }
@@ -331,7 +332,7 @@
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
+            // console.log('Connected: ' + frame);
 
             // 관리자 메시지 구독
             stompClient.subscribe('/topic/user/' + userId, function (message) {

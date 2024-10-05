@@ -254,10 +254,10 @@
                 contentType: 'application/json',
                 data: JSON.stringify({messageIds: messageIds}),
                 success: function (response) {
-                    console.log('Message IDs sent successfully:', response);
+
                 },
                 error: function (error) {
-                    console.error('Error sending message IDs:', error);
+
                 }
             });
         }
@@ -278,7 +278,7 @@
         function sendMessage() {
             let userContent = $('#admin-content').val();
 
-            console.log(userContent);
+
             if (userContent.trim() !== "") {
                 // 사용자 메시지를 바로 추가하기
                 $('#messages').append(
@@ -319,7 +319,7 @@
         // Enter 키를 눌렀을 때 메시지 전송
         $('#admin-content').on('keypress', function (event) {
             if (event.which === 13) { // Enter 키를 감지
-
+                sendMessage2();
                 event.preventDefault(); // 기본 Enter 동작을 막기
                 sendMessage();
             }
@@ -363,7 +363,7 @@
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
+            // console.log('Connected: ' + frame);
 
             // 사용자 메시지 구독
             stompClient.subscribe('/topic/admin/', function (message) {
@@ -375,18 +375,14 @@
     function sendMessage2() {
         var memberId = document.getElementById('socketMemberId').textContent;
         var messageContent = document.querySelector('#admin-content').value;
-        console.log("왜아뇌징");
         if (messageContent && stompClient) {
             var chatMessage = {
                 memberId: memberId,  // 사용자 ID
                 content: messageContent,
             };
-            console.log(memberId);
-            console.log("전송");
-            console.log(messageContent);
+
             stompClient.send("/app/chat.adminToUser", {}, JSON.stringify(chatMessage));
         }else {
-            console.log("WebSocket 연결이 끊어졌습니다.");
         }
     }
 
