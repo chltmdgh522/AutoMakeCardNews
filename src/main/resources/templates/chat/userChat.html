@@ -327,7 +327,7 @@
     var stompClient = null;
     var userId = document.getElementById('socketMemberId').textContent;
     function connect() {
-        var socket = new SockJS('/ws');
+        var socket = new SockJS('/ws', null, { transports: ['websocket'] });
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function (frame) {

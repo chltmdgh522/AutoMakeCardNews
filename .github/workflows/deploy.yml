@@ -19,6 +19,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
@@ -35,8 +43,8 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          # 로컬에서 원격 서버로 JAR 파일 복사
-          scp -o StrictHostKeyChecking=no build/libs/amcn-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.jar
+          # 로컬에서 원격 서버로 JAR 파일 복사 (rsync 사용)
+          rsync -avz --progress build/libs/amcn-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.jar
 
           # 원격 서버에서 애플리케이션 재시작
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
@@ -48,16 +56,6 @@ jobs:
             # 새 JAR 파일로 애플리케이션 실행
             nohup java -jar amcn-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
 
-            # Nginx 설치 확인 및 재시작
-            if ! command -v nginx &> /dev/null
-            then
-              echo "Nginx could not be found, installing..."
-              sudo apt-get update
-              sudo apt-get install -y nginx
-              sudo systemctl start nginx
-              sudo systemctl enable nginx
-            else
-              echo "Nginx is already installed, restarting..."
-              sudo systemctl restart nginx
-            fi
+            # Nginx 재시작 (설치 확인 생략)
+            sudo systemctl restart nginx
           EOF
