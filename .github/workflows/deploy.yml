@@ -38,24 +38,21 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_KEY }}
 
+      - name: Add EC2 Host to Known Hosts
+        run: |
+          ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
       - name: Deploy to EC2
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          # 로컬에서 원격 서버로 JAR 파일 복사 (rsync 사용)
           rsync -avz --progress build/libs/amcn-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.jar
 
-          # 원격 서버에서 애플리케이션 재시작
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
             cd /home/ubuntu/AutoMakeCardNews
 
-            # 현재 실행 중인 JAR 프로세스 종료
             pkill -f 'java -jar amcn-0.0.1-SNAPSHOT.jar'
-
-            # 새 JAR 파일로 애플리케이션 실행
             nohup java -jar amcn-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
-
-            # Nginx 재시작 (설치 확인 생략)
             sudo systemctl restart nginx
           EOF
