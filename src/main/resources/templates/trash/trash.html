@@ -24,6 +24,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <style>
         /* 이미지와 체크박스를 포함한 컨테이너 */
         .image-container {
@@ -110,6 +112,10 @@
             top: -1.25rem;
             right: 0.375rem;
         }
+        .rotate-arrow {
+            display: inline-block; /* 아이콘을 인라인 블록으로 설정 */
+            transform: rotate(45deg); /* 기본적으로 45도 회전 */
+        }
     </style>
 
 
@@ -143,6 +149,7 @@
                         <div class="col-md-8" style="text-align: center;">
                             <!-- 추가한 문구 -->
                             <p class="text-center mt-3" style="font-size: 40px; color: black;">휴지통</p>
+                            <hr>
                         </div>
                     </div>
                 </div>
@@ -188,11 +195,13 @@
                                                 <!-- 우측 하단 모서리에 아이콘 배치 -->
                                                 <div class="icon">
                                                     <div class="iconBox">
-                                                        <span class="material-symbols-outlined">add</span>
+                                                        <span class="material-icons rotate-arrow">arrow_upward</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="card-title" th:text="${card.title}">이미지 제목 1</div>
+                                            <div class="card-title" th:text="${card.title}" style="color: black; font-size: 1.3rem; text-align: left; margin: 10px 0; margin-left: 45px;">
+                                                이미지 제목 1
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
