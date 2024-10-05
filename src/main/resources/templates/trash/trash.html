@@ -29,20 +29,14 @@
         .image-container {
             position: relative;
             display: inline-block;
-            transition: transform 0.3s ease, filter 0.3s ease; /* 이미지 확대 효과와 동일한 전환 효과 */
         }
 
         /* 이미지 */
         .square-image {
             width: 300px;
             height: 300px;
-            transition: inherit; /* 부모의 전환 효과를 상속받음 */
-        }
-
-        /* 이미지에 마우스를 올릴 때 효과 */
-        .image-container:hover {
-            transform: scale(1.1); /* 이미지와 체크박스 모두 확대 */
-            filter: brightness(0.8); /* 이미지 밝기 조정 */
+            border-radius: 0 0 50px 0; /* 우측 하단 모서리를 둥글게 처리 */
+            /* transition: transform 0.3s ease, filter 0.3s ease; */ /* 전환 효과 제거 */
         }
 
         /* 체크박스 */
@@ -54,29 +48,71 @@
             width: 20px;
             height: 20px;
             cursor: pointer; /* 체크박스에 마우스 커서 변경 */
-            transition: inherit; /* 부모의 전환 효과를 상속받음 */
         }
 
-
-
-        .form-control {
-            display: block;
-            width: 100%;
-            padding: 0.375rem 0.75rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #212529;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid #ced4da;
-            border-radius: 0.25rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        /* 아이콘 우측 하단에 고정 */
+        .icon {
+            position: absolute;
+            bottom: -0.375rem;
+            right: -0.375rem;
+            width: 6rem;
+            height: 6rem;
+            background: #ffffff;
+            border-top-left-radius: 50%;
+            overflow: hidden;
         }
 
+        /* 아이콘 상자 디자인 add 아이콘 배경색 */
+        .iconBox {
+            position: absolute;
+            inset: 0.625rem;
+            background: #282828;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s; /* 배경색 전환 효과 */
+        }
 
+        /* 아이콘 호버 효과 */
+        .iconBox:hover {
+            background-color: #ddd; /* 호버 시 배경색 변경 */
+        }
 
+        /* 아이콘 스타일 */
+        .material-symbols-outlined {
+            font-size: 24px;
+            color: #333;
+        }
 
+        .iconBox span {
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .icon::before,
+        .icon::after {
+            content: "";
+            position: absolute;
+            width: 1.25rem;
+            height: 1.25rem;
+            background: transparent;
+            border-bottom-right-radius: 1.25rem;
+            box-shadow: 0.313rem 0.313rem 0 0.313rem #fff;
+        }
+
+        .icon::before {
+            bottom: 0.375rem;
+            left: -1.25rem;
+        }
+
+        .icon::after {
+            top: -1.25rem;
+            right: 0.375rem;
+        }
     </style>
+
+
 </head>
 
 <body id="page-top">
@@ -141,19 +177,22 @@
                         <div class="col-md-12">
                             <div class="row" style="margin-top: 20px;">
                                 <div class="col-md-12">
-                                    <!-- 모든 이미지들을 square-image 클래스로 설정 -->
                                     <div class="row" style="margin-bottom: 55px;">
-                                        <div class="col-md-3 text-center" th:each="card :${cardnews}" style="margin-bottom: 50px; position: relative;">
+                                        <div class="col-md-3 text-center" th:each="card :${cardnews}" style="background-color: #fff; margin-bottom: 50px; position: relative;">
                                             <!-- 이미지 클릭시 체크박스 체크 -->
-                                            <div class="image-container" style="position: relative;">
+                                            <div class="image-container">
                                                 <div style="display: none" th:text="${card.cardNewsId}"></div>
                                                 <img th:src="|/ai/image/${card.imageUrl}|" alt="이미지 설명 1"
-                                                     class="img-fluid mb-2 square-image"
-                                                     style="border: 20px ridge wheat; position: relative; cursor: pointer;">
-                                                <!-- 체크박스 추가 -->
+                                                     class="img-fluid mb-2 square-image">
                                                 <input type="checkbox" class="select-checkbox" style="position: absolute; top: 10px; right: 10px;">
+                                                <!-- 우측 하단 모서리에 아이콘 배치 -->
+                                                <div class="icon">
+                                                    <div class="iconBox">
+                                                        <span class="material-symbols-outlined">add</span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div style="margin-top: 10px;" th:text="${card.title}">이미지 제목 1</div>
+                                            <div class="card-title" th:text="${card.title}">이미지 제목 1</div>
                                         </div>
                                     </div>
                                 </div>
@@ -161,7 +200,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>`
 
         </div>
         <!-- End of Content Wrapper -->
