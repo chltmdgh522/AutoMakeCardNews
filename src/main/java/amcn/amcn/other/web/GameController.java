@@ -6,13 +6,12 @@ import amcn.amcn.member.web.session.SessionConst;
 import amcn.amcn.other.repository.OthersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -30,7 +29,7 @@ public class GameController {
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
             Member member = findMember.get();
-            if(member.getRoleType().name().equals("USER")){
+            if (member.getRoleType().name().equals("USER")) {
                 return "redirect:/";
             }
             model.addAttribute("type", member.getRoleType().name());
@@ -52,7 +51,7 @@ public class GameController {
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
             Member member = findMember.get();
-            if(member.getRoleType().name().equals("USER")){
+            if (member.getRoleType().name().equals("USER")) {
                 return "redirect:/";
             }
             model.addAttribute("type", member.getRoleType().name());
@@ -65,15 +64,67 @@ public class GameController {
         return "game/baseball";
     }
 
+
+    @GetMapping("/game/number")
+    public String getNumber(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                            Member loginMember,
+                            Model model) {
+        Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
+        if (findMember.isPresent()) {
+            Member member = findMember.get();
+            if (member.getRoleType().name().equals("USER")) {
+                return "redirect:/";
+            }
+            model.addAttribute("type", member.getRoleType().name());
+            model.addAttribute("member", member);
+        } else {
+            return null;
+        }
+
+
+        return "game/number";
+    }
+
+
+    @GetMapping("/game/swipe")
+    public String getSwipe(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                           Member loginMember,
+                           Model model) {
+        Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
+        if (findMember.isPresent()) {
+            Member member = findMember.get();
+            if (member.getRoleType().name().equals("USER")) {
+                return "redirect:/";
+            }
+            model.addAttribute("type", member.getRoleType().name());
+            model.addAttribute("member", member);
+        } else {
+            return null;
+        }
+
+
+        return "game/swipe";
+    }
+
     @ResponseBody
     @PostMapping("/game/point")
     public String updatePoint(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                  Member loginMember){
+                              Member loginMember) {
         loginMember.setPoint(100L);
         memberRepository.updatePoint(loginMember);
 
         return "sucess";
     }
 
+    @ResponseBody
+    @PostMapping("/game/point2")
+    public ResponseEntity<String> updatePoint2(@RequestBody Map<String, Integer> data,
+                                               @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
+
+        loginMember.setPoint(Long.valueOf(data.get("score")));
+        memberRepository.updatePoint(loginMember);
+
+        return ResponseEntity.ok("점수 저장 성공");
+    }
 
 }

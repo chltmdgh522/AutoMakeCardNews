@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <title>A.M.C.N</title>
+    <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
+    <!-- Custom fonts for this template-->
+    <script src="https://kit.fontawesome.com/097a6f4f17.js" crossorigin="anonymous"></script>
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <style>
+        body {
+            background-color: #e9ecef;
+        }
+        .game-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .result-message {
+            font-size: 1.3rem;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .form-control {
+            border-radius: 30px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        button {
+            border-radius: 30px;
+            font-size: 1.2rem;
+        }
+        .alert {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper" th:object="${member}">
+    <div th:replace="~{header/header1 :: copyParam (${member})}"></div>
+
+
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <div th:replace="~{header/header2 :: copyParam (${member})}"></div>
+            <!-- header -->
+
+
+            <!-- 배경 블러 -->
+            <div class="overlay" id="overlay"></div>
+
+            <!-- End of Topbar -->
+            <div style="background-color: white;">
+                <!-- Begin Page Content -->
+                <div class="container-fluid" id="contnet">
+                    <div style="color: white">as dfasdfasdf</div>
+
+                    <div class="container">
+                        <div class="game-container">
+                            <h2>AMCN의 숫자 맞추기 게임</h2>
+                            <div class="mb-4">
+                                <input type="number" id="guessInput" class="form-control" placeholder="1부터 100까지 숫자 입력" autofocus>
+                            </div>
+                            <button class="btn btn-primary w-100" onclick="checkGuess()">확인하기</button>
+                            <div class="result-message mt-3"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+
+</div>
+<!-- End of Page Wrapper -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    let randomNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+
+    // 엔터 키를 눌렀을 때 확인하기 버튼이 클릭되도록 이벤트 리스너 추가
+    document.getElementById("guessInput").addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            checkGuess();
+        }
+    });
+
+    function checkGuess() {
+        const guessInput = document.getElementById('guessInput');
+        const resultMessage = document.querySelector('.result-message');
+        const guess = parseInt(guessInput.value);
+
+        if (isNaN(guess) || guess < 1 || guess > 100) {
+            resultMessage.innerHTML = `<div class="alert alert-danger">1부터 100 사이의 숫자를 입력해주세요.</div>`;
+            return;
+        }
+
+        attempts++;
+
+        if (guess > randomNumber) {
+            resultMessage.innerHTML = `<div class="alert alert-warning">너무 큽니다! 시도 횟수: ${attempts}</div>`;
+        } else if (guess < randomNumber) {
+            resultMessage.innerHTML = `<div class="alert alert-warning">너무 작습니다! 시도 횟수: ${attempts}</div>`;
+        } else {
+            let score = 100 - attempts;
+            resultMessage.innerHTML = `<div class="alert alert-success">정답입니다! ${attempts}번 시도했으며, 포인트는 ${score}점입니다.</div>`;
+            guessInput.disabled = true;
+            $.ajax({
+                type: "POST",
+                url: "/game/point2",  // Spring 서버의 엔드포인트
+                data: JSON.stringify({ score: score }),
+                contentType: "application/json",
+                success: function(response) {
+
+                },
+                error: function(error) {
+                }
+            });
+            // 2초 후 페이지 새로고침
+            setTimeout(function() {
+                alert(`게임이 종료되었습니다! 최종 점수: ${score}점`);
+                location.reload();
+            }, 2000);
+        }
+    }
+</script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
