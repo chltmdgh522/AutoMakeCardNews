@@ -12,6 +12,6 @@ public class ListMessage {
     private Long userMessageId;
     private String message;
     private LocalDateTime timestamp;
-
+    private Long adminMessageId;
 
 }

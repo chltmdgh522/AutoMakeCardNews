@@ -1,5 +1,6 @@
 package amcn.amcn.socket.chatservice;
 
+import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.socket.domain.dto.ChatMessage;
 import amcn.amcn.socket.reposiotry.ChatRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ public class ChatService {
     private final ChatRepository chatRepository;
 
 
-    public List<ChatMessage> findChat(){
-        List<ChatMessage> list=new ArrayList<>();
-        return list;
+    public int findCountChat(Member member){
+        return chatRepository.findCountUserMessage(member);
+
     }
 }

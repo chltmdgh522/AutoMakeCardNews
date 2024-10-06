@@ -154,6 +154,22 @@
             background-color: #45a049;
         }
 
+        /* 버튼 스타일 */
+        #closeBtn2 {
+            background-color: #4CAF50;
+
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #closeBtn2:hover {
+            background-color: #45a049;
+        }
+
         .anidmation-container {
             position: relative;
             overflow: hidden;
@@ -240,6 +256,14 @@
                 <button id="closeBtn" style="font-weight: bold;" class="mb-2">닫기</button>
             </div>
 
+
+            <div class="popup" id="popup2" th:if="${chatCount != 0}">
+                <h4 style="font-weight: bold; color: black" th:text="|${member.name}님, 관리자로 부터 메시지가 ${chatCount}건 왔습니다.⭐|">이메일 인증
+                    대상자입니다⭐</h4>
+                <p style="font-weight: bold" class="mt-5">문의된 답변이 왔습니다! 메시지 확인해주세요!</p>
+                <p><a href="chat"> 메시지 확인 링크🍃</a></p>
+                <button id="closeBtn2" style="font-weight: bold;" class="mb-2">닫기</button>
+            </div>
 
             <!-- 배경 블러 -->
             <div class="overlay" id="overlay"></div>
@@ -492,6 +516,21 @@
     // 팝업 닫기 버튼 클릭 시
     document.getElementById("closeBtn").addEventListener("click", function () {
         document.getElementById("popup").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+    });
+</script>
+
+
+<script>
+    // 페이지 로드 시 팝업 보이기
+    window.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("popup2").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+    });
+
+    // 팝업 닫기 버튼 클릭 시
+    document.getElementById("closeBtn2").addEventListener("click", function () {
+        document.getElementById("popup2").style.display = "none";
         document.getElementById("overlay").style.display = "none";
     });
 </script>

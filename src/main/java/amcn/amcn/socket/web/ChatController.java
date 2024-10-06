@@ -146,18 +146,29 @@ public class ChatController {
     }
 
 
+    //읽었는지 안읽었는 검사하는것들
     @ResponseBody
-    @PostMapping("/checkid")
-    public String checkMessageIds(@RequestBody Map<String, List<String>> payload) {
+    @PostMapping("/check/user")
+    public String checkMessageIdUser(@RequestBody Map<String, List<String>> payload) {
         List<String> messageIds = payload.get("messageIds");
 
-        chatRepository.findConfirm(messageIds);
+        chatRepository.findConfirmUser(messageIds);
+
+        return "ok";
+    }
+
+    @ResponseBody
+    @PostMapping("/check/admin")
+    public String checkMessageIdsAdmin(@RequestBody Map<String, List<String>> payload) {
+        List<String> messageIds = payload.get("messageIds");
+
+        chatRepository.findConfirmAdmin(messageIds);
 
         return "ok";
     }
 
 
-    // 사용자 메시지 전송
+    // 사용자 메시지 전송 본격적인 웹 소켓
     @MessageMapping("/chat.userToAdmin")
     public void userToAdmin(@Payload ChatMessage chatMessage) {
         log.info("안녕하세요!!!!!!!!!!!!!!!!!!!!!!!!!!!");

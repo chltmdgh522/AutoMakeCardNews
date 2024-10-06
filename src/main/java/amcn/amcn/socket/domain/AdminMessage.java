@@ -25,6 +25,9 @@ public class AdminMessage {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
+    @Column(nullable = false)
+    private boolean confirm;
+
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;

@@ -79,6 +79,7 @@ public class ChatRepository {
             listMessage.setType("admin");
             listMessage.setMessage(adminMessage.getContent());
             listMessage.setTimestamp(adminMessage.getTimestamp());
+            listMessage.setAdminMessageId(adminMessage.getAdminMessageId());
             combinedMessages.add(listMessage);
         }
 
@@ -89,7 +90,7 @@ public class ChatRepository {
 
     }
 
-    public void findConfirm(List<String> messages) {
+    public void findConfirmUser(List<String> messages) {
         for (String id : messages) {
             em.createQuery("update UserMessage m set m.confirm=true where m.userMessageId = :id ")
                     .setParameter("id",id)
@@ -97,10 +98,26 @@ public class ChatRepository {
 
         }
     }
+    public void findConfirmAdmin(List<String> messages) {
+        for (String id : messages) {
+            em.createQuery("update AdminMessage m set m.confirm=true where m.adminMessageId = :id ")
+                    .setParameter("id",id)
+                    .executeUpdate();
 
+        }
+    }
 
     public List<Member> findAllMembers() {
         return em.createQuery("select m from Member m", Member.class).getResultList();
+    }
+
+
+    //user가 admin 메시지를 안읽은 대화 수!!
+    public int findCountUserMessage(Member member){
+        return em.createQuery("select m from AdminMessage m where m.confirm=false and m.member2.memberId=:id")
+                .setParameter("id",member.getMemberId())
+                .getResultList()
+                .size();
     }
 
 

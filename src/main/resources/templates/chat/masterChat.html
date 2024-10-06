@@ -187,11 +187,11 @@
 
                                     <div class="contact bar">
 
-                                        <div class="chat-pic joy"></div>
+                                        <img th:src="|/my-page/image/${userMember.profile}|" alt="프로필X" class="chat-pic joy2">
                                         <div class="chat-name" th:text="${userMember.name}"></div>
                                     </div>
                                     <div id="messages" class="messages">
-                                        <div class="time">비방하지 말아주세요</div> <!-- 날짜 표시 -->
+                                        <div class="time">친절하게 답해줍시다.</div> <!-- 날짜 표시 -->
                                         <div th:each="message :${messages}">
                                             <input type="hidden" class="message-id" th:if="${message.type=='user'}"
                                                    th:value="${message.userMessageId}">
@@ -249,7 +249,7 @@
         // AJAX로 서버에 전송
         if (messageIds.length > 0) {
             $.ajax({
-                url: '/checkid', // 서버의 엔드포인트 설정
+                url: '/check/user', // 서버의 엔드포인트 설정
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({messageIds: messageIds}),

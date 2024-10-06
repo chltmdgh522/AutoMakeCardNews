@@ -1073,10 +1073,14 @@ outline: none;
 
 
 .chat-pic.joy {
-    background-image: url("/static/logo/AMCNicon.png");
+    background-image: url("/logo/AMCNicon.png");
 }
 
-
+.chat-pic.joy2 {
+    width: 50px; /* 이미지 크기를 적절하게 설정 */
+    height: 50px;
+    object-fit: cover; /* 이미지 크기에 맞춰 잘림 */
+}
 /* =====반응형 구현====== */
 #drag {
     position: absolute;

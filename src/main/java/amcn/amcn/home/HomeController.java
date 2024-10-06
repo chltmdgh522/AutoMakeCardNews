@@ -56,19 +56,11 @@ public class HomeController {
                 exist="X";
                 model.addAttribute("exist",exist);
             }
-            model.addAttribute("messages",chatService.findChat());
+            model.addAttribute("chatCount",chatService.findCountChat(member));
             model.addAttribute("myCardnews",myCard);
             model.addAttribute("cardPop", newAll);
 
-            log.info(String.valueOf(member.getHello()));
 
-            if (member.getHello() ==0) {
-                log.info("=================================");
-                log.info(member.getName() + "님 입장!!!!!!");
-                log.info("=================================");
-                member.setHello(2);
-                memberRepository.updateHello(member);
-            }
         } else {
             return null;
         }
