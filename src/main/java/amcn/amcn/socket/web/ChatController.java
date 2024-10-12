@@ -171,14 +171,12 @@ public class ChatController {
     // 사용자 메시지 전송 본격적인 웹 소켓
     @MessageMapping("/chat.userToAdmin")
     public void userToAdmin(@Payload ChatMessage chatMessage) {
-        log.info("안녕하세요!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         messagingTemplate.convertAndSend("/topic/admin/", chatMessage);
     }
 
     // 관리자 메시지 전송
     @MessageMapping("/chat.adminToUser")
     public void adminToUser(@Payload ChatMessage chatMessage) {
-        log.info("ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ22222222222222");
         log.info(chatMessage.getContent());
         log.info(chatMessage.getMemberId());
         messagingTemplate.convertAndSend("/topic/user/" + chatMessage.getMemberId(), chatMessage);
