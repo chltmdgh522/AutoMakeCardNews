@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <!-- Open Graph Meta Tags -->
-    <meta property="og:url" content="https://www.feelbuddy.kr"/>
+    <meta property="og:url" content="https://www.amcn.kr"/>
     <meta property="og:title" content="AMCN"/>
     <meta property="og:description" content="AI를 활용해서 AMCN과 함께 카드뉴스를 마음껏 제작해보세요!"/>
     <meta property="og:type" content="website"/>
@@ -23,13 +23,13 @@
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-     <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link href="/css/home.css" rel="stylesheet">
+
+
+
     <style>
 
         a {
@@ -225,51 +225,189 @@
                             <span style="color: black; font-weight: bold;">더보기</span>
                         </a>
                     </div>
+                    <div class="coll2">
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
 
-                    <!-- 내용 -->
-                    <div class="swiper-container">
+                                <!-- image box -->
+                                <div class="swiper-slide">
+                                    <div class="imgBox">
+                                        <img src="https://i1.wp.com/urbanasian.com/wp-content/uploads/2018/05/Kaala-Karikalan-Poster.jpg">
+                                    </div>
+                                    <div class="details">
+                                        <h3>Kaala<br>
+                                            Directed by : <span>Pa. Ranjith</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
 
+                                <!-- image box -->
+                                <div class="swiper-slide">
+                                    <div class="imgBox">
+                                        <img src="https://cdn.europosters.eu/image/750/posters/star-wars-the-last-jedi-one-sheet-i51532.jpg">
+                                    </div>
+                                    <div class="details">
+                                        <h3>Star Wars<br>
+                                            Directed by : <span>Demo</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
 
-                        <div class="swiper-wrapper" style="padding-bottom: 75px;">
-                            <div th:each="news : ${cardPop}" class="swiper-slide">
-                                <a th:href="|/cardnews/${news.cardNewsId}|">
-                                    <img th:src="|/ai/image/${news.imageUrl}|" th:alt="${news.title}" width="100px"
-                                         height="100px">
-                                </a>
+                                <!-- image box -->
+                                <div class="swiper-slide">
+                                    <div class="imgBox">
+                                        <img src="https://m.media-amazon.com/images/M/MV5BOTEzNDU0OTgxM15BMl5BanBnXkFtZTgwNjA0ODM2OTE@._V1_.jpg">
+                                    </div>
+                                    <div class="details">
+                                        <h3>Deepwater Horizon<br>
+                                            Directed by : <span>Demo</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
+
+                                <!-- image box -->
+                                <div class="swiper-slide">
+                                    <div class="imgBox">
+                                        <img src="https://movieposters2.com/images/1300287-b.jpg">
+                                    </div>
+                                    <div class="details">
+                                        <h3>Ghostbusters<br>
+                                            Directed by : <span>Demo</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
+
+                                <!-- image box -->
+                                <div class="swiper-slide">
+                                    <div class="imgBox">
+                                        <img src="https://m.media-amazon.com/images/M/MV5BNzgyNDczMjU4NV5BMl5BanBnXkFtZTgwMTUwMDI3NjE@._V1_.jpg">
+                                    </div>
+                                    <div class="details">
+                                        <h3>Macbeth<br>
+                                            Directed by : <span>Demo</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
+
+                                <!-- image box -->
+                                <div class="swiper-slide">
+                                    <div class="imgBox">
+                                        <img src="https://i.pinimg.com/originals/78/b7/73/78b7730fa4e1491a3b4f6f49b3a148ff.jpg">
+                                    </div>
+                                    <div class="details">
+                                        <h3>Expendables 3<br>
+                                            Directed by : <span>Demo</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
+                            </div>
+                            <div class="swiper-pagination">
                             </div>
                         </div>
-
-                        <!-- Add Navigation Buttons -->
-                        <div class="swiper-button-prev" style="padding-bottom: 20px;"></div>
-                        <div class="swiper-button-next" style="padding-bottom: 20px;"></div>
-
-
-                        <!-- Add Pagination -->
-                        <div class="swiper-pagination"></div>
-
                     </div>
+
 
                     <div class="thema2 mt-5 mb-3">
                         <span style="color: black; font-weight: bold;">최근 테마</span>
+                        <a th:href="|/cardnews|">
+                            <span style="color: black; font-weight: bold;">더보기</span>
+                        </a>
                     </div>
 
-                    <div class="swiper-container myCardnews-swiper" style="margin-bottom: 20px;">
-                        <div class="swiper-wrapper" style="padding-bottom: 75px;">
-                            <div th:each="my : ${cardnews}" class="swiper-slide">
-                                <a th:href="|/cardnews/${my.cardNewsId}|">
-                                    <img th:src="|/ai/image/${my.imageUrl}|" alt="Image 1" width="100px" height="100px">
 
-                                </a>
+                    <div class="coll2">
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
+
+                                <!-- image box -->
+                                <div class="swiper-slide">
+                                    <div class="imgBox">
+                                        <img src="https://i1.wp.com/urbanasian.com/wp-content/uploads/2018/05/Kaala-Karikalan-Poster.jpg">
+                                    </div>
+                                    <div class="details">
+                                        <h3>Kaala<br>
+                                            Directed by : <span>Pa. Ranjith</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
+
+                                <!-- image box -->
+                                <div class="swiper-slide">
+                                    <div class="imgBox">
+                                        <img src="https://cdn.europosters.eu/image/750/posters/star-wars-the-last-jedi-one-sheet-i51532.jpg">
+                                    </div>
+                                    <div class="details">
+                                        <h3>Star Wars<br>
+                                            Directed by : <span>Demo</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
+
+                                <!-- image box -->
+                                <div class="swiper-slide">
+                                    <div class="imgBox">
+                                        <img src="https://m.media-amazon.com/images/M/MV5BOTEzNDU0OTgxM15BMl5BanBnXkFtZTgwNjA0ODM2OTE@._V1_.jpg">
+                                    </div>
+                                    <div class="details">
+                                        <h3>Deepwater Horizon<br>
+                                            Directed by : <span>Demo</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
+
+                                <!-- image box -->
+                                <div class="swiper-slide">
+                                    <div class="imgBox">
+                                        <img src="https://movieposters2.com/images/1300287-b.jpg">
+                                    </div>
+                                    <div class="details">
+                                        <h3>Ghostbusters<br>
+                                            Directed by : <span>Demo</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
+
+                                <!-- image box -->
+                                <div class="swiper-slide">
+                                    <div class="imgBox">
+                                        <img src="https://m.media-amazon.com/images/M/MV5BNzgyNDczMjU4NV5BMl5BanBnXkFtZTgwMTUwMDI3NjE@._V1_.jpg">
+                                    </div>
+                                    <div class="details">
+                                        <h3>Macbeth<br>
+                                            Directed by : <span>Demo</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
+
+                                <!-- image box -->
+                                <div class="swiper-slide">
+                                    <div class="imgBox">
+                                        <img src="https://i.pinimg.com/originals/78/b7/73/78b7730fa4e1491a3b4f6f49b3a148ff.jpg">
+                                    </div>
+                                    <div class="details">
+                                        <h3>Expendables 3<br>
+                                            Directed by : <span>Demo</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
+                            </div>
+                            <div class="swiper-pagination">
                             </div>
                         </div>
-
-                        <!-- Navigation Buttons -->
-                        <div class="swiper-button-prev" style="padding-bottom: 20px;"></div>
-                        <div class="swiper-button-next" style="padding-bottom: 20px;"></div>
-
-                        <!-- Pagination -->
-                        <div class="swiper-pagination"></div>
                     </div>
+
 
                 </div>
 
@@ -285,58 +423,11 @@
 
 
 </div>
-<!-- End of Page Wrapper -->
 
 
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
+<script src="/js/home.js"></script>
 
 
-<!-- Swiper JS -->
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<!-- Initialize Swiper -->
-<script>
-    var swiper = new Swiper('.swiper-container:not(.myCardnews-swiper)', {
-        pagination: {
-            el: '.swiper-pagination',
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        slidesPerView: 5,
-        centeredSlides: true,
-        loop: true,
-        loopedSlides: 5,
-        autoplay: {
-            delay: 2000, // 3초 간격으로 슬라이드 넘김
-        },
-    });
-
-    var swiper2 = new Swiper('.myCardnews-swiper', {
-        pagination: {
-            el: '.swiper-pagination',
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        slidesPerView: 3,
-        centeredSlides: true,
-        loop: true,
-        loopedSlides: 3,
-        autoplay: {
-            delay: 3000, // 5초 간격으로 슬라이드 넘김
-        },
-    });
-</script>
 
 
 <script>

@@ -19,7 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/my-page/imagesV3/{boardId}", "/my-page/imagesV2/{memberId}",
                         "/my-page/images/{boardId}", "/my-page/imageV4/{image}",
                         "/*.jpg", "/*.png", "/*.gif", "/logo/AMCNicon.png",
-                        "/email-verification","/join-email","/aiimg/**","/ai/image/{filename}");
+                        "/email-verification","/join-email","/aiimg/**","/ai/image/{filename}",
+                        "/js/**");
 
     }
 }
