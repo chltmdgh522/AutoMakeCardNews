@@ -10,26 +10,29 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <!-- Open Graph Meta Tags -->
-    <meta property="og:url" content="https://www.feelbuddy.kr"/>
+    <meta property="og:url" content="https://www.amcn.kr"/>
     <meta property="og:title" content="AMCN"/>
     <meta property="og:description" content="AI를 활용해서 AMCN과 함께 카드뉴스를 마음껏 제작해보세요!"/>
     <meta property="og:type" content="website"/>
     <meta property="og:image" content="https://amcn.kr/logo/AMCNicon.png"/>
 
     <title>A.M.C.N</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
     <!-- Custom fonts for this template-->
     <script src="https://kit.fontawesome.com/097a6f4f17.js" crossorigin="anonymous"></script>
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-     <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link href="/css/home2.css" rel="stylesheet">
+
+
     <style>
 
         a {
@@ -219,57 +222,44 @@
                         </div>
                     </div>
 
-                    <div class="thema mt-3 mb-5" style="display: flex; justify-content: space-between;">
-                        <span style="color: black; font-weight: bold;">인기 테마</span>
-                        <a th:href="|/cardnews|">
-                            <span style="color: black; font-weight: bold;">더보기</span>
-                        </a>
-                    </div>
+                    <div
+                            style="margin-bottom: 20px;" class="hombo">
+                        <div id="tsparticles"></div>
+                        <section>
+                            <div class="content23">
+                                <h1>AI를 활용해서 원하는 카드뉴스를 만들어 보세요!</h1>
+                                <p>
+                                    저희 서비스는 최신 AI 기술을 통해 쉽고 빠르게 카드뉴스를 제작할 수 있도록 도와드립니다.
+                                    이미지 생성부터 텍스트 작성까지, 클릭 몇 번으로 여러분만의 멋진 카드뉴스를 완성해보세요!
+                                </p>
 
-                    <!-- 내용 -->
-                    <div class="swiper-container">
 
-
-                        <div class="swiper-wrapper" style="padding-bottom: 75px;">
-                            <div th:each="news : ${cardPop}" class="swiper-slide">
-                                <a th:href="|/cardnews/${news.cardNewsId}|">
-                                    <img th:src="|/ai/image/${news.imageUrl}|" th:alt="${news.title}" width="100px"
-                                         height="100px">
-                                </a>
                             </div>
-                        </div>
 
-                        <!-- Add Navigation Buttons -->
-                        <div class="swiper-button-prev" style="padding-bottom: 20px;"></div>
-                        <div class="swiper-button-next" style="padding-bottom: 20px;"></div>
+                            <div class="swiper">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide" th:each="pop : ${cardPop}">
+                                        <img th:src="|/ai/image/${pop.imageUrl}|"/>
+                                        <div class="cost" th:text="${pop.member.name}">from $230 per group</div>
+                                        <div class="overlay23">
+                                            <h1 th:text="${pop.title}">Walking Tour in Florence</h1>
+                                            <p th:text="${pop.content}">
+                                                Discover the fascinating beauty of this historic city by
+                                                strolling through the rich cultural tapestry that makes Florence
+                                                a timeless destination.
+                                            </p>
 
-
-                        <!-- Add Pagination -->
-                        <div class="swiper-pagination"></div>
-
-                    </div>
-
-                    <div class="thema2 mt-5 mb-3">
-                        <span style="color: black; font-weight: bold;">최근 테마</span>
-                    </div>
-
-                    <div class="swiper-container myCardnews-swiper" style="margin-bottom: 20px;">
-                        <div class="swiper-wrapper" style="padding-bottom: 75px;">
-                            <div th:each="my : ${cardnews}" class="swiper-slide">
-                                <a th:href="|/cardnews/${my.cardNewsId}|">
-                                    <img th:src="|/ai/image/${my.imageUrl}|" alt="Image 1" width="100px" height="100px">
-
-                                </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Navigation Buttons -->
-                        <div class="swiper-button-prev" style="padding-bottom: 20px;"></div>
-                        <div class="swiper-button-next" style="padding-bottom: 20px;"></div>
-
-                        <!-- Pagination -->
-                        <div class="swiper-pagination"></div>
+<!--                            <a href="https://www.youtube.com/@ecemgokdogan/videos" target="_blank" class="logo"><img-->
+<!--                                    src="https://assets.codepen.io/9868786/youtube.webp" alt="HTML tutorial"></a>-->
+                        </section>
                     </div>
+
+
 
                 </div>
 
@@ -285,58 +275,11 @@
 
 
 </div>
-<!-- End of Page Wrapper -->
 
 
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/js/home2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
-
-
-<!-- Swiper JS -->
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<!-- Initialize Swiper -->
-<script>
-    var swiper = new Swiper('.swiper-container:not(.myCardnews-swiper)', {
-        pagination: {
-            el: '.swiper-pagination',
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        slidesPerView: 5,
-        centeredSlides: true,
-        loop: true,
-        loopedSlides: 5,
-        autoplay: {
-            delay: 2000, // 3초 간격으로 슬라이드 넘김
-        },
-    });
-
-    var swiper2 = new Swiper('.myCardnews-swiper', {
-        pagination: {
-            el: '.swiper-pagination',
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        slidesPerView: 3,
-        centeredSlides: true,
-        loop: true,
-        loopedSlides: 3,
-        autoplay: {
-            delay: 3000, // 5초 간격으로 슬라이드 넘김
-        },
-    });
-</script>
 
 
 <script>
@@ -350,5 +293,6 @@
         window.location.href = fullUrl; // 해당 URL로 이동
     });
 </script>
+
 </body>
 </html>
