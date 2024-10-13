@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <title>A.M.C.N</title>
     <!-- Open Graph Meta Tags -->
-    <meta property="og:url" content="https://www.feelbuddy.kr"/>
+    <meta property="og:url" content="https://www.amcn.kr"/>
     <meta property="og:title" content="AMCN"/>
     <meta property="og:description" content="AI를 활용해서 AMCN과 함께 카드뉴스를 마음껏 제작해보세요!"/>
     <meta property="og:type" content="website"/>
@@ -28,10 +28,13 @@
 
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
+    <link href="/css/home.css" rel="stylesheet">
     <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
     <style>
+        img{
+            border-radius: 10px;
+        }
 
         /* 채팅 창 스타일 */
         #chatMessages {
@@ -199,16 +202,7 @@
             }
         }
 
-        .swiper-slide img {
-            padding: 10px;
-            background-color: #f8f8f8; /* 배경색을 추가하여 액자 효과 강화 */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 그림자 추가 */
-            border-radius: 15px; /* 둥근 모서리 */
-            max-width: 100%; /* 이미지가 부모 요소를 넘어가지 않도록 */
-            display: block;
-            margin: 20px auto; /* 이미지 중앙 정렬 */
-        "
-        }
+
 
         .menu10 {
             transition: transform 0.3s ease;
@@ -340,32 +334,48 @@
                         </div>
                     </div>
 
+
                     <div class="thema mt-3 mb-5" style="display: flex; justify-content: space-between;">
-                        <span style="color: black; font-weight: bold;">추천 테마</span>
-                        <a th:href="|/cardnews?selected=인기&category=&title=|">
+                        <span style="color: black; font-weight: bold;">인기 테마</span>
+                        <a th:href="|/cardnews|">
                             <span style="color: black; font-weight: bold;">더보기</span>
                         </a>
                     </div>
+                    <div class="coll2" style="margin-top: -45px">
+                        <div class="cloud" style="animation-delay: 0s; "></div>
+                        <div class="cloud" style="animation-delay: 2s; "></div>
+                        <div class="cloud" style="animation-delay: 4s; "></div>
+                        <div class="cloud" style="animation-delay: 6s; "></div>
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
 
+                                <!-- image box -->
+                                <div class="swiper-slide" th:each="pop : ${cardnews}">
+                                    <a th:href="|/cardnews/${pop.cardNewsId}|">
+                                        <div class="imgBox">
+                                            <img th:src="|/ai/image/${pop.imageUrl}|">
+                                        </div>
+                                    </a>
+                                    <div class="details">
+                                        <h3 th:text="${pop.title}">Kaala<br>
+                                            Directed by : <span th:text="${pop.member.name}">Pa. Ranjith</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <!-- image box -->
 
-                    <!-- cardnews용 Swiper -->
-                    <div class="swiper-container my-swiper" style="margin-bottom: 20px;">
-                        <div class="swiper-wrapper" style="padding-bottom: 75px;">
-                            <div th:each="news : ${cardnews}" class="swiper-slide">
-                                <a th:href="|/cardnews/${news.cardNewsId}|">
-                                    <img th:src="|/ai/image/${news.imageUrl}|" th:alt="${news.title}" width="100px"
-                                         height="100px">
-                                </a>
+                                <!-- image box -->
+
+                                <!-- image box -->
                             </div>
+
                         </div>
-
-                        <!-- Navigation Buttons -->
-                        <div class="swiper-button-prev" style="padding-bottom: 20px;"></div>
-                        <div class="swiper-button-next" style="padding-bottom: 20px;"></div>
-
-                        <!-- Pagination -->
-                        <div class="swiper-pagination"></div>
                     </div>
+
+
+
+
+
 
                     <div class="thema2 mt-5 mb-3" style="display: flex; justify-content: space-between;"
                          th:if="${!myCardnews.isEmpty()}">
@@ -383,46 +393,67 @@
                         </a>
                     </div>
 
-                    <!-- myCardnews용 Swiper -->
-                    <div th:if="${!myCardnews.isEmpty()}" class="swiper-container myCardnews-swiper"
-                         style="margin-bottom: 20px;">
-                        <div class="swiper-wrapper" style="padding-bottom: 75px;">
-                            <div th:each="my : ${myCardnews}" class="swiper-slide">
-                                <a th:href="|/cardnews/${my.cardNewsId}|">
-                                    <img th:src="|/ai/image/${my.imageUrl}|" alt="Image 1" width="100px" height="100px">
-                                    <div class="image-caption mt-3" style="font-weight: bold;"
-                                         th:text="${my.title}"></div>
-                                </a>
+
+
+                        <div th:if="${myCardnews.isEmpty()}" class="coll23 mb-2" style="
+                        margin-top: -10px;  background-color:#FFB6C1;
+    padding: 0;
+
+    position: relative;
+    border-radius: 10px;">
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper">
+
+                                    <!-- image box -->
+                                    <div class="swiper-slide" th:each="card : ${cardPop}">
+                                        <a th:href="|/cardnews/${card.cardNewsId}|">
+                                            <div class="imgBox">
+                                                <img th:src="|/ai/image/${card.imageUrl}|">
+                                            </div>
+                                        </a>
+                                        <div class="details">
+                                            <h3 th:text="${card.title}">Kaala<br>
+                                                Directed by : <span th:text="${card.member.name}">Pa. Ranjith</span>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-pagination2">
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Navigation Buttons -->
-                        <div class="swiper-button-prev" style="padding-bottom: 20px;"></div>
-                        <div class="swiper-button-next" style="padding-bottom: 20px;"></div>
+                    <div th:if="${!myCardnews.isEmpty()}"
+                         style="
+                             background-color:#FFB6C1;
+    padding: 0;
+    position: relative;
+    border-radius: 10px; /* 부드러운 모서리를 위한 테두리 */
+                         margin-bottom: 20px;" class="mb-2 coll23">
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
 
-                        <!-- Pagination -->
-                        <div class="swiper-pagination"></div>
-                    </div>
-
-                    <div th:if="${myCardnews.isEmpty()}" class="swiper-container myCardnews2-swiper"
-                         style="margin-bottom: 20px;">
-                        <div class="swiper-wrapper" style="padding-bottom: 75px;">
-                            <div th:each="my : ${cardPop}" class="swiper-slide">
-                                <a th:href="|/cardnews/${my.cardNewsId}|">
-                                    <img th:src="|/ai/image/${my.imageUrl}|" alt="Image 1" width="100px" height="100px">
-                                    <div class="image-caption mt-3" style="font-weight: bold;"
-                                         th:text="${my.title}"></div>
-                                </a>
+                                <!-- image box -->
+                                <div class="swiper-slide" th:each="card : ${myCardnews}">
+                                    <a th:href="|/cardnews/${card.cardNewsId}|">
+                                        <div class="imgBox">
+                                           za
+                                        </div>
+                                    </a>
+                                    <div class="details">
+                                        <h3 th:text="${card.title}">Kaala<br>
+                                            Directed by : <span th:text="${card.member.name}">Pa. Ranjith</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-pagination2">
                             </div>
                         </div>
-
-                        <!-- Navigation Buttons -->
-                        <div class="swiper-button-prev" style="padding-bottom: 20px;"></div>
-                        <div class="swiper-button-next" style="padding-bottom: 20px;"></div>
-
-                        <!-- Pagination -->
-                        <div class="swiper-pagination"></div>
                     </div>
+
+
+
 
                 </div>
                 <!-- /.container-fluid -->
@@ -436,75 +467,13 @@
 
 
 </div>
-<!-- End of Page Wrapper -->
-
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
+<script src="/js/home.js"></script>
 
 
 <!-- Swiper JS -->
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<!-- Swiper 스크립트 -->
-<script>
-    var swiper1 = new Swiper('.my-swiper', {
-        pagination: {
-            el: '.swiper-pagination',
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        slidesPerView: 5,
-        centeredSlides: true,
-        loop: true,
-        loopedSlides: 5,
-        autoplay: {
-            delay: 2000, // 2초 간격으로 슬라이드 넘김
-        },
-    });
 
-    var swiper2 = new Swiper('.myCardnews-swiper', {
-        pagination: {
-            el: '.swiper-pagination',
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        slidesPerView: 3,
-        centeredSlides: true,
-        loop: true,
-        loopedSlides: 3,
-        autoplay: {
-            delay: 3000, // 5초 간격으로 슬라이드 넘김
-        },
-    });
-
-
-    var swiper2 = new Swiper('.myCardnews2-swiper', {
-        pagination: {
-            el: '.swiper-pagination',
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        slidesPerView: 3,
-        centeredSlides: true,
-        loop: true,
-        loopedSlides: 3,
-        autoplay: {
-            delay: 3000, // 5초 간격으로 슬라이드 넘김
-        },
-    });
-</script>
 
 <script>
     // 페이지 로드 시 팝업 보이기
@@ -546,7 +515,9 @@
         window.location.href = fullUrl; // 해당 URL로 이동
     });
 </script>
+<script>
 
+</script>
 </body>
 
 </html>

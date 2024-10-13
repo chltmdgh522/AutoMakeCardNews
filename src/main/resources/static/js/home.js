@@ -35,3 +35,41 @@ var swiper = new Swiper('.swiper-container', {
     autoplay:true
 });
 
+
+var swiper = new Swiper('.swiper-container2', {
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
+    coverflowEffect: {
+        rotate: 0,
+        stretch: 0,
+        depth: 100,
+        modifier: 6, // slider Design change.
+        slideShadows: true,
+    },
+    pagination: {
+        el: '.swiper-pagination',
+    },
+    loop: true,
+    autoplay: {
+        delay: 2500, // 속도를 빠르게
+        disableOnInteraction: false,
+    },
+    direction: 'rtl', // 슬라이드 방향을 왼쪽으로 설정
+});
+
+
+document.querySelectorAll('.cloud').forEach(cloud => {
+    // 구름의 초기 랜덤 위치 설정
+    const setRandomPosition = () => {
+        const randomTop = Math.random() * 25; // 10 ~ 40vh 범위에서 랜덤한 위치
+        cloud.style.top = `${randomTop}vh`;
+    };
+
+    // 초기 위치 설정
+    setRandomPosition();
+
+    // 애니메이션이 끝날 때마다 랜덤 위치 재설정
+    cloud.addEventListener('animationiteration', setRandomPosition);
+});
