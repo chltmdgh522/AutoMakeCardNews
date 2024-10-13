@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -27,94 +26,121 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
-        /* 이미지와 체크박스를 포함한 컨테이너 */
-        .image-container {
+        /* 카드 스타일 */
+        .card {
+            width: 90%; /* 카드가 부모 컨테이너를 꽉 채움 */
+            height: 100%; /* 카드 높이도 부모 컨테이너와 동일하게 설정 */
             position: relative;
-            display: inline-block;
+            overflow: hidden; /* 카드가 내용이 넘치지 않도록 설정 */
+            transition: 0.4s ease-out; /* 전환 효과 추가 */
+            box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.5); /* 검정색 그림자 */
+            margin: 0 auto; /* 카드를 중앙에 정렬 */
         }
 
         /* 이미지 */
         .square-image {
-            width: 300px;
-            height: 300px;
-            border-radius: 0 0 50px 0; /* 우측 하단 모서리를 둥글게 처리 */
-            /* transition: transform 0.3s ease, filter 0.3s ease; */ /* 전환 효과 제거 */
+            width: 100%; /* 이미지가 카드에 맞게 조절 */
+            height: 100%; /* 이미지가 카드를 꽉 채우도록 설정 */
+            object-fit: cover; /* 이미지가 비율을 유지하면서 카드를 채우도록 설정 */
         }
 
-        /* 체크박스 */
-        .select-checkbox {
+        /* 호버 효과 */
+        .card:hover {
+            transform: translateY(-20px); /* 마우스 오버 시 카드가 위로 이동 */
+        }
+
+        /* 정보 영역 */
+        .info {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 10; /* 이미지 위에 표시되도록 설정 */
-            width: 20px;
-            height: 20px;
-            cursor: pointer; /* 체크박스에 마우스 커서 변경 */
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0; /* top을 0으로 설정하여 카드 전체 높이를 차지하도록 설정 */
+            background: rgba(0, 0, 0, 0.7); /* 반투명 배경 */
+            color: white;
+            text-align: left;
+            padding: 20px;
+            opacity: 0; /* 기본적으로 숨김 */
+            transition: opacity 0.3s ease; /* 전환 효과 */
+            display: flex; /* flex를 사용하여 아래 버튼을 정렬 */
+            flex-direction: column; /* 세로로 정렬 */
+            justify-content: flex-end; /* 내용이 아래로 정렬되도록 설정 */
         }
 
-        /* 아이콘 우측 하단에 고정 */
-        .icon {
-            position: absolute;
-            bottom: -0.375rem;
-            right: -0.375rem;
-            width: 6rem;
-            height: 6rem;
-            background: #ffffff;
-            border-top-left-radius: 50%;
-            overflow: hidden;
+        /* 카드 호버 시 정보 보이기 */
+        .card:hover .info {
+            opacity: 1; /* 마우스 오버 시 정보 표시 */
         }
 
-        /* 아이콘 상자 디자인 add 아이콘 배경색 */
-        .iconBox {
-            position: absolute;
-            inset: 0.625rem;
-            background: #282828;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background-color 0.3s; /* 배경색 전환 효과 */
+        /* 버튼 컨테이너 스타일 */
+        .button-container {
+            display: flex; /* 버튼을 가로로 배치 */
+            gap: 10px; /* 버튼 간 간격 */
         }
 
-        /* 아이콘 호버 효과 */
-        .iconBox:hover {
-            background-color: #ddd; /* 호버 시 배경색 변경 */
+        /* 버튼 스타일 */
+        .button-container button {
+            flex: 1; /* 버튼이 같은 비율로 공간을 차지하게 설정 */
+            margin: 0 5px; /* 버튼 사이에 간격 추가 */
+            border: none; /* 기본 테두리 제거 */
+            padding: 10px; /* 패딩 추가 */
+            border-radius: 5px; /* 버튼 모서리 둥글게 */
+            cursor: pointer; /* 커서 모양 변경 */
+            transition: background-color 0.3s ease; /* 배경색 변화에 전환 효과 */
         }
 
-        /* 아이콘 스타일 */
-        .material-symbols-outlined {
-            font-size: 24px;
-            color: #333;
+        .delete-btn {
+            background-color: red; /* 삭제 버튼 배경색 */
+            color: white; /* 삭제 버튼 글씨색 */
         }
 
-        .iconBox span {
-            color: #fff;
-            font-size: 1.5rem;
+        .restore-btn {
+            background-color: #27AE60; /* 복원 버튼 배경색 */
+            color: white; /* 복원 버튼 글씨색 */
         }
 
-        .icon::before,
-        .icon::after {
+        /* 삭제 버튼에 마우스를 올렸을 때 색상 진해지기 */
+        .delete-btn:hover {
+            background-color: darkred; /* 마우스 오버 시 색상 변경 */
+        }
+
+        /* 복원 버튼에 마우스를 올렸을 때 색상 진해지기 */
+        .restore-btn:hover {
+            background-color: #219654; /* 마우스 오버 시 색상 변경 */
+        }
+
+        /* 핀 스타일 */
+        .card:before {
             content: "";
             position: absolute;
-            width: 1.25rem;
-            height: 1.25rem;
-            background: transparent;
-            border-bottom-right-radius: 1.25rem;
-            box-shadow: 0.313rem 0.313rem 0 0.313rem #fff;
+            top: 5px; /* 핀의 위치 */
+            left: 50%; /* 가운데 정렬 */
+            transform: translateX(-50%);
+            width: 15px;
+            height: 15px;
+            background: var(--pin-color, crimson); /* 기본 핀 색상은 빨강 */
+            border-radius: 50%; /* 원 모양 */
+            box-shadow: -0.1rem -0.1rem 0.3rem 0.02rem rgba(0, 0, 0, 0.5) inset, /* 내부 그림자 */ 0.3rem 0.15rem 0.2rem rgba(0, 0, 0, 0.5); /* 외부 그림자 */
+            filter: drop-shadow(0.3rem 0.15rem 0.2rem rgba(0, 0, 0, 0.5)); /* 외부 그림자 추가 */
+            z-index: 2;
         }
 
-        .icon::before {
-            bottom: 0.375rem;
-            left: -1.25rem;
+
+        /* 카드마다 다른 핀 색상 적용 */
+        .col-md-3:nth-child(1) .card:before {
+            --pin-color: orangered;
         }
 
-        .icon::after {
-            top: -1.25rem;
-            right: 0.375rem;
+        .col-md-3:nth-child(2) .card:before {
+            --pin-color: magenta;
         }
-        .rotate-arrow {
-            display: inline-block; /* 아이콘을 인라인 블록으로 설정 */
-            transform: rotate(45deg); /* 기본적으로 45도 회전 */
+
+        .col-md-3:nth-child(3) .card:before {
+            --pin-color: darkorchid;
+        }
+
+        .col-md-3:nth-child(4) .card:before {
+            --pin-color: hotpink;
         }
     </style>
 
@@ -142,42 +168,25 @@
 
             <!-- End of Topbar -->
 
-            <div style="background-color: white; z-index: 1; padding: 20px">
+            <div style="
+    background-image: url('https://images.unsplash.com/photo-1531685250784-7569952593d2?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2OTMyOTE2OTh8&ixlib=rb-4.0.3&q=100&w=3000');
+    background-size: cover; /* 배경 이미지를 컨테이너 크기에 맞춤 */
+    background-position: center; /* 배경 이미지를 중앙에 위치 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+    min-height: 100vh; /* 최소 높이를 화면 높이로 설정 */
+    z-index: 1;
+    padding: 20px;
+">
                 <!-- Begin Page Content -->
                 <div class="container mb-1">
                     <div class="row justify-content-center">
                         <div class="col-md-8" style="text-align: center;">
                             <!-- 추가한 문구 -->
                             <p class="text-center mt-3" style="font-size: 40px; color: black;">휴지통</p>
-                            <hr>
                         </div>
                     </div>
                 </div>
 
-                <div class="container mb-1">
-                    <div class="row justify-content-center">
-                        <div class="col-md-7 d-flex" style="margin-left: 10px;">
-                            <!-- 휴지통 비우기 버튼 -->
-                            <form class="col-auto mx-2" method="post" th:action="@{/cardnews/delete}">
-                                <input id="allDeleteForm" type="submit" class="btn btn-danger" value="휴지통 비우기">
-                            </form>
-                            <!-- 모든 항목 복원 버튼 -->
-                            <form class="col-auto mx-2" method="post" th:action="@{/cardnews/restore}">
-                                <input id="allRestoreForm" type="submit" class="btn btn-primary" value="모든 항목 복원">
-                            </form>
-                            <!-- 선택 삭제 버튼 -->
-                            <form class="col-auto mx-2" method="post" th:action="@{/cardnews/select/delete}">
-                                <input type="hidden" name="selectedIds" id="selectedIds">
-                                <input id="deleteForm" type="submit" class="btn btn-danger" value="선택 삭제">
-                            </form>
-                            <!-- 선택 복원 버튼 -->
-                            <form class="col-auto mx-2" method="post" th:action="@{/cardnews/select/restore}">
-                                <input type="hidden" name="selectedIdss" id="selectedIdss">
-                                <input id="restoreForm" type="submit" class="btn btn-primary" value="선택 복원">
-                            </form>
-                        </div>
-                    </div>
-                </div>
 
                 <div style="margin-top: 35px;">
                     <div class="row justify-content-center">
@@ -185,22 +194,36 @@
                             <div class="row" style="margin-top: 20px;">
                                 <div class="col-md-12">
                                     <div class="row" style="margin-bottom: 55px;">
-                                        <div class="col-md-3 text-center" th:each="card :${cardnews}" style="background-color: #fff; margin-bottom: 50px; position: relative;">
-                                            <!-- 이미지 클릭시 체크박스 체크 -->
-                                            <div class="image-container">
-                                                <div style="display: none" th:text="${card.cardNewsId}"></div>
-                                                <img th:src="|/ai/image/${card.imageUrl}|" alt="이미지 설명 1"
-                                                     class="img-fluid mb-2 square-image">
-                                                <input type="checkbox" class="select-checkbox" style="position: absolute; top: 10px; right: 10px;">
-                                                <!-- 우측 하단 모서리에 아이콘 배치 -->
-                                                <div class="icon">
-                                                    <div class="iconBox">
-                                                        <span class="material-icons rotate-arrow">arrow_upward</span>
+                                        <div class="col-md-3 text-center" th:each="card : ${cardnews}"
+                                             style="margin-bottom: 50px; position: relative;">
+                                            <!-- 카드 시작 -->
+                                            <div class="card">
+                                                <!-- 이미지 컨테이너 -->
+                                                <div class="image-container">
+                                                    <div style="display: none" th:text="${card.cardNewsId}"></div>
+                                                    <img th:src="|/ai/image/${card.imageUrl}|" alt="이미지 설명 1"
+                                                         class="square-image">
+                                                </div>
+
+                                                <!-- 정보 영역 (마우스 오버 시 나타나는 부분) -->
+                                                <div class="info">
+                                                    <div class="card-title" th:text="${card.title}"
+                                                         style="color: white; font-size: 1.3rem; text-align: left; margin: 10px 0;">
+                                                        이미지 제목 1
+                                                    </div>
+                                                    <!-- 삭제 및 복원 버튼 -->
+                                                    <input style="display: none" th:value="${card.cardNewsId}"
+                                                           class="cardstid">
+                                                    <div class="button-container">
+                                                        <button class="delete-btn">
+                                                            <i class="fas fa-trash-alt" style="margin-right: 5px;"></i>
+                                                            삭제
+                                                        </button>
+                                                        <button class="restore-btn">
+                                                            <i class="fas fa-undo" style="margin-right: 5px;"></i> 복원
+                                                        </button>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="card-title" th:text="${card.title}" style="color: black; font-size: 1.3rem; text-align: left; margin: 10px 0; margin-left: 45px;">
-                                                이미지 제목 1
                                             </div>
                                         </div>
                                     </div>
@@ -209,12 +232,9 @@
                         </div>
                     </div>
                 </div>
-            </div>`
-
+            </div>
         </div>
         <!-- End of Content Wrapper -->
-
-
     </div>
     <!-- End of Page Wrapper -->
 </div>
@@ -223,127 +243,72 @@
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 <!-- Core plugin JavaScript-->
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
 <!-- Custom scripts for all pages-->
 <script src="js/sb-admin-2.min.js"></script>
-
-
 <!-- Swiper JS -->
-
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
-<!-- 선택 복원 -->
+
+<!-- 단일 복원 -->
 <script>
+    document.querySelectorAll('.restore-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const cardId = this.closest('.info').querySelector('.cardstid').value; // 카드 ID 가져오기
+            console.log("Restoring card with ID:", cardId); // ID 확인
+            if (confirm(`${cardId} 항목을 복원하시겠습니까?`)) {
+                console.log(cardId);
+                // 숨겨진 필드에 카드 ID 저장
+                const form = document.createElement('form');
+                form.method = 'post';
+                form.action = '/cardnews/select/restore'; // 복원 처리 경로 설정
 
-    var srestoreForm = document.getElementById("restoreForm");
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selectedIdss';
+                input.value = JSON.stringify([cardId]); // 카드 ID를 JSON 형태로 저장
 
-    srestoreForm.addEventListener("click", function(event) {
-        const selecteds = [];
-        // 제출을 중지
-        event.preventDefault();
-        document.querySelectorAll('.image-container').forEach(container => {
-            const checkbox = container.querySelector('.select-checkbox');
-            if (checkbox.checked) {
-                const cardId = container.querySelector('div[style*="display: none"]').innerText;
-                selecteds.push(cardId.trim());
+                form.appendChild(input);
+                document.body.appendChild(form); // 폼을 DOM에 추가
+                form.submit(); // 폼 제출
             }
         });
-
-        // 선택된 카드뉴스의 개수에 따라 알림 메시지 생성
-        const count = selecteds.length;
-        const message = `${count}개의 카드뉴스 항목을 복원하시겠습니까?`;
-        const message1 = `${count}개가 복원되었습니다.`;
-
-        // 선택된 항목이 없으면 경고 메시지 표시
-        if (selecteds.length === 0) {
-            alert("복원할 항목을 선택하세요.");
-            return;
-        }
-
-        // 사용자에게 확인 창 표시
-        if (confirm(message)) {
-            // 사용자가 "예"를 선택한 경우 숨겨진 필드에 선택된 ID 목록 설정 후 폼 제출
-            alert(message1);
-            document.getElementById('selectedIdss').value = JSON.stringify(selecteds);
-            srestoreForm.parentNode.submit();
-        } else {
-            // 사용자가 "아니오"를 선택한 경우
-            alert("복원이 취소되었습니다.");
-        }
     });
-
 </script>
 
-<!-- 선택 삭제 -->
+<!-- 단일 삭제 -->
 <script>
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const cardId = this.closest('.info').querySelector('.cardstid').value;// 카드 ID 가져오기
+            console.log("Deleting card with ID:", cardId); // ID 확인
+            if (confirm(`${cardId} 항목을 삭제하시겠습니까?`)) {
+                console.log(cardId);
+                // 숨겨진 필드에 카드 ID 저장
+                const form = document.createElement('form');
+                form.method = 'post';
+                form.action = '/cardnews/select/delete'; // 복원 처리 경로 설정
 
-    var sdeleteForm = document.getElementById("deleteForm");
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selectedIds';
+                input.value = JSON.stringify([cardId]); // 카드 ID를 JSON 형태로 저장
 
-    sdeleteForm.addEventListener("click", function(event) {
-        const selectedIds = [];
-        // 제출을 중지
-        event.preventDefault();
-        document.querySelectorAll('.image-container').forEach(container => {
-            const checkbox = container.querySelector('.select-checkbox');
-            if (checkbox.checked) {
-                const cardId = container.querySelector('div[style*="display: none"]').innerText;
-                selectedIds.push(cardId.trim());
+                form.appendChild(input);
+                document.body.appendChild(form); // 폼을 DOM에 추가
+                form.submit(); // 폼 제출
             }
         });
-
-        // 선택된 카드뉴스의 개수에 따라 알림 메시지 생성
-        const count = selectedIds.length;
-        const message = `${count}개의 카드뉴스 항목을 삭제하시겠습니까? 복구 불가능합니다.`;
-        const message1 = `${count}개가 삭제되었습니다.`;
-
-        // 선택된 항목이 없으면 경고 메시지 표시
-        if (selectedIds.length === 0) {
-            alert("삭제할 항목을 선택하세요.");
-            return;
-        }
-
-        // 사용자에게 확인 창 표시
-        if (confirm(message)) {
-            // 사용자가 "예"를 선택한 경우 숨겨진 필드에 선택된 ID 목록 설정 후 폼 제출
-            alert(message1);
-            document.getElementById('selectedIds').value = JSON.stringify(selectedIds);
-            sdeleteForm.parentNode.submit();
-        } else {
-            // 사용자가 "아니오"를 선택한 경우
-            alert("삭제가 취소되었습니다.");
-        }
-    });
-
-</script>
-
-
-<!--  이미지 선택 체크 박스 -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Get all image containers
-        const imageContainers = document.querySelectorAll('.image-container');
-
-        // Loop through each container
-        imageContainers.forEach(container => {
-            const image = container.querySelector('img');
-            const checkbox = container.querySelector('.select-checkbox');
-
-            // Add click event listener to the image
-            image.addEventListener('click', function () {
-                // Toggle checkbox checked state
-                checkbox.checked = !checkbox.checked;
-            });
-        });
     });
 </script>
+
+
 <!-- Initialize Swiper -->
 <script>
     // 삭제 버튼 클릭 시 확인 알림 창 표시
     var deleteForm = document.getElementById("allDeleteForm");
-    deleteForm.addEventListener("click", function(event) {
+    deleteForm.addEventListener("click", function (event) {
         // 제출을 중지
         event.preventDefault();
 
@@ -363,7 +328,7 @@
 <script>
     // 삭제 버튼 클릭 시 확인 알림 창 표시
     var restoreForm = document.getElementById("allRestoreForm");
-    restoreForm.addEventListener("click", function(event) {
+    restoreForm.addEventListener("click", function (event) {
         // 제출을 중지
         event.preventDefault();
 
