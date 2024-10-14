@@ -33,7 +33,7 @@ public class CardNewsService {
     @Async
     public CompletableFuture<String> generatePicture(String prompt) throws IOException, InterruptedException {
         String url = "https://api.openai.com/v1/images/generations";
-        String prompt_2=prompt+"최대한 아름답게, 마치 실제 광고처럼 완성도 높은 이미지를 만들어주세요. 사람들이 부러워할 만큼 멋지고 매끄러운 느낌으로 부탁드립니다";
+        String prompt_2 = prompt + "최대한 아름답게, 마치 실제 광고처럼 완성도 높은 이미지를 만들어주세요. 사람들이 부러워할 만큼 멋지고 매끄러운 느낌으로 부탁드립니다";
 
         // JSON 문자열 생성
         String requestBody = String.format(
@@ -65,10 +65,10 @@ public class CardNewsService {
         log.info("===============");
         log.info(imageUrl);
 
-        return imageUrl;
+        return CompletableFuture.completedFuture(imageUrl);
     }
 
-@Async
+    @Async
     public CompletableFuture<List<String>> generateText(String prompt) throws IOException, InterruptedException {
         String url = "https://api.openai.com/v1/images/generations";
         // 제거할 단어 목록
@@ -78,7 +78,7 @@ public class CardNewsService {
                 "이게 사용자 답변인데, 답변 내용 중 '카드뉴스'나 '이미지'와 관련된 단어가 있으면 무시해 주세요. 대신, " +
                 "남은 문장에 관한 주요 뉴스 10개를 생성해 주세요. 문장 형식은 뉴스처럼 끝내줘 최대한 빨리 생성해줘";
         // OpenAI API 호출
-        String answer="";
+        String answer = "";
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -96,23 +96,22 @@ public class CardNewsService {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             JSONObject jsonResponse = new JSONObject(response.body());
-            answer= jsonResponse.getJSONArray("choices")
+            answer = jsonResponse.getJSONArray("choices")
                     .getJSONObject(0)
                     .getJSONObject("message")
                     .getString("content");
-
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return answer_list(answer);
+        return  CompletableFuture.completedFuture(answer_list(answer));
 
     }
 
 
-    List<String> answer_list(String answer){
+    List<String> answer_list(String answer) {
         // 결과를 담을 리스트 생성
         List<String> list = new ArrayList<>();
         // "1." 이후의 부분을 추출

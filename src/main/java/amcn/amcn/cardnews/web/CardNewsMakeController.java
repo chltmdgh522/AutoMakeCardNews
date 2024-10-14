@@ -183,24 +183,10 @@ public class CardNewsMakeController {
     public ResponseEntity<ImageResponse> generateImage(@RequestParam String prompt, Model model,
                                                        @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
         try {
-            // 비동기 호출
-            CompletableFuture<List<String>> textFuture = CompletableFuture.supplyAsync(() -> {
-                try {
-                    log.info("내가");
-                    return cardNewsService.generateText(prompt);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            },executor);
+            // 비동기 호출 (이미 서비스에서 CompletableFuture를 반환하므로 supplyAsync는 필요 없음)
+            CompletableFuture<List<String>> textFuture = cardNewsService.generateText(prompt);
+            CompletableFuture<String> imageUrlFuture = cardNewsService.generatePicture(prompt);
 
-            CompletableFuture<String> imageUrlFuture = CompletableFuture.supplyAsync(() -> {
-                try {
-                    log.info("내가2");
-                    return cardNewsService.generatePicture(prompt);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            },executor);
 
             // 두 작업 완료 대기
             CompletableFuture.allOf(textFuture, imageUrlFuture).join();
