@@ -95,7 +95,28 @@
                 transform: scale(1.2);
             }
         }
+        #topBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            font-size: 18px;
+            background-color: #4e73df; /* 페이지의 주 색상과 조화되는 색상 사용 */
+            color: white;
+            border: none;
+            outline: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
 
+        #topBtn:hover {
+            background-color: #2e59d9; /* 호버 시 색상을 약간 진하게 변경 */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 
@@ -104,8 +125,6 @@
 <!-- Page Wrapper -->
 <div id="wrapper" th:object="${member}">
     <div th:replace="~{header/header1 :: copyParam (${member})}"></div>
-
-
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -193,13 +212,10 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
-
         </div>
         <!-- End of Content Wrapper -->
-
+        <button id="topBtn" onclick="scrollToTop()">Top</button>
 
     </div>
     <!-- End of Page Wrapper -->
@@ -220,7 +236,27 @@
 <!-- Swiper JS -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <!-- Initialize Swiper -->
+<script>
+    // 페이지가 스크롤될 때 TOP 버튼 표시/숨기기
+    window.onscroll = function () {
+        scrollFunction();
+    };
 
+    function scrollFunction() {
+        var topBtn = document.getElementById("topBtn");
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            topBtn.style.display = "block"; // 스크롤이 100px 이상일 때 버튼을 보이게
+        } else {
+            topBtn.style.display = "none";  // 그 이하일 때 버튼을 숨김
+        }
+    }
+
+    // TOP 버튼 클릭 시 페이지 상단으로 스크롤
+    function scrollToTop() {
+        document.body.scrollTop = 0; // Safari 브라우저에서 상단으로 스크롤
+        document.documentElement.scrollTop = 0; // 크롬, 파이어폭스, IE 브라우저에서 상단으로 스크롤
+    }
+</script>
 
 </body>
 
