@@ -157,12 +157,12 @@
 
         .class-card.news ~ .btn-section .btn {
             background-color: #f5b14d;
-            height: calc(200px / 3); /* 뉴스 버튼 높이 줄이기 */
+            height: 75px; /* 뉴스 버튼 높이 줄이기 */
         }
 
         .class-card.cardnews ~ .btn-section .btn {
             background-color: #8c77d9;
-            height: calc(200px / 3); /* 카드뉴스 버튼 높이 줄이기 */
+            height: 75px; /* 카드뉴스 버튼 높이 줄이기 */
         }
 
         /* Ensure buttons span full card width */
@@ -179,6 +179,9 @@
         /* Tab content styling */
         .tab-content-container {
             margin-top: 30px;
+            max-width: 1300px;  /* 탭 콘텐츠의 최대 너비 */
+            margin: 0 auto;     /* 중앙 정렬 */
+            padding: 20px;      /* 좌우 여백 */
         }
 
         .tab-pane {
@@ -200,21 +203,87 @@
             transform: translateY(-5px);
         }
 
+        /* Card body styles */
         .card-body h5 {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            color: #000;
+            color: #333;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .card-body h5:hover {
+            color: #4e73df; /* Hover color */
         }
 
         .card-body p {
             font-size: 1rem;
             color: #666;
+            margin-bottom: 15px;
         }
 
-        .btn {
+        /* Button Styles */
+        .btn-primary, .btn-secondary {
+            background-color: #4e73df;
+            color: white;
+            border: none;
+            padding: 10px 20px;
             border-radius: 5px;
             font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
         }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            background-color: #2e59d9;
+        }
+
+        .btn-secondary {
+            background-color: #858796;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a5c69;
+        }
+
+        /* Icon Styles */
+        .btn i {
+            margin-right: 5px;
+        }
+        /* 버튼 컨테이너를 Flexbox로 설정하여 가로로 배치 */
+        .card-body .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .card-body .btn {
+            flex: 0 0 48%; /* 두 버튼이 한 줄에 배치되도록 설정 */
+            text-align: center; /* 버튼 텍스트 가운데 정렬 */
+        }
+        #topBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            font-size: 18px;
+            background-color: #4e73df; /* 페이지의 주 색상과 조화되는 색상 사용 */
+            color: white;
+            border: none;
+            outline: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #topBtn:hover {
+            background-color: #2e59d9; /* 호버 시 색상을 약간 진하게 변경 */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+        }
+
 
     </style>
 </head>
@@ -245,13 +314,13 @@
                             <!-- Buttons directly below the card, full width matching the card -->
                             <div class="btn-section">
                                 <div class="button-wrapper">
-                                    <button class="btn btn-primary" id="postsBtn">게시물</button>
+                                    <button class="btn btn-com" id="postsBtn">게시물</button>
                                 </div>
                                 <div class="button-wrapper">
-                                    <button class="btn btn-primary" id="likesBtn">게시물 공감</button>
+                                    <button class="btn btn-com" id="likesBtn">게시물 공감</button>
                                 </div>
                                 <div class="button-wrapper">
-                                    <button class="btn btn-primary" id="commentsBtn">댓글</button>
+                                    <button class="btn btn-com" id="commentsBtn">댓글</button>
                                 </div>
                             </div>
                         </div>
@@ -303,13 +372,20 @@
                     <!-- Community Tabs -->
                     <div id="postsTab" class="tab-pane">
                         <div class="row mt-3">
-                            <div class="col-md-4" th:each="board : ${postBoard}">
+                            <div class="col-md-4" th:each="board : ${postBoard}" style="margin-bottom: 20px;">
                                 <div class="card">
                                     <a th:href="|/community/${board.boardId}|">
                                         <div class="card-body">
-                                            <h5 class="card-title" th:text="${#strings.length(board.title) > 7 ? #strings.substring(board.title, 0, 7) + '...' : board.title}"></h5>
-                                            <button class="btn btn-primary" th:text="|Like ${board.likes.size()}|"><i class="icon bi bi-heart"></i> Like</button>
-                                            <button class="btn btn-secondary" th:text="|댓글 ${board.comments.size()}|"><i class="icon bi bi-chat"></i> Comment</button>
+                                            <h5 class="card-title" th:text="${#strings.length(board.title) > 20 ? #strings.substring(board.title, 0, 20) + '...' : board.title}"></h5>
+                                            <!-- 버튼들을 감싸는 컨테이너 추가 -->
+                                            <div class="btn-container">
+                                                <button class="btn btn-primary" style="background-color: #74b4e0;" th:text="|Like ${board.likes.size()}|">
+                                                    <i class="icon bi bi-heart"></i> Like
+                                                </button>
+                                                <button class="btn btn-secondary" style="background-color: #74b4e0;"  th:text="|댓글 ${board.comments.size()}|">
+                                                    <i class="icon bi bi-chat"></i> Comment
+                                                </button>
+                                            </div>
                                         </div>
                                     </a>
                                 </div>
@@ -320,27 +396,28 @@
                     <div id="likesTab" class="tab-pane">
                         <!-- 게시물 공감 탭 내용 -->
                         <div class="row mt-3">
-                            <div class="col-md-4" th:each="likeboard : ${likeBoards}">
+                            <div class="col-md-4" th:each="likeboard : ${likeBoards}" style="margin-bottom: 20px;">
                                 <div class="card">
                                     <a th:href="|/community/${likeboard.boardId}|">
                                         <div class="card-body">
-                                            <h5 class="card-title" th:text="${#strings.length(likeboard.title) > 7 ? #strings.substring(likeboard.title, 0, 7) + '...' : likeboard.title}">Liked Content Title</h5>
-                                            <button class="btn btn-secondary" th:text="|댓글 ${likeboard.comments.size()}|"><i class="icon bi bi-chat"></i> Comment</button>
+                                            <h5 class="card-title" th:text="${#strings.length(likeboard.title) > 20 ? #strings.substring(likeboard.title, 0, 20) + '...' : likeboard.title}">Liked Content Title</h5>
+                                            <button class="btn btn-secondary"  style="background-color: #74b4e0;" th:text="|댓글 ${likeboard.comments.size()}|"><i class="icon bi bi-chat"></i> Comment</button>
                                         </div>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- comments Tab -->
                     <div id="comments" class="tab-pane" role="tabpanel" aria-labelledby="comments-tab">
                         <div class="row mt-3">
-                            <div class="col-md-4" th:each="comment : ${commentBoard}">
+                            <div class="col-md-4" th:each="comment : ${commentBoard}" style="margin-bottom: 20px;">
                                 <div class="card">
                                     <a th:href="|/community/${comment.board.boardId}|">
                                         <div class="card-body">
-                                            <h5 class="card-title" th:text="${#strings.length(comment.board.title) > 7 ? #strings.substring(comment.board.title, 0, 7) + '...' : comment.board.title}">Liked Content Title</h5>
-                                            <p class="card-text" th:text="${#strings.length(comment.substance) > 10 ? #strings.substring(comment.substance, 0, 10) + '...' : comment.substance}">Brief description of the content with comments.</p>
-                                            <button class="btn btn-primary" th:text="|Like ${comment.board.likes.size()}|"><i class="icon bi bi-heart"></i> Like</button>
+                                            <h5 class="card-title" th:text="${#strings.length(comment.board.title) > 20 ? #strings.substring(comment.board.title, 0, 20) + '...' : comment.board.title}">Liked Content Title</h5>
+                                            <p class="card-text" th:text="${#strings.length(comment.substance) > 10 ? #strings.substring(comment.substance, 0, 10) + '...' : comment.substance}" style="text-align: left;">Brief description of the content with comments.</p>
+                                            <button class="btn btn-primary" style="background-color: #74b4e0;"  th:text="|Like ${comment.board.likes.size()}|"><i class="icon bi bi-heart"></i> Like</button>
                                         </div>
                                     </a>
                                 </div>
@@ -351,13 +428,13 @@
                     <!-- Scraps Tab -->
                     <div class="tab-pane" id="scraps" role="tabpanel" aria-labelledby="scraps-tab">
                         <div class="row mt-3">
-                            <div class="col-md-4" th:each="likeNew : ${likeNews}">
+                            <div class="col-md-4" th:each="likeNew : ${likeNews}" style="margin-bottom: 20px;">
                                 <div class="card">
                                     <a th:href="|/news/${likeNew.newsId}|">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${likeNew.title}">Scrapped News Title</h5>
-                                            <p class="card-text" th:text="${likeNew.originalContent}">Brief description of the scrapped news content.</p>
-                                            <button class="btn btn-primary" th:text="|Like ${likeNew.likes.size()}|"><i class="icon bi bi-heart"></i> Scrap</button>
+                                            <p class="card-text" th:text=   "${likeNew.originalContent}" style="text-align: left;">Brief description of the scrapped news content.</p>
+                                            <button class="btn btn-primary" style="background-color: #f2bb60;" th:text="|Like ${likeNew.likes.size()}|"><i class="icon bi bi-heart"></i> Scrap</button>
                                         </div>
                                     </a>
                                 </div>
@@ -368,13 +445,13 @@
                     <!-- News Tab -->
                     <div class="tab-pane" id="news" role="tabpanel" aria-labelledby="news-tab">
                         <div class="row mt-3">
-                            <div class="col-md-4" th:each="likeNew : ${postNews}">
+                            <div class="col-md-4" th:each="likeNew : ${postNews}" style="margin-bottom: 20px;">
                                 <div class="card">
                                     <a th:href="|/news/${likeNew.newsId}|">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${likeNew.title}">Scrapped News Title</h5>
-                                            <p class="card-text" th:text="${likeNew.originalContent}">Brief description of the scrapped news content.</p>
-                                            <button class="btn btn-primary" th:text="|Like ${likeNew.likes.size()}|"><i class="icon bi bi-heart"></i> Scrap</button>
+                                            <p class="card-text" th:text="${likeNew.originalContent}" style="text-align: left;">Brief description of the scrapped news content.</p>
+                                            <button class="btn btn-primary" style="background-color: #f2bb60;" th:text="|Like ${likeNew.likes.size()}|"><i class="icon bi bi-heart"></i> Scrap</button>
                                         </div>
                                     </a>
                                 </div>
@@ -385,14 +462,14 @@
                     <!-- Card News Tab -->
                     <div class="tab-pane" id="card-news" role="tabpanel" aria-labelledby="card-news-tab">
                         <div class="row mt-3">
-                            <div class="col-md-4" th:each="heart :${heartCardNews}">
+                            <div class="col-md-4" th:each="heart :${heartCardNews}" style="margin-bottom: 20px;">
                                 <div class="card">
                                     <a th:href="|/cardnews/${heart.cardNewsId}|">
                                         <img th:src="|/ai/image/${heart.imageUrl}|" class="card-img-top" alt="Card News Image">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${heart.title}">Card News Title</h5>
-                                            <p class="card-text" th:text="${heart.content}">Brief summary of the card news content. Includes engaging visuals.</p>
-                                            <button class="btn btn-primary"><i class="icon bi bi-heart"></i> Like</button>
+                                            <p class="card-text" th:text="${heart.content}" style="text-align: left;">Brief summary of the card news content. Includes engaging visuals.</p>
+                                            <button class="btn btn-primary" style="background-color: #a688d9;" ><i class="icon bi bi-heart"></i> Like</button>
                                         </div>
                                     </a>
                                 </div>
@@ -403,17 +480,15 @@
                     <!-- Sympathy Tab -->
                     <div class="tab-pane" id="sympathy" role="tabpanel" aria-labelledby="sympathy-tab">
                         <div class="row mt-3">
-                            <div class="col-md-12">
-                                <div class="card-deck">
-                                    <div class="card" th:each="fork : ${forkCardNews}">
-                                        <a th:href="|/cardnews/${fork.cardNewsId}|">
-                                            <img th:src="|/ai/image/${fork.imageUrl}|" class="card-img-top" alt="Card News Image">
-                                            <div class="card-body">
-                                                <h5 class="card-title" th:text="${fork.title}">Card News Title</h5>
-                                                <p class="card-text" th:text="${fork.content}">Brief summary of the card news content. Includes engaging visuals.</p>
-                                            </div>
-                                        </a>
-                                    </div>
+                            <div class="col-md-4" th:each="fork : ${forkCardNews}" style="margin-bottom: 20px;">
+                                <div class="card">
+                                    <a th:href="|/cardnews/${fork.cardNewsId}|">
+                                        <img th:src="|/ai/image/${fork.imageUrl}|" class="card-img-top" alt="Card News Image">
+                                        <div class="card-body">
+                                            <h5 class="card-title" th:text="${fork.title}">Card News Title</h5>
+                                            <p class="card-text" th:text="${fork.content}" style="text-align: left;">Brief summary of the card news content. Includes engaging visuals.</p>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>

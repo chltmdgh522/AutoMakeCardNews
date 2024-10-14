@@ -26,16 +26,6 @@
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <style>
-        .square-image {
-
-            transition: transform 0.3s ease, filter 0.3s ease;
-        }
-
-        .square-image:hover {
-            transform: scale(1.1);
-            filter: brightness(0.8);
-        }
-
         .form-control {
             display: block;
             width: 100%;
@@ -50,6 +40,61 @@
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
 
+        /* 추가되는 news-card 스타일 */
+        .news-card {
+            border: 0px solid aqua;
+            margin: 0.5rem;
+            position: relative;
+            height: 320px; /* 높이를 320px로 설정 */
+            overflow: hidden;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            flex: 1;
+            min-width: 290px; /* 너비를 290px로 설정 */
+        }
+
+        .news-card__image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 3s ease;
+        }
+
+        .news-card__text-wrapper {
+            position: absolute;
+            bottom: 0;
+            padding: 1rem;
+            color: white;
+            transition: background-color 1.5s ease;
+            height: 60px; /* 원하는 고정 높이 설정 */
+            width: 100%; /* 너비를 100%로 설정 */
+        }
+
+        .news-card__title {
+            transition: color 1s ease, font-size 1s ease, opacity 1s ease;
+            margin-bottom: .5rem;
+            overflow: hidden; /* 넘치는 부분 숨기기 */
+            white-space: nowrap; /* 한 줄로 표시 */
+            text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
+            opacity: 0;
+        }
+
+        @media (min-width: 900px) {
+            .news-card:hover .news-card__text-wrapper {
+                background-color: rgba(0, 0, 0, 0.6);
+            }
+
+            .news-card:hover .news-card__title {
+                color: yellow;
+                opacity: 1;
+            }
+
+            .news-card:hover .news-card__image {
+                transform: scale(1.2);
+            }
+        }
 
     </style>
 </head>
@@ -92,7 +137,6 @@
                             <form class="row" method="get" th:object="${cardNewsSearchCond}">
                                 <div class="col-auto">
                                     <select class="form-select" th:field="*{selected}">
-
                                         <option value="최신">최신순</option>
                                         <option value="과거">과거순</option>
                                         <option value="추천">추천순</option>
@@ -129,26 +173,21 @@
                                 <div class="col-md-12">
                                     <!-- 모든 이미지들을 square-image 클래스로 설정 -->
                                     <div class="row" style="margin-bottom: 55px;">
-
-                                        <div class="col-md-3 text-center" th:each="card :${cardnews}"
-                                             style="margin-bottom: 50px">
+                                        <div class="col-md-3 text-center" th:each="card :${cardnews}" style="margin-bottom: 50px">
                                             <a th:href="|/cardnews/${card.cardNewsId}|">
-                                                <div class="square-image" style="position: relative; width: fit-content; margin: auto;">
+                                                <div class="news-card">
+                                                    <!-- Image Section -->
                                                     <img th:src="|/ai/image/${card.imageUrl}|" alt="이미지 설명 1"
-                                                         class="img-fluid mb-2"
-                                                         style="position: absolute; top: 50%; left: 50%;
+                                                         class="news-card__image img-fluid mb-2">
 
-                                                         transform: translate(-50%, -50%); width: 80%; height: 80%; z-index: 1;">
-                                                    <img th:src="|/reactor|" alt="이미지2" class="image2"
-                                                         style="position: relative; z-index: 2; width: 250px; height: 250px;">
+                                                    <!-- Text Section -->
+                                                    <div class="news-card__text-wrapper">
+                                                        <h2 class="news-card__title" th:text="${card.title}">이미지 제목 1</h2>
+                                                    </div>
                                                 </div>
-
-
-                                                <div style="margin-top: 10px;" th:text="${card.title}">이미지 제목 1</div>
                                             </a>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
