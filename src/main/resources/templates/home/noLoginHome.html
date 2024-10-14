@@ -140,7 +140,7 @@
 
                     <li class="nav-item dropdown no-arrow">
 
-                        <a class="nav-link dropdown-toggle" id="userDropdown" role="button"
+                        <a href="/login" class="nav-link dropdown-toggle" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">로그인 해주세요</span>
                             <img class="img-profile rounded-circle" src="/logo/AMCNicon.png">
@@ -240,7 +240,7 @@
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide" th:each="pop : ${cardPop}">
                                         <img th:src="|/ai/image/${pop.imageUrl}|"/>
-                                        <div class="cost" th:text="${pop.member.name}">from $230 per group</div>
+                                        <div class="cost" style="color: black;" th:text="${pop.member.name}">from $230 per group</div>
                                         <div class="overlay23">
                                             <h1 th:text="${pop.title}">Walking Tour in Florence</h1>
                                             <p th:text="${pop.content}">
