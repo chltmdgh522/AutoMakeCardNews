@@ -33,6 +33,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 @Controller
 @Slf4j
@@ -42,6 +44,7 @@ public class CardNewsMakeController {
     private final MemberRepository memberRepository;
     private final CardNewsRepository cardNewsRepository;
     private final FileService fileService;
+    Executor executor = Executors.newFixedThreadPool(10); // 필요에 따라 스레드 수 조정
     private static String jsonname;
     @Value("${file.dir}")
     private String fileDir;
@@ -183,19 +186,21 @@ public class CardNewsMakeController {
             // 비동기 호출
             CompletableFuture<List<String>> textFuture = CompletableFuture.supplyAsync(() -> {
                 try {
+                    log.info("내가");
                     return cardNewsService.generateText(prompt);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-            });
+            },executor);
 
             CompletableFuture<String> imageUrlFuture = CompletableFuture.supplyAsync(() -> {
                 try {
+                    log.info("내가2");
                     return cardNewsService.generatePicture(prompt);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-            });
+            },executor);
 
             // 두 작업 완료 대기
             CompletableFuture.allOf(textFuture, imageUrlFuture).join();

@@ -5,6 +5,7 @@ import com.theokanning.openai.service.OpenAiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,7 +30,8 @@ public class CardNewsService {
     @Value("${openai.key}")
     private String openaiApiKey;
 
-    public String generatePicture(String prompt) throws IOException, InterruptedException {
+    @Async
+    public CompletableFuture<String> generatePicture(String prompt) throws IOException, InterruptedException {
         String url = "https://api.openai.com/v1/images/generations";
         String prompt_2=prompt+"최대한 아름답게, 마치 실제 광고처럼 완성도 높은 이미지를 만들어주세요. 사람들이 부러워할 만큼 멋지고 매끄러운 느낌으로 부탁드립니다";
 
@@ -65,8 +68,8 @@ public class CardNewsService {
         return imageUrl;
     }
 
-
-    public List<String> generateText(String prompt) throws IOException, InterruptedException {
+@Async
+    public CompletableFuture<List<String>> generateText(String prompt) throws IOException, InterruptedException {
         String url = "https://api.openai.com/v1/images/generations";
         // 제거할 단어 목록
         String[] removeWords = {"카드뉴스", "이미지", "관한", "대한", "이미저", "카드뉴소"};
