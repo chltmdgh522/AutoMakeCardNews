@@ -31,162 +31,118 @@
 ## 👀 서비스 화면
 ### ✨ `모바일(아이폰 12 Pro 기준 max-width:480px)` 지원X
 
-
-### 홈
-- 닌텐도 화면 적용
-- 화면이 작아질 수록 DS - GBA - GDC 로 구현했다.
-- Start 버튼을 통해 캐릭터리스트로 갈 수 있다.
-- 로그인 및 회원가입 버튼을 누르수 있다
-  
-<div>
-  <img src="https://github.com/user-attachments/assets/ece63fc2-ca98-441d-9a4c-ddc80e4b7c6b" width="75%"/>
-  <img src="https://github.com/user-attachments/assets/ff5d977d-9281-4e4a-b1ce-020682c30086" width="20%"/>
-</div>
-
-
-### 회원가입 & 로그인 & 로그아웃
-- `네이버, 카카오 구글 소셜 로그인` 및 유저 회원가입/로그인
-- 로그인을 하면 캐릭터 리스트로 넘어간다.
-<div>
-<img src="https://github.com/user-attachments/assets/0e57d0ce-0ad5-4dac-9ff1-0c662a67d439" width="20%"/>
-<img src="https://github.com/user-attachments/assets/b97d5b9e-feef-414d-9360-d90527ecb66f" width="75%">
-</div>
-
-
-### 마이페이지
-- `프로필 이미지 변경`
-- `닉넴임 변경`
-<div>
-<img src="https://github.com/user-attachments/assets/34053b7f-a080-4a15-9e72-bcdf90e28dd0" width="75%">
-<img src="https://github.com/user-attachments/assets/5e5e1139-14d8-4a05-86ca-0d2a9ad82018" width="20%">
-</div>
-
-
-### 캐릭터 리스트
-- 생성, 삭제, 편집 버튼을 이용해 캐릭터 관리 
-<div>
-<img src="https://github.com/user-attachments/assets/b153ded0-f9ce-4879-a4b9-a610c65515ce" width="20%">
-<img src="https://github.com/user-attachments/assets/9a6c0d05-4b62-4656-bb69-3878b0e4e9e7" width="75%">
-</div>
-
-
-
-### 캐릭터 생성
-- 5개의 캐릭터 중 하나를 뽑는다. 하지만 이미 생성된 캐릭터는 못 고른다.
-- 캐릭터의 이름과 선택한 이유를 적으면 생성이 된다.
-<div>
-<img src="https://github.com/user-attachments/assets/30e88da7-8b5b-40be-b4dc-1df85bc1b333" width="75%">
-<img src="https://github.com/user-attachments/assets/80557388-2081-4a7a-8b18-91fce71355fa" width="20%">
-</div>
-
-
-### 휴지통
-- 캐릭터 리스트에서 버린 캐릭터들을 볼 수 있다.
-- 여기서는 복구 및 영구 삭제를 할 수 있다. 
-<div>
-<img src="https://github.com/user-attachments/assets/2f525651-67e9-42da-95f6-448dc40eba47" width="20%">
-<img src="https://github.com/user-attachments/assets/2c5642fe-11b9-421d-8891-6d827256086f" width="75%">
-</div>
-
-
-### 챗봇 
-- 음성 인식을 통해 대화를 할 수 있다.
-- 영상통화 버전에서는 TTS 구현되어있다.
-- Ajax를 통해 실시간으로 캐릭터와 채팅! 
-<div>
-<img src="https://github.com/user-attachments/assets/3d1a2ca3-fcb7-49c9-b991-172636f5c0c2" width="75%"/>
-<img src="https://github.com/user-attachments/assets/2afcf85a-804e-4647-819b-3a02022202e8" width="20%"/>
-</div>
-
-<div>
-<img src="https://github.com/user-attachments/assets/e8f38e20-c9c6-40e6-847e-9f00ebbedbd8" width="20%"/>
-<img src="https://github.com/user-attachments/assets/76c34384-8782-4794-b18c-1a31cd966f6f" width="75%"/>
-</div>
-
-
-### 피드백
-- 별점 및 리뷰를 통해 해당 에플리케이션의 평가를 알 수 있다.
-- 피드백을 통해 추후 계속 업데이트 할 예정이다.
- <div>
-<img src="https://github.com/user-attachments/assets/27097924-b693-4c12-aca7-93dc3a93b3c2" width="75%">
-<img src="https://github.com/user-attachments/assets/444327ce-8070-4f2b-9b6d-242c0661db92" width="20%">
-</div>
-
-
-
-### 감정 로그
-- 5개의 캐릭터들과 챗봇을 통해 나온 결과를 보여준다.
-- 주간 및 누적 기능이 있어 감저의 정보를 쉽게 파악할 수 있다.
-<div>
-<img src="https://github.com/user-attachments/assets/9aa369fc-a257-4693-a5ce-6772540210e2" width="20%">
-<img src="https://github.com/user-attachments/assets/44cad03c-362b-4fc8-a86a-7e844ceb8c20" width="75%">
-</div>
+추가할 예정
 
   
-## ✨ 주요 기능 (세부 기래 참고!!)
+## ✨  기능 (세부 기래 참고!!)
+
+- `회원 관리`
+	- 회원가입, 로그인, 비밀번호 찾기, 비밀번호 변경, 이메일 변경, 아이디 찾기 등의 기능을 제공하여 사용자의 계정을 효율적으로 관리합니다.
+	- Spring Security와 세션을 사용하여 구현했습니다.
+	- 마이페이지에서는 회원 탈퇴 및 프로필 사진을 변경할 수 있는 기능을 제공했습니다.
+
+
+- `이메일 인증`
+    - 회원가입 시 이메일로 비밀번호가 전송되며, 사용자는 해당 비밀번호를 입력하여 회원가입을 완료할 수 있습니다.
+	- 이메일 전송은 **JavaMailSender**를 사용하여 처리되며, 마이페이지에서 이메일을 변경할 때도 동일한 방식으로 인증을 요구합니다. 인증을 완료하지 않으면 서비스 이용이 제한됩니다.
+
 
 - `소셜 로그인`
-	- 분노, 기쁨, 불안, 두려움, 불안 총 5개의 캐릭터를 생성할 수 있다. 
-  	- 생성된 캐릭터를 수정 및 휴지통에 버릴 수 있다. 
-	- 휴지통에 버려진 캐릭터는 다시 복구 할 수 있고 영원히 삭제할 수 있다.
-   
-- `커뮤니티 Quill API 도입`
-	- 분노, 기쁨, 불안, 두려움, 불안 총 5개의 캐릭터를 생성할 수 있다. 
-  - 생성된 캐릭터를 수정 및 휴지통에 버릴 수 있다. 
-	- 휴지통에 버려진 캐릭터는 다시 복구 할 수 있고 영원히 삭제할 수 있다.
+	- OAuth 2.0을 사용하여 네이버, 카카오 소셜 로그인을 구현했습니다.
+	- 소셜 로그인 시 사용자의 이메일 정보를 확인하고, 중복된 이메일이 있을 경우 중복 알림을 제공하여 계정 혼동을 방지합니다.
+	- 기존 회원과 소셜 로그인 회원을 동일하게 관리하기 위해 DB에 소셜 로그인 필드를 추가하고, 로그인 처리 로직을 커스터마이징했습니다.
+
+
+- `커뮤니티 관리 및 Quill API 도입`
+	- 게시글과 댓글의 CRUD(Create, Read, Update, Delete) 구현했습니다. 또한 AJAX를 활용한 공감을 자유롭게 표시할 수 있습니다.
+	- 글 작성 시 Quill API를 도입하여 사용자가 다양한 텍스트 스타일을 적용할 수 있는 WYSIWYG 에디터 기능을 제공했습니다. 이를 통해 텍스트의 포맷팅, 이미지 삽입, 하이퍼링크 추가 등이 가능합니다.
+
+
+- `게임 기능`
+	- 벽돌깨기, 숫자 맞추기, 숫자 야구게임 등 3가지 JS 기반의 간단한 게임을 제공합니다.
+	- 사용자는 게임을 통해 포인트를 얻을 수 있으며, 재미 요소입니다.
+	
 
 - `뉴스 기사 크롤링`
-	- 분노, 기쁨, 불안, 두려움, 불안 총 5개의 캐릭터를 생성할 수 있다. 
-  - 생성된 캐릭터를 수정 및 휴지통에 버릴 수 있다. 
-	- 휴지통에 버려진 캐릭터는 다시 복구 할 수 있고 영원히 삭제할 수 있다.
+	- Selenium을 사용하여 뉴스 기사 원문을 크롤링하는 기능을 구현했습니다.
+	- 크롤링한 데이터는 뉴스 요약 문구에 분석에 활용됩니다.
+	- 크롤링 대상은 주기적으로 업데이트되며, Selenium의 headless 브라우저 모드를 사용해 서버 부하를 최소화했습니다.
+
 
 - `키워드 도출 및 주요 문장 추출`
-	- 분노, 기쁨, 불안, 두려움, 불안 총 5개의 캐릭터를 생성할 수 있다. 
-  - 생성된 캐릭터를 수정 및 휴지통에 버릴 수 있다. 
-	- 휴지통에 버려진 캐릭터는 다시 복구 할 수 있고 영원히 삭제할 수 있다.
- 
+	- 크롤링한 뉴스 기사로부터 자연어 처리(NLP) 알고리즘을 사용하여 주요 키워드와 문장을 추출합니다.
+	- 이를 위해 KoNLPy와 같은 한국어 자연어 처리 라이브러리를 사용했으며, TF-IDF(단어 빈도-역 문서 빈도)를 적용해 중요도를 평가합니다.
+
+
 - `뉴스 요약 모델`
-	- 총 5개의 캐릭터마다 프롬프트를 설계한다. 
-	- 프롬프트에 이전 대화를 기억할 수 있도록 DB에서 해당 데이터를 찾아와 프롬프트에 넘겨준다.
-  
+	- KoBART(한국어 BART) 사전 학습 모델을 기반으로 뉴스 기사를 요약하는 기능을 구현했습니다.
+	- 초기 모델의 정확도는 67%였으며, 수집한 데이터로 추가 학습을 진행하여 73%까지 성능을 향상했습니다.
+	- GPU를 활용해 훈련 시간을 단축했습니다.
+
+
 - `DALL-E 모델 연동`
-	- Open AI를 통해 API와 연결한뒤 사용자 답변에 따른 AI 답변이 제공이 된다.
-	- Ajax를 통해 실시간으로 대화가 진행되며 시간 마지막 답변들도 실시간으로 추가가 된다.
-   
+	- OpenAI의 DALL-E 모델을 연동하여 사용자가 입력한 카드뉴스의 내용을 바탕으로 관련 이미지를 실시간으로 생성하는 기능을 구현했습니다.
+	- 이미지 생성 요청은 Ajax를 통해 비동기로 처리되며, 생성된 이미지는 서버에 저장된 후 즉시 사용자에게 제공됩니다.
+	- 또한 OpenAI API를 활용해 입력된 문구에 따라 AI가 30개의 문구를 생성하며, 사용자는 이를 선택해 이미지에 추가할 수 있습니다.
+
+
 - `카드뉴스 이미지 편집`
-	- Open AI를 통해 API와 연결한뒤 사용자 답변에 따른 AI 답변이 제공이 된다.
-	- Ajax를 통해 실시간으로 대화가 진행되며 시간 마지막 답변들도 실시간으로 추가가 된다.   
-   
+	- 사용자가 생성된 이미지를 기반으로 필터, 텍스트 추가, 펜, 도형 삽입 등의 기능을 제공하여 이미지 편집을 할 수 있습니다.
+	- 위치 이동 및 색상 변경 기능을 제공하여 사용자 맞춤형 디자인이 가능합니다.
+
+
 - `카드뉴스 JSON 편집`
-	- 영상 통화 화면에 넘어간뒤 사용자가 답하면 AI 답변이 TTS로 제공이 된다. 
-	- 여러 목소리 TTS 기능이 설정이 되어있다.
+	- 카드뉴스의 각 요소(이미지, 텍스트, 도형 등)는 JSON 형식으로 저장되며, 이를 통해 게시된 카드뉴스를 다시 불러와 자유롭게 편집할 수 있습니다.
+	- 사용자는 이전 작업 내용을 그대로 이어서 수정할 수 있습니다.
+
 
 - `동영상 다운로드`
-	- 사용자가 각각의 캐릭터마다 대화한 기록을 수치화하여 로그로 보여준다. 
-	- 누적 및 주간이 있어 해당 감정 로그를 확인할 수 있다.
+	- 카드뉴스 이미지와 문구를 결합해 동영상 파일로 다운로드할 수 있는 기능을 제공합니다.
+	- TTS(Text-to-Speech) 기능을 활용해 문구를 음성으로 변환하여 동영상에 음성을 추가했으며, gTTS 라이브러리를 사용했습니다.
+	- FFmpeg를 사용해 이미지와 오디오를 결합하여 동영상 파일을 생성하고, 사용자는 이를 로컬로 저장할 수 있습니다.
 
-- `카드뉴스 포크`
-	- 사용자가 각각의 캐릭터마다 대화한 기록을 수치화하여 로그로 보여준다. 
-	- 누적 및 주간이 있어 해당 감정 로그를 확인할 수 있다.  
+
+- `카드뉴스 포크 기능`
+	- 다른 사용자가 만든 카드뉴스를 포크하여 재편집할 수 있는 기능을 구현했습니다.
+	- 포크 시 원본 카드뉴스의 출처가 자동으로 표시되며, 사용자는 이를 기반으로 새로운 디자인을 제작할 수 있습니다.
+
+
+- `카드뉴스 템플릿`
+	- DALL-E 모델로 생성된 이미지를 다른 사용자들이 템플릿으로 활용할 수 있도록 템플릿 리스트에 진열하였습니다.
+	- 사용자는 템플릿을 선택하여 카드뉴스 제작 시 활용할 수 있으며, 템플릿 데이터는 서버에서 관리됩니다.
+
 
 - `카드뉴스 휴지통`
-	- 사용자가 각각의 캐릭터마다 대화한 기록을 수치화하여 로그로 보여준다. 
-	- 누적 및 주간이 있어 해당 감정 로그를 확인할 수 있다.
+	- 카드뉴스를 삭제하면 휴지통으로 이동하며, 휴지통에서 복구하거나 영구 삭제할 수 있는 기능을 제공합니다.
+	- 삭제된 데이터는 30일 동안 유지되며, 서버 측에서 정기적으로 영구 삭제된 데이터를 처리하는 배치 작업이 실행됩니다.
+
 
 - `자동 파일 삭제 시스템`
-	- 사용자들이 서비스를 이용하고 나서 후기를 올리 수 있는 공간이다.
-   
+	- 카드뉴스 편집 및 게시 시 불필요하게 누적되는 JSON 파일을 방지하기 위해 자동 파일 삭제 알고리즘을 구현했습니다.
+	- 하지만 이는 계속되는 요청에 부하가 발생할거라고 생각해 Spring Batch를 활용해 일정 주기마다 파일을 삭제하며, 필요 없는 파일을 정리하여 서버 저장 공간을 효율적으로 관리합니다.
+
+	
 - `Spring Batch 및 Redis 적용`
-	- 네이버, 구글, 카카오 소셜 로그인 기능을 도입했다. 
-	- 비밀번호 재설정 기능 도입했다.
-   
-- `AWS 서버 배포`
-	- 비동기적으로 처리  
-	- 병렬로 작업을 처리함으로써 서버의 부하를 크게 줄임 
-   
-- `사용자 친화적 UI`
-	- 반응형 모바일 뷰 지원
-	- 색다른 3D CSS 도입
+	- 대용량 데이터 처리 및 성능 최적화를 위해 Spring Batch를 도입했습니다.
+	- Redis 캐시를 사용해 자주 조회되는 데이터를 캐싱하여 데이터베이스 접근을 최소화하고, 서버 성능을 향상했습니다.
+
+
+- `웹소켓 적용`
+	- 관리자와 사용자 간 실시간 소통을 위한 웹소켓(WebSocket) 기반의 채팅 기능을 구현했습니다.
+	- 사용자는 관리자와만 1:1 대화를 할 수 있으며, 관리자는 여러 사용자와 동시 대화를 관리할 수 있습니다.
+	- STOMP 프로토콜을 사용해 메시지를 주고받으며, Spring WebSocket을 통해 실시간 통신을 처리합니다.
+
+
+- `관리자 계정 기능`
+	- 관리자는 회원 관리, 게시물 관리, 댓글 관리, 문의 채팅 기능을 통해 전체 서비스를 운영할 수 있습니다.
+	- 관리자 계정은 일반 사용자와 구분됩니다.
+
+
+- `AWS EC2 서버 배포`
+	- AWS EC2 프리티어를 사용하여 서버를 배포하였으며
+    - 도메인은 가비아에서 구입한 후 Route 53을 사용해 EC2 인스턴스와 연결했습니다. 
+    - SSL 인증서를 갱신하여 HTTPS 통신을 적용했습니다.
+
 
 ## 🖥️ 개발 환경
 
@@ -248,6 +204,50 @@ implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 ```
 
+**🖼️ requirements.txt**
+```
+charset-normalizer 3.3.2
+click              8.1.7
+colorama           0.4.6
+comtypes           1.4.5
+decorator          4.4.2
+filelock           3.15.4
+fsspec             2024.6.1
+gTTS               2.5.2
+huggingface-hub    0.24.0
+idna               3.7
+imageio            2.35.1
+imageio-ffmpeg     0.5.1
+intel-openmp       2021.4.0
+Jinja2             3.1.4
+MarkupSafe         2.1.5
+mkl                2021.4.0
+moviepy            1.0.3
+mpmath             1.3.0
+networkx           3.3
+numpy              1.26.4
+packaging          24.1
+pillow             10.4.0
+pip                23.2.1
+playsound          1.3.0
+proglog            0.1.10
+pypiwin32          223
+pyttsx3            2.90
+pywin32            306
+safetensors        0.4.3
+setuptools         68.2.0
+sympy              1.13.1
+tbb                2021.13.0
+tokenizers         0.19.1
+torch              2.3.1
+tqdm               4.66.4
+transformers       4.42.4
+typing_extensions  4.12.2
+urllib3            2.2.2
+wheel              0.41.2
+
+```
+
 **🗝️ API**
 - [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
 - [Quill_API](https://quilljs.com/docs/api/)
@@ -266,37 +266,30 @@ implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
 ## 💫 시스템 아키텍처
 
-![image](https://github.com/user-attachments/assets/265a7eca-8434-411e-841d-2d1887dabc82)
-
-
-## ✨ 기술 특이점
-
-- **캐릭터별 고유 프롬프트**를 사용하여 사용자 경험을 맞춤화
-- 사용자가 선택한 캐릭터에 따라 다른 프롬프트가 적용되어 대화 진행
-- 각 캐릭터는 고유한 성격과 대화 스타일을 가지고 있으며, 감정 분석 결과에 따라 다양한 반응을 생성
-- OpenAI의 GPT 모델을 활용하여 실시간 감정 분석 및 캐릭터 기반 응답 제공
-- Celery를 통해 대규모 사용자 요청을 효율적으로 비동기 처리하여 서버 성능 최적화
+![img_2.png](img_2.png)
 
 
 # 📂 기획 및 설계 산출물
 
-### [💭 요구사항 정의 및 기능 명세](https://www.notion.so/Feelbuddy-6330c0b568714b6ab0a4659d635ad782)
+### [💭 요구사항 정의 및 기능 명세](https://www.notion.so/ae9aab2290414d5ebc4510c922177e54)
 
-![image](https://github.com/user-attachments/assets/608d90da-08f0-4e0e-bffe-09c32e2be53f)
+![img_3.png](img_3.png)
 
 
 ### [🎨 화면 설계서](https://www.figma.com/design/2MIHENt866R7jjAyDBO3lp/Untitled?node-id=0-1)
 
-![image](https://github.com/user-attachments/assets/ce15a380-b42c-49c6-906a-d86d37250992)
+추가할 예정 
 
 
-### [✨ ER Diagram](https://www.erdcloud.com/d/p9ocstx53DrdNzupt)
+### [✨ ER Diagram](https://www.figma.com/board/1Uc4vVCBi55xHwkM7iCesv/ANCM?node-id=0-1&node-type=canvas&t=Yf9wU45PPNKY6ovN-0)
+![img_4.png](img_4.png)
 
-![image](https://github.com/user-attachments/assets/135eac39-5e08-42a9-b97f-6bf5afe6fdf4)
 
 
 # 💞 팀원 소개
-##### ❤️‍🔥 FEELBUDDY를 개발한 `피로그래밍 21기` 팀원들을 소개합니다!
+##### ❤️‍🔥 AMCN을 개발한 팀원들을 소개합니다!
+추가할예정!!! 
+아래는 다른 프로젝트 팀원들입니당
 
 | **[나예원](https://github.com/Anna-user)** | **[최승호](https://github.com/chltmdgh522)** | **[전진명](https://github.com/JNMYNG)** | **[이민수](https://github.com/msoolee)** |
 | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: |
@@ -311,7 +304,7 @@ implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 - **나예원**
   - 팀장, 기획, 캐릭터 및 로고 디자인, 프론트, 와이어프레임 설계, 3D CSS 설계, AI 프롬프트 설계
 - **최승호**
-  - ERD 설계, 챗봇 기능, 캐릭터 관리 기능, REST API 설계, AWS 서버 배포 및 CICD 설정
+  - ERD 설계, 회원관리, 카드뉴스 관리, 
 - **전진명**
   - 회원관리, 마이페이지, 피드백, 감정 로그 
 - **이민수**
