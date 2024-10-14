@@ -72,7 +72,7 @@ public class CardNewsService {
 
         String userInput = removeWordsFromString(prompt, removeWords) +
                 "이게 사용자 답변인데, 답변 내용 중 '카드뉴스'나 '이미지'와 관련된 단어가 있으면 무시해 주세요. 대신, " +
-                "남은 문장에 관한 주요 뉴스 30개를 생성해 주세요. 문장 형식은 뉴스처럼 끝내줘";
+                "남은 문장에 관한 주요 뉴스 15개를 생성해 주세요. 문장 형식은 뉴스처럼 끝내줘 20초내에 생성해줘";
         // OpenAI API 호출
         String answer="";
         try {
