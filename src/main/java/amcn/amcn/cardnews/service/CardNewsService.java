@@ -86,7 +86,7 @@ public class CardNewsService {
                     .header("Authorization", "Bearer " + openaiApiKey)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(new JSONObject()
-                            .put("model", "gpt-4")
+                            .put("model", "gpt-4o")
                             .put("messages", new JSONArray()
                                     .put(new JSONObject().put("role", "system").put("content", "너는 뉴스 주요문장을 생성해주는 사람이야"))
                                     .put(new JSONObject().put("role", "user").put("content", userInput)))
