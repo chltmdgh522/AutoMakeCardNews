@@ -11,13 +11,10 @@
     <!-- Google Fonts 링크 추가 -->
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR&family=Do+Hyeon&family=Gugi&family=Jua&family=Black+Han+Sans&family=Gamja+Flower&family=Dokdo&family=Sunflower:wght@300;500;700&family=Poor+Story&display=swap"
           rel="stylesheet">
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/097a6f4f17.js" crossorigin="anonymous"></script>
+
     <style>
-
-
-
-
         #save5 {
             background-color: black;
             color: white;
@@ -27,11 +24,9 @@
             font-size: 16px;
         }
 
-
         #popup5 {
             display: none;
             position: fixed;
-
             left: -90px;
             width: 100%;
             height: 100%;
@@ -91,12 +86,6 @@
             cursor: pointer;
         }
 
-
-
-
-
-
-
         /* 오버레이 스타일 */
         .overlay-container {
             position: fixed;
@@ -121,13 +110,14 @@
             margin-bottom: 10px; /* 타이머와 문구 사이 간격 */
         }
     </style>
+
 </head>
 
 <body>
 <header id="header">
     <a href="/" style="text-decoration: none">
         <!--    <img src="/logo/AMCNicon.png" alt="">-->
-        <p id="yamlogo">AMCN</p>
+        <p id="yamlogo">AMCN 카드뉴스생성</p>
     </a>
 </header>
 
@@ -213,8 +203,6 @@
                     </button>
                 </form>
             </div>
-
-
         </li>
         <ul class='files'>
             <li><input type="file" accept="image/*" id='file'/></li>
@@ -224,10 +212,12 @@
             </li>
         </ul>
     </aside>
+
     <main>
         <canvas id="imageCanvas"></canvas>
         <button id="speakerButton" class="speaker-btn">🔊</button>
     </main>
+
     <aside class="tools_sett">
         <div class="container" style="margin-bottom: -138px;">
             <input type="color" id="text_color"/>
@@ -281,37 +271,12 @@
                 </select>
                 <button id="addTexTAIButton2" style="background-color: red; margin-bottom: 5px;">AI 문구 생성</button>
                 <button id="addTextButton">텍스트 추가</button>
-
-
             </div>
         </div>
-
         <!--        <input type="file" id="loadJsonFile" accept="application/json">-->
         <!--        <button id="loadJson">Load from JSON</button>-->
         <!--        <button id="saveJson">Save as JSON</button>-->
-
     </aside>
-</div>
-<!-- 이미지 및 오디오 저장 모달 -->
-<div id="popup5" class="popup5">
-    <div class="popup-content5">
-        <span id="close5" class="close-btn5">&times;</span>
-        <h2 style="font-weight: bold;">Choose Options</h2>
-        <form id="popup-form5" style="margin-top: 10px">
-            <label>
-                <input type="checkbox" name="options5" value="image">
-                카드뉴스
-            </label>
-            <label>
-                <input type="checkbox" name="options5" value="audio">
-                TTS
-            </label>
-            <div class="button-group5">
-                <button type="submit" class="btn download-btn5">Download</button>
-                <button type="button" id="cancel5" class="btn cancel-btn5">Cancel</button>
-            </div>
-        </form>
-    </div>
 </div>
 
 <!-- 텍스트 편집 모달 -->
@@ -392,10 +357,33 @@
     </div>
 </div>
 
+<!-- 이미지 및 오디오 저장 모달 -->
+<div id="popup5" class="popup5">
+    <div class="popup-content5">
+        <span id="close5" class="close-btn5">&times;</span>
+        <h2 style="font-weight: bold;">Choose Options</h2>
+        <form id="popup-form5" style="margin-top: 10px">
+            <label>
+                <input type="checkbox" name="options5" value="image">
+                카드뉴스
+            </label>
+            <label>
+                <input type="checkbox" name="options5" value="audio">
+                TTS
+            </label>
+            <div class="button-group5">
+                <button type="submit" class="btn download-btn5">Download</button>
+                <button type="button" id="cancel5" class="btn cancel-btn5">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <div id="overlay5"></div>
 <div id="filterPopup5">
-    <h3>필터 선택</h3>
+    <h3 style="font-family: 'Jua', sans-serif; padding-left: 10px;">
+        <i class="fas fa-camera-retro fa-lg" style="margin-right: 8px; font-size: 24px;"></i>필터 선택
+    </h3>
     <form id="filterForm5">
         <div class="filter-option5">
             <input type="radio" id="blur5" name="filter5" value="blur">
@@ -422,9 +410,12 @@
             <label for="default">없음</label>
         </div>
     </form>
-    <button id="applyFilter5">적용</button>
-    <button id="closePopup5">닫기</button>
+    <div id="buttonWrapper5">
+        <button id="applyFilter5">적용</button>
+        <button id="closePopup5">닫기</button>
+    </div>
 </div>
+
 <div class="overlay-container">
     <div id="time">01:10</div>
     <div>이미지를 생성 중입니다. 잠시만 기다려주세요...</div>
@@ -638,7 +629,6 @@
     }
 </script>
 
-
 <script>
     document.getElementById('save5').addEventListener('click', function() {
         document.getElementById('popup5').style.display = 'flex';
@@ -657,8 +647,49 @@
 
         document.getElementById('popup5').style.display = 'none';
     });
-
 </script>
-</body>
 
+<script>
+    // 펜 색깔 지정 팝업을 드래그할 수 있도록 하는 함수
+    function dragElement(element) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+        element.onmousedown = function (e) {
+            e = e || window.event;
+            e.preventDefault();
+            // 마우스 시작 좌표 기록
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        };
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // 마우스 움직임에 따른 팝업의 새 좌표
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // 팝업 위치 업데이트
+            element.style.top = (element.offsetTop - pos2) + "px";
+            element.style.left = (element.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            // 마우스 버튼을 떼면 드래그 중지
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    // 팝업창을 드래그 가능하게 만듭니다.
+    dragElement(document.querySelector(".popup5"));
+    dragElement(document.querySelector(".popup3"));  // 사각형 색깔 팝업
+    dragElement(document.querySelector(".popup4"));  // 색채운 사각형 팝업
+    dragElement(document.querySelector("#filterPopup5"));  // 필터 선택 팝업
+</script>
+
+</body>
 </html>
