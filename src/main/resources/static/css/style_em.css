@@ -1052,9 +1052,10 @@ input[type="color"] {
     gap: 10px;
 }
 
-#applyFilter5, #closePopup5 {
-    background-color: #4F29F0;
-    color: white;
+/* 버튼 스타일 */
+#applyFilter5 {
+    background-color: #af77d1; /* 선명한 보라색 */
+    color: #FFFFFF; /* 흰색 글씨 */
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -1063,7 +1064,22 @@ input[type="color"] {
     font-size: 18px; /* 글씨 크기를 키움 */
 }
 
-#applyFilter5:hover, #closePopup5:hover {
-    background-color: #3A1CB2;
+#closePopup5 {
+    background-color: #97a5ac; /* 연한 회색 */
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 50%;
+    font-size: 18px; /* 글씨 크기를 키움 */
+}
+
+#applyFilter5:hover {
+    background-color: #9620a8; /* 적용 버튼 호버 시 색상 변경 */
+}
+
+#closePopup5:hover {
+    background-color: #797575; /* 닫기 버튼 호버 시 색상 변경 */
 }
 
