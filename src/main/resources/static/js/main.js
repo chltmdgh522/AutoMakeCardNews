@@ -1,9 +1,9 @@
 // Setting
-var canvas = document.getElementById('canvas2');
-var ctx = canvas.getContext('2d');
+var canvas2 = document.getElementById('canvas2');
+var ctx2 = canvas2.getContext('2d');
 
-canvas.width =700;
-canvas.height =300;
+canvas2.width =700;
+canvas2.height =300;
 
 // Basic Value
 var veloc = 170;
@@ -22,9 +22,9 @@ function rand(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 function canvasInital(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = 'Black';
-    ctx.fillRect(0,canvas.height-floor,canvas.width,floor);
+    ctx2.clearRect(0,0,canvas2.width,canvas2.height);
+    ctx2.fillStyle = 'Black';
+    ctx2.fillRect(0,canvas2.height-floor,canvas2.width,floor);
 }
 
 // Object - object자료로 등장 캐릭터의 속성을 미리 정의
@@ -41,7 +41,7 @@ var man = {
     // 공룡 등장마다 호출할 method
     nowNum : 0,
     draw(){
-        ctx.drawImage(imgArr[nowNum%10],this.x,this.y,this.width,this.height);
+        ctx2.drawImage(imgArr[nowNum%10],this.x,this.y,this.width,this.height);
     }
 }
 
@@ -59,7 +59,7 @@ var dragon = {
     // 공룡 등장마다 호출할 method
     nowNum : 0,
     draw(){
-        ctx.drawImage(dragonImg,this.x,this.y,this.width,this.height);
+        ctx2.drawImage(dragonImg,this.x,this.y,this.width,this.height);
     }
 }
 
@@ -79,7 +79,7 @@ class Cactus{
         this.height = 50;
     }
     draw(){
-        ctx.drawImage(fireImg,this.x,this.y,this.width,this.height);
+        ctx2.drawImage(fireImg,this.x,this.y,this.width,this.height);
     }
 }
 
