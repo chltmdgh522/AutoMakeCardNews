@@ -1,0 +1,226 @@
+.cobody{
+    font-family: 'Coupang Regular',Helvetica,Arial,Lucida,sans-serif;
+}
+a{
+    text-decoration: none;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+/* 헤더 */
+header{
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+.sub_page{
+    position: relative;
+    width: 1024px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+}
+header > .sub_page > * {
+    position: absolute;
+}
+.header_logo{
+    left: 0;
+    width: 180px;
+    top: 30px;
+}
+.header_logo > img{
+    width: 100%;
+}
+.header_items{
+    right: 0;
+    top: 30px;
+}
+.header_items li:not(.background-item){
+    display: inline-block;
+    padding: 5px 0;
+    margin: 0 5px;
+}
+.header_items li a{
+    color: white;
+}
+.background-item{
+    display: inline-block;
+    padding: 10px 30px;
+    background-color: #0693e3;
+    border-radius: 10px;
+}
+/* 페이지 1 */
+.page1{
+    height: 800px;
+    overflow: hidden;
+    position: relative;
+}
+.page1_background_video{
+    width: 100%;
+    z-index: 1;
+}
+.page1 > .sub_page{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    z-index: 100;
+}
+.page1_left{
+    display: inline-block;
+}
+.page1_left > *{
+    display: block;
+    color: white;
+}
+.page1_left span{
+    font-size: 3em;
+}
+.page1_left span:nth-of-type(1){
+    font-weight: bold;
+}
+.page1_left > a{
+    padding: 10px 30px;
+    background-color: #0693e3;
+    display: inline-block;
+    border-radius: 10px;
+}
+/* 페이지 2 */
+.page2{
+    height: 500px;
+}
+.page2 > .sub_page{
+    display: flex;
+    align-items: center;
+}
+.page2_items{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.page2_items > li{
+    width: 32%;
+    text-align: center;
+    display: inline-block;
+}
+.page2_item_image{
+    width: 100%;
+    height: 50%;
+}
+.page2_item_text * {
+    display: block;
+}
+.page2_item_text span{
+    color: #7A7A7A;
+}
+.page2_item_text span:nth-of-type(1){
+    color: black;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+/* 페이지 3 */
+.page3_title{
+    font-size: 2em;
+    font-weight: bold;
+}
+.page3_title > span{
+    color: #0693e3;
+}
+.page3_items li{
+    display: flex;
+    justify-content: space-between;
+}
+.page3_items li > *{
+    width: 45%;
+    display: inline-block;
+}
+.page3_item_text{
+    position: relative;
+}
+.page3_item_text > div{
+    position: absolute;
+    top: 15%;
+}
+.page3_item_text span{
+    color: #0693e3;
+    font-weight: bold;
+}
+.page3_item_text h3{
+    font-size: 2em;
+}
+.page3_item_text p{
+    color: #54595F;
+}
+/* 페이지 4 */
+.page4{
+    height: 500px;
+    background-image: url("/home/img5.jpg");
+    background-size: 100%;
+    background-position: center;
+}
+.page4_text{
+    position: absolute;
+    top: 90px;
+}
+.page4_text p{
+    color: white;
+    font-size: 3em;
+    font-weight: bold;
+}
+.page4_text a{
+    color: white;
+}
+/* 페이지 5 */
+.page5_title{
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 50px;
+}
+.page5_title > span{
+    color: #0693e3;
+}
+.page5_items li{
+    display: flex;
+    justify-content: space-between;
+}
+.page5_items li > *{
+    width: 45%;
+    display: inline-block;
+}
+.page5_item_text{
+    position: relative;
+}
+.page5_item_text > div{
+    position: absolute;
+    top: 15%;
+    left: 10%;
+}
+.page5_item_text span{
+    color: #0693e3;
+    font-weight: bold;
+}
+.page5_item_text h3{
+    font-size: 2em;
+}
+.page5_item_text p{
+    color: #54595F;
+}
+
+/* 애니메이션 적용 */
+/* 애니메이션(트랜지션) 적용 전 */
+.scroll_deactive{
+    opacity: 0;
+}
+/* 애니메이션(트랜지션) 적용 후 */
+.scroll_active{
+    opacity: 1;
+    transition: 1s;
+    animation-name: move-up;
+    animation-iteration-count: 1;
+    animation-duration: 1s;
+}
+@keyframes move-up{
+    from{transform: translateY(50%);}
+    to{transform: translateY(0%);}
+}
