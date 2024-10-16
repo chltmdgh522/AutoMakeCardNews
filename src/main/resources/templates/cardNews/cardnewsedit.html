@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <!-- Google Fonts 링크 추가 -->
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR&family=Do+Hyeon&family=Gugi&family=Jua&family=Black+Han+Sans&family=Gamja+Flower&family=Dokdo&family=Sunflower:wght@300;500;700&family=Poor+Story&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         .field-error {
@@ -23,7 +23,7 @@
 <header id="header">
     <a href="/" style="text-decoration: none">
         <!--    <img src="/logo/AMCNicon.png" alt="">-->
-        <p id="yamlogo">AMCN</p>
+        <p id="yamlogo">AMCN 프로젝트로 들어와서 내꺼 수정</p>
     </a>
 </header>
 
@@ -289,7 +289,7 @@
 
 <div id="overlay5"></div>
 <div id="filterPopup5">
-    <h3>필터 선택</h3>
+    <h3 style="font-family: 'Jua', sans-serif; padding-left: 10px;">필터 선택</h3>
     <form id="filterForm5">
         <div class="filter-option5">
             <input type="radio" id="blur5" name="filter5" value="blur">
@@ -316,9 +316,12 @@
             <label for="default">없음</label>
         </div>
     </form>
-    <button id="applyFilter5">적용</button>
-    <button id="closePopup5">닫기</button>
+    <div id="buttonWrapper5">
+        <button id="applyFilter5">적용</button>
+        <button id="closePopup5">닫기</button>
+    </div>
 </div>
+
 <script src="/js/app2.js"></script>
 <script>
     // 이미지 저장 함수
@@ -476,6 +479,49 @@
     });
 
 </script>
+
+<script>
+    // 펜 색깔 지정 팝업을 드래그할 수 있도록 하는 함수
+    function dragElement(element) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+        element.onmousedown = function (e) {
+            e = e || window.event;
+            e.preventDefault();
+            // 마우스 시작 좌표 기록
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        };
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // 마우스 움직임에 따른 팝업의 새 좌표
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // 팝업 위치 업데이트
+            element.style.top = (element.offsetTop - pos2) + "px";
+            element.style.left = (element.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            // 마우스 버튼을 떼면 드래그 중지
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    // 팝업창을 드래그 가능하게 만듭니다.
+    dragElement(document.querySelector(".popup5"));
+    dragElement(document.querySelector(".popup3"));  // 사각형 색깔 팝업
+    dragElement(document.querySelector(".popup4"));  // 색채운 사각형 팝업
+    dragElement(document.querySelector("#filterPopup5"));  // 필터 선택 팝업
+</script>
+
 </body>
 
 </html>
