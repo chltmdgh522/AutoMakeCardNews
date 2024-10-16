@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <!-- Google Fonts 링크 추가 -->
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR&family=Do+Hyeon&family=Gugi&family=Jua&family=Black+Han+Sans&family=Gamja+Flower&family=Dokdo&family=Sunflower:wght@300;500;700&family=Poor+Story&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         .field-error {
@@ -289,7 +289,7 @@
 
 <div id="overlay5"></div>
 <div id="filterPopup5">
-    <h3>필터 선택</h3>
+    <h3 style="font-family: 'Jua', sans-serif; padding-left: 10px;">필터 선택</h3>
     <form id="filterForm5">
         <div class="filter-option5">
             <input type="radio" id="blur5" name="filter5" value="blur">
@@ -316,9 +316,12 @@
             <label for="default">없음</label>
         </div>
     </form>
-    <button id="applyFilter5">적용</button>
-    <button id="closePopup5">닫기</button>
+    <div id="buttonWrapper5">
+        <button id="applyFilter5">적용</button>
+        <button id="closePopup5">닫기</button>
+    </div>
 </div>
+
 <script src="/js/app2.js"></script>
 <script>
     // 이미지 저장 함수
