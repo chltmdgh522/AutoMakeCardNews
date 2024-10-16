@@ -1,0 +1,118 @@
+.popup-background150 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* 팝업 창 */
+.popup-container150 {
+    position: relative;
+    width: 70%;
+    max-width: 1200px;
+    height: 70%;
+    max-height: 800px;
+    background-color: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+/* 페이지 스타일 */
+.page150 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: transform 0.8s ease, opacity 0.5s ease;
+}
+
+/* 현재 페이지 활성화 */
+.page150.active150 {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* 페이지 내용 */
+.page-content150 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 15px;
+    background-size: cover;
+    background-position: center;
+}
+
+/* 버튼 스타일 */
+.button150 {
+    position: absolute;
+    bottom: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ff6f61;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button150:hover {
+    background-color: #ff3e30;
+}
+
+.prev150 {
+    left: 20px;
+}
+
+.next150 {
+    right: 20px;
+}
+
+/* 페이지 내 텍스트 */
+.page-text150 {
+    font-size: 22px;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+}
+
+/* 닫기 버튼 스타일 */
+.close-button150 {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    color: #ff6f61;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.close-button150:hover {
+    color: #ff3e30;
+}
