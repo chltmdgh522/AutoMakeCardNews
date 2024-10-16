@@ -31,6 +31,7 @@
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/css/home2.css" rel="stylesheet">
+    <link href="/css/home3.css" rel="stylesheet">
 
 
     <style>
@@ -157,107 +158,186 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid" id="contnet">
 
-
-                    <div class="mixed-color-box">
-                        <!-- 검색창 -->
-                        <div class="container mb-1">
-                            <div class="row justify-content-center">
-                                <div class="col-md-6">
-                                    <!-- 추가한 문구 -->
-                                    <p class="text-center mt-2" style="font-size: 1.8em; color: white;">원하시는 카드뉴스를
-                                        검색해보세요!</p>
-                                    <form method="get" id="searchForm">
-                                        <div class="input-group mt-3 custom-search">
-                                            <!-- 왼쪽 아이콘 -->
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-search"></i></span>
-                                            </div>
-                                            <!-- 검색창 -->
-                                            <input type="text" id="searchInput" class="form-control"
-                                                   placeholder="검색어를 입력하세요...">
-                                        </div>
-                                    </form>
-                                    <!-- 동그라미 아이콘들 -->
-                                    <div class="text-center mt-3 mb-1">
-                                        <!-- 첫 번째 그룹: 별 아이콘과 이미지 -->
-                                        <a href="/ai-image" style="text-decoration: none">
-                                            <div class="d-inline-block mr-5 menu10">
-                                                <span class="fa-stack fa-2x">
-                                                    <i class="fas fa-circle text-primary fa-stack-2x"></i>
-                                                    <i class="fas fa-star fa-stack-1x fa-inverse"></i> <!-- 별 아이콘 -->
-                                                </span>
-
-                                                <div class="mt-2" style="color: #4e73df">카드뉴스 생성</div>
-                                            </div>
-                                        </a>
-
-                                        <!-- 두 번째 그룹: 문서 아이콘과 텍스트 -->
-                                        <a href="/news" style="text-decoration: none">
-                                            <div class="d-inline-block mr-5 menu10">
-                                                <span class="fa-stack fa-2x">
-                                                    <i class="fas fa-circle text-success fa-stack-2x"></i>
-                                                    <i class="far fa-file-alt fa-stack-1x fa-inverse"></i>
-                                                    <!-- 문서 아이콘 -->
-                                                </span>
-                                                <div class="mt-2" style="color: #1cc88a">뉴스</div>
-                                            </div>
-                                        </a>
-
-                                        <!-- 세 번째 그룹: 좋아요 아이콘과 텍스트 -->
-                                        <a href="/community" style="text-decoration: none">
-                                            <div class="d-inline-block mr-5 menu10">
-                                                <span class="fa-stack fa-2x">
-                                                    <i class="fas fa-circle text-warning fa-stack-2x"></i>
-                                                    <i class="far fa-thumbs-up fa-stack-1x fa-inverse"></i>
-                                                    <!-- 좋아요 아이콘 -->
-                                                </span>
-                                                <div class="mt-2" style="color: #f6c23e">소셜 미디어</div>
-                                            </div>
-                                        </a>
-                                    </div>
-
-
+                    <div class="cobody">
+                        <div class="page1">
+                            <video class="page1_background_video" src="/home/main.mp4" muted="" autoplay="" loop=""></video>
+                            <div class="sub_page">
+                                <div class="page1_left">
+                                    <span>생성형 AI를 활용한 카드뉴스 만들기.</span>
+                                    <span>AMCN</span>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="page2">
+                            <div class="sub_page">
+                                <ul class="page2_items scroll_deactive">
+                                    <li>
+                                        <a href="">
+                                            <img class="page2_item_image" src="/home/img.png" />
+                                            <div class="page2_item_text">
+                                                <span>커뮤니티</span>
+                                                <span>다른사람들과</span>
+                                                <span>소통을 해보면서 지식을 보충해봐요</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <img class="page2_item_image" src="/home/img_1.png"  />
+                                            <div class="page2_item_text">
+                                                <span>뉴스</span>
+                                                <span>뉴스 기사를 확인하고,</span>
+                                                <span>뉴스 요약 모델을 통해 요약문을 얻어봐요</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <img class="page2_item_image" src="/home/img_2.png"  />
+                                            <div class="page2_item_text">
+                                                <span>카드뉴스 생성</span>
+                                                <span>생성형 AI를 활용해</span>
+                                                <span>카드뉴스를 만들고 간직해봐요</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="page3">
+                            <div class="sub_page">
+                                <p class="page3_title scroll_deactive">
+                                    다른 곳에서 만날 수 없는
+                                    <br>
+                                    <span>AMCN</span>의 특별함
+                                </p>
+                                <ul class="page3_items">
+                                    <li class="scroll_deactive">
+<!--                                        <img class="page3_item_image" src="https://www.coupangeats.com/wp-content/uploads/2022/11/1-2.png">-->
+
+                                        <div class="swiper page3_item_image">
+                                            <div class="swiper-wrapper">
+                                                <div class="swiper-slide" th:each="pop : ${cardPop}">
+                                                    <img th:src="|/ai/image/${pop.imageUrl}|"/>
+                                                    <div class="cost" style="color: black;" th:text="${pop.member.name}">from $230 per group</div>
+                                                    <div class="overlay23">
+                                                        <h1 th:text="${pop.title}">Walking Tour in Florence</h1>
+                                                        <p th:text="${pop.content}">
+                                                            Discover the fascinating beauty of this historic city by
+                                                            strolling through the rich cultural tapestry that makes Florence
+                                                            a timeless destination.
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="page3_item_text">
+                                            <div>
+                                                <span>실패 없는 이미지 생성</span>
+                                                <h3>DALL-E</h3>
+                                                <p>사용자가 원하는 카드뉴스를
+                                                    <br>
+                                                    생성할 수 있게 했어요.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="scroll_deactive">
+                                        <div class="page3_item_text">
+                                            <div style="left: 40px;">
+                                                <span>정확한 요약 모델</span>
+                                                <h3>Kobart</h3>
+                                                <p>정확도가 75%인
+                                                    <br>
+                                                    AMCN의 뉴스 요약 모델을 활용해 요약문을 갖고갑시다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <img class="page3_item_image" src="/home/img_3.png" >
+                                    </li>
+                                    <li class="scroll_deactive">
+                                        <img class="page3_item_image" src="/home/img_4.png" >
+                                        <div class="page3_item_text">
+                                            <div>
+                                                <span>게임</span>
+                                                <h3>3종류의 게임</h3>
+                                                <p>숫자 야구 게임, 숫자 맞추기 게임, 벽돌 깨기 게임을 통해
+                                                    <br>
+                                                    재미를 즐겨요.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="page4">
+                            <div class="sub_page">
+                                <div class="page4_text scroll_deactive">
+                                    <p>AMCN이 바꿔가는
+                                        <br>
+                                        카드뉴스 자동 제작
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page5">
+                            <div class="sub_page">
+                                <p class="page5_title scroll_deactive">
+                                    더 좋은 경험을 위한
+                                    <br>
+                                    <span>AMCN</span>의 새로운 시도
+                                </p>
+                                <ul class="page5_items">
+                                    <li class="scroll_deactive">
+                                        <img class="page5_item_video" src="/home/33.gif" muted="" autoplay="" loop=""/>
+                                        <div class="page5_item_text">
+                                            <div>
+                                                <span>생성시간 최소화</span>
+                                                <h3>70초 ➡️ 30초</h3>
+                                                <p>고객님들을 위해 카드뉴스 생성시간을
+                                                    <br>
+                                                    최소화하고 있어요.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="scroll_deactive">
+                                        <div class="page5_item_text">
+                                            <div>
+                                                <span>카드뉴스 소장</span>
+                                                <h3>동영상, 사진</h3>
+                                                <p>고객님이 만든 카드뉴스를
+                                                    <br>
+                                                    고객님이 소장하도록 구현했어요.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <img class="page5_item_video" src="/home/2.gif" muted="" autoplay="" loop=""/>
+                                    </li>
+                                    <li class="scroll_deactive">
+                                        <img class="page5_item_video" src="/home/1.gif" muted="" autoplay="" loop=""/>
+                                        <div class="page5_item_text">
+                                            <div>
+                                                <span>실시간 관리자 채팅</span>
+                                                <h3>쉽고 편한 고객 문의</h3>
+                                                <p>단 한번에 입력으로
+                                                    <br>
+                                                    관리자랑 대화를 해보세요.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
 
-                    <div
-                            style="margin-bottom: 20px;" class="hombo">
-                        <div id="tsparticles"></div>
-                        <section>
-                            <div class="content23">
-                                <h1>AI를 활용해서 원하는 카드뉴스를 만들어 보세요!</h1>
-                                <p>
-                                    저희 서비스는 최신 AI 기술을 통해 쉽고 빠르게 카드뉴스를 제작할 수 있도록 도와드립니다.
-                                    이미지 생성부터 텍스트 작성까지, 클릭 몇 번으로 여러분만의 멋진 카드뉴스를 완성해보세요!
-                                </p>
 
 
-                            </div>
 
-                            <div class="swiper">
-                                <div class="swiper-wrapper">
-                                    <div class="swiper-slide" th:each="pop : ${cardPop}">
-                                        <img th:src="|/ai/image/${pop.imageUrl}|"/>
-                                        <div class="cost" style="color: black;" th:text="${pop.member.name}">from $230 per group</div>
-                                        <div class="overlay23">
-                                            <h1 th:text="${pop.title}">Walking Tour in Florence</h1>
-                                            <p th:text="${pop.content}">
-                                                Discover the fascinating beauty of this historic city by
-                                                strolling through the rich cultural tapestry that makes Florence
-                                                a timeless destination.
-                                            </p>
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-<!--                            <a href="https://www.youtube.com/@ecemgokdogan/videos" target="_blank" class="logo"><img-->
-<!--                                    src="https://assets.codepen.io/9868786/youtube.webp" alt="HTML tutorial"></a>-->
-                        </section>
-                    </div>
 
 
 
@@ -280,7 +360,26 @@
 <script src="/js/home2.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
+<script>
+    // 애니메이션이 적용될 요소를 배열에 저장함.
+    const animation_contents = document.querySelectorAll('.scroll_deactive');
+    let animation_count = 0; // 애니메이션이 적용된 요소의 개수
 
+    // 스크롤 이벤트 등록
+    window.addEventListener('scroll', function(){
+        // scrollOffset 변수에 화면에 표시되는 페이지의 가장 아래 위치를 저장함.
+        var scrollOffset = window.innerHeight + document.documentElement.scrollTop;
+        console.log(scrollOffset);
+        //console.log(window.pageYOffset + animation_contents[animation_count].getBoundingClientRect().top);
+        if (animation_count < animation_contents.length){
+            var element_offset = window.pageYOffset + animation_contents[animation_count].getBoundingClientRect().top;
+            if (element_offset < scrollOffset){
+                animation_contents[animation_count].classList.add('scroll_active');
+                animation_count++;
+            }
+        }
+    });
+</script>
 
 <script>
     document.getElementById('searchForm').addEventListener('submit', function (event) {
