@@ -92,7 +92,30 @@
         }
 
 
+        .center-block {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* 세로로 정렬 */
+            margin: 0; /* 기본 여백 제거 */
+        }
 
+        #time, .center-block > div {
+            margin: 10px; /* 위쪽 두 div 간격 없애기 */
+            padding: 0; /* 필요 시 패딩도 제거 */
+        }
+        .main_container{
+            width: 500px;
+            height: 400px;
+        }
+
+        title {
+            background-color: black;
+        }
+
+        #canvas2 {
+            background-color: whitesmoke;
+        }
 
 
 
@@ -436,8 +459,16 @@
     <button id="closePopup5">닫기</button>
 </div>
 <div class="overlay-container">
-    <div id="time">00:40</div>
     <div>이미지를 생성 중입니다. 잠시만 기다려주세요...</div>
+    <div id="time">00:40</div>
+    <div class="center-block">
+
+        <canvas id="canvas2"> <!-- canvas는 그림, 이미지를 그릴 수 있게하는 태그 -->
+            <script src="/js/main.js"></script>
+        </canvas>
+    </div>
+
+
 </div>
 
 <div class="popup-background150">
