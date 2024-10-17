@@ -500,7 +500,7 @@
     <div class="center-block">
 
         <canvas id="canvas2"> <!-- canvas는 그림, 이미지를 그릴 수 있게하는 태그 -->
-            <script src="/js/main.js"></script>
+
         </canvas>
     </div>
 
@@ -623,7 +623,7 @@
 </div>
 
 
-
+<script src="/js/main.js"></script>
 
 
 <script src="/js/app.js"></script>
@@ -726,7 +726,9 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    let interval; // 타이머 인터벌을 저장할 변수
+    let interval; // 타이머 인터벌을 저장할 전역 변수
+    let isTimerRunning = false; // 타이머 동작 여부를 확인할 변수
+
     function startTimer(duration, display) {
         let timer = duration, minutes, seconds;
 
@@ -735,6 +737,7 @@
         }
 
         interval = setInterval(function () {
+            isTimerRunning = true; // 타이머가 동작 중임을 표시
             minutes = parseInt(timer / 60, 10);
             seconds = parseInt(timer % 60, 10);
 
@@ -746,21 +749,26 @@
             if (--timer < 0) {
                 clearInterval(interval);
                 display.textContent = "00:00";
+                isTimerRunning = false; // 타이머가 끝났음을 표시
             }
         }, 1000);
     }
 
-
     $(document).ready(function () {
         let timeDisplay = $("#time");
-        let duration = 40; // 1분 10초 = 70초
+        let duration = 40; // 40초
         let textList = []; // 텍스트 리스트 저장 변수
         let textIndex = 0; // 현재 텍스트 인덱스
+
         $("#imageButton").click(function () {
+            // 타이머가 이미 실행 중이 아니라면 타이머 시작
+            if (!isTimerRunning) {
+                startTimer(duration, timeDisplay[0]);
+            }
+
             // 오버레이 표시
             $(".overlay-container").css("display", "flex");
-            // 타이머 시작
-            startTimer(duration, timeDisplay[0]);
+
             $.ajax({
                 type: "POST",
                 url: "/image-create",
@@ -784,12 +792,12 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    alert("이미지 생성 중 오류가 발생했습니다 귀하가 작성한 문구는 AI 보안에 위배되어 실패했습니다. 확인을 눌러주시면 바로 새로고침 진행됩니다.");
+                    alert("이미지 생성 중 오류가 발생했습니다.");
                     console.log(xhr.responseText);
-                    // 5초 후에 페이지 새로고침
+                    // 1초 후에 페이지 새로고침
                     setTimeout(function () {
                         location.reload();
-                    }, 1000); // 5000ms = 5초
+                    }, 1000);
                 },
                 complete: function () {
                     // 오버레이 숨김
@@ -797,9 +805,10 @@
                 }
             });
         });
+
+        // 텍스트 추가 버튼 처리
         $("#addTexTAIButton2").click(function () {
             if (textList.length > 0) {
-                console.log("리스트다!!!")
                 if (textIndex < textList.length) {
                     $("#textInput").val(textList[textIndex]); // 텍스트 출력
                     textIndex++;
