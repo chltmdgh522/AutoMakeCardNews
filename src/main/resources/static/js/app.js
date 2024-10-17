@@ -944,7 +944,7 @@ function onFill_square() {
 
 }
 
-// 사각형 더블 클릭 시 팝업 열기
+/*// 사각형 더블 클릭 시 팝업 열기
 canvas.addEventListener('dblclick', function (event) {
     const mouseX = event.offsetX;
     const mouseY = event.offsetY;
@@ -1027,6 +1027,145 @@ canvas.addEventListener('dblclick', function (event) {
             return;
         }
     }
+});
+
+// 팝업 닫기
+closeColorPopup3.addEventListener('click', function () {
+    colorPopup3.style.display = 'none';
+    editingRectIndex3 = -1;
+});
+
+// 색깔 변경 버튼 클릭 시
+updateColorButton3.addEventListener('click', function () {
+    if (editingRectIndex3 !== -1) {
+        console.log(editingRectIndex3)
+        const rect = penStrokes[editingRectIndex3];
+        rect.color = rectColorPicker3.value;
+        redrawCanvas();
+        colorPopup3.style.display = 'none';
+        editingRectIndex3 = -1;
+    }
+});*/
+// 빈사각형 더블 클릭 시 팝업 열기
+canvas.addEventListener('dblclick', function (event) {
+    const mouseX = event.offsetX;
+    const mouseY = event.offsetY;
+
+    for (let i = 0; i < rectangles.length; i++) {
+        if (isMouseOnRectangle(mouseX, mouseY, rectangles[i])) {
+            editingRectIndex = i;
+            const rect = rectangles[i];
+            rectColorPicker.value = rect.color;
+            colorPopup.style.display = 'block';
+            return;
+        }
+    }
+});
+
+// 팝업 닫기
+closeColorPopup.addEventListener('click', function () {
+    colorPopup.style.display = 'none';
+    editingRectIndex = -1;
+});
+
+
+// 색상 원에 클릭 이벤트 리스너 추가
+const colorCircles3 = document.querySelectorAll('.color-circle'); // 색상 원 선택
+colorCircles3.forEach(circle => {
+    circle.addEventListener('click', function() {
+        selectedColor = this.dataset.color; // data-color 속성에서 색상 값 가져오기
+        console.log('Selected Color for Rectangle:', selectedColor); // 선택된 색상 확인
+
+        // 선택한 색상을 색상 선택기에도 표시
+        rectColorPicker.value = selectedColor;
+    });
+});
+// 색깔 변경 버튼 클릭 시
+updateColorButton.addEventListener('click', function () {
+    if (editingRectIndex !== -1) {
+        const rect = rectangles[editingRectIndex];
+        rect.color = rectColorPicker.value;
+        redrawCanvas();
+        colorPopup.style.display = 'none';
+        editingRectIndex = -1;
+    }
+});
+
+
+// 색채운 사각형 색상 지정 팝업 열기
+canvas.addEventListener('dblclick', function (event) {
+    const mouseX = event.offsetX;
+    const mouseY = event.offsetY;
+
+    // rectfillangles 배열을 순회하며 사각형 요소 확인
+    for (let i = 0; i < rectfillangles.length; i++) {
+        if (isMouseOnRectangle2(mouseX, mouseY, rectfillangles[i])) {
+            editingRectIndex2 = i; // 편집 중인 사각형 인덱스 저장
+            const rect = rectfillangles[i];
+            rectColorPicker2.value = rect.color; // 선택된 사각형 색상 표시
+            colorPopup2.style.display = 'block'; // 팝업 열기
+            return;
+        }
+    }
+});
+
+// 팝업 닫기 이벤트 리스너 추가
+closeColorPopup2.addEventListener('click', function () {
+    colorPopup2.style.display = 'none'; // 팝업 닫기
+    editingRectIndex2 = -1; // 인덱스 초기화
+});
+
+// 색상 원에 클릭 이벤트 리스너 추가
+const colorCircles2 = document.querySelectorAll('.color-circle'); // 색상 원 선택
+colorCircles2.forEach(circle => {
+    circle.addEventListener('click', function() {
+        selectedColor = this.dataset.color; // data-color 속성에서 색상 값 가져오기
+        console.log('Selected Color for Rectangle:', selectedColor); // 선택된 색상 확인
+
+        // 선택한 색상을 색상 선택기에도 표시
+        rectColorPicker2.value = selectedColor;
+    });
+});
+
+
+// 색깔 변경 버튼 클릭 시
+updateColorButton2.addEventListener('click', function () {
+    if (editingRectIndex2 !== -1) {
+        const rect = rectfillangles[editingRectIndex2];
+        rect.color = rectColorPicker2.value; // 선택한 색상 적용
+        redrawCanvas(); // 캔버스 다시 그리기
+        colorPopup2.style.display = 'none'; // 팝업 닫기
+        editingRectIndex2 = -1; // 인덱스 초기화
+    }
+});
+
+
+
+// 펜으로 그린거 더블 클릭 시 팝업 열기
+canvas.addEventListener('dblclick', function (event) {
+    const mouseX = event.offsetX;
+    const mouseY = event.offsetY;
+
+    for (let i = 0; i < penStrokes.length; i++) {
+        if (isMouseOnPen(mouseX, mouseY, penStrokes[i])) {
+            editingRectIndex3 = i;
+            const rect = penStrokes[i];
+            rectColorPicker3.value = rect.color;
+            colorPopup3.style.display = 'block';
+            return;
+        }
+    }
+});
+// 색상 원에 클릭 이벤트 리스너 추가
+const colorCircles = document.querySelectorAll('.color-circle');
+colorCircles.forEach(circle => {
+    circle.addEventListener('click', function() {
+        selectedColor = this.dataset.color; // data-color 속성에서 색상 값 가져오기
+        console.log('Selected Color:', selectedColor); // 선택된 색상 확인
+
+        // 선택한 색상을 색상 선택기에도 표시
+        rectColorPicker3.value = selectedColor;
+    });
 });
 
 // 팝업 닫기
