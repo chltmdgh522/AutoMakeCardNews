@@ -898,9 +898,8 @@ input[type="color"] {
 #popup5 {
     display: none;
     position: fixed;
-
-    left: -90px;
-    width: 100%;
+    left: 800px;
+    width: 120%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
