@@ -162,8 +162,9 @@
                         <div class="container" style="padding-top: 20px;">
                             <div class="col-md-12">
                                 <div class="container">
-                                    <form th:action="@{/community/add}" th:object="${board}"
-                                          id="myForm"
+                                    <form th:action="@{/community/edit/{id}(id=${board.boardId})}" th:object="${board}"
+
+                                    id="myForm"
                                           method="post">
                                         <div type="hidden" id="substance-input2" name="substance2"
                                              class="hidden-input" style="display: none"

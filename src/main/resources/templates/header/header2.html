@@ -8,9 +8,10 @@
     <!-- Custom styles for this template-->
     <style>
 
-        *{
-            font-family: "Jua",sans-serif;
+        * {
+            font-family: "Jua", sans-serif;
         }
+
         .animation-container {
             position: relative;
             overflow: hidden;
@@ -41,27 +42,27 @@
     </style>
 </head>
 <body>
-<header  th:fragment="copyParam (member)">
+<header th:fragment="copyParam (member)">
 
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 header-border" id="header-pos">
-    <!-- Topbar Navbar -->
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown no-arrow">
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 header-border" id="header-pos">
+        <!-- Topbar Navbar -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown no-arrow">
 
 
-            <a class="nav-link dropdown-toggle" th:href="@{/mypage}" id="userDropdown" role="button"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" th:href="@{/mypage}" id="userDropdown" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                 <span class="animate-text mr-2 d-none d-lg-inline text-gray-600 small" th:text="|${member.name}님 환영합니다|"
                       style="font-weight: bold">gdgdgdgd님 환영합니다</span>
                     <img th:src="|/my-page/image/${member.profile}|" class="img-profile rounded-circle">
 
-            </a>
+                </a>
 
-        </li>
+            </li>
 
-    </ul>
-</nav>
+        </ul>
+    </nav>
 </header>
 </body>
 </html>

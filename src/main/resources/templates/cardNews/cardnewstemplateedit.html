@@ -6,17 +6,136 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style_em.css">
+    <link rel="stylesheet" href="/css/cardInformation.css">
+
     <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <!-- Google Fonts 링크 추가 -->
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR&family=Do+Hyeon&family=Gugi&family=Jua&family=Black+Han+Sans&family=Gamja+Flower&family=Dokdo&family=Sunflower:wght@300;500;700&family=Poor+Story&display=swap" rel="stylesheet">
+    <style>
 
+
+
+
+        #save5 {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+
+        #popup5 {
+            display: none;
+            position: fixed;
+
+            left: -90px;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content5 {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .popup-content5 h2 {
+            margin-top: 0;
+        }
+
+        .popup-content5 label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .button-group5 {
+            margin-top: 20px;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            color: white;
+            margin-right: 10px;
+        }
+
+        .download-btn5 {
+            background-color: #4CAF50;
+        }
+
+        .cancel-btn5 {
+            background-color: #f44336;
+        }
+
+        .close-btn5 {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+
+
+
+
+
+
+        /* 오버레이 스타일 */
+        .overlay-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            flex-direction: column; /* 수직 정렬 */
+            justify-content: center; /* 수평 중앙 정렬 */
+            align-items: center; /* 수직 중앙 정렬 */
+            color: white;
+            font-size: 30px;
+        }
+
+        #time {
+            color: red;
+            font-weight: bold;
+            font-size: 40px; /* 타이머 크기 */
+            margin-bottom: 10px; /* 타이머와 문구 사이 간격 */
+        }
+    </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/097a6f4f17.js" crossorigin="anonymous"></script>
 
     <style>
         .field-error {
             color: #ff0000;
+        }
+        #popup5 {
+            display: none;
+            position: fixed;
+            left: 800px;
+            width: 120%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
@@ -25,7 +144,7 @@
 <header id="header">
     <a href="/" style="text-decoration: none">
         <!--    <img src="/logo/AMCNicon.png" alt="">-->
-        <p id="yamlogo">AMCN 템플릿으로 수정</p>
+        <p id="yamlogo">AMCN</p>
     </a>
 </header>
 
@@ -63,6 +182,12 @@
                 <button id="reset" class="tool">
                     🗑
                     <span class="tooltip">Delete</span>
+                </button>
+            </li>
+            <li>
+                <button id="info" class="tool">
+                    ❓
+                    <span class="tooltip">Info</span>
                 </button>
             </li>
         </ul>
@@ -315,6 +440,10 @@
                 <input type="checkbox" name="options5" value="audio">
                 TTS
             </label>
+            <label>
+                <input type="checkbox" name="options5" value="video">
+                동영상
+            </label>
             <div class="button-group5">
                 <button type="submit" class="btn download-btn5">Download</button>
                 <button type="button" id="cancel5" class="btn cancel-btn5">Cancel</button>
@@ -359,7 +488,120 @@
         <button id="closePopup5">닫기</button>
     </div>
 </div>
+<div class="popup-background1502">
+    <!-- 팝업 컨테이너 -->
+    <div class="popup-container150">
+        <!-- 상단 중앙에 문의 문구 추가 -->
+        <div class="inquiry-text150">
+            <a href="/chat" style="color: black; text-decoration: none; font-weight: bold; font-size: large;">
+                ⭐문의하실게 있으면 이 문구를 클릭!⭐
+            </a>
+        </div>
 
+
+        <!-- 페이지 1 -->
+        <div class="page150 active150" id="page-1150">
+            <div class="page-content150" style="background-image: url('/info/img1.png');">
+                <div class="page-text150" style="font-weight: bold;">환영합니다! 이 설명서는 사용법을 안내해 드립니다!</div>
+            </div>
+        </div>
+        <!-- 페이지 2 -->
+        <div class="page150" id="page-2150">
+            <div class="page-content150" style="background-image: url('/info/img2.png');">
+
+            </div>
+        </div>
+        <!-- 페이지 3 -->
+        <div class="page150" id="page-3150">
+            <div class="page-content150" style="background-image: url('/info/img3.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-4150">
+            <div class="page-content150" style="background-image: url('/info/img4.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-5150">
+            <div class="page-content150" style="background-image: url('/info/img5.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-6150">
+            <div class="page-content150" style="background-image: url('/info/img6.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-7150">
+            <div class="page-content150" style="background-image: url('/info/img7.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-8150">
+            <div class="page-content150" style="background-image: url('/info/img8.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-9150">
+            <div class="page-content150" style="background-image: url('/info/img9.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-10150">
+            <div class="page-content150" style="background-image: url('/info/img10.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-11150">
+            <div class="page-content150" style="background-image: url('/info/img11.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-12150">
+            <div class="page-content150" style="background-image: url('/info/img11-2.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-13150">
+            <div class="page-content150" style="background-image: url('/info/img12.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-14150">
+            <div class="page-content150" style="background-image: url('/info/img13.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-15150">
+            <div class="page-content150" style="background-image: url('/info/img14.png');">
+
+            </div>
+        </div>
+
+        <!-- 닫기 버튼 -->
+        <button class="close-button150" id="closeButton150">X</button>
+
+        <!-- 이전 버튼 -->
+        <button class="button150 prev150" id="prevButton150">이전</button>
+        <!-- 다음 버튼 -->
+        <button class="button150 next150" id="nextButton150">다음</button>
+
+        <!-- 페이지 번호 표시 -->
+        <div class="page-indicator150" style="color: red; font-weight: bold;" id="pageIndicator150">1/15</div>
+    </div>
+</div>
 <script src="/js/app2.js"></script>
 <script>
     // 이미지 저장 함수
@@ -501,6 +743,67 @@
     });
 
 </script>
+<script>
+    let currentPage150 = 1;
+    const totalPages150 = 15;
+
+    const prevButton150 = document.getElementById('prevButton150');
+    const nextButton150 = document.getElementById('nextButton150');
+    const closeButton150 = document.getElementById('closeButton150');
+    const pages150 = document.querySelectorAll('.page150');
+    const pageIndicator150 = document.getElementById('pageIndicator150');
+    const popupBackground150 = document.querySelector('.popup-background1502');
+
+    function updatePage150(direction) {
+        // 현재 페이지 숨기기
+        const currentElement150 = document.getElementById(`page-${currentPage150}150`);
+        currentElement150.classList.remove('active150');
+
+        // 페이지 변경
+        if (direction === 'next') {
+            currentPage150 = currentPage150 < totalPages150 ? currentPage150 + 1 : 1;
+        } else if (direction === 'prev') {
+            currentPage150 = currentPage150 > 1 ? currentPage150 - 1 : totalPages150;
+        }
+
+        // 새 페이지 보여주기
+        const nextElement150 = document.getElementById(`page-${currentPage150}150`);
+        nextElement150.classList.add('active150');
+
+        // 페이지 번호 업데이트
+        pageIndicator150.textContent = `${currentPage150}/${totalPages150}`;
+
+        // 마지막 페이지일 때 버튼 텍스트 변경
+        if (currentPage150 === totalPages150) {
+            nextButton150.textContent = '닫기';
+            nextButton150.removeEventListener('click', nextClickHandler);
+            nextButton150.addEventListener('click', () => popupBackground150.style.display = 'none');
+        } else {
+            nextButton150.textContent = '다음';
+            nextButton150.removeEventListener('click', closePopupHandler);
+            nextButton150.addEventListener('click', nextClickHandler);
+        }
+    }
+
+    function nextClickHandler() {
+        updatePage150('next');
+    }
+
+    function closePopupHandler() {
+        popupBackground150.style.display = 'none';
+    }
+
+    nextButton150.addEventListener('click', nextClickHandler);
+    prevButton150.addEventListener('click', () => updatePage150('prev'));
+    closeButton150.addEventListener('click', closePopupHandler);
+    // Info 버튼 클릭 시 팝업 보여주기
+    const infoButton = document.getElementById('info');
+
+    infoButton.addEventListener('click', () => {
+        popupBackground150.style.display = 'flex'; // 팝업을 보여줌
+    });
+
+</script>
 
 <script>
     // 펜 색깔 지정 팝업을 드래그할 수 있도록 하는 함수
@@ -566,4 +869,5 @@
 </script>
 
 </body>
+
 </html>

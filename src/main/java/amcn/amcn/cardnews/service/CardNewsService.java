@@ -5,6 +5,7 @@ import com.theokanning.openai.service.OpenAiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,13 +30,15 @@ public class CardNewsService {
     @Value("${openai.key}")
     private String openaiApiKey;
 
-    public String generatePicture(String prompt) throws IOException, InterruptedException {
+    @Async
+    public CompletableFuture<String> generatePicture(String prompt) throws IOException, InterruptedException {
         String url = "https://api.openai.com/v1/images/generations";
+        String prompt_2 = prompt + "최대한 아름답게, 마치 실제 광고처럼 완성도 높은 이미지를 만들어주세요. 사람들이 부러워할 만큼 멋지고 매끄러운 느낌으로 부탁드립니다";
 
         // JSON 문자열 생성
         String requestBody = String.format(
                 "{\"model\":\"dall-e-3\",\"prompt\":\"%s\",\"n\":1,\"size\":\"1024x1024\"}",
-                prompt);
+                prompt_2);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -61,20 +65,20 @@ public class CardNewsService {
         log.info("===============");
         log.info(imageUrl);
 
-        return imageUrl;
+        return CompletableFuture.completedFuture(imageUrl);
     }
 
-
-    public List<String> generateText(String prompt) throws IOException, InterruptedException {
+    @Async
+    public CompletableFuture<List<String>> generateText(String prompt) throws IOException, InterruptedException {
         String url = "https://api.openai.com/v1/images/generations";
         // 제거할 단어 목록
         String[] removeWords = {"카드뉴스", "이미지", "관한", "대한", "이미저", "카드뉴소"};
 
         String userInput = removeWordsFromString(prompt, removeWords) +
                 "이게 사용자 답변인데, 답변 내용 중 '카드뉴스'나 '이미지'와 관련된 단어가 있으면 무시해 주세요. 대신, " +
-                "남은 문장에 관한 주요 뉴스 30개를 생성해 주세요. 문장 형식은 뉴스처럼 끝내줘";
+                "남은 문장에 관한 주요 뉴스 10개를 생성해 주세요. 문장 형식은 뉴스처럼 끝내줘 최대한 빨리 생성해줘";
         // OpenAI API 호출
-        String answer="";
+        String answer = "";
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -82,7 +86,7 @@ public class CardNewsService {
                     .header("Authorization", "Bearer " + openaiApiKey)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(new JSONObject()
-                            .put("model", "gpt-4")
+                            .put("model", "gpt-4o")
                             .put("messages", new JSONArray()
                                     .put(new JSONObject().put("role", "system").put("content", "너는 뉴스 주요문장을 생성해주는 사람이야"))
                                     .put(new JSONObject().put("role", "user").put("content", userInput)))
@@ -92,23 +96,22 @@ public class CardNewsService {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             JSONObject jsonResponse = new JSONObject(response.body());
-            answer= jsonResponse.getJSONArray("choices")
+            answer = jsonResponse.getJSONArray("choices")
                     .getJSONObject(0)
                     .getJSONObject("message")
                     .getString("content");
-
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return answer_list(answer);
+        return  CompletableFuture.completedFuture(answer_list(answer));
 
     }
 
 
-    List<String> answer_list(String answer){
+    List<String> answer_list(String answer) {
         // 결과를 담을 리스트 생성
         List<String> list = new ArrayList<>();
         // "1." 이후의 부분을 추출
@@ -156,4 +159,3 @@ public class CardNewsService {
         return url;
     }
 }
-

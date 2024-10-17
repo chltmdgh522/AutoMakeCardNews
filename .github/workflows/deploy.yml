@@ -19,50 +19,40 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle (without tests)
-        run: ./gradlew build -x test
-
-      - name: Create tarball
-        run: tar -czf amcn-0.0.1-SNAPSHOT.tar.gz -C build/libs amcn-0.0.1-SNAPSHOT.jar
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon -x test
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.EC2_KEY }}
 
+      - name: Add EC2 Host to Known Hosts
+        run: |
+          ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
       - name: Deploy to EC2
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          # Copy tarball to EC2
-          scp -C -o StrictHostKeyChecking=no amcn-0.0.1-SNAPSHOT.tar.gz $EC2_USER@$EC2_HOST:/home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.tar.gz
+          rsync -avz --progress build/libs/amcn-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/ubuntu/AutoMakeCardNews/amcn-0.0.1-SNAPSHOT.jar
 
-          # Connect to EC2 and deploy
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
             cd /home/ubuntu/AutoMakeCardNews
 
-            # Stop the running JAR process
             pkill -f 'java -jar amcn-0.0.1-SNAPSHOT.jar'
-            sleep 5  # 5초 대기
-
-            # Clean up old logs and JAR files
-            find . -name '*.log' -mtime +1 -exec rm -f {} \;
-            find . -name '*.jar' -not -name 'amcn-0.0.1-SNAPSHOT.jar' -exec rm -f {} \;
-
-            # Always remove old app.log
-            rm -f app.log
-
-            # Unpack the new JAR file
-            tar -xzf amcn-0.0.1-SNAPSHOT.tar.gz
-
-            # Run the new JAR file with limited memory
-            nohup java -Xmx512m -jar amcn-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
-            sleep 10  # 10초 대기
-          
-            # Restart Nginx
+            nohup java -jar amcn-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
             sudo systemctl restart nginx
           EOF

@@ -11,6 +11,7 @@
     <!-- Google Fonts 링크 추가 -->
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR&family=Do+Hyeon&family=Gugi&family=Jua&family=Black+Han+Sans&family=Gamja+Flower&family=Dokdo&family=Sunflower:wght@300;500;700&family=Poor+Story&display=swap"
           rel="stylesheet">
+    <link rel="stylesheet" href="/css/cardInformation.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/097a6f4f17.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
@@ -23,6 +24,7 @@
             cursor: pointer;
             font-size: 16px;
         }
+
 
         #popup5 {
             display: none;
@@ -86,6 +88,35 @@
             cursor: pointer;
         }
 
+
+        .center-block {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* 세로로 정렬 */
+            margin: 0; /* 기본 여백 제거 */
+        }
+
+        #time, .center-block > div {
+            margin: 10px; /* 위쪽 두 div 간격 없애기 */
+            padding: 0; /* 필요 시 패딩도 제거 */
+        }
+        .main_container{
+            width: 500px;
+            height: 400px;
+        }
+
+        title {
+            background-color: black;
+        }
+
+        #canvas2 {
+            background-color: whitesmoke;
+        }
+
+
+
+
         /* 오버레이 스타일 */
         .overlay-container {
             position: fixed;
@@ -117,7 +148,7 @@
 <header id="header">
     <a href="/" style="text-decoration: none">
         <!--    <img src="/logo/AMCNicon.png" alt="">-->
-        <p id="yamlogo">AMCN 카드뉴스생성</p>
+        <p id="yamlogo">AMCN</p>
     </a>
 </header>
 
@@ -154,6 +185,12 @@
                 <button id="reset" class="tool">
                     🗑
                     <span class="tooltip">Delete</span>
+                </button>
+            </li>
+            <li>
+                <button id="info" class="tool">
+                    ❓
+                    <span class="tooltip">Info</span>
                 </button>
             </li>
         </ul>
@@ -278,6 +315,31 @@
         <!--        <button id="saveJson">Save as JSON</button>-->
     </aside>
 </div>
+<!-- 이미지 및 오디오 저장 모달 -->
+<div id="popup5" class="popup5">
+    <div class="popup-content5">
+        <span id="close5" class="close-btn5">&times;</span>
+        <h2 style="font-weight: bold;">Choose Options</h2>
+        <form id="popup-form5" style="margin-top: 10px">
+            <label>
+                <input type="checkbox" name="options5" value="image">
+                카드뉴스
+            </label>
+            <label>
+                <input type="checkbox" name="options5" value="audio">
+                오디오
+            </label>
+            <label>
+                <input type="checkbox" name="options5" value="video">
+                동영상
+            </label>
+            <div class="button-group5">
+                <button type="submit" class="btn download-btn5">Download</button>
+                <button type="button" id="cancel5" class="btn cancel-btn5">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <!-- 텍스트 편집 모달 -->
 <div id="textEditPopup" class="popup2">
@@ -394,27 +456,6 @@
     </div>
 </div>
 
-<!-- 이미지 및 오디오 저장 모달 -->
-<div id="popup5" class="popup5">
-    <div class="popup-content5">
-        <span id="close5" class="close-btn5">&times;</span>
-        <h2 style="font-weight: bold;">Choose Options</h2>
-        <form id="popup-form5" style="margin-top: 10px">
-            <label>
-                <input type="checkbox" name="options5" value="image">
-                카드뉴스
-            </label>
-            <label>
-                <input type="checkbox" name="options5" value="audio">
-                TTS
-            </label>
-            <div class="button-group5">
-                <button type="submit" class="btn download-btn5">Download</button>
-                <button type="button" id="cancel5" class="btn cancel-btn5">Cancel</button>
-            </div>
-        </form>
-    </div>
-</div>
 
 <div id="overlay5"></div>
 <div id="filterPopup5">
@@ -454,12 +495,137 @@
 </div>
 
 <div class="overlay-container">
-    <div id="time">01:10</div>
     <div>이미지를 생성 중입니다. 잠시만 기다려주세요...</div>
-</div>
-<script>
+    <div id="time">00:40</div>
+    <div class="center-block">
 
-</script>
+        <canvas id="canvas2"> <!-- canvas는 그림, 이미지를 그릴 수 있게하는 태그 -->
+
+        </canvas>
+    </div>
+
+
+</div>
+
+<div class="popup-background150">
+    <!-- 팝업 컨테이너 -->
+    <div class="popup-container150">
+        <!-- 상단 중앙에 문의 문구 추가 -->
+        <div class="inquiry-text150">
+            <a href="/chat" style="color: black; text-decoration: none; font-weight: bold; font-size: large;">
+                ⭐문의하실게 있으면 이 문구를 클릭!⭐
+            </a>
+        </div>
+
+
+        <!-- 페이지 1 -->
+        <div class="page150 active150" id="page-1150">
+            <div class="page-content150" style="background-image: url('/info/img1.png');">
+                <div class="page-text150" style="font-weight: bold;">환영합니다! 이 설명서는 사용법을 안내해 드립니다!</div>
+            </div>
+        </div>
+        <!-- 페이지 2 -->
+        <div class="page150" id="page-2150">
+            <div class="page-content150" style="background-image: url('/info/img2.png');">
+
+            </div>
+        </div>
+        <!-- 페이지 3 -->
+        <div class="page150" id="page-3150">
+            <div class="page-content150" style="background-image: url('/info/img3.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-4150">
+            <div class="page-content150" style="background-image: url('/info/img4.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-5150">
+            <div class="page-content150" style="background-image: url('/info/img5.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-6150">
+            <div class="page-content150" style="background-image: url('/info/img6.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-7150">
+            <div class="page-content150" style="background-image: url('/info/img7.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-8150">
+            <div class="page-content150" style="background-image: url('/info/img8.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-9150">
+            <div class="page-content150" style="background-image: url('/info/img9.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-10150">
+            <div class="page-content150" style="background-image: url('/info/img10.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-11150">
+            <div class="page-content150" style="background-image: url('/info/img11.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-12150">
+            <div class="page-content150" style="background-image: url('/info/img11-2.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-13150">
+            <div class="page-content150" style="background-image: url('/info/img12.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-14150">
+            <div class="page-content150" style="background-image: url('/info/img13.png');">
+
+            </div>
+        </div>
+
+        <div class="page150" id="page-15150">
+            <div class="page-content150" style="background-image: url('/info/img14.png');">
+
+            </div>
+        </div>
+
+        <!-- 닫기 버튼 -->
+        <button class="close-button150" id="closeButton150">X</button>
+
+        <!-- 이전 버튼 -->
+        <button class="button150 prev150" id="prevButton150">이전</button>
+        <!-- 다음 버튼 -->
+        <button class="button150 next150" id="nextButton150">다음</button>
+
+        <!-- 페이지 번호 표시 -->
+        <div class="page-indicator150" style="color: red; font-weight: bold;" id="pageIndicator150">1/15</div>
+    </div>
+</div>
+
+
+<script src="/js/main.js"></script>
+
+
 <script src="/js/app.js"></script>
 <script>
 
@@ -560,7 +726,9 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    let interval; // 타이머 인터벌을 저장할 변수
+    let interval; // 타이머 인터벌을 저장할 전역 변수
+    let isTimerRunning = false; // 타이머 동작 여부를 확인할 변수
+
     function startTimer(duration, display) {
         let timer = duration, minutes, seconds;
 
@@ -569,6 +737,7 @@
         }
 
         interval = setInterval(function () {
+            isTimerRunning = true; // 타이머가 동작 중임을 표시
             minutes = parseInt(timer / 60, 10);
             seconds = parseInt(timer % 60, 10);
 
@@ -580,21 +749,37 @@
             if (--timer < 0) {
                 clearInterval(interval);
                 display.textContent = "00:00";
+                isTimerRunning = false; // 타이머가 끝났음을 표시
             }
         }, 1000);
     }
 
-
     $(document).ready(function () {
         let timeDisplay = $("#time");
-        let duration = 70; // 1분 10초 = 70초
+        let duration = 40; // 40초
         let textList = []; // 텍스트 리스트 저장 변수
         let textIndex = 0; // 현재 텍스트 인덱스
+
+        // 스페이스바 눌렀을 때 특정 동작 수행 (예: 캐릭터 점프 등)
+        $(document).keydown(function(e) {
+            if (e.code === 'Space') {
+                e.preventDefault(); // 기본 스페이스바 동작 방지
+                // 스페이스바 눌렀을 때 실행할 코드 (예: 점프)
+                console.log("스페이스바 눌림!");
+            }
+        });
+
+        // 이미지 생성 버튼 클릭
         $("#imageButton").click(function () {
+            // 타이머가 이미 실행 중이 아니라면 타이머 시작
+            if (!isTimerRunning) {
+                startTimer(duration, timeDisplay[0]);
+            }
+
             // 오버레이 표시
             $(".overlay-container").css("display", "flex");
-            // 타이머 시작
-            startTimer(duration, timeDisplay[0]);
+
+            // AJAX 요청 보내기
             $.ajax({
                 type: "POST",
                 url: "/image-create",
@@ -618,12 +803,12 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    alert("이미지 생성 중 오류가 발생했습니다 귀하가 작성한 문구는 AI 보안에 위배되어 실패했습니다. 확인을 눌러주시면 바로 새로고침 진행됩니다.");
+                    alert("이미지 생성 중 오류가 발생했습니다.");
                     console.log(xhr.responseText);
-                    // 5초 후에 페이지 새로고침
+                    // 1초 후에 페이지 새로고침
                     setTimeout(function () {
                         location.reload();
-                    }, 1000); // 5000ms = 5초
+                    }, 1000);
                 },
                 complete: function () {
                     // 오버레이 숨김
@@ -631,9 +816,10 @@
                 }
             });
         });
+
+        // 텍스트 추가 버튼 처리
         $("#addTexTAIButton2").click(function () {
             if (textList.length > 0) {
-                console.log("리스트다!!!")
                 if (textIndex < textList.length) {
                     $("#textInput").val(textList[textIndex]); // 텍스트 출력
                     textIndex++;
@@ -648,9 +834,10 @@
     });
 
 
+
 </script>
 
-<!--<script>
+<script>
     function addFilledSquare(x, y) {
         const lineWidth = ctx.lineWidth * 20; // Adjust size as needed
         const rect = {
@@ -664,7 +851,8 @@
         rectfillangles.push(rect);
         redrawCanvas();
     }
-</script>-->
+</script>
+
 
 <script>
     document.getElementById('save5').addEventListener('click', function() {
@@ -750,5 +938,69 @@
     });
 
 </script>
+
+<script>
+    let currentPage150 = 1;
+    const totalPages150 = 15;
+
+    const prevButton150 = document.getElementById('prevButton150');
+    const nextButton150 = document.getElementById('nextButton150');
+    const closeButton150 = document.getElementById('closeButton150');
+    const pages150 = document.querySelectorAll('.page150');
+    const pageIndicator150 = document.getElementById('pageIndicator150');
+    const popupBackground150 = document.querySelector('.popup-background150');
+
+    function updatePage150(direction) {
+        // 현재 페이지 숨기기
+        const currentElement150 = document.getElementById(`page-${currentPage150}150`);
+        currentElement150.classList.remove('active150');
+
+        // 페이지 변경
+        if (direction === 'next') {
+            currentPage150 = currentPage150 < totalPages150 ? currentPage150 + 1 : 1;
+        } else if (direction === 'prev') {
+            currentPage150 = currentPage150 > 1 ? currentPage150 - 1 : totalPages150;
+        }
+
+        // 새 페이지 보여주기
+        const nextElement150 = document.getElementById(`page-${currentPage150}150`);
+        nextElement150.classList.add('active150');
+
+        // 페이지 번호 업데이트
+        pageIndicator150.textContent = `${currentPage150}/${totalPages150}`;
+
+        // 마지막 페이지일 때 버튼 텍스트 변경
+        if (currentPage150 === totalPages150) {
+            nextButton150.textContent = '닫기';
+            nextButton150.removeEventListener('click', nextClickHandler);
+            nextButton150.addEventListener('click', () => popupBackground150.style.display = 'none');
+        } else {
+            nextButton150.textContent = '다음';
+            nextButton150.removeEventListener('click', closePopupHandler);
+            nextButton150.addEventListener('click', nextClickHandler);
+        }
+    }
+
+    function nextClickHandler() {
+        updatePage150('next');
+    }
+
+    function closePopupHandler() {
+        popupBackground150.style.display = 'none';
+    }
+
+    nextButton150.addEventListener('click', nextClickHandler);
+    prevButton150.addEventListener('click', () => updatePage150('prev'));
+    closeButton150.addEventListener('click', closePopupHandler);
+    // Info 버튼 클릭 시 팝업 보여주기
+    const infoButton = document.getElementById('info');
+
+    infoButton.addEventListener('click', () => {
+        popupBackground150.style.display = 'flex'; // 팝업을 보여줌
+    });
+
+</script>
+
 </body>
+
 </html>

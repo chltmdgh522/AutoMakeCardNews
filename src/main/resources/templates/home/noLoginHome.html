@@ -10,26 +10,30 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <!-- Open Graph Meta Tags -->
-    <meta property="og:url" content="https://www.feelbuddy.kr"/>
+    <meta property="og:url" content="https://www.amcn.kr"/>
     <meta property="og:title" content="AMCN"/>
     <meta property="og:description" content="AI를 활용해서 AMCN과 함께 카드뉴스를 마음껏 제작해보세요!"/>
     <meta property="og:type" content="website"/>
     <meta property="og:image" content="https://amcn.kr/logo/AMCNicon.png"/>
 
     <title>A.M.C.N</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
     <!-- Custom fonts for this template-->
     <script src="https://kit.fontawesome.com/097a6f4f17.js" crossorigin="anonymous"></script>
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-     <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link href="/css/home2.css" rel="stylesheet">
+    <link href="/css/home3.css" rel="stylesheet">
+
+
     <style>
 
         a {
@@ -137,7 +141,7 @@
 
                     <li class="nav-item dropdown no-arrow">
 
-                        <a class="nav-link dropdown-toggle" id="userDropdown" role="button"
+                        <a href="/login" class="nav-link dropdown-toggle" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">로그인 해주세요</span>
                             <img class="img-profile rounded-circle" src="/logo/AMCNicon.png">
@@ -154,122 +158,188 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid" id="contnet">
 
-
-                    <div class="mixed-color-box">
-                        <!-- 검색창 -->
-                        <div class="container mb-1">
-                            <div class="row justify-content-center">
-                                <div class="col-md-6">
-                                    <!-- 추가한 문구 -->
-                                    <p class="text-center mt-2" style="font-size: 1.8em; color: white;">원하시는 카드뉴스를
-                                        검색해보세요!</p>
-                                    <form method="get" id="searchForm">
-                                        <div class="input-group mt-3 custom-search">
-                                            <!-- 왼쪽 아이콘 -->
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-search"></i></span>
-                                            </div>
-                                            <!-- 검색창 -->
-                                            <input type="text" id="searchInput" class="form-control"
-                                                   placeholder="검색어를 입력하세요...">
-                                        </div>
-                                    </form>
-                                    <!-- 동그라미 아이콘들 -->
-                                    <div class="text-center mt-3 mb-1">
-                                        <!-- 첫 번째 그룹: 별 아이콘과 이미지 -->
-                                        <a href="/ai-image" style="text-decoration: none">
-                                            <div class="d-inline-block mr-5 menu10">
-                                                <span class="fa-stack fa-2x">
-                                                    <i class="fas fa-circle text-primary fa-stack-2x"></i>
-                                                    <i class="fas fa-star fa-stack-1x fa-inverse"></i> <!-- 별 아이콘 -->
-                                                </span>
-
-                                                <div class="mt-2" style="color: #4e73df">카드뉴스 생성</div>
-                                            </div>
-                                        </a>
-
-                                        <!-- 두 번째 그룹: 문서 아이콘과 텍스트 -->
-                                        <a href="/news" style="text-decoration: none">
-                                            <div class="d-inline-block mr-5 menu10">
-                                                <span class="fa-stack fa-2x">
-                                                    <i class="fas fa-circle text-success fa-stack-2x"></i>
-                                                    <i class="far fa-file-alt fa-stack-1x fa-inverse"></i>
-                                                    <!-- 문서 아이콘 -->
-                                                </span>
-                                                <div class="mt-2" style="color: #1cc88a">뉴스</div>
-                                            </div>
-                                        </a>
-
-                                        <!-- 세 번째 그룹: 좋아요 아이콘과 텍스트 -->
-                                        <a href="/community" style="text-decoration: none">
-                                            <div class="d-inline-block mr-5 menu10">
-                                                <span class="fa-stack fa-2x">
-                                                    <i class="fas fa-circle text-warning fa-stack-2x"></i>
-                                                    <i class="far fa-thumbs-up fa-stack-1x fa-inverse"></i>
-                                                    <!-- 좋아요 아이콘 -->
-                                                </span>
-                                                <div class="mt-2" style="color: #f6c23e">소셜 미디어</div>
-                                            </div>
-                                        </a>
-                                    </div>
-
-
+                    <div class="cobody">
+                        <div class="page1">
+                            <video class="page1_background_video" src="/home/main.mp4" muted="" autoplay="" loop=""></video>
+                            <div class="sub_page">
+                                <div class="page1_left">
+                                    <span>생성형 AI를 활용한 카드뉴스 만들기.</span>
+                                    <span>AMCN</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="thema mt-3 mb-5" style="display: flex; justify-content: space-between;">
-                        <span style="color: black; font-weight: bold;">인기 테마</span>
-                        <a th:href="|/cardnews|">
-                            <span style="color: black; font-weight: bold;">더보기</span>
-                        </a>
-                    </div>
-
-                    <!-- 내용 -->
-                    <div class="swiper-container">
-
-
-                        <div class="swiper-wrapper" style="padding-bottom: 75px;">
-                            <div th:each="news : ${cardPop}" class="swiper-slide">
-                                <a th:href="|/cardnews/${news.cardNewsId}|">
-                                    <img th:src="|/ai/image/${news.imageUrl}|" th:alt="${news.title}" width="100px"
-                                         height="100px">
-                                </a>
+                        <div class="page2">
+                            <div class="sub_page">
+                                <ul class="page2_items scroll_deactive">
+                                    <li>
+                                        <a href="">
+                                            <img class="page2_item_image" src="/home/img.png" />
+                                            <div class="page2_item_text">
+                                                <span>커뮤니티</span>
+                                                <span>다른사람들과</span>
+                                                <span>소통을 해보면서 지식을 보충해봐요</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <img class="page2_item_image" src="/home/img_1.png"  />
+                                            <div class="page2_item_text">
+                                                <span>뉴스</span>
+                                                <span>뉴스 기사를 확인하고,</span>
+                                                <span>뉴스 요약 모델을 통해 요약문을 얻어봐요</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <img class="page2_item_image" src="/home/img_2.png"  />
+                                            <div class="page2_item_text">
+                                                <span>카드뉴스 생성</span>
+                                                <span>생성형 AI를 활용해</span>
+                                                <span>카드뉴스를 만들고 간직해봐요</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
+                        <div class="page3">
+                            <div class="sub_page">
+                                <p class="page3_title scroll_deactive">
+                                    다른 곳에서 만날 수 없는
+                                    <br>
+                                    <span>AMCN</span>의 특별함
+                                </p>
+                                <ul class="page3_items">
+                                    <li class="scroll_deactive">
+<!--                                        <img class="page3_item_image" src="https://www.coupangeats.com/wp-content/uploads/2022/11/1-2.png">-->
 
-                        <!-- Add Navigation Buttons -->
-                        <div class="swiper-button-prev" style="padding-bottom: 20px;"></div>
-                        <div class="swiper-button-next" style="padding-bottom: 20px;"></div>
+                                        <div class="swiper page3_item_image">
+                                            <div class="swiper-wrapper">
+                                                <div class="swiper-slide" th:each="pop : ${cardPop}">
+                                                    <img th:src="|/ai/image/${pop.imageUrl}|"/>
+                                                    <div class="cost" style="color: black;" th:text="${pop.member.name}">from $230 per group</div>
+                                                    <div class="overlay23">
+                                                        <h1 th:text="${pop.title}">Walking Tour in Florence</h1>
+                                                        <p th:text="${pop.content}">
+                                                            Discover the fascinating beauty of this historic city by
+                                                            strolling through the rich cultural tapestry that makes Florence
+                                                            a timeless destination.
+                                                        </p>
 
-
-                        <!-- Add Pagination -->
-                        <div class="swiper-pagination"></div>
-
-                    </div>
-
-                    <div class="thema2 mt-5 mb-3">
-                        <span style="color: black; font-weight: bold;">최근 테마</span>
-                    </div>
-
-                    <div class="swiper-container myCardnews-swiper" style="margin-bottom: 20px;">
-                        <div class="swiper-wrapper" style="padding-bottom: 75px;">
-                            <div th:each="my : ${cardnews}" class="swiper-slide">
-                                <a th:href="|/cardnews/${my.cardNewsId}|">
-                                    <img th:src="|/ai/image/${my.imageUrl}|" alt="Image 1" width="100px" height="100px">
-
-                                </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="page3_item_text">
+                                            <div>
+                                                <span>실패 없는 이미지 생성</span>
+                                                <h3>DALL-E</h3>
+                                                <p>사용자가 원하는 카드뉴스를
+                                                    <br>
+                                                    생성할 수 있게 했어요.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="scroll_deactive">
+                                        <div class="page3_item_text">
+                                            <div style="left: 40px;">
+                                                <span>정확한 요약 모델</span>
+                                                <h3>Kobart</h3>
+                                                <p>정확도가 75%인
+                                                    <br>
+                                                    AMCN의 뉴스 요약 모델을 활용해 요약문을 갖고갑시다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <img class="page3_item_image" src="/home/img_3.png" >
+                                    </li>
+                                    <li class="scroll_deactive">
+                                        <img class="page3_item_image" src="/home/img_4.png" >
+                                        <div class="page3_item_text">
+                                            <div>
+                                                <span>게임</span>
+                                                <h3>3종류의 게임</h3>
+                                                <p>숫자 야구 게임, 숫자 맞추기 게임, 벽돌 깨기 게임을 통해
+                                                    <br>
+                                                    재미를 즐겨요.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-
-                        <!-- Navigation Buttons -->
-                        <div class="swiper-button-prev" style="padding-bottom: 20px;"></div>
-                        <div class="swiper-button-next" style="padding-bottom: 20px;"></div>
-
-                        <!-- Pagination -->
-                        <div class="swiper-pagination"></div>
+                        <div class="page4">
+                            <div class="sub_page">
+                                <div class="page4_text scroll_deactive">
+                                    <p>AMCN이 바꿔가는
+                                        <br>
+                                        카드뉴스 자동 제작
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page5">
+                            <div class="sub_page">
+                                <p class="page5_title scroll_deactive">
+                                    더 좋은 경험을 위한
+                                    <br>
+                                    <span>AMCN</span>의 새로운 시도
+                                </p>
+                                <ul class="page5_items">
+                                    <li class="scroll_deactive">
+                                        <img class="page5_item_video" src="/home/33.gif" muted="" autoplay="" loop=""/>
+                                        <div class="page5_item_text">
+                                            <div>
+                                                <span>생성시간 최소화</span>
+                                                <h3>70초 ➡️ 30초</h3>
+                                                <p>고객님들을 위해 카드뉴스 생성시간을
+                                                    <br>
+                                                    최소화하고 있어요.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="scroll_deactive">
+                                        <div class="page5_item_text">
+                                            <div>
+                                                <span>카드뉴스 소장</span>
+                                                <h3>동영상, 사진</h3>
+                                                <p>고객님이 만든 카드뉴스를
+                                                    <br>
+                                                    고객님이 소장하도록 구현했어요.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <img class="page5_item_video" src="/home/2.gif" muted="" autoplay="" loop=""/>
+                                    </li>
+                                    <li class="scroll_deactive">
+                                        <img class="page5_item_video" src="/home/1.gif" muted="" autoplay="" loop=""/>
+                                        <div class="page5_item_text">
+                                            <div>
+                                                <span>실시간 관리자 채팅</span>
+                                                <h3>쉽고 편한 고객 문의</h3>
+                                                <p>단 한번에 입력으로
+                                                    <br>
+                                                    관리자랑 대화를 해보세요.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+
+
+
+
+
+
+
 
                 </div>
 
@@ -285,59 +355,31 @@
 
 
 </div>
-<!-- End of Page Wrapper -->
 
 
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/js/home2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
-
-
-<!-- Swiper JS -->
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<!-- Initialize Swiper -->
 <script>
-    var swiper = new Swiper('.swiper-container:not(.myCardnews-swiper)', {
-        pagination: {
-            el: '.swiper-pagination',
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        slidesPerView: 5,
-        centeredSlides: true,
-        loop: true,
-        loopedSlides: 5,
-        autoplay: {
-            delay: 2000, // 3초 간격으로 슬라이드 넘김
-        },
-    });
+    // 애니메이션이 적용될 요소를 배열에 저장함.
+    const animation_contents = document.querySelectorAll('.scroll_deactive');
+    let animation_count = 0; // 애니메이션이 적용된 요소의 개수
 
-    var swiper2 = new Swiper('.myCardnews-swiper', {
-        pagination: {
-            el: '.swiper-pagination',
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        slidesPerView: 3,
-        centeredSlides: true,
-        loop: true,
-        loopedSlides: 3,
-        autoplay: {
-            delay: 3000, // 5초 간격으로 슬라이드 넘김
-        },
+    // 스크롤 이벤트 등록
+    window.addEventListener('scroll', function(){
+        // scrollOffset 변수에 화면에 표시되는 페이지의 가장 아래 위치를 저장함.
+        var scrollOffset = window.innerHeight + document.documentElement.scrollTop;
+        console.log(scrollOffset);
+        //console.log(window.pageYOffset + animation_contents[animation_count].getBoundingClientRect().top);
+        if (animation_count < animation_contents.length){
+            var element_offset = window.pageYOffset + animation_contents[animation_count].getBoundingClientRect().top;
+            if (element_offset < scrollOffset){
+                animation_contents[animation_count].classList.add('scroll_active');
+                animation_count++;
+            }
+        }
     });
 </script>
-
 
 <script>
     document.getElementById('searchForm').addEventListener('submit', function (event) {
@@ -350,5 +392,6 @@
         window.location.href = fullUrl; // 해당 URL로 이동
     });
 </script>
+
 </body>
 </html>

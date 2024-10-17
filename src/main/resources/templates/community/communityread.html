@@ -236,7 +236,9 @@
                             <hr>
                             <div style="margin-left: 14px;   color: black;">
                                 <div class="post-content">
-                                    <div th:utext="${board.substance}" class="dynamic-textarea ql-editor">
+                                    <div th:utext="${board.substance}" class="dynamic-textarea ql-editor"
+                                         style="overflow: hidden;"
+                                    >
                                         여기에는 게시글의 내용이 들어갑니다. Lorem ipsum dolor sit amet, consectetur adipiscing
                                         elit.
                                         Nulla vitae nisi nec est pulvinar congue non non enim. Curabitur interdum
@@ -278,7 +280,7 @@
                                         <textarea class="form-control custom-textarea" style=" border: 1px solid black;  border-radius: 8px;
 
                                         padding: .375rem .75rem;" rows="2"
-                                                  placeholder="댓글을 입력하세요" required th:field="*{substance}"></textarea>
+                                                  placeholder="댓글을 입력하세요" required th:field="*{substance}" ></textarea>
                                         <div class="input-group-append" style="margin-left: 5px;">
                                             <button type="submit" class="btn btn-dark">댓글 남기기</button>
                                         </div>
@@ -313,7 +315,7 @@
                                     </a>
                                     <div class="mt-2"></div>
                                     <textarea style="font-weight: bold; color: black;" th:text="${list.substance}"
-                                              class="dynamic-textarea" rows="1">안녕하세요 반가워요</textarea>
+                                              class="dynamic-textarea" rows="1" readonly>안녕하세요 반가워요</textarea>
                                     <div class="icon">
                                         <i class="far fa-clock" style="color: black;"></i> <!-- 시간 아이콘 -->
                                         <span

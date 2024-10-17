@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,14 +27,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 @Controller
 @Slf4j
@@ -43,6 +44,7 @@ public class CardNewsMakeController {
     private final MemberRepository memberRepository;
     private final CardNewsRepository cardNewsRepository;
     private final FileService fileService;
+    Executor executor = Executors.newFixedThreadPool(10); // 필요에 따라 스레드 수 조정
     private static String jsonname;
     @Value("${file.dir}")
     private String fileDir;
@@ -181,22 +183,10 @@ public class CardNewsMakeController {
     public ResponseEntity<ImageResponse> generateImage(@RequestParam String prompt, Model model,
                                                        @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
         try {
-            // 비동기 호출
-            CompletableFuture<List<String>> textFuture = CompletableFuture.supplyAsync(() -> {
-                try {
-                    return cardNewsService.generateText(prompt);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            // 비동기 호출 (이미 서비스에서 CompletableFuture를 반환하므로 supplyAsync는 필요 없음)
+            CompletableFuture<List<String>> textFuture = cardNewsService.generateText(prompt);
+            CompletableFuture<String> imageUrlFuture = cardNewsService.generatePicture(prompt);
 
-            CompletableFuture<String> imageUrlFuture = CompletableFuture.supplyAsync(() -> {
-                try {
-                    return cardNewsService.generatePicture(prompt);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
 
             // 두 작업 완료 대기
             CompletableFuture.allOf(textFuture, imageUrlFuture).join();
@@ -214,7 +204,7 @@ public class CardNewsMakeController {
             String path = fileService.saveImageFromUrl(url);
 
             String replace = path.replace('\\', '/');
-            String substringPath = replace.substring(61);
+            String substringPath = replace.substring(59);
             loginMember.setOriginalUrl(substringPath);
             loginMember.setAiImg(true);
             memberRepository.updateUrl(loginMember);
@@ -306,25 +296,25 @@ public class CardNewsMakeController {
     @PostMapping("/tts")
     public void generateTTS(@RequestBody Map<String, String> request, HttpServletResponse response) {
         String text = request.get("text");
-        String outputFileName = "C:/Users/82103/AutoMakeCardNews/output.mp3";  // 생성할 MP3 파일명
-        String pythonScriptPath = "C:/Users/82103/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py"; // Python 스크립트 경로
+        String outputFileName = "/home/ubuntu/AutoMakeCardNews/output.mp3";  // 생성할 MP3 파일명
+        String pythonScriptPath = "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py"; // Python 스크립트 경로
 
         try {
             // Python 스크립트를 호출하여 TTS 파일 생성
             log.info("tts1");
 
-            String[] command = {"C:/Users/82103/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python",
-                    "C:/Users/82103/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py",
+            String[] command = {"/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python",
+                    "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/tts.py",
                     text, outputFileName};
             log.info("tts2");
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             Process process = processBuilder.start();
-                process.waitFor();
+            process.waitFor();
 
-                // 생성된 파일을 클라이언트에게 전송
-                File mp3File = new File(outputFileName);
-                if (mp3File.exists()) {
-                    response.setContentType("audio/mpeg");
+            // 생성된 파일을 클라이언트에게 전송
+            File mp3File = new File(outputFileName);
+            if (mp3File.exists()) {
+                response.setContentType("audio/mpeg");
                 response.setHeader("Content-Disposition", "attachment; filename=tts.mp3");
 
                 Files.copy(mp3File.toPath(), response.getOutputStream());
@@ -346,5 +336,95 @@ public class CardNewsMakeController {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
-}
 
+    private static final String IMAGE_PATH = "/home/ubuntu/AutoMakeCardNews/video_image.png";
+    private static final String AUDIO_PATH = "C:/Users/chltm/Github/amcn";
+    private static final String VIDEO_OUTPUT_PATH = "/home/ubuntu/AutoMakeCardNews/video.mp4";
+    private static File ttsFile = null;
+
+    @ResponseBody
+    @PostMapping("/video")
+    public ResponseEntity<byte[]> createVideo(@RequestParam("imageData") String imageData,
+                                              @RequestParam("audioFile") MultipartFile audioFile) {
+        try {
+            // 1. 이미지 저장 (Base64로 인코딩된 데이터를 디코딩해서 저장)
+            byte[] imageBytes = Base64.getDecoder().decode(imageData.split(",")[1]);
+            File imageFile = new File(IMAGE_PATH); // 이미지 저장 경로
+            java.nio.file.Files.write(imageFile.toPath(), imageBytes);
+
+
+            // 2. 파이썬 스크립트 실행 (비디오 생성)
+            ProcessBuilder pb = new ProcessBuilder(
+                    "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python",
+                    "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/video.py");
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+
+            // 파이썬 스크립트 실행 중 출력 로그 읽기
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                log.info(line);
+            }
+
+            int exitCode = process.waitFor();
+            if (exitCode != 0) {
+                log.info("파이썬 스크립트 실행 실패: " + exitCode);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            log.info("비디오 생성 완료");
+
+            // 3. 생성된 비디오 파일 클라이언트로 전송
+            File videoFile = new File(VIDEO_OUTPUT_PATH); // 비디오 파일 경로
+            if (!videoFile.exists()) {
+                System.err.println("비디오 파일을 찾을 수 없습니다: " + videoFile.getPath());
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            byte[] videoContent = java.nio.file.Files.readAllBytes(videoFile.toPath());
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "attachment; filename=video.mp4");
+
+            // 생성된 파일 삭제
+            if (videoFile.delete()) {
+                log.info("File {} deleted successfully", VIDEO_OUTPUT_PATH);
+                ttsFile.delete();
+
+            } else {
+                log.warn("Failed to delete file {}", VIDEO_OUTPUT_PATH);
+            }
+
+            return new ResponseEntity<>(videoContent, headers, HttpStatus.OK);
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @PostMapping("/tts2")
+    public ResponseEntity<String> generateTTS(@RequestBody Map<String, String> request) {
+        String text = request.get("text");
+
+        try {
+            // 파이썬 스크립트 실행 (TTS 생성)
+            ProcessBuilder pb = new ProcessBuilder("/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/venv/bin/python",
+                    "/home/ubuntu/AutoMakeCardNews/src/main/java/amcn/amcn/Python/pythonAI/tts/video_tts.py", text);
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+            process.waitFor();
+
+            ttsFile = new File("/home/ubuntu/AutoMakeCardNews/video_tts.mp3");
+            if (ttsFile.exists()) {
+                return new ResponseEntity<>("TTS 파일 생성 완료", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("TTS 파일 생성 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("오류 발생", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
