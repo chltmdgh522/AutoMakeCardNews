@@ -13,7 +13,7 @@
           rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/097a6f4f17.js" crossorigin="anonymous"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <style>
         #save5 {
             background-color: black;
@@ -327,12 +327,23 @@
     </button>
 </div>
 
-<!-- 사각형 지정 팝업 -->
+<!-- 빈사각형 지정 팝업 -->
 <div id="colorPopup" class="popup3">
     <div class="popup3-content">
         <span id="closeColorPopup" class="close">X</span>
-        <label for="rectColorPicker">사각형 색깔:</label>
-        <input type="color" id="rectColorPicker">
+        <h3 style="font-family: 'Jua', sans-serif; padding-left: 5px; margin-bottom: 15px;">
+            <i class="fas fa-square" style="margin-right: 5px;"></i>
+            빈사각형 색깔
+        </h3>
+        <div class="color-palette" style="margin-bottom: 15px;">
+            <div class="color-circle" style="background-color: #FF0000; margin-right: 35px;" data-color="#FF0000"></div>
+            <div class="color-circle" style="background-color: #00FF00; margin-right: 35px;" data-color="#00FF00"></div>
+            <div class="color-circle" style="background-color: #0000FF; margin-right: 35px;" data-color="#0000FF"></div>
+            <div class="color-circle" style="background-color: #FFFF00; margin-right: 35px;" data-color="#FFFF00"></div>
+            <div class="color-circle rainbow-circle" id="rainbowCircle1"> + </div> <!-- 무지개 버튼 -->
+            <!-- 기본 색상 선택기 (투명하게 처리) -->
+            <input type="color" id="rectColorPicker" class="color-picker-transparent">
+        </div>
         <button class="rect_button" id="updateColorButton">변경</button>
     </div>
 </div>
@@ -341,8 +352,20 @@
 <div id="colorPopup2" class="popup4">
     <div class="popup4-content">
         <span id="closeColorPopup2" class="close2">X</span>
-        <label for="rectColorPicker2">사각형 색깔:</label>
-        <input type="color" id="rectColorPicker2">
+        <h3 style="font-family: 'Jua', sans-serif; padding-left: 5px; margin-bottom: 15px;">
+            <i class="fas fa-square" style="margin-right: 5px;"></i>
+            사각형 색깔
+        </h3>
+        <!-- 색상 팔레트 추가 -->
+        <div class="color-palette" style="margin-bottom: 15px;">
+            <div class="color-circle" style="background-color: #FF0000; margin-right: 35px;" data-color="#FF0000"></div>
+            <div class="color-circle" style="background-color: #00FF00; margin-right: 35px;" data-color="#00FF00"></div>
+            <div class="color-circle" style="background-color: #0000FF; margin-right: 35px;" data-color="#0000FF"></div>
+            <div class="color-circle" style="background-color: #FFFF00; margin-right: 35px;" data-color="#FFFF00"></div>
+            <div class="color-circle rainbow-circle" id="rainbowCircle2"> + </div> <!-- 무지개 버튼 -->
+            <!-- 기본 색상 선택기 (투명하게 처리) -->
+            <input type="color" id="rectColorPicker2" class="color-picker-transparent">
+        </div>
         <button class="rect_button2" id="updateColorButton2">변경</button>
     </div>
 </div>
@@ -350,9 +373,23 @@
 <!-- 펜 색깔 지정 팝업 -->
 <div id="colorPopup3" class="popup5">
     <div class="popup5-content">
-        <span id="closeColorPopup3" class="close3">X</span>
-        <label for="rectColorPicker3">펜 색깔:</label>
-        <input type="color" id="rectColorPicker3">
+        <span id="closeColorPopup3" class="close3">
+            <i class="fas fa-times"></i>
+        </span>
+        <h3 style="font-family: 'Jua', sans-serif; padding-left: 5px; margin-bottom: 15px;">
+            <i class="fas fa-paint-brush" style="margin-right: 5px;"></i>
+            펜 색상
+        </h3>
+        <!-- 색상 팔레트 추가 -->
+        <div class="color-palette" style="margin-bottom: 15px;">
+            <div class="color-circle" style="background-color: #FF0000; margin-right: 35px;" data-color="#FF0000"></div>
+            <div class="color-circle" style="background-color: #00FF00; margin-right: 35px;" data-color="#00FF00"></div>
+            <div class="color-circle" style="background-color: #0000FF; margin-right: 35px;" data-color="#0000FF"></div>
+            <div class="color-circle" style="background-color: #FFFF00; margin-right: 35px;" data-color="#FFFF00"></div>
+            <div class="color-circle rainbow-circle" id="rainbowCircle3"> + </div> <!-- 무지개 버튼 -->
+            <!-- 기본 색상 선택기 (투명하게 처리) -->
+            <input type="color" id="rectColorPicker3" class="color-picker-transparent">
+        </div>
         <button class="rect_button3" id="updateColorButton3">변경</button>
     </div>
 </div>
@@ -613,7 +650,7 @@
 
 </script>
 
-<script>
+<!--<script>
     function addFilledSquare(x, y) {
         const lineWidth = ctx.lineWidth * 20; // Adjust size as needed
         const rect = {
@@ -627,7 +664,7 @@
         rectfillangles.push(rect);
         redrawCanvas();
     }
-</script>
+</script>-->
 
 <script>
     document.getElementById('save5').addEventListener('click', function() {
@@ -691,5 +728,27 @@
     dragElement(document.querySelector("#filterPopup5"));  // 필터 선택 팝업
 </script>
 
+<script>
+    // 빈사각형 무지개 버튼 클릭 시 색상 선택기 투명도를 없앰
+    document.getElementById('rainbowCircle1').addEventListener('click', function() {
+        const colorPicker = document.getElementById('rectColorPicker');
+        colorPicker.style.opacity = '1';  // 투명도 없앰
+        colorPicker.click();  // 기본 색상 선택기 창을 바로 열기
+    });
+    // 색채운 사각형 무지개 버튼 클릭 시 색상 선택기 투명도를 없앰
+    document.getElementById('rainbowCircle2').addEventListener('click', function() {
+        const colorPicker = document.getElementById('rectColorPicker2');
+        colorPicker.style.opacity = '1';  // 투명도 없앰
+        colorPicker.click();  // 기본 색상 선택기 창을 바로 열기
+    });
+
+    // 펜 색깔 지정 팝업 무지개 버튼 클릭 시 색상 선택기 투명도를 없앰
+    document.getElementById('rainbowCircle3').addEventListener('click', function() {
+        const colorPicker = document.getElementById('rectColorPicker3');
+        colorPicker.style.opacity = '1';  // 투명도 없앰
+        colorPicker.click();  // 기본 색상 선택기 창을 바로 열기
+    });
+
+</script>
 </body>
 </html>
