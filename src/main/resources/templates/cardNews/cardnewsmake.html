@@ -126,7 +126,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
             z-index: 1000;
-            display: none;
+            display: flex;
             flex-direction: column; /* 수직 정렬 */
             justify-content: center; /* 수평 중앙 정렬 */
             align-items: center; /* 수직 중앙 정렬 */
@@ -500,8 +500,10 @@
     <div class="center-block">
 
         <canvas id="canvas2"> <!-- canvas는 그림, 이미지를 그릴 수 있게하는 태그 -->
-
         </canvas>
+        <span style="position: absolute; top: 45%; left: 50%; transform: translateX(-50%); color: black; font-weight: bold">
+        ⬆️ 방향키를 누르면서 장애물을 피하세요!
+            </span>
     </div>
 
 
@@ -759,15 +761,6 @@
         let duration = 40; // 40초
         let textList = []; // 텍스트 리스트 저장 변수
         let textIndex = 0; // 현재 텍스트 인덱스
-
-        // 스페이스바 눌렀을 때 특정 동작 수행 (예: 캐릭터 점프 등)
-        $(document).keydown(function(e) {
-            if (e.code === 'Space') {
-                e.preventDefault(); // 기본 스페이스바 동작 방지
-                // 스페이스바 눌렀을 때 실행할 코드 (예: 점프)
-                console.log("스페이스바 눌림!");
-            }
-        });
 
         // 이미지 생성 버튼 클릭
         $("#imageButton").click(function () {

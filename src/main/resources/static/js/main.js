@@ -166,7 +166,8 @@ function resetGame() {
 
 // Event
 document.addEventListener('keydown', function(e){
-    if(e.code==='Space'){
-        jumping=true;
+    if(e.code === 'ArrowUp'){
+        jumping = true;
     }
-})
+});
+
