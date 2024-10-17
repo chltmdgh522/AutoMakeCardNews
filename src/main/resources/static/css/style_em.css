@@ -1,3 +1,4 @@
+
 @import 'reset.css';
 
 html {
@@ -587,13 +588,13 @@ a:visited {
     z-index: 9;
     left: 50%;
     top: 50%;
-    transform: translate(5%, -50%);
+    transform: translate(-50%, -50%);
     background-color: #f8f9fa;
     padding: 20px;
     border-radius: 10px;
     border: 1px solid #dee2e6;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 350px; /* 팝업을 조금 넓게 조정 */
 }
 
 .popup3-content {
@@ -652,21 +653,19 @@ input[type="color"] {
 }
 
 
-
-
 .popup4 {
     display: none;
     position: fixed;
     z-index: 9;
     left: 50%;
     top: 50%;
-    transform: translate(5%, -50%);
+    transform: translate(-50%, -50%);
     background-color: #f8f9fa;
     padding: 20px;
     border-radius: 10px;
     border: 1px solid #dee2e6;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 350px; /* 팝업을 조금 넓게 조정 */
 }
 
 .popup4-content {
@@ -725,31 +724,75 @@ input[type="color"] {
 }
 
 
-
-
+/* 펜 색상 팝업 스타일 부분  */
 .popup5 {
     display: none;
     position: fixed;
     z-index: 9;
     left: 50%;
     top: 50%;
-    transform: translate(5%, -50%);
+    transform: translate(-50%, -50%);
     background-color: #f8f9fa;
     padding: 20px;
     border-radius: 10px;
     border: 1px solid #dee2e6;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 350px; /* 팝업을 조금 넓게 조정 */
 }
 
 .popup5-content {
     position: relative;
 }
 
+/* 색상 팔레트 스타일 */
+.color-palette {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    position: relative; /* 상대 위치 */
+}
+
+.color-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.color-picker-transparent {
+    opacity: 0;
+    position: absolute;  /* 절대 위치로 배치 */
+    top: 0;
+    left: 100%;  /* 부모 요소 오른쪽에 배치 */
+    z-index: 1;
+}
+
+
+.color-circle:hover {
+    border-color: #007bff; /* 호버 시 파란색 테두리 */
+}
+
+.rainbow-circle {
+    background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+    margin-right: 0; /* 무지개 버튼은 마지막이므로 오른쪽 여백 없음 */
+}
+
+/* input[type="color"]는 기본적으로 숨김 */
+.hidden {
+    display: none;
+}
+.color-picker-position {
+    position: absolute;
+    z-index: 10;
+}
+
 .close3 {
     position: absolute;
-    right: 10px;
-    top: -2px;
+    right: 1px;
+    top: -3px;
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
@@ -774,10 +817,10 @@ label {
 }
 
 input[type="color"] {
-    width: 100%;
-    padding: 5px;
-    margin-bottom: 15px;
-    border: 1px solid #ced4da;
+    width: 1%;
+    padding: 1px;
+    margin-bottom: 1px;
+    border: 1px solid #fff;
     border-radius: 5px;
 }
 
@@ -796,7 +839,6 @@ input[type="color"] {
 .rect_button3:hover {
     background-color: #0056b3;
 }
-
 
 .tooltip5 {
     display: none;
@@ -843,11 +885,6 @@ input[type="color"] {
     font-family: "Jua",sans-serif;
 }
 
-
-
-
-
-
 #save5 {
     background-color: black;
     color: white;
@@ -861,9 +898,8 @@ input[type="color"] {
 #popup5 {
     display: none;
     position: fixed;
-
-    left: -90px;
-    width: 100%;
+    left: 800px;
+    width: 120%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
@@ -1052,9 +1088,10 @@ input[type="color"] {
     gap: 10px;
 }
 
-#applyFilter5, #closePopup5 {
-    background-color: #4F29F0;
-    color: white;
+/* 버튼 스타일 */
+#applyFilter5 {
+    background-color: #af77d1; /* 선명한 보라색 */
+    color: #FFFFFF; /* 흰색 글씨 */
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -1063,7 +1100,21 @@ input[type="color"] {
     font-size: 18px; /* 글씨 크기를 키움 */
 }
 
-#applyFilter5:hover, #closePopup5:hover {
-    background-color: #3A1CB2;
+#closePopup5 {
+    background-color: #97a5ac; /* 연한 회색 */
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 50%;
+    font-size: 18px; /* 글씨 크기를 키움 */
 }
 
+#applyFilter5:hover {
+    background-color: #9620a8; /* 적용 버튼 호버 시 색상 변경 */
+}
+
+#closePopup5:hover {
+    background-color: #797575; /* 닫기 버튼 호버 시 색상 변경 */
+}

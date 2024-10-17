@@ -13,11 +13,9 @@
           rel="stylesheet">
     <link rel="stylesheet" href="/css/cardInformation.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/097a6f4f17.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <style>
-
-
-
-
         #save5 {
             background-color: black;
             color: white;
@@ -31,9 +29,8 @@
         #popup5 {
             display: none;
             position: fixed;
-
-            left: -90px;
-            width: 100%;
+            left: 800px;
+            width: 120%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             justify-content: center;
@@ -144,6 +141,7 @@
             margin-bottom: 10px; /* 타이머와 문구 사이 간격 */
         }
     </style>
+
 </head>
 
 <body>
@@ -242,8 +240,6 @@
                     </button>
                 </form>
             </div>
-
-
         </li>
         <ul class='files'>
             <li><input type="file" accept="image/*" id='file'/></li>
@@ -253,10 +249,12 @@
             </li>
         </ul>
     </aside>
+
     <main>
         <canvas id="imageCanvas"></canvas>
         <button id="speakerButton" class="speaker-btn">🔊</button>
     </main>
+
     <aside class="tools_sett">
         <div class="container" style="margin-bottom: -138px;">
             <input type="color" id="text_color"/>
@@ -310,15 +308,11 @@
                 </select>
                 <button id="addTexTAIButton2" style="background-color: red; margin-bottom: 5px;">AI 문구 생성</button>
                 <button id="addTextButton">텍스트 추가</button>
-
-
             </div>
         </div>
-
         <!--        <input type="file" id="loadJsonFile" accept="application/json">-->
         <!--        <button id="loadJson">Load from JSON</button>-->
         <!--        <button id="saveJson">Save as JSON</button>-->
-
     </aside>
 </div>
 <!-- 이미지 및 오디오 저장 모달 -->
@@ -395,12 +389,23 @@
     </button>
 </div>
 
-<!-- 사각형 지정 팝업 -->
+<!-- 빈사각형 지정 팝업 -->
 <div id="colorPopup" class="popup3">
     <div class="popup3-content">
         <span id="closeColorPopup" class="close">X</span>
-        <label for="rectColorPicker">사각형 색깔:</label>
-        <input type="color" id="rectColorPicker">
+        <h3 style="font-family: 'Jua', sans-serif; padding-left: 5px; margin-bottom: 15px;">
+            <i class="fas fa-square" style="margin-right: 5px;"></i>
+            빈사각형 색깔
+        </h3>
+        <div class="color-palette" style="margin-bottom: 15px;">
+            <div class="color-circle" style="background-color: #FF0000; margin-right: 35px;" data-color="#FF0000"></div>
+            <div class="color-circle" style="background-color: #00FF00; margin-right: 35px;" data-color="#00FF00"></div>
+            <div class="color-circle" style="background-color: #0000FF; margin-right: 35px;" data-color="#0000FF"></div>
+            <div class="color-circle" style="background-color: #FFFF00; margin-right: 35px;" data-color="#FFFF00"></div>
+            <div class="color-circle rainbow-circle" id="rainbowCircle1"> + </div> <!-- 무지개 버튼 -->
+            <!-- 기본 색상 선택기 (투명하게 처리) -->
+            <input type="color" id="rectColorPicker" class="color-picker-transparent">
+        </div>
         <button class="rect_button" id="updateColorButton">변경</button>
     </div>
 </div>
@@ -409,8 +414,20 @@
 <div id="colorPopup2" class="popup4">
     <div class="popup4-content">
         <span id="closeColorPopup2" class="close2">X</span>
-        <label for="rectColorPicker2">사각형 색깔:</label>
-        <input type="color" id="rectColorPicker2">
+        <h3 style="font-family: 'Jua', sans-serif; padding-left: 5px; margin-bottom: 15px;">
+            <i class="fas fa-square" style="margin-right: 5px;"></i>
+            사각형 색깔
+        </h3>
+        <!-- 색상 팔레트 추가 -->
+        <div class="color-palette" style="margin-bottom: 15px;">
+            <div class="color-circle" style="background-color: #FF0000; margin-right: 35px;" data-color="#FF0000"></div>
+            <div class="color-circle" style="background-color: #00FF00; margin-right: 35px;" data-color="#00FF00"></div>
+            <div class="color-circle" style="background-color: #0000FF; margin-right: 35px;" data-color="#0000FF"></div>
+            <div class="color-circle" style="background-color: #FFFF00; margin-right: 35px;" data-color="#FFFF00"></div>
+            <div class="color-circle rainbow-circle" id="rainbowCircle2"> + </div> <!-- 무지개 버튼 -->
+            <!-- 기본 색상 선택기 (투명하게 처리) -->
+            <input type="color" id="rectColorPicker2" class="color-picker-transparent">
+        </div>
         <button class="rect_button2" id="updateColorButton2">변경</button>
     </div>
 </div>
@@ -418,9 +435,23 @@
 <!-- 펜 색깔 지정 팝업 -->
 <div id="colorPopup3" class="popup5">
     <div class="popup5-content">
-        <span id="closeColorPopup3" class="close3">X</span>
-        <label for="rectColorPicker3">펜 색깔:</label>
-        <input type="color" id="rectColorPicker3">
+        <span id="closeColorPopup3" class="close3">
+            <i class="fas fa-times"></i>
+        </span>
+        <h3 style="font-family: 'Jua', sans-serif; padding-left: 5px; margin-bottom: 15px;">
+            <i class="fas fa-paint-brush" style="margin-right: 5px;"></i>
+            펜 색상
+        </h3>
+        <!-- 색상 팔레트 추가 -->
+        <div class="color-palette" style="margin-bottom: 15px;">
+            <div class="color-circle" style="background-color: #FF0000; margin-right: 35px;" data-color="#FF0000"></div>
+            <div class="color-circle" style="background-color: #00FF00; margin-right: 35px;" data-color="#00FF00"></div>
+            <div class="color-circle" style="background-color: #0000FF; margin-right: 35px;" data-color="#0000FF"></div>
+            <div class="color-circle" style="background-color: #FFFF00; margin-right: 35px;" data-color="#FFFF00"></div>
+            <div class="color-circle rainbow-circle" id="rainbowCircle3"> + </div> <!-- 무지개 버튼 -->
+            <!-- 기본 색상 선택기 (투명하게 처리) -->
+            <input type="color" id="rectColorPicker3" class="color-picker-transparent">
+        </div>
         <button class="rect_button3" id="updateColorButton3">변경</button>
     </div>
 </div>
@@ -428,7 +459,9 @@
 
 <div id="overlay5"></div>
 <div id="filterPopup5">
-    <h3>필터 선택</h3>
+    <h3 style="font-family: 'Jua', sans-serif; padding-left: 10px;">
+        <i class="fas fa-camera-retro fa-lg" style="margin-right: 8px; font-size: 24px;"></i>필터 선택
+    </h3>
     <form id="filterForm5">
         <div class="filter-option5">
             <input type="radio" id="blur5" name="filter5" value="blur">
@@ -455,9 +488,12 @@
             <label for="default">없음</label>
         </div>
     </form>
-    <button id="applyFilter5">적용</button>
-    <button id="closePopup5">닫기</button>
+    <div id="buttonWrapper5">
+        <button id="applyFilter5">적용</button>
+        <button id="closePopup5">닫기</button>
+    </div>
 </div>
+
 <div class="overlay-container">
     <div>이미지를 생성 중입니다. 잠시만 기다려주세요...</div>
     <div id="time">00:40</div>
@@ -591,69 +627,6 @@
 
 
 <script src="/js/app.js"></script>
-
-
-<script>
-    let currentPage150 = 1;
-    const totalPages150 = 15;
-
-    const prevButton150 = document.getElementById('prevButton150');
-    const nextButton150 = document.getElementById('nextButton150');
-    const closeButton150 = document.getElementById('closeButton150');
-    const pages150 = document.querySelectorAll('.page150');
-    const pageIndicator150 = document.getElementById('pageIndicator150');
-    const popupBackground150 = document.querySelector('.popup-background150');
-
-    function updatePage150(direction) {
-        // 현재 페이지 숨기기
-        const currentElement150 = document.getElementById(`page-${currentPage150}150`);
-        currentElement150.classList.remove('active150');
-
-        // 페이지 변경
-        if (direction === 'next') {
-            currentPage150 = currentPage150 < totalPages150 ? currentPage150 + 1 : 1;
-        } else if (direction === 'prev') {
-            currentPage150 = currentPage150 > 1 ? currentPage150 - 1 : totalPages150;
-        }
-
-        // 새 페이지 보여주기
-        const nextElement150 = document.getElementById(`page-${currentPage150}150`);
-        nextElement150.classList.add('active150');
-
-        // 페이지 번호 업데이트
-        pageIndicator150.textContent = `${currentPage150}/${totalPages150}`;
-
-        // 마지막 페이지일 때 버튼 텍스트 변경
-        if (currentPage150 === totalPages150) {
-            nextButton150.textContent = '닫기';
-            nextButton150.removeEventListener('click', nextClickHandler);
-            nextButton150.addEventListener('click', () => popupBackground150.style.display = 'none');
-        } else {
-            nextButton150.textContent = '다음';
-            nextButton150.removeEventListener('click', closePopupHandler);
-            nextButton150.addEventListener('click', nextClickHandler);
-        }
-    }
-
-    function nextClickHandler() {
-        updatePage150('next');
-    }
-
-    function closePopupHandler() {
-        popupBackground150.style.display = 'none';
-    }
-
-    nextButton150.addEventListener('click', nextClickHandler);
-    prevButton150.addEventListener('click', () => updatePage150('prev'));
-    closeButton150.addEventListener('click', closePopupHandler);
-    // Info 버튼 클릭 시 팝업 보여주기
-    const infoButton = document.getElementById('info');
-
-    infoButton.addEventListener('click', () => {
-        popupBackground150.style.display = 'flex'; // 팝업을 보여줌
-    });
-
-</script>
 <script>
 
     // 이미지 저장 함수
@@ -780,7 +753,7 @@
 
     $(document).ready(function () {
         let timeDisplay = $("#time");
-        let duration = 40; // 1분 10초 = 70초
+        let duration = 70; // 1분 10초 = 70초
         let textList = []; // 텍스트 리스트 저장 변수
         let textIndex = 0; // 현재 텍스트 인덱스
         $("#imageButton").click(function () {
@@ -878,10 +851,134 @@
 
         document.getElementById('popup5').style.display = 'none';
     });
+</script>
+
+<script>
+    // 펜 색깔 지정 팝업을 드래그할 수 있도록 하는 함수
+    function dragElement(element) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+        element.onmousedown = function (e) {
+            e = e || window.event;
+            e.preventDefault();
+            // 마우스 시작 좌표 기록
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        };
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // 마우스 움직임에 따른 팝업의 새 좌표
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // 팝업 위치 업데이트
+            element.style.top = (element.offsetTop - pos2) + "px";
+            element.style.left = (element.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            // 마우스 버튼을 떼면 드래그 중지
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    // 팝업창을 드래그 가능하게 만듭니다.
+    dragElement(document.querySelector(".popup5"));
+    dragElement(document.querySelector(".popup3"));  // 사각형 색깔 팝업
+    dragElement(document.querySelector(".popup4"));  // 색채운 사각형 팝업
+    dragElement(document.querySelector("#filterPopup5"));  // 필터 선택 팝업
+</script>
+
+<script>
+    // 빈사각형 무지개 버튼 클릭 시 색상 선택기 투명도를 없앰
+    document.getElementById('rainbowCircle1').addEventListener('click', function() {
+        const colorPicker = document.getElementById('rectColorPicker');
+        colorPicker.style.opacity = '1';  // 투명도 없앰
+        colorPicker.click();  // 기본 색상 선택기 창을 바로 열기
+    });
+    // 색채운 사각형 무지개 버튼 클릭 시 색상 선택기 투명도를 없앰
+    document.getElementById('rainbowCircle2').addEventListener('click', function() {
+        const colorPicker = document.getElementById('rectColorPicker2');
+        colorPicker.style.opacity = '1';  // 투명도 없앰
+        colorPicker.click();  // 기본 색상 선택기 창을 바로 열기
+    });
+
+    // 펜 색깔 지정 팝업 무지개 버튼 클릭 시 색상 선택기 투명도를 없앰
+    document.getElementById('rainbowCircle3').addEventListener('click', function() {
+        const colorPicker = document.getElementById('rectColorPicker3');
+        colorPicker.style.opacity = '1';  // 투명도 없앰
+        colorPicker.click();  // 기본 색상 선택기 창을 바로 열기
+    });
 
 </script>
 
+<script>
+    let currentPage150 = 1;
+    const totalPages150 = 15;
 
+    const prevButton150 = document.getElementById('prevButton150');
+    const nextButton150 = document.getElementById('nextButton150');
+    const closeButton150 = document.getElementById('closeButton150');
+    const pages150 = document.querySelectorAll('.page150');
+    const pageIndicator150 = document.getElementById('pageIndicator150');
+    const popupBackground150 = document.querySelector('.popup-background150');
+
+    function updatePage150(direction) {
+        // 현재 페이지 숨기기
+        const currentElement150 = document.getElementById(`page-${currentPage150}150`);
+        currentElement150.classList.remove('active150');
+
+        // 페이지 변경
+        if (direction === 'next') {
+            currentPage150 = currentPage150 < totalPages150 ? currentPage150 + 1 : 1;
+        } else if (direction === 'prev') {
+            currentPage150 = currentPage150 > 1 ? currentPage150 - 1 : totalPages150;
+        }
+
+        // 새 페이지 보여주기
+        const nextElement150 = document.getElementById(`page-${currentPage150}150`);
+        nextElement150.classList.add('active150');
+
+        // 페이지 번호 업데이트
+        pageIndicator150.textContent = `${currentPage150}/${totalPages150}`;
+
+        // 마지막 페이지일 때 버튼 텍스트 변경
+        if (currentPage150 === totalPages150) {
+            nextButton150.textContent = '닫기';
+            nextButton150.removeEventListener('click', nextClickHandler);
+            nextButton150.addEventListener('click', () => popupBackground150.style.display = 'none');
+        } else {
+            nextButton150.textContent = '다음';
+            nextButton150.removeEventListener('click', closePopupHandler);
+            nextButton150.addEventListener('click', nextClickHandler);
+        }
+    }
+
+    function nextClickHandler() {
+        updatePage150('next');
+    }
+
+    function closePopupHandler() {
+        popupBackground150.style.display = 'none';
+    }
+
+    nextButton150.addEventListener('click', nextClickHandler);
+    prevButton150.addEventListener('click', () => updatePage150('prev'));
+    closeButton150.addEventListener('click', closePopupHandler);
+    // Info 버튼 클릭 시 팝업 보여주기
+    const infoButton = document.getElementById('info');
+
+    infoButton.addEventListener('click', () => {
+        popupBackground150.style.display = 'flex'; // 팝업을 보여줌
+    });
+
+</script>
 
 </body>
 
