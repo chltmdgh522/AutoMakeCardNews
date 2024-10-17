@@ -760,6 +760,16 @@
         let textList = []; // 텍스트 리스트 저장 변수
         let textIndex = 0; // 현재 텍스트 인덱스
 
+        // 스페이스바 눌렀을 때 특정 동작 수행 (예: 캐릭터 점프 등)
+        $(document).keydown(function(e) {
+            if (e.code === 'Space') {
+                e.preventDefault(); // 기본 스페이스바 동작 방지
+                // 스페이스바 눌렀을 때 실행할 코드 (예: 점프)
+                console.log("스페이스바 눌림!");
+            }
+        });
+
+        // 이미지 생성 버튼 클릭
         $("#imageButton").click(function () {
             // 타이머가 이미 실행 중이 아니라면 타이머 시작
             if (!isTimerRunning) {
@@ -769,6 +779,7 @@
             // 오버레이 표시
             $(".overlay-container").css("display", "flex");
 
+            // AJAX 요청 보내기
             $.ajax({
                 type: "POST",
                 url: "/image-create",
@@ -821,6 +832,7 @@
             }
         });
     });
+
 
 
 </script>
