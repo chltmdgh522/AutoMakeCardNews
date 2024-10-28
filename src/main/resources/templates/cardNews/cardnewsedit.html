@@ -276,7 +276,7 @@
     <div class="popup3-content">
         <span id="closeColorPopup" class="close">X</span>
         <h3 style="font-family: 'Jua', sans-serif; padding-left: 5px; margin-bottom: 15px;">
-            <i class="fas fa-square" style="margin-right: 5px;"></i>
+            <i class="far fa-square" style="margin-right: 5px;"></i>
             빈사각형 색깔
         </h3>
         <div class="color-palette" style="margin-bottom: 15px;">
@@ -284,7 +284,7 @@
             <div class="color-circle" style="background-color: #00FF00; margin-right: 35px;" data-color="#00FF00"></div>
             <div class="color-circle" style="background-color: #0000FF; margin-right: 35px;" data-color="#0000FF"></div>
             <div class="color-circle" style="background-color: #FFFF00; margin-right: 35px;" data-color="#FFFF00"></div>
-            <div class="color-circle rainbow-circle" id="rainbowCircle1"> + </div> <!-- 무지개 버튼 -->
+            <div class="color-circle rainbow-circle" id="rainbowCircle1">  </div> <!-- 무지개 버튼 -->
             <!-- 기본 색상 선택기 (투명하게 처리) -->
             <input type="color" id="rectColorPicker" class="color-picker-transparent">
         </div>
@@ -306,7 +306,7 @@
             <div class="color-circle" style="background-color: #00FF00; margin-right: 35px;" data-color="#00FF00"></div>
             <div class="color-circle" style="background-color: #0000FF; margin-right: 35px;" data-color="#0000FF"></div>
             <div class="color-circle" style="background-color: #FFFF00; margin-right: 35px;" data-color="#FFFF00"></div>
-            <div class="color-circle rainbow-circle" id="rainbowCircle2"> + </div> <!-- 무지개 버튼 -->
+            <div class="color-circle rainbow-circle" id="rainbowCircle2">  </div> <!-- 무지개 버튼 -->
             <!-- 기본 색상 선택기 (투명하게 처리) -->
             <input type="color" id="rectColorPicker2" class="color-picker-transparent">
         </div>
@@ -331,7 +331,7 @@
             <div class="color-circle" style="background-color: #00FF00; margin-right: 35px;" data-color="#00FF00"></div>
             <div class="color-circle" style="background-color: #0000FF; margin-right: 35px;" data-color="#0000FF"></div>
             <div class="color-circle" style="background-color: #FFFF00; margin-right: 35px;" data-color="#FFFF00"></div>
-            <div class="color-circle rainbow-circle" id="rainbowCircle3"> + </div> <!-- 무지개 버튼 -->
+            <div class="color-circle rainbow-circle" id="rainbowCircle3">  </div> <!-- 무지개 버튼 -->
             <!-- 기본 색상 선택기 (투명하게 처리) -->
             <input type="color" id="rectColorPicker3" class="color-picker-transparent">
         </div>
@@ -757,6 +757,49 @@
     });
 
 </script>
+
+<script>
+    // 펜 색깔 지정 팝업을 드래그할 수 있도록 하는 함수
+    function dragElement(element) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+        element.onmousedown = function (e) {
+            e = e || window.event;
+            e.preventDefault();
+            // 마우스 시작 좌표 기록
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        };
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // 마우스 움직임에 따른 팝업의 새 좌표
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // 팝업 위치 업데이트
+            element.style.top = (element.offsetTop - pos2) + "px";
+            element.style.left = (element.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            // 마우스 버튼을 떼면 드래그 중지
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    // 팝업창을 드래그 가능하게 만듭니다.
+    dragElement(document.querySelector(".popup5"));
+    dragElement(document.querySelector(".popup3"));  // 사각형 색깔 팝업
+    dragElement(document.querySelector(".popup4"));  // 색채운 사각형 팝업
+    dragElement(document.querySelector("#filterPopup5"));  // 필터 선택 팝업
+</script>
+
 </body>
 
 </html>

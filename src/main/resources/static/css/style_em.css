@@ -644,7 +644,7 @@ input[type="color"] {
     border-radius: 5px;
     background-color: #007bff;
     color: white;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
 }
 
@@ -715,7 +715,7 @@ input[type="color"] {
     border-radius: 5px;
     background-color: #007bff;
     color: white;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
 }
 
@@ -754,12 +754,13 @@ input[type="color"] {
 }
 
 .color-circle {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid transparent;
-    transition: border-color 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.3); /* 얇은 검은색 테두리 추가 */
+    transition: transform 0.2s ease; /* 호버 효과 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .color-picker-transparent {
@@ -772,13 +773,32 @@ input[type="color"] {
 
 
 .color-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
     border-color: #007bff; /* 호버 시 파란색 테두리 */
 }
 
 .rainbow-circle {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
-    margin-right: 0; /* 무지개 버튼은 마지막이므로 오른쪽 여백 없음 */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.2s ease; /* 호버 효과 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 기본 상태에서 살짝 그림자 */
 }
+
+/* 호버 시 확대 효과 */
+.rainbow-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
 
 /* input[type="color"]는 기본적으로 숨김 */
 .hidden {
@@ -832,7 +852,7 @@ input[type="color"] {
     border-radius: 5px;
     background-color: #007bff;
     color: white;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
 }
 
