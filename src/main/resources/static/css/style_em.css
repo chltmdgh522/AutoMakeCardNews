@@ -1096,7 +1096,7 @@ input[type="color"] {
     --background: #ffffff;
     --text: #414856;
     --radio: #7C96B2;
-    --radio-checked: #4F29F0; /* 보라색 */
+    --radio-checked: #296ff0; /* 보라색 */
     --radio-size: 20px;
     background: var(--background);
     color: var(--text);
@@ -1194,7 +1194,7 @@ input[type="color"] {
 
 /* 버튼 스타일 */
 #applyFilter5 {
-    background-color: #af77d1; /* 선명한 보라색 */
+    background-color: #296FF0FF; /* 선명한 보라색 */
     color: #FFFFFF; /* 흰색 글씨 */
     border: none;
     padding: 10px 20px;
@@ -1216,7 +1216,7 @@ input[type="color"] {
 }
 
 #applyFilter5:hover {
-    background-color: #9620a8; /* 적용 버튼 호버 시 색상 변경 */
+    background-color: #1031a6; /* 적용 버튼 호버 시 색상 변경 */
 }
 
 #closePopup5:hover {
