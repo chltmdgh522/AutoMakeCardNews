@@ -837,11 +837,11 @@ label {
 }
 
 input[type="color"] {
-    width: 1%;
-    padding: 1px;
-    margin-bottom: 1px;
-    border: 1px solid #fff;
-    border-radius: 5px;
+    /*width: 1%;*/
+    /*padding: 1px;*/
+    /*margin-bottom: 1px;*/
+    /*border: 1px solid #fff;*/
+    /*border-radius: 5px;*/
 }
 
 .rect_button3 {
