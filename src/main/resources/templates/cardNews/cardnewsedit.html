@@ -115,7 +115,10 @@
                       th:object="${cardNews}">
 
                     <input type="hidden" id="imageData" name="imageData">
-                    <h3 style="font-weight: bold">카드 뉴스 편집</h3>
+                    <h3 style="font-family: 'Jua', sans-serif">
+                        <i class="fas fa-paper-plane" style="margin-right: 8px;" title="게시하기"></i> <!-- 게시 아이콘 -->
+                        카드 뉴스 편집
+                    </h3>
                     <div th:if="${#fields.hasGlobalErrors()}">
                         <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                            th:text="${err}">전체 오류 메시지</p>
