@@ -73,7 +73,7 @@
         }
 
         .download-btn5 {
-            background-color: #4CAF50;
+            background-color: #007bff;
         }
 
         .cancel-btn5 {
@@ -84,8 +84,9 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            font-size: 20px;
+            font-size: 30px;
             cursor: pointer;
+            font-weight : bold;
         }
 
 
@@ -436,23 +437,25 @@
 <div id="popup5" class="popup5">
     <div class="popup-content5">
         <span id="close5" class="close-btn5">&times;</span>
-        <h2 style="font-weight: bold;">Choose Options</h2>
+        <h3 style="font-family: 'Jua', sans-serif">
+            <i class="fas fa-download" style="margin-right: 5px;"></i> 다운로드
+        </h3>
         <form id="popup-form5" style="margin-top: 10px">
-            <label>
-                <input type="checkbox" name="options5" value="image">
+            <label style="font-size: 22px;">
+                <input type="checkbox" name="options5" value="image" style="width: 17px; height: 17px;">
                 카드뉴스
             </label>
-            <label>
-                <input type="checkbox" name="options5" value="audio">
-                오디오
+            <label style="font-size: 22px;">
+                <input type="checkbox" name="options5" value="audio" style="width: 17px; height: 17px;">
+                TTS
             </label>
-            <label>
-                <input type="checkbox" name="options5" value="video">
+            <label style="font-size: 22px;">
+                <input type="checkbox" name="options5" value="video" style="width: 17px; height: 17px;">
                 동영상
             </label>
             <div class="button-group5">
-                <button type="submit" class="btn download-btn5">Download</button>
-                <button type="button" id="cancel5" class="btn cancel-btn5">Cancel</button>
+                <button type="submit" class="btn download-btn5" style="width: 135px;">Download</button>
+                <button type="button" id="cancel5" class="btn cancel-btn5" style="width: 135px;">Cancel</button>
             </div>
         </form>
     </div>
