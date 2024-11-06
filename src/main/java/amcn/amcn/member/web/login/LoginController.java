@@ -62,6 +62,7 @@ public class LoginController {
         return "redirect:" + redirectURL;
     }
 
+
     @PostMapping("/logout")
     public String logout(HttpServletRequest request,
                          @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
