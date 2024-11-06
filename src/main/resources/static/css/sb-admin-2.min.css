@@ -452,7 +452,7 @@ hr {
     margin-top: 1rem;
     margin-bottom: 1rem;
     border: 0;
-    border-top: 1px solid rgba(0, 0, 0, .1)
+    border-top: 1px solid #e3e6f0;
 }
 
 .small,
@@ -10637,7 +10637,7 @@ a.text-light:hover {
 }
 
 .text-dark {
-    color: #5a5c69 !important
+    color: #596780 !important
 }
 
 
@@ -11556,7 +11556,7 @@ a:focus {
     }
 
     .sidebar .nav-item .nav-link i {
-        font-size: .85rem;
+        font-size: 1.3rem;
         margin-right: .25rem
     }
 
@@ -12472,7 +12472,7 @@ body.sidebar-toggled footer.sticky-footer {
     /*background-image: linear-gradient(135deg, skyblue, blue, purple);*/
     /*background-image: linear-gradient(135deg, #3a7bd5, #3a6073, #ffafbd); */
     background-image: linear-gradient(135deg, #a1c4fd, #c2e9fb, #667eea);
-    background-image: linear-gradient(135deg, #a1c4fd, #c2e9fb, #ffdde1);
+    background-image: linear-gradient(175deg, #a1c4fd, #c2e9fb, #ffdde1);
 
 
     /* 파란색과 보라색 섞인 그라데이션 배경 */
@@ -12819,19 +12819,32 @@ button:active {
 .logout-button:hover {
     background-color: #f0f0f0;
 }
+
 .header-menu {
     transition: transform 0.3s ease;
 }
 .my-icon{
-    color: gray;
+    color: #596780;
+    transition: color 0.5s ease;
 }
 
 .header-menu:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     .my-icon{
         color: black;
+      /*  background-image: linear-gradient(178deg, #a1c4fd, #c2e9fb, #ffdde1);
+        -webkit-background-clip: text; !* 텍스트에 배경이 적용되도록 설정 *!
+        color: transparent; !* 텍스트 색상을 투명하게 설정하여 배경색이 보이도록 함 *!*/
     }
+   /* background-color: #7C5CFC; !* 보라색 배경 추가 *!
+    border-radius: 8px; !* 배경 모서리를 둥글게 하고 싶다면 추가 *!
+    width: 100%; !* 크기를 줄이려면 너비 비율을 조정 *!
+    height: 55px; !* 높이 비율도 함께 조정 *!*/
 }
+
+/*.header-menu:hover .text-dark {
+    color: white !important; !* 텍스트 색상 *!
+}*/
 
 *{
     font-family: "Jua",sans-serif;
