@@ -29,8 +29,11 @@ public class LoginController {
     @GetMapping("/login")
     public String getLogin(@ModelAttribute Member member,
                            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                           Member loginMember, Model model) {
-
+                           Member loginMember, Model model, HttpServletRequest request) {
+        String redirectURL = request.getParameter("redirectURL");
+        if (redirectURL != null && !redirectURL.isEmpty()) {
+            request.getSession().setAttribute("redirectURL", redirectURL);
+        }
         if (loginMember != null) {
             return "redirect:/";
         }
