@@ -208,10 +208,12 @@
                                               th:text="${forkcnt}">3&nbsp;</span>
                                     </div>
                                     <div class="icon" type="button" id="executeScript" name="executeScript"
-                                         style="margin-left: 15px; display: inline-block;">
+                                         style="margin-left: 15px; display: inline-block;" onclick="playSound()">
                                         <i class="fas fa-bullhorn" style="color: black;"></i><!-- 음성 아이콘 -->
                                         <span style="font-size: 15px; font-weight: 600; color: black;"></span>
+                                        <span id="cardNewsId2" style="display: none;" th:text="${cardNews.cardNewsId}"></span>
                                     </div>
+
                                 </div>
                             </div>
 
@@ -297,64 +299,9 @@
 </script>
 
 
-<script>
-    var speaker = false;
 
-    $(document).ready(function () {
-        $('#executeScript').click(function () {
-            if (!speaker) {
-                // speaker가 false일 때만 실행되도록
-                speaker = true;
-                $.ajax({
-                    type: "POST",
-                    url: "/run-tts",
-                    data: {
-                        "newsId": $("#originalContent").text()
-                    },
-                    success: function (data) {
-                        alert("TTS 종료합니다.")
-                    }
-                });
-            } else {
-                // speaker가 이미 true인 경우에 실행되도록
-                speaker = false;
-                // speaker를 false로 변경할 때 해당 URL을 끊습니다.
-                $.ajax({
-                    type: "POST",
-                    url: "/cancel-tts",
-                    success: function (data) {
-                        // 성공적으로 취소되었을 때 실행되는 코드를 작성합니다.
 
-                    },
-                    error: function (xhr, status, error) {
-                        // 오류가 발생했을 때 실행되는 코드를 작성합니다.
-                        console.error("TTS 취소 요청 중 오류가 발생하였습니다.", error);
-                    }
-                });
-            }
-        });
-    });
-</script>
 
-<script>
-    // 페이지 이동을 감지하는 이벤트 핸들러
-    window.addEventListener('beforeunload', function (event) {
-        // AJAX 요청을 보냅니다.
-        $.ajax({
-            type: "POST",
-            url: "/cancel-tts2",
-            async: true,
-            success: function (data) {
-                console.log("TTS 취소 요청이 성공적으로 전송되었습니다.");
-            },
-            error: function (xhr, status, error) {
-                console.error("TTS 취소 요청 중 오류가 발생하였습니다.", error);
-            }
-        });
-
-    });
-
-</script>
 
 <script>
     var heartIcon = document.getElementById('heartIcon');
@@ -431,7 +378,41 @@
     });
 </script>
 
+<script>
+    let isPlaying = false; // 현재 음성 재생 여부를 확인하는 변수
 
+    function playSound() {
+        // cardNewsId 값을 가져옴
+        const cardNewsId = document.getElementById("cardNewsId2").innerText;
+
+        if (isPlaying) {
+            // 재생 중일 때 클릭하면 음성 재생을 중지
+            window.speechSynthesis.cancel();
+            isPlaying = false;
+        } else {
+            // 재생 중이 아닐 때만 AJAX 요청 시작
+            $.ajax({
+                type: "POST",
+                url: "/card/sound",
+                data: JSON.stringify({ cardNewsId: cardNewsId }),
+                contentType: "application/json",
+                success: function(response) {
+                    // texts 배열에서 텍스트를 추출하여 음성으로 읽기
+                    const texts = response.texts;
+                    texts.forEach(text => {
+                        const utterance = new SpeechSynthesisUtterance(text);
+                        window.speechSynthesis.speak(utterance);
+                    });
+
+                    isPlaying = true; // 재생 상태로 설정
+                },
+                error: function(error) {
+                    console.error("Error:", error);
+                }
+            });
+        }
+    }
+</script>
 <!-- 부트스트랩 JS 및 Popper.js, jQuery 스크립트 추가 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
