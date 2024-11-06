@@ -76,14 +76,42 @@
         }
 
         .image-container {
-            text-align: center; /* 이미지 가운데 정렬 */
+            position: relative;
+            width: 750px; /* 이미지와 그림자의 크기를 지정 */
+            margin: 0 auto; /* 중앙 정렬 */
+            padding: 10px;
+            background-color: #f8f8f8; /* 액자 효과 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 기본 그림자 */
+            text-align: center;
         }
 
         .image-container img {
-            display: inline-block; /* 인라인 블록 요소로 설정하여 가운데 정렬 유지 */
-            max-width: 100%; /* 이미지 크기를 최대 100%로 설정하여 반응형 지원 */
-            height: auto; /* 이미지 비율 유지 */
+            width: 100%; /* 이미지가 부모 요소의 크기를 따라감 */
+            height: auto;
+            display: block;
         }
+
+        /* 삼각형 그림자 */
+        .shadow-top {
+            position: absolute;
+            top: 0px; /* 이미지 위에 그림자를 배치 */
+            left: -50px; /* 그림자의 왼쪽 위치 조정 */
+            width: 0;
+            height: 0;
+            border-bottom: 640px solid #bbb; /* 위쪽 그림자 크기와 색상 */
+            border-left: 50px solid transparent;
+        }
+
+        .shadow-bottom {
+            position: absolute;
+            bottom: 0px; /* 이미지 아래에 그림자를 배치 */
+            left: -50px; /* 그림자의 왼쪽 위치 조정 */
+            width: 0;
+            height: 0;
+            border-top: 110px solid #aaa; /* 아래쪽 그림자 크기와 색상 */
+            border-left: 50px solid transparent;
+        }
+
     </style>
 
 </head>
@@ -93,7 +121,6 @@
 <!-- Page Wrapper -->
 <div id="wrapper" th:object="${member}">
     <div th:replace="~{header/header1 :: copyParam (${member})}"></div>
-
 
     <!-- End of Sidebar -->
 
@@ -106,8 +133,6 @@
             <div th:replace="~{header/header2 :: copyParam (${member})}"></div>
             <!-- header -->
 
-
-            <!-- End of Topbar -->
             <!-- End of Topbar -->
             <div style="background-color: white; z-index: 1; padding: 20px">
                 <!-- Begin Page Content -->
@@ -190,11 +215,10 @@
                                 </div>
                             </div>
 
-
                             <hr style="background-color: black">
-                            <div style="margin-left: 14px;   color: black;">
+                            <div style="margin-left: 14px;color: black;">
                                 <div class="post-content">
-
+                                    <div style="margin-bottom: 30px;">
                                     <p th:if="${orginame != null}">
                                         <span style="color: red;" th:text="${orginame}"></span>
                                         님이 만든 카드뉴스입니다.
@@ -205,21 +229,20 @@
                                         님에 의해 만든 카드뉴스입니다.
                                         <a th:href="|/cardnews/${forkName.cardNewsId}|" style="cursor: pointer;">원본을 보고
                                             싶으면 해당 문구 클릭!</a>
+                                    </div>
+                                    </div>
 
-                                    </div>
                                     <div class="image-container">
-                                        <img style="border: 20px ridge wheat;
-    padding: 10px;
-    background-color: #f8f8f8; /* 배경색을 추가하여 액자 효과 강화 */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 그림자 추가 */
-    border-radius: 15px; /* 둥근 모서리 */
-    max-width: 100%; /* 이미지가 부모 요소를 넘어가지 않도록 */
-    display: block;
-    margin: 20px auto; /* 이미지 중앙 정렬 */" th:src="|/ai/image/${cardNews.imageUrl}|"/>
+                                        <!-- 위쪽 삼각형 그림자 -->
+                                        <div class="shadow-top"></div>
+                                        <!-- 이미지 -->
+                                        <img th:src="|/ai/image/${cardNews.imageUrl}|" alt="Card Image"/>
+                                        <!-- 아래쪽 삼각형 그림자 -->
+                                        <div class="shadow-bottom"></div>
                                     </div>
-                                    <p th:text="${cardNews.content}" id="originalContent" name="originalContent">
-                                        여기에는 게시글의 내용이 들어갑니다. Lorem ipsum dolor sit amet, consectetur adipiscing
-                                        e
+
+                                    <p th:text="${cardNews.content}" id="originalContent" name="originalContent" style="margin-top: 30px;">
+                                        여기에는 게시글의 내용이 들어갑니다. Lorem ipsum dolor sit amet, consectetur adipiscing e
                                     </p>
                                 </div>
                             </div>
@@ -248,14 +271,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
-
         </div>
         <!-- End of Content Wrapper -->
-
-
     </div>
     <!-- End of Page Wrapper -->
 </div>
@@ -316,8 +334,6 @@
             }
         });
     });
-
-
 </script>
 
 <script>
@@ -339,7 +355,6 @@
     });
 
 </script>
-
 
 <script>
     var heartIcon = document.getElementById('heartIcon');
@@ -373,8 +388,6 @@
             // 여기서 상태를 서버에 저장하거나 처리하는 로직을 추가할 수 있습니다.
         }
     }
-
-
 </script>
 
 <script>
@@ -415,7 +428,6 @@
                 deleteForm.submit();
             }
         });
-
     });
 </script>
 
@@ -424,8 +436,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-
-
 <!-- Swiper JS -->
 </body>
 

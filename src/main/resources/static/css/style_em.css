@@ -1,4 +1,3 @@
-
 @import 'reset.css';
 
 html {
@@ -110,10 +109,6 @@ main {
     cursor: pointer;
 }
 
-label[for='file'] {
-    cursor: pointer;
-}
-
 #save {
     width: 2rem;
     height: 2rem;
@@ -204,8 +199,9 @@ label[for='file'] {
 #canvas_range > input[type='text'] {
     margin-left: 0.8rem;
     margin-right: 0.8rem;
+    margin-bottom: 20px;
     width: 2.8rem;
-    height: 1.2rem;
+    height: 1.5rem;
     font-size: 1.2rem;
 }
 
@@ -296,9 +292,9 @@ textarea{
 }
 
 .popup h3 {
-    margin-top: 0;
+    margin-bottom: 30px;
     text-align: center;
-    color: #333;
+    color: #000000;
 }
 
 .popup .close-btn {
@@ -317,20 +313,103 @@ textarea{
 .popup .category {
     margin-bottom: 15px;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-wrap: wrap; /* 항목들이 줄바꿈이 가능하도록 설정 */
+    justify-content: center; /* 중앙 정렬 */
+    gap: 10px; /* 라벨 사이의 간격 설정 */
 }
 
 .popup .category label {
+    font-family:'Jua', sans-serif;
+    font-weight: normal;
+    margin-bottom : 10px;
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
-    color: #555;
+    font-size: 18px;
+    color: #000000;
 }
 
+/* 한 줄에 3개 배치 (첫 번째 줄) */
+.popup .category label:nth-child(-n+3) {
+    flex: 0 0 calc(33.33% - 10px); /* 첫 번째 줄의 라벨 */
+}
+
+/* 두 번째 줄에 2개 배치 (아래 중앙 정렬) */
+.popup .category label:nth-child(n+4) {
+    flex: 0 0 calc(33.33% - 10px); /* 두 번째 줄의 라벨을 3개로 설정 */
+}
+
+/* 두 번째 줄의 첫 번째 라디오 버튼(4번) 오른쪽 마진 줄이기 */
+.popup .category label:nth-child(4) {
+    margin-right: 5px; /* 오른쪽 간격 줄이기 */
+}
+
+/* 두 번째 줄의 두 번째 라디오 버튼(5번) 왼쪽 마진 조정 */
+.popup .category label:nth-child(5) {
+    margin-left: 5px; /* 왼쪽 간격 조정 */
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+}
+
+
+/* 라디오 버튼 기본 스타일 */
 .popup input[type="radio"] {
-    accent-color: #007bff;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    height: var(--radio-size, 20px); /* 기본 크기 지정 */
+    width: var(--radio-size, 20px);
+    outline: none;
+    margin: 0;
+    cursor: pointer;
+    border: 2px solid var(--radio, #ccc); /* 기본 라디오 버튼 테두리 색 */
+    background: transparent;
+    border-radius: 50%;
+    display: grid;
+    align-items: center;
+    transition: border .5s ease;
+    justify-items: center;
+}
+
+/* 라디오 버튼 효과 */
+.popup input[type="radio"]::before,
+.popup input[type="radio"]::after {
+    content: "";
+    display: flex;
+    border-radius: 50%;
+}
+
+.popup input[type="radio"]::before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--background, #fff);
+    z-index: 1;
+    opacity: var(--opacity, 1);
+}
+
+.popup input[type="radio"]::after {
+    position: relative;
+    width: calc(100% / 2);
+    height: calc(100% / 2);
+    background: var(--radio-checked, #007bff);
+    top: var(--y, 100%);
+    transition: top .5s cubic-bezier(0.48, 1.97, 0.5, 0.63);
+    opacity: 0; /* 기본 상태에서 점이 보이지 않도록 설정 */
+}
+
+.popup input[type="radio"]:checked {
+    --radio: var(--radio-checked);
+}
+
+.popup input[type="radio"]:checked::after {
+    --y: 0%;
+    opacity: 1; /* 클릭되면 점이 보이도록 설정 */
+    animation: stretch-animate .3s ease-out .17s;
+}
+
+.popup input[type="radio"]:checked::before {
+    --opacity: 0;
 }
 
 .popup input[type="text"], .popup textarea {
@@ -338,14 +417,16 @@ textarea{
     padding: 8px;
     margin: 5px 0 10px 0;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 10px;
     font-size: 14px;
     box-sizing: border-box;
 }
 
 .popup label {
     color: #555;
-    font-size: 14px;
+    font-size: 16px;
+    font-family: 'Jua', sans-serif;
+    font-weight: normal;
 }
 
 .popup button {
@@ -381,7 +462,7 @@ textarea{
     margin-top: 0;
     text-align: center;
     color: #333;
-    font-size: 20px; /* 추가 */
+    font-size: 24px; /* 추가 */
     margin-bottom: 20px; /* 추가 */
 }
 
@@ -603,7 +684,7 @@ a:visited {
 
 .close {
     position: absolute;
-    right: 10px;
+    right: 1px;
     top: -2px;
     font-size: 20px;
     font-weight: bold;
@@ -644,7 +725,7 @@ input[type="color"] {
     border-radius: 5px;
     background-color: #007bff;
     color: white;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
 }
 
@@ -674,7 +755,7 @@ input[type="color"] {
 
 .close2 {
     position: absolute;
-    right: 10px;
+    right: 1px;
     top: -2px;
     font-size: 20px;
     font-weight: bold;
@@ -715,7 +796,7 @@ input[type="color"] {
     border-radius: 5px;
     background-color: #007bff;
     color: white;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
 }
 
@@ -754,12 +835,13 @@ input[type="color"] {
 }
 
 .color-circle {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid transparent;
-    transition: border-color 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.3); /* 얇은 검은색 테두리 추가 */
+    transition: transform 0.2s ease; /* 호버 효과 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .color-picker-transparent {
@@ -772,13 +854,32 @@ input[type="color"] {
 
 
 .color-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
     border-color: #007bff; /* 호버 시 파란색 테두리 */
 }
 
 .rainbow-circle {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
-    margin-right: 0; /* 무지개 버튼은 마지막이므로 오른쪽 여백 없음 */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.2s ease; /* 호버 효과 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 기본 상태에서 살짝 그림자 */
 }
+
+/* 호버 시 확대 효과 */
+.rainbow-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
 
 /* input[type="color"]는 기본적으로 숨김 */
 .hidden {
@@ -792,7 +893,7 @@ input[type="color"] {
 .close3 {
     position: absolute;
     right: 1px;
-    top: -3px;
+    top: -2px;
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
@@ -817,11 +918,11 @@ label {
 }
 
 input[type="color"] {
-    /*width: 1%;*/
-    /*padding: 1px;*/
-    /*margin-bottom: 1px;*/
-    /*border: 1px solid #fff;*/
-    /*border-radius: 5px;*/
+    width: 1%;
+    padding: 1px;
+    margin-bottom: 1px;
+    border: 1px solid #fff;
+    border-radius: 5px;
 }
 
 .rect_button3 {
@@ -832,7 +933,7 @@ input[type="color"] {
     border-radius: 5px;
     background-color: #007bff;
     color: white;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
 }
 
@@ -886,12 +987,24 @@ input[type="color"] {
 }
 
 #save5 {
-    background-color: black;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.2rem;
     color: white;
-    border: none;
-    padding: 10px 20px;
     cursor: pointer;
-    font-size: 16px;
+    background-color: rgba(23, 23, 23, 1);
+    border-radius: 0.2rem; /* 둥근 모서리 */
+    transition: transform ease-in-out 0.1s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover 효과 추가 */
+#save5:hover {
+    transform: scale(1.3);
+    z-index: 1;
 }
 
 
@@ -942,7 +1055,7 @@ input[type="color"] {
 }
 
 .download-btn5 {
-    background-color: #4CAF50;
+    background-color: #007bff;
 }
 
 .cancel-btn5 {
@@ -953,8 +1066,9 @@ input[type="color"] {
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 20px;
+    font-size: 30px;
     cursor: pointer;
+    font-weight : bold;
 }
 .speaker-btn {
     position: absolute;
@@ -992,7 +1106,7 @@ input[type="color"] {
     --background: #ffffff;
     --text: #414856;
     --radio: #7C96B2;
-    --radio-checked: #4F29F0; /* 보라색 */
+    --radio-checked: #296ff0; /* 보라색 */
     --radio-size: 20px;
     background: var(--background);
     color: var(--text);
@@ -1090,7 +1204,7 @@ input[type="color"] {
 
 /* 버튼 스타일 */
 #applyFilter5 {
-    background-color: #af77d1; /* 선명한 보라색 */
+    background-color: #296FF0FF; /* 선명한 보라색 */
     color: #FFFFFF; /* 흰색 글씨 */
     border: none;
     padding: 10px 20px;
@@ -1112,7 +1226,7 @@ input[type="color"] {
 }
 
 #applyFilter5:hover {
-    background-color: #9620a8; /* 적용 버튼 호버 시 색상 변경 */
+    background-color: #1031a6; /* 적용 버튼 호버 시 색상 변경 */
 }
 
 #closePopup5:hover {
