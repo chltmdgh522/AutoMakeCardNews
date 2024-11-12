@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/my-page/images/{boardId}", "/my-page/imageV4/{image}",
                         "/*.jpg", "logo/*.png", "/*.gif", "/logo/**","/*.png",
                         "/email-verification","/join-email","/aiimg/**","/ai/image/{filename}",
-                        "/js/**","/api/**","/home/**");
+                        "/js/**","/api/**","/home/**","/script.js");
 
     }
 }
