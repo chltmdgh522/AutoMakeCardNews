@@ -412,6 +412,14 @@
             });
         }
     }
+
+    // 페이지가 새로고침되거나 이동될 때 음성 재생 중지
+    window.addEventListener("beforeunload", function() {
+        if (isPlaying) {
+            window.speechSynthesis.cancel();
+            isPlaying = false;
+        }
+    });
 </script>
 <!-- 부트스트랩 JS 및 Popper.js, jQuery 스크립트 추가 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
