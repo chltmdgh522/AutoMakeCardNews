@@ -21,7 +21,7 @@
 
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <link rel="shortcut icon" href="/logo/logo2.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
     <!-- Custom fonts for this template-->
     <script src="https://kit.fontawesome.com/097a6f4f17.js" crossorigin="anonymous"></script>
     <link
@@ -32,332 +32,816 @@
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/css/home2.css" rel="stylesheet">
     <link href="/css/home3.css" rel="stylesheet">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.2/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
 
     <style>
+        *,*::before,*::after { box-sizing: border-box; }
 
-        a {
-            text-decoration: none;
-            transition: transform 0.3s ease;
+        :root {
+            --items: min(30rem, 80vw);
+            --color-base: #181213;
+            scroll-timeline: --page block;
+
+            @media (prefers-reduced-motion: no-preference) {
+                scroll-behavior: smooth;
+            }
         }
 
-        a:hover {
-            text-decoration: none;
-            transform: scale(1.1);
+        body {
+            font: 300 1rem/1.33 "Helvetica";
+            color: var(--color-base);
+            display: grid;
+            overflow-x: hidden;
         }
 
-        .animation-container {
-            position: relative;
+        img {
+            max-inline-size: 100%;
+            block-size: auto;
+        }
+
+        hr[id] {
+            border: 0;
+            margin: 0;
+        }
+
+        /* animations */
+
+        @keyframes clip {
+            to { transform: scale(1.75); }
+        }
+        @keyframes scroll {
+            to { translate: calc((var(--items) * -3) + 15vw) 0; }
+        }
+        @keyframes moveup {
+            to { transform: translateY(var(--moveup)); }
+        }
+        @keyframes reveal {
+            85%, 100% { opacity: 1 }
+            100% { transform: translateY(0);  }
+        }
+
+        body > svg {
+            block-size: 0;
+            inline-size: 0;
+
+            clipPath {
+                transform-origin:
+                        calc(50vw * var(--dpr, 1))
+                        calc(50vh * var(--dpr, 1));
+
+                @media (min-resolution: 1.5dppx)  { --dpr: 1.5;  }
+                @media (min-resolution: 2dppx)    { --dpr: 2;    }
+                @media (min-resolution: 2.4dppx)  { --dpr: 2.4;  }
+                @media (min-resolution: 2.75dppx) { --dpr: 2.75; }
+                @media (min-resolution: 3dppx)    { --dpr: 3;    }
+                @media (min-resolution: 3.5dppx)  { --dpr: 3.5;  }
+                @media (min-resolution: 4dppx)    { --dpr: 4;    }
+
+                transform: scale(0);
+                animation: linear clip 1 forwards;
+                animation-timeline: --page;
+                animation-range: entry 10dvb exit 100dvb;
+            }
+        }
+
+        /* header */
+        header {
+            position: fixed;
+            z-index: 1;
+            inset: 0 0 auto 0;
+            background: #fff;
+
+            > div {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 1rem 2rem;
+                margin: 0 10vw;
+                border-bottom: 1px solid;
+                padding-block: 1rem;
+            }
+
+            svg {
+                inline-size: 8rem;
+            }
+
+            ul {
+                display: flex;
+                gap: 2.5rem;
+
+                @media (width < 48rem) {
+                    display: none;
+                }
+
+                :any-link {
+                    font-weight: 300;
+                    font-size: 1.25rem;
+                    color: inherit;
+                    text-decoration: none;
+                }
+            }
+        }
+
+        /* general sections style */
+        section {
+            padding-block: 7dvb;
+
+            h2 {
+                font-size: clamp(3rem, 6vw, 6rem);
+                line-height: 1;
+                letter-spacing: -.15rem;
+                font-weight: 300;
+                text-shadow: 0 0 1px currentColor;
+            }
+
+            h3 {
+                margin-block: 2rem;
+                font-size: clamp(1.6rem, 4.5vw, 4.5rem);
+                font-weight: 400;
+            }
+
+            p {
+                font-size: 1.2rem;
+                line-height: 1.5;
+            }
+        }
+
+        /* general hero style */
+        .hero {
+            min-block-size: 100dvb;
+
+            @supports (animation-timeline: view()) {
+                block-size: 100dvb;
+                inline-size: 100vw;
+                position: sticky;
+                top: 0;
+                grid-area: 1 / 1;
+
+                --moveup: -100dvb;
+                animation: linear moveup 1 forwards;
+                animation-timeline: --page;
+                animation-range: entry 200dvb entry 300dvb;
+
+                ~ main {
+                    margin-block-start: 200dvb;
+                    min-block-size: 100dvb;
+                }
+            }
+
+            h2 {
+                font-size: clamp(2.5rem, 8vw, 8rem);
+                font-weight: 320;
+                text-shadow: none;
+                max-inline-size: 11ch;
+            }
+
+            > div  {
+                block-size: 100%;
+                display: grid;
+                align-items: center;
+                margin-inline: 10vw;
+            }
+
+            :any-link {
+                --hover: 0;
+                background-color: rgba(0, 72, 90, var(--hover));
+                transition: all .33s;
+                &:hover {
+                    color: #fff;
+                    border-color: transparent;
+                    --hover: 1;
+                }
+            }
+
+            [href^="#"] {
+                position: absolute;
+                border-radius: 50%;
+                border: 0;
+                bottom: 3rem;
+                left: calc(50% - 2rem);
+                block-size: 4rem;
+                padding: .75rem;
+                aspect-ratio: 1;
+                color: inherit;
+
+                @media (prefers-reduced-motion: no-preference) {
+                    --moveup: -1rem;
+                    animation: moveup 1s
+                    cubic-bezier(.5,0,1,.5) infinite alternate;
+
+                    &:hover {
+                        animation-play-state: paused;
+                    }
+                }
+                @supports (not (animation-timeline: view())) {
+                    display: none;
+                }
+
+            }
+
+            svg {
+                transform: rotateZ(.25turn);
+                inline-size: 100%;
+                aspect-ratio: 1;
+                fill: currentColor;
+            }
+
+            .hero__content {
+                display: flex;
+                align-items: start;
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            :where(:any-link) {
+                --hover: 0;
+                color: inherit;
+                text-decoration: none;
+                border-radius: 1.5rem;
+                padding: .75rem 2rem;
+                font-size: 92%;
+                letter-spacing: 0;
+                border: 1px solid currentColor;
+            }
+        }
+
+        #shape-the-future {
+
+            color: #fff;
+            background: linear-gradient(125deg, #9384e8, rgba(192, 192, 192));
+
+            @supports (animation-timeline: view()) {
+                clip-path: url("#blob");
+            }
+
+            > div {
+                gap: 10vw;
+
+                @supports (animation-timeline: view()) {
+                    grid-template-columns: 55vw auto;
+
+                    translate: 0 0;
+                    will-change: translate;
+                    animation: ease-out scroll 1 forwards;
+                    animation-timeline: --page;
+                    animation-range: entry 100dvb entry 200dvb;
+                }
+            }
+
+            ul {
+                display: flex;
+                block-size: calc(100dvb - 10rem);
+
+                @supports (not (animation-timeline: view())) {
+                    border-inline-end: 1px #fff solid;
+                    block-size: auto;
+
+                    @media (width < 40rem) {
+                        flex-direction: column;
+                        border-inline: 0;
+                    }
+                }
+            }
+
+            li {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                padding-inline: 2.5rem;
+                border-inline-start: 1px #fff solid;
+                inline-size: var(--items);
+
+                h3, p { text-align: left; }
+
+                span:has(img), img {
+                    max-block-size: 30dvmin;
+                }
+
+                @media (width < 48rem) {
+                    span:has(img), img { display: none; }
+                }
+
+                @supports (not (animation-timeline: view())) {
+                    inline-size: auto;
+                    h3, p { text-align: center; }
+
+                    @media (width < 40rem) {
+                        border-inline: 0;
+
+                        &:not(:last-child) {
+                            padding-block-end: 3rem;
+                            border-block-end: 1px #fff solid;
+                        }
+                    }
+                }
+            }
+        }
+
+        main {
+            section {
+                min-block-size: 100dvb;
+
+                @media (prefers-reduced-motion: no-preference) {
+                    opacity: 0;
+                    transform: translateY(6rem);
+                    animation: ease-out reveal 1 forwards;
+                    animation-timeline: view();
+                    animation-range: cover 10% cover 30%;
+                }
+
+                > div {
+                    padding-inline: 10vw;
+                }
+            }
+
+            .news {
+                margin-block-start: 5dvb;
+
+                li {
+                    padding-block: 2dvb;
+                    border-bottom: 1px solid;
+                    container: article / inline-size;
+                    /*--hover: 0;*/
+                    &:hover {
+                        --hover: 1;
+                    }
+                }
+
+                article {
+                    position: relative;
+                    display: grid;
+                    grid-template-columns: minmax(15vw, 22rem) auto;
+                    @container article (width <= 48rem) {
+                        grid-template-columns: 1fr;
+                    }
+
+                    align-items: center;
+                    gap: 2rem;
+                    opacity: calc(0.7 + (var(--hover) * 0.3));
+                    transition: opacity .33s;
+                }
+
+                div {
+                    aspect-ratio: 1.8 / 1;
+                    overflow: hidden;
+                    border-radius: 1rem;
+                    inline-size: 100%;
+
+                    @container article (width <= 48rem) {
+                        display: none;
+                    }
+
+                    img {
+                        object-fit: cover;
+                        block-size: 100%;
+                        inline-size: 100%;
+                    }
+                }
+
+                :any-link {
+                    display: grid;
+                    grid-template: auto auto / 1fr minmax(2.5rem, 6cqi);
+                    gap: 1rem min(5vw, 5rem);
+                    justify-content: space-between;
+                    align-items: center;
+                    color: inherit;
+                    text-decoration: none;
+
+                    [itemprop="author"] {
+                        grid-area: 1 / 1 / 2 / 3;
+                        font-size: 1rem;
+                        line-height: 1.33;
+                        color: #847c79;
+                        flex: 1 0 100%;
+
+                    }
+
+                    [itemprop="name"] {
+                        grid-area: 2 / 1 / 3 / 2;
+                        flex-wrap: nowrap;
+                        font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+                        line-height: 1.33;
+                    }
+
+                    &:hover [itemprop="name"] {
+                        text-decoration: underline;
+                    }
+
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        inset: 0;
+                    }
+                }
+
+                svg {
+                    grid-area: 1 / 2 / 3 / 3;
+                    aspect-ratio: 1;
+                    padding: .75rem;
+                    inline-size: 100%;
+                    border-radius: 50%;
+                    border: 2px solid;
+                    clip-path: polygon(18% 0, 100% 0, 100% 100%, 18% 100%);
+                    color: #645c59;
+                    fill: currentColor;
+                    transition: transform .33s;
+                    transform: rotateZ(calc(var(--hover) * .25turn));
+                }
+            }
+        }
+
+        @property --scroll-direction {
+            syntax: "<number>";
+            inherits: true;
+            initial-value: 0;
+        }
+
+        @property --scroll {
+            syntax: "<number>";
+            inherits: true;
+            initial-value: 0;
+        }
+
+        @property --scroll-delayed {
+            syntax: "<number>";
+            inherits: true;
+            initial-value: 0;
+        }
+
+
+        @keyframes adjust-pos {
+            to {
+                --scroll: 10000;
+                --scroll-delayed: 10000;
+            }
+        }
+
+        :root {
+            animation: adjust-pos linear both;
+            animation-timeline: scroll(root);
+        }
+
+        body {
+            transition: --scroll-delayed .55s linear;
+            --scroll-velocity: calc(var(--scroll) - var(--scroll-delayed));
+            --scroll-speed: max(var(--scroll-velocity), -1 * var(--scroll-velocity));
+            --scroll-direction: calc(var(--scroll-velocity) / var(--scroll-speed));
+        }
+
+        header {
+            transition: transform .5s 0s;
+            transform: translateY(var(--translate));
+            background: #fff9;
+
+            @container style(--scroll-direction: 0) {
+                transition-delay: calc(infinity * 1s);
+            }
+
+            @container style(--scroll-direction: -1) {
+                --translate: 0;
+            }
+
+            @container style(--scroll-direction: 1) {
+                --translate: calc(-100% - 2px);
+            }
+        }
+
+        .warning {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            place-content: center;
+            font-size: 2rem;
+
+            p {
+                position: relative;
+                background: #fff;
+                padding: 3rem;
+                font-weight: 400;
+                border: 3px rgba(223, 151,132) solid;
+                border-radius: 1rem;
+                inline-size: min(45rem, 85vw);
+                box-shadow: 0 0 0 50vmax rgba(131, 163, 172, .7);
+                -webkit-background-clip: text;
+                color: transparent;
+                background-image:  linear-gradient(125deg,
+                rgb(131, 163, 172), rgba(223, 151,132));
+
+                &::before {
+                    content: "⚠️" / "warning!";
+                    position: absolute;
+                    inset: 0;
+                    z-index: -1;
+                    background: #fff;
+                }
+            }
+        }
+
+        body:hover .warning {
+            @supports (not (animation-timeline: view())) {
+                display: grid;
+            }
+        }
+
+        /* fix images */
+        span:has(> img) {
+            aspect-ratio: 86 / 100;
+            display: block;
             overflow: hidden;
-            width: 100%;
-            height: 50px; /* 원하는 높이로 조정하세요 */
+
+            img {
+                inline-size: 115%;
+                max-inline-size: 115%;
+            }
+        }
+        .swiper {
+            position: fixed;
+            margin-left: 1000px;
+            width: 400px;
+            height: 490px;
         }
 
-        .animate-text {
+        .swiper-slide {
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            user-select: none;
+            border-radius: 20px;
+        }
+
+        .cost {
             position: absolute;
-            right: 0;
-            animation: moveText 5s linear infinite; /* 원하는 애니메이션 지속 시간 및 타이밍 함수를 지정하세요 */
+            top: 8px;
+            right: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 30px;
+            padding: 6px 10px;
+            color: #fff;
+            font-size: clamp(0.8rem, 4vw, 0.9rem);
+            font-weight: 600;
+        }
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
         }
 
-        @keyframes moveText {
-            0% {
-                transform: translateX(100%);
-                opacity: 1;
-            }
-            50% {
-                transform: translateX(-100%);
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(-100%);
-                opacity: 0;
-            }
+        .overlay23 {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 150px;
+            padding: 10px 20px;
+            background: rgba(93, 95, 145, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            border-radius: 0 0 20px 20px;
         }
 
-        .menu10 {
-            transition: transform 0.3s ease;
+        .overlay23 h1 {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            font-weight: 600;
         }
 
-        .menu10:hover {
-            transform: scale(1.1);
-
-            .menu-text {
-                color: white;
-                font-weight: bold;
-            }
-        }
-
-        a {
-            text-decoration: none
+        .overlay23 p {
+            font-size: clamp(0.8rem, 4vw, 0.9rem);
+            font-weight: 300;
+            line-height: 1.3;
         }
     </style>
-
 </head>
 
 <body id="page-top">
 
-<!-- Page Wrapper -->
-<div id="wrapper">
-    <sidebar class="sidebar-pos">
-        <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-white sidebar bg-whisidebar-dark accordion" id="accordionSidebar">
-
-
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center " href="/">
-
-                <img src="/logo/AMCNicon.png" alt="로고" width="170" height="140">
-            </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0 border-dark">
-
-            <a href="/join" class="logout-button mt-5 ml-3"
-               style="color: black; font-weight: bold; text-decoration: none; "><span>회원가입</span></a>
-
-
-            <a href="/login" class="logout-button mt-5 ml-3"
-               style="color: black; font-weight: bold; text-decoration: none; "><span>로그인</span></a>
-        </ul>
-
-
-    </sidebar>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-        <!-- Main Content -->
-        <div id="content">
-
-            <!-- header -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 header-border" id="header-pos">
-
-
-                <!-- Topbar Navbar -->
-                <ul class="navbar-nav ml-auto">
-
-
-                    <li class="nav-item dropdown no-arrow">
-
-                        <a href="/login" class="nav-link dropdown-toggle" id="userDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">로그인 해주세요</span>
-                            <img class="img-profile rounded-circle" src="/logo/logo2.png">
-                        </a>
-
-                    </li>
-
-                </ul>
-
-            </nav>
-
-            <!-- End of Topbar -->
-            <div style="background-color: white;">
-                <!-- Begin Page Content -->
-                <div class="container-fluid" id="contnet">
-
-                    <div class="cobody">
-                        <div class="page1">
-                            <video class="page1_background_video" src="/home/main.mp4" muted="" autoplay="" loop=""></video>
-                            <div class="sub_page">
-                                <div class="page1_left">
-                                    <span>생성형 AI를 활용한 카드뉴스 만들기.</span>
-                                    <span>AMCN</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="page2">
-                            <div class="sub_page">
-                                <ul class="page2_items scroll_deactive">
-                                    <li>
-                                        <a href="">
-                                            <img class="page2_item_image" src="/home/img.png" />
-                                            <div class="page2_item_text">
-                                                <span>커뮤니티</span>
-                                                <span>다른사람들과</span>
-                                                <span>소통을 해보면서 지식을 보충해봐요</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            <img class="page2_item_image" src="/home/img_1.png"  />
-                                            <div class="page2_item_text">
-                                                <span>뉴스</span>
-                                                <span>뉴스 기사를 확인하고,</span>
-                                                <span>뉴스 요약 모델을 통해 요약문을 얻어봐요</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            <img class="page2_item_image" src="/home/img_2.png"  />
-                                            <div class="page2_item_text">
-                                                <span>카드뉴스 생성</span>
-                                                <span>생성형 AI를 활용해</span>
-                                                <span>카드뉴스를 만들고 간직해봐요</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="page3">
-                            <div class="sub_page">
-                                <p class="page3_title scroll_deactive">
-                                    다른 곳에서 만날 수 없는
-                                    <br>
-                                    <span>AMCN</span>의 특별함
-                                </p>
-                                <ul class="page3_items">
-                                    <li class="scroll_deactive">
-<!--                                        <img class="page3_item_image" src="https://www.coupangeats.com/wp-content/uploads/2022/11/1-2.png">-->
-
-                                        <div class="swiper page3_item_image">
-                                            <div class="swiper-wrapper">
-                                                <div class="swiper-slide" th:each="pop : ${cardPop}">
-                                                    <img th:src="|/ai/image/${pop.imageUrl}|"/>
-                                                    <div class="cost" style="color: black;" th:text="${pop.member.name}">from $230 per group</div>
-                                                    <div class="overlay23">
-                                                        <h1 th:text="${pop.title}">Walking Tour in Florence</h1>
-                                                        <p th:text="${pop.content}">
-                                                            Discover the fascinating beauty of this historic city by
-                                                            strolling through the rich cultural tapestry that makes Florence
-                                                            a timeless destination.
-                                                        </p>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="page3_item_text">
-                                            <div>
-                                                <span>실패 없는 이미지 생성</span>
-                                                <h3>DALL-E</h3>
-                                                <p>사용자가 원하는 카드뉴스를
-                                                    <br>
-                                                    생성할 수 있게 했어요.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="scroll_deactive">
-                                        <div class="page3_item_text">
-                                            <div style="left: 40px;">
-                                                <span>정확한 요약 모델</span>
-                                                <h3>Kobart</h3>
-                                                <p>정확도가 75%인
-                                                    <br>
-                                                    AMCN의 뉴스 요약 모델을 활용해 요약문을 갖고갑시다.
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <img class="page3_item_image" src="/home/img_3.png" >
-                                    </li>
-                                    <li class="scroll_deactive">
-                                        <img class="page3_item_image" src="/home/img_4.png" >
-                                        <div class="page3_item_text">
-                                            <div>
-                                                <span>게임</span>
-                                                <h3>3종류의 게임</h3>
-                                                <p>숫자 야구 게임, 숫자 맞추기 게임, 벽돌 깨기 게임을 통해
-                                                    <br>
-                                                    재미를 즐겨요.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="page4">
-                            <div class="sub_page">
-                                <div class="page4_text scroll_deactive">
-                                    <p>AMCN이 바꿔가는
-                                        <br>
-                                        카드뉴스 자동 제작
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="page5">
-                            <div class="sub_page">
-                                <p class="page5_title scroll_deactive">
-                                    더 좋은 경험을 위한
-                                    <br>
-                                    <span>AMCN</span>의 새로운 시도
-                                </p>
-                                <ul class="page5_items">
-                                    <li class="scroll_deactive">
-                                        <img class="page5_item_video" src="/home/33.gif" muted="" autoplay="" loop=""/>
-                                        <div class="page5_item_text">
-                                            <div>
-                                                <span>생성시간 최소화</span>
-                                                <h3>70초 ➡️ 35초</h3>
-                                                <p>고객님들을 위해 카드뉴스 생성시간을
-                                                    <br>
-                                                    최소화하고 있어요.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="scroll_deactive">
-                                        <div class="page5_item_text">
-                                            <div>
-                                                <span>카드뉴스 소장</span>
-                                                <h3>동영상, 사진</h3>
-                                                <p>고객님이 만든 카드뉴스를
-                                                    <br>
-                                                    고객님이 소장하도록 구현했어요.
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <img class="page5_item_video" src="/home/2.gif" muted="" autoplay="" loop=""/>
-                                    </li>
-                                    <li class="scroll_deactive">
-                                        <img class="page5_item_video" src="/home/1.gif" muted="" autoplay="" loop=""/>
-                                        <div class="page5_item_text">
-                                            <div>
-                                                <span>실시간 관리자 채팅</span>
-                                                <h3>쉽고 편한 고객 문의</h3>
-                                                <p>단 한번에 입력으로
-                                                    <br>
-                                                    관리자랑 대화를 해보세요.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-
-
-
-
+<header>
+    <div>
+        <h1>
+            <a class="navbar-brand d-flex align-items-center" href="/" aria-label="A.M.C.N homepage">
+                <!-- SVG 로고 대신 기존 이미지 로고 사용 -->
+                <img src="/logo/AMCNicon.png" alt="로고" width="50" height="50">
+                <!-- 로고 텍스트 부분 -->
+                <div class="sidebar-brand-text mx-3 text-dark"
+                     style="font-size:23px; font-family:Jua, sans-serif; color: black !important;">
+                    A.M.C.N
                 </div>
+            </a>
+        </h1>
 
-            </div>
-            <!-- /.container-fluid -->
+        <nav aria-label="Primary navigation">
+            <ul class="navbar-nav ml-auto" style="display: flex; align-items: center;">
+                <li class="nav-item dropdown no-arrow" style="display: flex; align-items: center;">
+                    <a href="/login" class="nav-link dropdown-toggle" id="userDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                       style="display: flex; align-items: center;">
+                        <!-- 로그인 텍스트 -->
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"
+                              style="font-size:15px; font-family: 'Jua', sans-serif; color:black!important">로그인 해주세요</span>
+                        <!-- 프로필 아이콘 -->
+                        <img class="img-profile rounded-circle" src="/logo/AMCNicon.png" style="width:40px; height:40px; margin-left: 8px;">
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section id="innovation-trends" class="hero">
+    <div class="content-container">
+        <div class="hero__content">
+            <h2>Auto Make Card News</h2>
+
+            <a href="/login">
+                Discover more
+            </a>
         </div>
 
+        <a href="#shape-the-future-end" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 focusable="false" aria-hidden="true">
+                <use xlink:href="#arrow" />
+            </svg>
+        </a>
+        <div class="swiper page3_item_image">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" th:each="pop : ${cardPop}">
+                    <img th:src="|/ai/image/${pop.imageUrl}|"/>
+                    <div class="cost" style="color: black;" th:text="${pop.member.name}">from $230 per group</div>
+                    <div class="overlay23">
+                        <h1 th:text="${pop.title}">Walking Tour in Florence</h1>
+                        <p th:text="${pop.content}">
+                            Discover the fascinating beauty of this historic city by
+                            strolling through the rich cultural tapestry that makes Florence
+                            a timeless destination.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
+
+<section id="shape-the-future" class="hero">
+    <div>
+        <div class="hero__content">
+            <h2>Create Card News Easily with AI</h2>
+            <a href="/login">
+                Learn more about our AMCN
+            </a>
+        </div>
+
+        <ul>
+            <li>
+                <section>
+                    <span><img src="https://t.ly/LRPZo" alt=""/></span>
+                    <h3>CardNews</h3>
+                    <p>
+                        CardNews는 사용자가 AI를 통해 원하는 카드 뉴스를 쉽게 생성할 수 있도록 돕습니다.
+                        사용자는 간단히 주제를 입력하면, AI가 관련된 이미지와 텍스트를 자동으로 생성합니다.
+                        또한, 직관적인 편집 도구를 통해 사용자는 자신만의 스타일로 카드 뉴스를 수정하고 완성할 수 있습니다.
+                        이를 통해 누구나 손쉽게 시각적으로 매력적이고 정보가 풍부한 카드 뉴스를 제작할 수 있습니다.
+                    </p>
+                </section>
+            </li>
+
+            <li>
+                <section>
+                    <span><img src="https://t.ly/E0kQa" alt="" /></span>
+                    <h3>News</h3>
+                    <p>
+                        우리의 News 기능은 KoBart 모델에 의해 구동되어 기사와 보고서를 효율적으로 요약합니다.
+                        이 도구는 사용자가 뉴스 이야기의 핵심 내용을 빠르게 이해할 수 있도록 하여 시간을 절약하면서도 정보를 유지할 수 있게 합니다.
+                        몇 번의 클릭만으로 사용자는 가장 관련성 높은 정보를 강조한 간결한 요약에 접근할 수 있습니다.
+                    </p>
+                </section>
+            </li>
+
+            <li>
+                <section>
+                    <span><img src="https://t.ly/2eZ0j" alt="" /></span>
+                    <h3>Community</h3>
+                    <p>
+                        Community 섹션은 사용자들 간의 연결을 촉진하여 상호작용과 협업을 위한 활기찬 공간을 만듭니다.
+                        사용자들은 아이디어를 공유하고, 주제에 대해 논의하며, 의미 있는 대화에 참여할 수 있어 경험을 향상시키고 커뮤니티의 역동성을 풍부하게 합니다
+                    </p>
+                </section>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<hr id="shape-the-future-end" />
+
+<main>
+    <section id="news">
+        <div>
+            <h2>A.M.C.N New Project</h2>
+            <ul class="news">
+                <li>
+                    <article itemscope itemtype="https://schema.org/Article">
+                        <div>
+                            <img class="page5_item_video" src="/home/33.gif" muted="" autoplay="" loop=""/>
+                        </div>
+
+                        <a href="#" target="_blank">
+                     <span itemprop="author" style="color:#0693e3;">
+                          생성시간 최소화
+                     </span>
+                            <span itemprop="name">
+                                70초 ➡️ 35초 <br>
+                                고객님들을 위해 카드뉴스 생성시간을 최소화하고 있어요.
+                            </span>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 focusable="false" aria-hidden="true">
+                                <use xlink:href="#arrow" />
+                            </svg>
+                        </a>
+                    </article>
+                </li>
+                <li>
+                    <article itemscope itemtype="https://schema.org/Article">
+                        <div>
+                            <img class="page5_item_video" src="/home/2.gif" muted="" autoplay="" loop=""/>
+                        </div>
+
+                        <a href="#" target="_blank">
+                     <span itemprop="author" style="color:#0693e3;">
+                           카드뉴스 다운로드
+                     </span>
+                            <span itemprop="name">
+                        📁사용자가 만든 카드뉴스를 개인소장이 가능하도록 구현했어요📁
+                     </span>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 focusable="false" aria-hidden="true">
+                                <use xlink:href="#arrow" />
+                            </svg>
+                        </a>
+                    </article>
+                </li>
+                <li>
+                    <article itemscope itemtype="https://schema.org/Article">
+                        <div>
+                            <img class="page5_item_video" src="/home/1.gif" muted="" autoplay="" loop=""/>
+                        </div>
+
+                        <a href="#" target="_blank">
+                     <span itemprop="author" style="color:#0693e3;">
+                           실시간 관리자 채팅
+                     </span>
+                            <span itemprop="name">
+                        🙌단 한번에 입력으로 관리자랑 대화를 해보세요🙌
+                     </span>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 focusable="false" aria-hidden="true">
+                                <use xlink:href="#arrow" />
+                            </svg>
+                        </a>
+                    </article>
+                </li>
+            </ul>
+        </div>
+    </section>
+</main>
 
 
-</div>
-<!-- End of Content Wrapper -->
-
-
-</div>
-
-
+<svg xmlns="http://www.w3.org/2000/svg"
+     focusable="false" aria-hidden="true">
+    <symbol viewBox="0 0 31.49 31.49" id="arrow">
+        <path d="M21.2 5a1.11 1.11 0 0 0-1.58 0 1.12 1.12 0 0 0
+         0 1.58l8.04 8.04H1.11c-.62 0-1.11.5-1.11 1.12 0
+         .62.5 1.12 1.11 1.12h26.55l-8.04 8.04a1.14 1.14
+         0 0 0 0 1.58 1.1 1.1 0 0 0 1.58 0l9.96-9.95a1.1
+         1.1 0 0 0 0-1.57L21.2 5.01z" />
+    </symbol>
+    <symbol>
+        <clipPath id="blob" clipPathUnits="objectBoundingBox">
+            <path d="M0.8338,0.1121c0.0818,0.0416,0.1468,0.1134,0.1623,
+             0.1922c0.0158,0.0788-0.0178,0.1642-0.0397,
+             0.2459c-0.0216,0.0819-0.0316,0.1598-0.0652,
+             0.2489c-0.0338,0.089-0.0909,0.1882-0.1696,
+             0.1995c-0.0789,0.0115-0.1794-0.065-0.2937
+             -0.096c-0.1147-0.0312-0.2437-0.0172-0.3109
+             -0.065c-0.0674-0.0478-0.0726-0.1574-0.0887
+             -0.2649c-0.0158-0.1076-0.0412-0.2135-0.0201
+             -0.3188c0.0208-0.1054,0.0886-0.2096,0.1875
+             -0.2447c0.0986-0.0351,0.2551-0.0011,0.3824,
+             0.0221C0.6536,0.0593,0.7519,0.0703,0.8338,0.1121z"/>
+        </clipPath>
+    </symbol>
+</svg>
 <script src="/js/home2.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src='https://rawgit.com/lmgonzalves/momentum-slider/master/dist/momentum-slider.min.js'></script><script  src="./script.js"></script>
 
 <script>
     // 애니메이션이 적용될 요소를 배열에 저장함.
@@ -391,6 +875,72 @@
         window.location.href = fullUrl; // 해당 URL로 이동
     });
 </script>
+<script>
+    // Intersection Observer 설정
+    function createObserver(element, animationFunction) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    animationFunction(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
 
+        observer.observe(element);
+    }
+
+    // 애니메이션 함수들 정의
+    function fadeInFromLeft(element) {
+        element.style.transition = "opacity 2.2s ease-in, transform 2.2s ease-in";
+        element.style.opacity = 1;
+        element.style.transform = "translateX(0)";
+    }
+
+    function fadeInFromRight(element) {
+        element.style.transition = "opacity 2.2s ease-in, transform 2.2s ease-in";
+        element.style.opacity = 1;
+        element.style.transform = "translateX(0)";
+    }
+
+    // 페이지 로드 후 각 요소에 대해 Observer 설정
+    window.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('.landingPage #logo').forEach((el) => {
+            el.style.opacity = 0;
+            el.style.transform = "translateX(-31%)";
+            createObserver(el, fadeInFromLeft);
+        });
+        document.querySelectorAll('#wrapper #Navbar').forEach((el) => {
+            el.style.opacity = 0;
+            el.style.transform = "translateX(40%)";
+            createObserver(el, fadeInFromRight);
+        });
+    });
+
+</script>
+
+<script>
+    window.addEventListener("scroll", () => {
+        const scrollPosition = window.scrollY;
+
+        // 특정 위치에서 opacity 변화
+        if (scrollPosition > 100 && scrollPosition < 400) {
+            document.querySelector('.landingPage').style.opacity = 1 - (scrollPosition - 100) / 300;
+        }
+    });
+</script>
+<script>
+    window.addEventListener("scroll", () => {
+        // 스크롤 위치에 따라 특정 섹션을 고정시키는 로직
+        const slide1 = document.querySelector(".slide1");
+        const scrollPos = window.scrollY;
+
+        if (scrollPos > 500 && scrollPos < 1500) {
+            slide1.style.opacity = 1;
+        } else {
+            slide1.style.opacity = 0;
+        }
+    });
+
+</script>
 </body>
 </html>
