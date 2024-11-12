@@ -587,7 +587,6 @@
         .swiper-slide img {
             width: 100%;
             height: 100%;
-            border-radius: 20px;
         }
 
         .overlay23 {
@@ -600,8 +599,8 @@
             width: 100%;
             height: 150px;
             padding: 10px 20px;
-            background: rgba(93, 95, 145, 0.2);
-            backdrop-filter: blur(20px);
+            /*background: rgba(93, 95, 145, 0.2);*/
+            /*backdrop-filter: blur(20px);*/
             -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 255, 255, 0.3);
             color: #fff;
@@ -675,16 +674,15 @@
             <div class="swiper-wrapper">
                 <div class="swiper-slide" th:each="pop : ${cardPop}">
                     <img th:src="|/ai/image/${pop.imageUrl}|"/>
-                    <div class="cost" style="color: black;" th:text="${pop.member.name}">from $230 per group</div>
-                    <div class="overlay23">
+                    <!--<div class="cost" style="color: black;" th:text="${pop.member.name}">from $230 per group</div>-->
+                    <!--<div class="overlay23">
                         <h1 th:text="${pop.title}">Walking Tour in Florence</h1>
                         <p th:text="${pop.content}">
                             Discover the fascinating beauty of this historic city by
                             strolling through the rich cultural tapestry that makes Florence
                             a timeless destination.
                         </p>
-
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
