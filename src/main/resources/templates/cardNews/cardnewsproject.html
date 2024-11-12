@@ -64,7 +64,7 @@
                                 class="carousel-item2"
                                 th:style="|--_index: ${iterStat.index + 1}; --_image-url: url('@{/ai/image/{imageUrl}(imageUrl=${card.imageUrl})}')|"
                             >
-                                <a th:href="@{|/cardnews/${card.cardNewsId}|}" target="_blank" th:text="${card.title}"></a>
+                                <a th:href="@{|/cardnews/${card.cardNewsId}|}" th:text="${card.title}"></a>
                             </li>
 
                             <!-- 카로셀의 바닥 부분 -->
