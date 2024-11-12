@@ -91,7 +91,7 @@ let brushStrokes = [];
 let penStrokes = [];
 
 let selectedColor = '#000000'; // 초기 선택 색상
-let editingTextIndex = -1;
+let editingTextIndex = -1;   //  이거 어디서 나온거임???????????????????
 
 
 fillSquareButton.addEventListener('click', () => {

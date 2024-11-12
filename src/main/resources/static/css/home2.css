@@ -1,3 +1,4 @@
+/*
 
 .hombo {
     margin-top: 10px;
@@ -7,26 +8,26 @@
             circle at 30% 100%,
             rgba(255, 255, 255, 0.9) 0%,
             rgba(255, 214, 165, 0.5) 25%,
-            rgba(255, 182, 193, 0.6) 50%, /* 살구색 대신 연한 핑크색 (255, 182, 193) */
+            rgba(255, 182, 193, 0.6) 50%, !* 살구색 대신 연한 핑크색 (255, 182, 193) *!
             rgba(193, 229, 252, 0.7) 75%,
             rgba(255, 223, 186, 0.3) 100%
     );
 
     background-repeat: no-repeat;
-    background-size: 400% 400%; /* 전체 영역에서 움직일 수 있도록 크게 설정 */
+    background-size: 400% 400%; !* 전체 영역에서 움직일 수 있도록 크게 설정 *!
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 
-    /* 애니메이션 추가 */
+    !* 애니메이션 추가 *!
     animation: moveBackground 10s infinite alternate;
 }
 
-/* 배경 움직임 애니메이션 */
+!* 배경 움직임 애니메이션 *!
 @keyframes moveBackground {
     0% {
-        background-position: 0% 0%; /* 좌상단에서 시작 */
+        background-position: 0% 0%; !* 좌상단에서 시작 *!
     }
     100% {
-        background-position: 100% 100%; /* 우하단으로 이동 */
+        background-position: 100% 100%; !* 우하단으로 이동 *!
     }
 }
 
@@ -42,7 +43,7 @@ section {
     padding: 20px 60px;
 }
 
-/* CONTENT */
+!* CONTENT *!
 
 .content23 {
     max-width: 2400px;
@@ -56,7 +57,7 @@ section {
     line-height: 1.2;
     letter-spacing: 1px;
     margin-bottom: 36px;
-    color: #34495e; /* 어두운 청록색으로 세련되고 차분한 느낌 */
+    color: #34495e; !* 어두운 청록색으로 세련되고 차분한 느낌 *!
 }
 
 .content23 p {
@@ -64,7 +65,7 @@ section {
     font-weight: 300;
     line-height: 1.5;
     margin-bottom: 30px;
-    color: #2c3e50; /* 짙은 파스텔톤의 네이비 계열 색상 */
+    color: #2c3e50; !* 짙은 파스텔톤의 네이비 계열 색상 *!
 }
 
 .content23 button {
@@ -87,7 +88,7 @@ section {
     color: #eaeaea;
 }
 
-/* SLIDER */
+!* SLIDER *!
 
 .swiper {
     position: relative;
@@ -236,3 +237,4 @@ section {
         height: 400px;
     }
 }
+*/
