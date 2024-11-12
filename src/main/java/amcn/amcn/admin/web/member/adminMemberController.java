@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class adminMemberController {
     private final AdminService adminService;
 
 
-    //@GetMapping("/api/system/member")
+    @GetMapping("/api/system/member")
     @ResponseBody // 이 애너테이션은 응답을 JSON으로 변환합니다.
     public ResponseEntity<Page<Member>> getAdminMember(
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
@@ -48,6 +49,27 @@ public class adminMemberController {
         // 멤버 리스트를 JSON으로 반환
         return ResponseEntity.ok(list);
     }
+
+    @PostMapping("/api/system/{memberId}/point")
+    public ResponseEntity<String> postPoint(@PathVariable String memberId,
+                                            @RequestBody Map<String, Integer> requestBody) {
+        Optional<Member> findMember = memberRepository.findMemberId(memberId);
+
+        if (findMember.isPresent()) {
+            Member member = findMember.get();
+            Integer newPoint = requestBody.get("point");
+            log.info("New point: " + newPoint);
+
+            // 포인트 업데이트 로직
+            member.setPoint(Long.valueOf(newPoint));
+            memberRepository.updatePoint2(member);
+
+            return ResponseEntity.ok("포인트가 성공적으로 수정되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 멤버를 찾을 수 없습니다.");
+        }
+    }
+
 
     @GetMapping("/system/member")
     public String getAdminMember(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/style_em.css">
     <link rel="stylesheet" href="/css/cardInformation.css">
 
-    <link rel="shortcut icon" href="/logo/AMCNicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/logo/logo2.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <!-- Google Fonts 링크 추가 -->
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR&family=Do+Hyeon&family=Gugi&family=Jua&family=Black+Han+Sans&family=Gamja+Flower&family=Dokdo&family=Sunflower:wght@300;500;700&family=Poor+Story&display=swap" rel="stylesheet">
@@ -213,7 +213,7 @@
                     <i class="fa fa-text-width" aria-hidden="true" style="margin-right: 5px;"></i> 텍스트 추가
                 </h3>
                 <textarea id="textInput" placeholder="텍스트 입력"></textarea>
-                <input type="color" id="textColorPicker" value="#000000">
+                <input type="color" id="textColorPicker" value="#000000" style="width: 300px;">
                 <input type="number" id="textSizeInput" placeholder="텍스트 크기" min="10" max="100" value="40">
                 <select id="fontWeightSelect">
                     <option value="bold">Bold</option>
@@ -246,13 +246,15 @@
 
 <!-- 텍스트 편집 모달 -->
 <div id="textEditPopup" class="popup2">
-    <h3>업데이트</h3>
+    <h3 style="font-family: 'Jua', sans-serif;">
+        <i class="fa fa-text-width" aria-hidden="true" style="margin-right: 5px;"></i> 텍스트 업데이트
+    </h3>
     <div style="margin-bottom: 10px;">
 
         <textarea id="popupTextInput"></textarea>
     </div>
     <div style="margin-bottom: 10px;">
-        <input type="color" id="popupTextColorPicker">
+        <input type="color" id="popupTextColorPicker" style="width: 300px;">
     </div>
     <div style="margin-bottom: 10px;">
         <input type="number" id="popupTextSizeInput" min="10" max="100">

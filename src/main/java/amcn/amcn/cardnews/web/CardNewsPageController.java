@@ -4,23 +4,28 @@ import amcn.amcn.cardnews.domain.cardnews.CardNews;
 import amcn.amcn.cardnews.domain.searchcond.CardNewsSearchCond;
 import amcn.amcn.cardnews.repository.CardNewsRepository;
 import amcn.amcn.cardnews.repository.CardNewsSpringDataRepository;
+import amcn.amcn.file.FileStore2;
 import amcn.amcn.like.domain.like.Likes;
 import amcn.amcn.like.repository.LikeRepository;
 import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.repository.MemberRepository;
 import amcn.amcn.member.web.session.SessionConst;
-import amcn.amcn.news.domain.searchcond.NewsSearchCond;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,7 +35,7 @@ public class CardNewsPageController {
     private final MemberRepository memberRepository;
     private final LikeRepository likeRepository;
     private final CardNewsSpringDataRepository springDataRepository;
-
+private final FileStore2 fileStore2;
 
     @GetMapping("/cardnews")
     public String getHomeCard(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
@@ -121,6 +126,57 @@ public class CardNewsPageController {
 
 
         return "cardNews/cardnewsmore";
+    }
+
+
+
+    @PostMapping("/card/sound")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> playSound(@RequestBody Map<String, String> requestData) {
+        String cardNewsId = requestData.get("cardNewsId");
+        Map<String, Object> response = new HashMap<>();
+        Optional<CardNews> findCardNews = cardNewsRepository.findCardNewsId(Long.valueOf(cardNewsId));
+        if (findCardNews.isPresent()) {
+            CardNews cardNews = findCardNews.get();
+
+            String jsonContent="";
+            try {
+                // JSON 파일을 로드
+                UrlResource jsonResource = new UrlResource("file:" + fileStore2.getFullPath2(cardNews.getJsonUrl()));
+                try (InputStream inputStream = jsonResource.getInputStream()) {
+                  jsonContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+                }
+
+
+
+                // JSON 파싱
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode jsonNode = objectMapper.readTree(jsonContent);
+
+                // "texts" 필드 내의 모든 "text" 값 추출
+                List<String> textValues = new ArrayList<>();
+                JsonNode textsNode = jsonNode.get("texts");
+
+                if (textsNode.isArray()) {
+                    for (JsonNode textNode : textsNode) {
+                        // "text" 필드가 있는지 확인하고 값 추출
+                        if (textNode.has("text")) {
+                            log.info(textNode.get("text").asText());
+                            textValues.add(textNode.get("text").asText());
+                        }
+                    }
+                }
+
+                response.put("texts", textValues);
+
+            } catch (IOException e) {
+                response.put("error", "JSON 파일을 읽는 중 오류가 발생했습니다.");
+            }
+        } else {
+            response.put("error", "CardNews를 찾을 수 없습니다.");
+        }
+
+        return ResponseEntity.ok(response);
     }
 
 }

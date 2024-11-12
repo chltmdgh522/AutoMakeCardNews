@@ -2,6 +2,9 @@ package amcn.amcn.config;
 
 import amcn.amcn.member.web.session.SessionConst;
 import amcn.amcn.oauth.CustomOAuth2UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -52,6 +54,7 @@ public class SecurityConfig {
                 .requestMatchers("/oauth2/**", "/**").permitAll()
                 .anyRequest().authenticated()
         );
+
         // CustomOAuth2ExceptionFilter 등록
         http.addFilterBefore(new AuthFilter(), OAuth2LoginAuthenticationFilter.class);
 
@@ -60,9 +63,20 @@ public class SecurityConfig {
 
     @Bean
     public SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler() {
-        SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
-        handler.setDefaultTargetUrl("/");
-        handler.setAlwaysUseDefaultTargetUrl(true);
-        return handler;
+        return new SimpleUrlAuthenticationSuccessHandler() {
+            @Override
+            protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response) {
+                HttpSession session = request.getSession(false);
+                if (session != null) {
+                    String redirectURL = (String) session.getAttribute("redirectURL");
+                    if (redirectURL != null && !redirectURL.isEmpty()) {
+                        session.removeAttribute("redirectURL"); // 사용 후 세션에서 제거
+                        return redirectURL;
+                    }
+                }
+                return super.determineTargetUrl(request, response);
+            }
+        };
     }
+
 }
