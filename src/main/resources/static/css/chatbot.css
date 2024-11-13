@@ -1087,12 +1087,14 @@ outline: none;
 
 
 .chat-pic.joy {
-    background-image: url("/logo/AMCNicon.png");
+    background-image: url("/logo/승호흰.jpg");
+    width: 50px; /* 이미지 크기를 적절하게 설정 */
+    height: 50px;
 }
 
 .chat-pic.joy2 {
-    width: 50px; /* 이미지 크기를 적절하게 설정 */
-    height: 50px;
+    width: 70px; /* 이미지 크기를 적절하게 설정 */
+    height: 70px;
     object-fit: cover; /* 이미지 크기에 맞춰 잘림 */
 }
 

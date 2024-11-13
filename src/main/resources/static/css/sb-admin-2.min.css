@@ -12829,7 +12829,7 @@ button:active {
 .header-menu:hover {
     transform: scale(1.05);
     .my-icon{
-        color: black;
+        color: mediumpurple;
       /*  background-image: linear-gradient(178deg, #a1c4fd, #c2e9fb, #ffdde1);
         -webkit-background-clip: text; !* 텍스트에 배경이 적용되도록 설정 *!
         color: transparent; !* 텍스트 색상을 투명하게 설정하여 배경색이 보이도록 함 *!*/

@@ -655,7 +655,7 @@
 </header>
 
 <section id="innovation-trends" class="hero">
-    <div class="content-container">
+    <div class="content-container" style=" display: flex; justify-content: space-between; /* 요소들을 양 끝에 배치 */">
         <div class="hero__content">
             <h2>Auto Make Card News</h2>
 
@@ -674,15 +674,6 @@
             <div class="swiper-wrapper">
                 <div class="swiper-slide" th:each="pop : ${cardPop}">
                     <img th:src="|/ai/image/${pop.imageUrl}|"/>
-                    <!--<div class="cost" style="color: black;" th:text="${pop.member.name}">from $230 per group</div>-->
-                    <!--<div class="overlay23">
-                        <h1 th:text="${pop.title}">Walking Tour in Florence</h1>
-                        <p th:text="${pop.content}">
-                            Discover the fascinating beauty of this historic city by
-                            strolling through the rich cultural tapestry that makes Florence
-                            a timeless destination.
-                        </p>
-                    </div>-->
                 </div>
             </div>
         </div>
@@ -729,8 +720,8 @@
                     <span><img src="https://t.ly/2eZ0j" alt="" /></span>
                     <h3>Community</h3>
                     <p>
-                        Community는 사용자들 간의 연결을 촉진하여 상호작용과 협업을 위한 활기찬 공간을 만듭니다.
-                        사용자들은 아이디어를 공유하고, 주제에 대해 논의하며, 의미 있는 대화에 참여할 수 있어 경험을 향상시키고 커뮤니티의 역동성을 풍부하게 합니다
+                        Community는 고객님들 간의 연결을 촉진하여 상호작용과 협업을 위한 활기찬 공간을 만듭니다.
+                        고객님들이 아이디어를 공유하고, 주제에 대해 논의하며, 의미 있는 대화에 참여할 수 있어 경험을 향상하고 커뮤니티의 역동성을 풍부하게 합니다
                     </p>
                 </section>
             </li>
@@ -757,7 +748,7 @@
                      </span>
                             <span itemprop="name">
                                 70초 ➡️ 30초 <br>
-                                고객님들을 위해 카드뉴스 생성시간을 최소화하고 있어요.
+                                🃏고객님들을 위해 카드뉴스 생성시간을 최소화하고 있어요🃏
                             </span>
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  focusable="false" aria-hidden="true">
@@ -777,7 +768,7 @@
                            카드뉴스 다운로드
                      </span>
                             <span itemprop="name">
-                        📁사용자님이 만든 카드뉴스는 개인소장이 가능해요📁
+                        📁고객님이 만든 카드뉴스는 개인소장이 가능해요📁
                      </span>
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  focusable="false" aria-hidden="true">

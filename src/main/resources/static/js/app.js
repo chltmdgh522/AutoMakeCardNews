@@ -746,7 +746,7 @@ async function sendVideo() {
         return;
     }
 
-    alert("5초 정도 기다려주세요");
+    alert("10초 정도 기다려주세요");
     // 로딩 오버레이 표시
     document.getElementById('loadingOverlay').style.display = 'flex';
     if (texts.length > 0) {
@@ -1487,3 +1487,6 @@ document.getElementById('loadJsonFile').addEventListener('change', loadCanvasFro
 
 // "Save as JSON" 버튼 클릭 시 캔버스 상태를 JSON 파일로 저장하는 함수 등록
 document.getElementById('saveJson').addEventListener('click', saveCanvasAsJSON);
+
+
+

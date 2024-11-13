@@ -541,6 +541,19 @@
         <div class="page-indicator150" style="color: red; font-weight: bold;" id="pageIndicator150">1/15</div>
     </div>
 </div>
+
+
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); color: white;
+ justify-content: center; align-items: center; z-index: 9999;">
+    <div class="center-block">
+
+         <span style="position: absolute; top: 45%; left: 50%; transform: translateX(-50%); color: gray; font-weight: bold">
+        동영상을 생성하고 있습니다. 잠시만 기다려주세요.
+            </span>
+    </div>
+</div>
+
+<script src="/js/main.js"></script>
 <script src="/js/app2.js"></script>
 <script>
     // 이미지 저장 함수
@@ -824,7 +837,23 @@
     dragElement(document.querySelector(".popup4"));  // 색채운 사각형 팝업
     dragElement(document.querySelector("#filterPopup5"));  // 필터 선택 팝업
 </script>
+<script>
+    window.addEventListener('beforeunload', (event) => {
+        event.preventDefault(); // 기본 새로고침 동작 방지
+        event.returnValue = ''; // Chrome에서 기본 알림창 표시
 
+        // 사용자에게 확인 창을 띄우기
+        const confirmation = confirm("새로고침하시면 데이터가 다 날라갑니다. 그래도 하시겠습니까?");
+
+        // "예"를 누르면 새로고침
+        if (confirmation) {
+            window.location.reload();
+        }
+
+        // "아니요"를 누르면 아무 동작 안 함
+        return false;
+    });
+</script>
 </body>
 
 </html>

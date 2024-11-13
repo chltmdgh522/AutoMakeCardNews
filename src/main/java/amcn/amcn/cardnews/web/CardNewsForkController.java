@@ -44,10 +44,12 @@ public class CardNewsForkController {
                           Member loginMember,
                           Model model) {
 
-
+        String memberId1="";
+        String memberId2="";
         Optional<Member> findMember = memberRepository.findMemberId(loginMember.getMemberId());
         if (findMember.isPresent()) {
             Member member = findMember.get();
+            memberId1=member.getMemberId();
             if(member.getRoleType().name().equals("USER")){
                 return "redirect:/";
             }
@@ -60,7 +62,7 @@ public class CardNewsForkController {
         Optional<CardNews> findCardNews = cardNewsRepository.findCardNewsId(id);
         if (findCardNews.isPresent()) {
             CardNews cardNews = findCardNews.get();
-
+            memberId2=cardNews.getMember().getMemberId();
             cardNews.setTitle("");
             cardNews.setContent("");
             cardNews.setCategory("");
@@ -69,6 +71,10 @@ public class CardNewsForkController {
             model.addAttribute("id", id);
         } else {
             return null;
+        }
+
+        if(memberId1.equals(memberId2)){
+            return "redirect:/";
         }
 
         return "cardNews/cardnewsfork";

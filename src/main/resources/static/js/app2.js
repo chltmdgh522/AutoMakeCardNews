@@ -1,4 +1,4 @@
-const canvas = document.querySelector('canvas');
+const canvas = document.getElementById('imageCanvas');
 const ctx = canvas.getContext('2d');
 const lineWidth = document.getElementById('line_width');
 const color = document.getElementById('text_color');
@@ -746,7 +746,9 @@ async function sendVideo() {
         return;
     }
 
-    alert("5초 정도 기다려주세요");
+    alert("10초 정도 기다려주세요");
+    // 로딩 오버레이 표시
+    document.getElementById('loadingOverlay').style.display = 'flex';
     if (texts.length > 0) {
         const allTexts = texts.map(item => item.text).join(' ');
 
@@ -796,6 +798,9 @@ async function sendVideo() {
             }
         } catch (error) {
             console.error('비디오 요청 중 오류 발생:', error);
+        }finally {
+            // 로딩 오버레이 숨기기
+            document.getElementById('loadingOverlay').style.display = 'none';
         }
     } else {
         alert('추가된 텍스트가 없습니다.');
