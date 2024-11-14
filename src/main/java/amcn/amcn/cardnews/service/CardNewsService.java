@@ -33,7 +33,7 @@ public class CardNewsService {
     @Async
     public CompletableFuture<String> generatePicture(String prompt) throws IOException, InterruptedException {
         String url = "https://api.openai.com/v1/images/generations";
-        String prompt_2 = prompt + "최대한 아름답게, 마치 실제 광고처럼 완성도 높은 이미지를 만들어주세요. 사람들이 부러워할 만큼 멋지고 매끄러운 느낌으로 부탁드립니다";
+        String prompt_2 = prompt + "최대한 아름답게, 마치 실제 카드뉴스나 포스터처럼 완성도 높은 이미지를 만들어주세요. 사람들이 부러워할 만큼 멋지고 매끄러운 느낌으로 부탁드립니다.";
 
         // JSON 문자열 생성
         String requestBody = String.format(
