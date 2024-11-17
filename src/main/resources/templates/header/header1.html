@@ -70,9 +70,7 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-white sidebar bg-whisidebar-dark accordion" id="accordionSidebar">
 
-
-        <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center header-menu " href="/">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center header-menu no-hover" href="/">
             <img src="/logo/AMCNicon.png" alt="로고" width="170" height="140">
         </a>
 
@@ -88,49 +86,46 @@
             </a>
         </li>
 
-
-
         <!-- Nav Item - Pages Collapse Menu -->
-
         <li class="nav-item header-menu">
             <a class="nav-link menu" href="/">
                 <i class="fas fa-home fs-3x my-icon"></i>
-                <span class="text-dark" style="font-size: 21px;">Home</span></a>
+                <span class="text-dark" style="font-size: 23px;">Home</span></a>
         </li>
 
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item header-menu">
             <a class="nav-link" href="/cardnews/project">
                 <i class="fas fa-file fs-2x my-icon"></i>
-                <span class="text-dark" style="font-size: 21px;">Project</span></a>
+                <span class="text-dark" style="font-size: 23px;">Project</span></a>
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item header-menu">
             <a class="nav-link" href="/cardnews/template">
                 <i class="fas fa-copy my-icon"></i>
-                <span class="text-dark" style="font-size: 21px;">Template</span></a>
+                <span class="text-dark" style="font-size: 23px;">Template</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item header-menu">
             <a class="nav-link" href="/members">
                 <i class="fas fa-user my-icon"></i>
-                <span class="text-dark" style="font-size: 21px;">Members</span></a>
+                <span class="text-dark" style="font-size: 23px;">Members</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item header-menu">
             <a class="nav-link" href="/trash">
                 <i class="fas fa-trash my-icon"></i>
-                <span class="text-dark" style="font-size: 21px;">Trash</span></a>
+                <span class="text-dark" style="font-size: 23px;">Trash</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item header-menu">
             <a class="nav-link" href="/game">
                 <i class="fas fa-dice my-icon"></i>
-                <span class="text-dark" style="font-size: 21px;">Game</span></a>
+                <span class="text-dark" style="font-size: 23px;">Game</span></a>
         </li>
 
         <!-- MASTER 역할인 경우 -->
@@ -146,21 +141,21 @@
             <a class="nav-link" href="/chat"
                data-toggle="modal" data-target="#chatModal">
                 <i class="fas fa-comments my-icon"></i>
-                <span class="text-dark" style="font-size: 21px;">Chat</span></a>
+                <span class="text-dark" style="font-size: 23px;">Chat</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item header-menu">
             <a class="nav-link" th:href="@{/mypage}">
                 <i class="fas fa-cog my-icon"></i>
-                <span class="text-dark" style="font-size: 21px;">Setting</span></a>
+                <span class="text-dark" style="font-size: 23px;">Setting</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item header-menu" th:if="${member.roleType == T(amcn.amcn.member.domain.member.RoleType).MASTER}">
             <a class="nav-link" th:href="@{/system}">
                 <i class="fas fa-wrench my-icon"></i>
-                <span class="text-dark" style="font-size: 21px;">Super</span></a>
+                <span class="text-dark" style="font-size: 23px;">Super</span></a>
         </li>
 
         <form th:action="@{/logout}" method="post" style="color: black; font-weight: bold; text-decoration: none;"
@@ -170,7 +165,6 @@
             </button>
         </form>
     </ul>
-
 </sidebar>
 </header>
 </body>
