@@ -1,4 +1,4 @@
-package amcn.amcn.config;
+package amcn.amcn.config.data;
 
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
 import amcn.amcn.cardnews.repository.CardNewsRepository;
@@ -22,7 +22,7 @@ import java.time.LocalDate;
 
 //@Component
 @RequiredArgsConstructor
-public class DataInitializer2 {
+public class DataInitializer {
 
     private final MemberRepository memberRepository;
 
@@ -2280,19 +2280,19 @@ public class DataInitializer2 {
 
 
 
-//
-//        // 회원 정보 저장
-//        memberRepository.save(member0);
-//        memberRepository.save(member1);
-//        memberRepository.save(member2);
-//        memberRepository.save(member3);
-//        memberRepository.save(member4);
-//        memberRepository.save(member5);
-//        memberRepository.save(member6);
-//        memberRepository.save(member7);
-//        memberRepository.save(member8);
-//        memberRepository.save(member9);
-//        memberRepository.save(member10);
+
+        // 회원 정보 저장
+        memberRepository.save(member0);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+        memberRepository.save(member4);
+        memberRepository.save(member5);
+        memberRepository.save(member6);
+        memberRepository.save(member7);
+        memberRepository.save(member8);
+        memberRepository.save(member9);
+        memberRepository.save(member10);
 
 
         //게시글 저장
