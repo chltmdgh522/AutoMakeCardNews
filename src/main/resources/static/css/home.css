@@ -29,8 +29,8 @@
 .coll2 {
     padding: 0;
     margin:0px;
-    /*background-color: #ADD8E6; !* 파란 배경 *!*/
-    background-color: #E6E6FA;
+    background-color: #ADD8E6; /* 파란 배경 */
+    /*background-color: #E6E6FA;*/
 
 
     border-radius: 10px; /* 부드러운 모서리를 위한 테두리 */
