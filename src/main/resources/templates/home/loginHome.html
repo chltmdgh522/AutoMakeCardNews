@@ -175,18 +175,12 @@
 <div id="wrapper" th:object="${member}">
     <div th:replace="~{header/header1 :: copyParam (${member})}"></div>
 
-
-    <!-- End of Sidebar -->
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
         <!-- Main Content -->
         <div id="content">
-
             <div th:replace="~{header/header2 :: copyParam (${member})}"></div>
-            <!-- header -->
-
             <div class="popup" id="popup" th:if="${type == 'USER'}">
                 <h4 style="font-weight: bold; color: black" th:text="|${member.name}님, 이메일 인증 대상자입니다⭐|">이메일 인증
                     대상자입니다⭐</h4>
@@ -195,7 +189,6 @@
                 <p><a href="mypage/edit"> 이메일 인증은 여기!!🍃</a></p>
                 <button id="closeBtn" style="font-weight: bold;" class="mb-2">닫기</button>
             </div>
-
 
             <div class="popup" id="popup2" th:if="${chatCount != 0}">
                 <h4 style="font-weight: bold; color: black" th:text="|${member.name}님, 관리자로 부터 메시지가 ${chatCount}건 왔습니다.⭐|">이메일 인증
@@ -219,12 +212,10 @@
                         <div class="container mb-1">
                             <div class="row justify-content-center">
                                 <div class="col-md-6">
-                                    <!-- 추가한 문구 -->
-                                    <p class="text-center mt-2" style="font-size: 2.2em; color: white;">원하시는 카드뉴스를
+                                    <p class="text-center mt-2" style="font-size: 2.3em; color: white;">원하시는 카드뉴스를
                                         검색해보세요!</p>
                                     <form method="get" id="searchForm">
                                         <div class="input-group mt-3 custom-search">
-
                                             <!-- 왼쪽 아이콘 -->
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-search"></i></span>
@@ -232,7 +223,6 @@
                                             <!-- 검색창 -->
                                             <input type="text" id="searchInput" class="form-control"
                                                    placeholder="검색어를 입력하세요...">
-
                                         </div>
                                     </form>
                                     <!-- 동그라미 아이콘들 -->
