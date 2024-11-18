@@ -33,8 +33,12 @@ public class CardNewsService {
     @Async
     public CompletableFuture<String> generatePicture(String prompt) throws IOException, InterruptedException {
         String url = "https://api.openai.com/v1/images/generations";
-        String prompt_2 = prompt + "최대한 아름답게, 마치 실제 포스터처럼 완성도 높은 이미지를 만들어주세요. 사람들이 부러워할 만큼 멋지고 매끄러운 느낌으로 부탁드립니다." +
-                "그리고 이미지에 카드뉴스 단어 빼주세요 영어로 된것도 빼주세요.";
+
+        String prompt1 = prompt.replaceAll("카드뉴스", "");
+
+        String prompt_2 = prompt1 + "가 사용자가 입력한 프롬프트야 즉"+
+                "이거에 관한 프롬프트 내용을 바탕으로 4개의 컷 이미지를 그려줘 단순하고 미니멀한 디자인이 특징인 평면 벡터 일러스트 스타일이고 \n" +
+                "배경색은 흰색, 대표 색상은 스카이코랄이야. 4컷은 순서대로 차례로 위치시켜주고 텍스트 오버레이를 위한 충분한 공간을 확보해주고 이미지 내 텍스트는 없어야해";
 
         // JSON 문자열 생성
         String requestBody = String.format(
