@@ -38,14 +38,25 @@ public class CardNewsService {
         String prompt2 = prompt1.replaceAll("생성해줘", "");
         System.out.println(prompt1);
 
-        String prompt_3 = "지금 부터 너는 소셜미디어 전문 콘텐츠 디자이너야. 너는 지금 SNS에 사용할 카드뉴스를 만들어야해 주제는 ["+prompt2 + "] 야."+
-                "생성된 이미지의 톤과 매너는 주제에 맞게 사용해줘. 그리고 이미지 안에는 글자가 없어야 해. 즉 영어, 한국어, 일본어 등등 무조건 없어야 됩니다.";
+        String prompt_2 = String.format(
+                "Topic Overview:" +
+                        "- Goal: %s" + // 사용자 입력을 목표에 포함
+                        "Visual Elements:" +
+                        "- Key Elements: [Illustration-focused design, Flat design characters, Social media post graphics, Website graphics, Modern illustration]" +
+                        "- Style: [Abstract, Minimal, Flat design, Bold and vibrant colors]" +
+                        "Design Guidelines:" +
+                        "- Structure: Maintain a systematically organized layout" +
+                        "- Mood: Modern and trustworthy style" +
+                        "- Colors: Use bold and saturated color palettes" +
+                        "- Text: Exclude any text within the image",
+               prompt2 // 사용자가 입력한 텍스트를 목표에 포함
+        );
 
 
         // JSON 문자열 생성
         String requestBody = String.format(
                 "{\"model\":\"dall-e-3\",\"prompt\":\"%s\",\"n\":1,\"size\":\"1024x1024\"}",
-                prompt_3);
+                prompt_2);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
