@@ -44,9 +44,9 @@ public class CardNewsService {
                 "Topic Overview:" +
                         "- Goal: %s" + // 사용자 입력을 목표에 포함
                         "Role:" +
-                        "- Role: As an expert illustrator" +
+                        "- Role: As an expert illustrator specialized in modern, flat-design card news." +
                         "Visual Elements:" +
-                        "- Key Elements: [Illustration-focused design, Flat design characters, Social media post graphics, Website graphics, Modern illustration]" +
+                        "- Key Elements: [Illustration-focused design, Flat-design characters with expressive faces, Social media post graphics, Website graphics, Modern illustration]" +
                         "- Style: [Abstract, Minimal, Flat design, Bold and vibrant colors]" +
                         "Design Guidelines:" +
                         "- Structure: Maintain a systematically organized layout" +
