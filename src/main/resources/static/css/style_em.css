@@ -528,6 +528,8 @@ textarea{
 }
 
 .styled-input {
+
+    width: 190px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;

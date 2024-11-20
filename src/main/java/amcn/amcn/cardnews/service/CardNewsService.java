@@ -99,8 +99,9 @@ public class CardNewsService {
         String[] removeWords = {"카드뉴스", "이미지", "관한", "대한", "이미저", "카드뉴소"};
 
         String userInput = removeWordsFromString(prompt, removeWords) +
-                "이게 사용자 답변인데, 답변 내용 중 '카드뉴스'나 '이미지'와 관련된 단어가 있으면 무시해 주세요. 대신, " +
-                "남은 문장에 관한 주요 뉴스 10개를 생성해 주세요. 문장 형식은 뉴스처럼 끝내줘 최대한 빨리 생성해줘";
+                "이게 사용자 답변인데, 답변 내용 중 '카드뉴스'나 '이미지'와 관련된 단어가 있으면 무시해 주세요."+
+        "남은 문장에 관한 주요 헤드라인 문구 10개를 생성해 주세요."+
+        "헤드라인은 간결하고 매력적으로 작성하며, 뉴스 스타일로 작성해주세요.";
         // OpenAI API 호출
         String answer = "";
         try {
@@ -112,7 +113,7 @@ public class CardNewsService {
                     .POST(HttpRequest.BodyPublishers.ofString(new JSONObject()
                             .put("model", "gpt-4o")
                             .put("messages", new JSONArray()
-                                    .put(new JSONObject().put("role", "system").put("content", "너는 뉴스 주요문장을 생성해주는 사람이야"))
+                                    .put(new JSONObject().put("role", "system").put("content", "너는 뉴스 헤드라인 문구를 생성하는 전문가야. 간결하고 정보력있는 헤드라인을 만들어줘."))
                                     .put(new JSONObject().put("role", "user").put("content", userInput)))
                             .put("max_tokens", 1000)
                             .toString()))
