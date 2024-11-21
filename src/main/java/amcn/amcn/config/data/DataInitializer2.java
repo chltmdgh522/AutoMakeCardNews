@@ -1,4 +1,4 @@
-package amcn.amcn.config;
+package amcn.amcn.config.data;
 
 import amcn.amcn.cardnews.domain.cardnews.CardNews;
 import amcn.amcn.cardnews.repository.CardNewsRepository;
@@ -11,17 +11,18 @@ import amcn.amcn.member.domain.member.Member;
 import amcn.amcn.member.domain.member.MemberType;
 import amcn.amcn.member.domain.member.RoleType;
 import amcn.amcn.member.repository.MemberRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
-
 //@Component
 @RequiredArgsConstructor
-public class DataInitializer3 {
+public class DataInitializer2 {
 
     private final MemberRepository memberRepository;
 
@@ -32,15 +33,16 @@ public class DataInitializer3 {
     private final CommentRepository commentRepository;
 
     private final LikeRepository likeRepository;
-    @Bean
-    public CommandLineRunner initDatabase() {
-        return args -> {
-            // 서버 시작 시 데이터베이스에 초기값을 삽입합니다.
-            initializeMembers();
-        };
-    }
+//    @Bean
+//    public CommandLineRunner initDatabase() {
+//        return args -> {
+//            // 서버 시작 시 데이터베이스에 초기값을 삽입합니다.
+//            initializeMembers();
+//        };
+//    }
 
-    @Transactional
+
+    @PostConstruct
     public void initializeMembers() {
         // 데이터베이스 초기화를 위한 코드 작성
         Member member0 = new Member(
@@ -1264,7 +1266,7 @@ public class DataInitializer3 {
                 "사과4.png",
                 "경제"
 
-                );
+        );
 
         CardNews cardNews2 = new CardNews(
                 member2,
@@ -2278,19 +2280,19 @@ public class DataInitializer3 {
 
 
 
-
-        // 회원 정보 저장
-        memberRepository.save(member0);
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
-        memberRepository.save(member4);
-        memberRepository.save(member5);
-        memberRepository.save(member6);
-        memberRepository.save(member7);
-        memberRepository.save(member8);
-        memberRepository.save(member9);
-        memberRepository.save(member10);
+//
+//        // 회원 정보 저장
+//        memberRepository.save(member0);
+//        memberRepository.save(member1);
+//        memberRepository.save(member2);
+//        memberRepository.save(member3);
+//        memberRepository.save(member4);
+//        memberRepository.save(member5);
+//        memberRepository.save(member6);
+//        memberRepository.save(member7);
+//        memberRepository.save(member8);
+//        memberRepository.save(member9);
+//        memberRepository.save(member10);
 
 
         //게시글 저장
@@ -2346,45 +2348,45 @@ public class DataInitializer3 {
         boardRepository.save(board50);
 
 
-        // 카드뉴스
-        cardNewsRepository.save(cardNews1);
-        cardNewsRepository.save(cardNews2);
-        cardNewsRepository.save(cardNews3);
-        cardNewsRepository.save(cardNews4);
-        cardNewsRepository.save(cardNews5);
-        cardNewsRepository.save(cardNews6);
-        cardNewsRepository.save(cardNews7);
-        cardNewsRepository.save(cardNews8);
-        cardNewsRepository.save(cardNews9);
-        cardNewsRepository.save(cardNews10);
-        cardNewsRepository.save(cardNews11);
-        cardNewsRepository.save(cardNews12);
-        cardNewsRepository.save(cardNews13);
-        cardNewsRepository.save(cardNews14);
-        cardNewsRepository.save(cardNews15);
-        cardNewsRepository.save(cardNews16);
-        cardNewsRepository.save(cardNews17);
-        cardNewsRepository.save(cardNews18);
-        cardNewsRepository.save(cardNews19);
-        cardNewsRepository.save(cardNews20);
-        cardNewsRepository.save(cardNews21);
-        cardNewsRepository.save(cardNews22);
-        cardNewsRepository.save(cardNews23);
-        cardNewsRepository.save(cardNews24);
-        cardNewsRepository.save(cardNews25);
-        cardNewsRepository.save(cardNews26);
-        cardNewsRepository.save(cardNews27);
-        cardNewsRepository.save(cardNews28);
-        cardNewsRepository.save(cardNews29);
-        cardNewsRepository.save(cardNews30);
-        cardNewsRepository.save(cardNews31);
-        cardNewsRepository.save(cardNews32);
-        cardNewsRepository.save(cardNews33);
-        cardNewsRepository.save(cardNews34);
-        cardNewsRepository.save(cardNews35);
-        cardNewsRepository.save(cardNews36);
-        cardNewsRepository.save(cardNews37);
-        cardNewsRepository.save(cardNews38);
+//        // 카드뉴스
+//        cardNewsRepository.save(cardNews1);
+//        cardNewsRepository.save(cardNews2);
+//        cardNewsRepository.save(cardNews3);
+//        cardNewsRepository.save(cardNews4);
+//        cardNewsRepository.save(cardNews5);
+//        cardNewsRepository.save(cardNews6);
+//        cardNewsRepository.save(cardNews7);
+//        cardNewsRepository.save(cardNews8);
+//        cardNewsRepository.save(cardNews9);
+//        cardNewsRepository.save(cardNews10);
+//        cardNewsRepository.save(cardNews11);
+//        cardNewsRepository.save(cardNews12);
+//        cardNewsRepository.save(cardNews13);
+//        cardNewsRepository.save(cardNews14);
+//        cardNewsRepository.save(cardNews15);
+//        cardNewsRepository.save(cardNews16);
+//        cardNewsRepository.save(cardNews17);
+//        cardNewsRepository.save(cardNews18);
+//        cardNewsRepository.save(cardNews19);
+//        cardNewsRepository.save(cardNews20);
+//        cardNewsRepository.save(cardNews21);
+//        cardNewsRepository.save(cardNews22);
+//        cardNewsRepository.save(cardNews23);
+//        cardNewsRepository.save(cardNews24);
+//        cardNewsRepository.save(cardNews25);
+//        cardNewsRepository.save(cardNews26);
+//        cardNewsRepository.save(cardNews27);
+//        cardNewsRepository.save(cardNews28);
+//        cardNewsRepository.save(cardNews29);
+//        cardNewsRepository.save(cardNews30);
+//        cardNewsRepository.save(cardNews31);
+//        cardNewsRepository.save(cardNews32);
+//        cardNewsRepository.save(cardNews33);
+//        cardNewsRepository.save(cardNews34);
+//        cardNewsRepository.save(cardNews35);
+//        cardNewsRepository.save(cardNews36);
+//        cardNewsRepository.save(cardNews37);
+//        cardNewsRepository.save(cardNews38);
 
 
         //댓글

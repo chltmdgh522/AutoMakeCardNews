@@ -33,29 +33,7 @@ public class CardNewsService {
     @Async
     public CompletableFuture<String> generatePicture(String prompt) throws IOException, InterruptedException {
         String url = "https://api.openai.com/v1/images/generations";
-        // 프롬프트 템플릿
-
-        String cleanedPrompt = prompt
-                .replaceAll("카드뉴스", "") // 불필요한 단어 제거
-                .replaceAll("생성해줘", "") // 불필요한 단어 제거
-                .replaceAll("만들어줘", "") // 불필요한 단어 제거
-                .trim(); // 앞뒤 공백 제거
-
-        String prompt_2 = String.format(
-                "Topic Overview:" +
-                        "- Goal: %s" + // 사용자 입력을 목표에 포함
-                        "Role:" +
-                        "- Role: As an expert illustrator specialized in modern, flat-design card news." +
-                        "Visual Elements:" +
-                        "- Key Elements: [Illustration-focused design, Flat-design characters with expressive faces, Social media post graphics, Website graphics, Modern illustration]" +
-                        "- Style: [Abstract, Minimal, Flat design, Bold and vibrant colors]" +
-                        "Design Guidelines:" +
-                        "- Structure: Maintain a systematically organized layout" +
-                        "- Mood: Modern and trustworthy style" +
-                        "- Colors: Use bold and saturated color palettes" +
-                        "- Text: Exclude any text within the image",
-                cleanedPrompt // 사용자가 입력한 텍스트를 목표에 포함
-        );
+        String prompt_2 = prompt + "최대한 아름답게, 마치 실제 광고처럼 완성도 높은 이미지를 만들어주세요. 사람들이 부러워할 만큼 멋지고 매끄러운 느낌으로 부탁드립니다";
 
         // JSON 문자열 생성
         String requestBody = String.format(
