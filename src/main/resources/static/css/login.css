@@ -23,9 +23,6 @@ body::before {
     z-index: -1;
 }
 
-
-
-
 .container{
 height: 100%;
 align-content: center;
@@ -43,7 +40,7 @@ background-color: white !important;
 .social_icon span{
 font-size: 60px;
 margin-left: 10px;
-color: whi;
+color: white;
 }
 
 .social_icon span:hover{
@@ -94,8 +91,6 @@ color: black;
 background-color: #7058d6;
 }
 
-
-
 .input-group.form-group input.form-control {
     border-top: none;
     border-left: none;
@@ -106,7 +101,7 @@ background-color: #7058d6;
 
 a{
     color: #aa9bec;
-    font-weight: bold;
+    font-size:15px;
 }
 
 .field-error {

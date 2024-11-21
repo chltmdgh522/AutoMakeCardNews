@@ -8413,7 +8413,8 @@ button.bg-dark:hover {
 
 .mb-5,
 .my-5 {
-    margin-bottom: 3rem !important
+    margin-bottom: 1rem !important
+    margin-top: 3rem !important
 }
 
 .ml-5,
@@ -10590,9 +10591,8 @@ button.bg-dark:hover {
 }
 
 .text-primary {
-    color: #4e73df !important
+    color: #fcdd9d !important
 }
-
 
 .text-secondary {
     color: #858796 !important
@@ -10600,7 +10600,7 @@ button.bg-dark:hover {
 
 
 .text-success {
-    color: #1cc88a !important
+    color: #c3d381 !important
 }
 
 a.text-success:focus,
@@ -10615,7 +10615,8 @@ a.text-success:hover {
 
 
 .text-warning {
-    color: #f6c23e !important
+    /*color: #f6c23e !important*/
+    color:  #659ae5 !important
 }
 
 
@@ -12488,7 +12489,7 @@ body.sidebar-toggled footer.sticky-footer {
 }*/
 
 .mixed-color-box {
-    background:#a19be5;
+    background:linear-gradient(270deg, #ceb5f7,#a4c9f7);
     padding: 20px;
     border-radius: 10px;
     display: flex;
