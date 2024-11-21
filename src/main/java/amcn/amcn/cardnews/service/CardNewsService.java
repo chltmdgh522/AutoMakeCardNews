@@ -34,29 +34,38 @@ public class CardNewsService {
     public CompletableFuture<String> generatePicture(String prompt) throws IOException, InterruptedException {
         String url = "https://api.openai.com/v1/images/generations";
 
+        // 사용자 입력을 정리
         String cleanedPrompt = prompt
                 .replaceAll("카드뉴스", "") // 불필요한 단어 제거
                 .replaceAll("생성해줘", "") // 불필요한 단어 제거
                 .replaceAll("만들어줘", "") // 불필요한 단어 제거
+                .replaceAll("에 관한", "") // "에 관한" 제거
+                .replaceAll("에 대한", "") // "에 대한" 제거
                 .trim(); // 앞뒤 공백 제거
 
-        String prompt_2 = String.format(
-                "Topic Overview:" +
-                        "- Goal: %s" + // 사용자 입력을 목표에 포함
-                        "Role:" +
-                        "- Role: As an expert illustrator specialized in modern, flat-design card news." +
-                        "Visual Elements:" +
-                        "- Key Elements: [Illustration-focused design, Flat-design characters with expressive faces, Social media post graphics, Website graphics, Modern illustration]" +
-                        "- Style: [Abstract, Minimal, Flat design, Bold and vibrant colors]" +
-                        "Design Guidelines:" +
-                        "- Structure: Maintain a systematically organized layout" +
-                        "- Mood: Modern and trustworthy style" +
-                        "- Colors: Use bold and saturated color palettes" +
-                        "- Text: Exclude any text within the image",
-                cleanedPrompt // 사용자가 입력한 텍스트를 목표에 포함
+        // 동적 핵심 요소 생성
+        String dynamicKeyElements = String.format(
+                "An illustration that visually represents '%s'. The image should include a few expressive people reflecting emotions related to '%s'. Add symbolic elements that clearly convey the concept of '%s'. Use a simple and clear style with a soft color palette.",
+                cleanedPrompt, cleanedPrompt, cleanedPrompt
         );
 
+        // 최종 프롬프트 생성
+        String prompt_2 = String.format(
+                "Topic Overview: " +
+                        "- Goal: Create a visually clear and expressive illustration about '%s', focusing on making the topic understandable at a glance. " +
+                        "Role: " +
+                        "- You are an expert illustrator specializing in creating simple and expressive visuals that effectively communicate ideas. " +
+                        "Visual Elements: " +
+                        "- Include people with expressive faces to reflect the emotions of '%s'. " +
+                        "- Add symbolic elements closely related to '%s' to make the concept immediately recognizable. " +
+                        "Design Guidelines: " +
+                        "- Use a clean, minimal style with soft, neutral colors. " +
+                        "- Avoid clutter and ensure the main idea stands out clearly. " +
+                        "- Exclude any text in the illustration, focusing solely on visual representation.",
+                cleanedPrompt, cleanedPrompt, cleanedPrompt
+        );
 
+        System.out.println(prompt_2); // 생성된 프롬프트 확인용
 
         // JSON 문자열 생성
         String requestBody = String.format(
