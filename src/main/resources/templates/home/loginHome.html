@@ -19,6 +19,7 @@
     <link rel="shortcut icon" href="/logo/logo2.png" type="image/x-icon">
     <!-- Custom fonts for this template-->
     <script src="https://kit.fontawesome.com/097a6f4f17.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.skypack.dev/three@v0.122.0"></script>
 
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -166,6 +167,17 @@
         a {
             text-decoration: none;
         }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        ::-webkit-color-swatch,
+        ::-moz-color-swatch {
+            border-color: transparent;
+        }
+
     </style>
 </head>
 
@@ -208,6 +220,19 @@
                     <!-- 팝업 내용 -->
 
                     <div class="mixed-color-box">
+                        <ul class="circles">
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                        <click-spark style="--click-spark-color: #ff6347;"></click-spark>
                         <!-- 검색창 -->
                         <div class="container mb-1">
                             <div class="row justify-content-center">
@@ -218,11 +243,10 @@
                                         <div class="input-group mt-3 custom-search">
                                             <!-- 왼쪽 아이콘 -->
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                                <span class="input-group-text" style="color: rgba(255, 255, 255, 0.95);"><i class="fas fa-search"></i></span>
                                             </div>
                                             <!-- 검색창 -->
-                                            <input type="text" id="searchInput" class="form-control"
-                                                   placeholder="검색어를 입력하세요...">
+                                            <input type="text" id="searchInput" class="form-control" style="color: rgba(255, 255, 255, 0.95);" placeholder="검색어를 입력하세요...">
                                         </div>
                                     </form>
                                     <!-- 동그라미 아이콘들 -->
@@ -275,17 +299,17 @@
                             <span style="color: black; font-weight: bold;">더보기</span>
                         </a>
                     </div>
+
                     <div class="coll2" style="margin-top: -45px">
-                        <div class="cloud" style="animation-delay: 0s; "></div>
+                       <!-- <div class="cloud" style="animation-delay: 0s; "></div>
                         <div class="cloud" style="animation-delay: 2s; "></div>
                         <div class="cloud" style="animation-delay: 4s; "></div>
                         <div class="cloud" style="animation-delay: 6s; "></div>
                         <div class="cloud" style="animation-delay: 8s; "></div>
                         <div class="cloud" style="animation-delay: 10s; "></div>
-                        <div class="cloud" style="animation-delay: 12s; "></div>
+                        <div class="cloud" style="animation-delay: 12s; "></div>-->
                         <div class="swiper-container swiper-top">
                             <div class="swiper-wrapper">
-
                                 <!-- image box -->
                                 <div class="swiper-slide" th:each="pop : ${cardnews}">
                                     <a th:href="|/cardnews/${pop.cardNewsId}|">
@@ -300,7 +324,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
@@ -322,41 +345,39 @@
 
 
 
-                        <div th:if="${myCardnews.isEmpty()}" class="coll23 mb-2" style="
+                    <div th:if="${myCardnews.isEmpty()}" class="coll23 mb-2" style="
                         margin-top: -10px;
     background-color: #EADCF0;
     padding: 0;
     overflow: hidden;
     position: relative;
     border-radius: 10px;">
-                            <div class="cloud2" style="animation-delay: 0s; "></div>
-                            <div class="cloud2" style="animation-delay: 2s; "></div>
-                            <div class="cloud2" style="animation-delay: 4s; "></div>
-                            <div class="cloud2" style="animation-delay: 6s; "></div>
-                            <div class="cloud2" style="animation-delay: 8s; "></div>
-                            <div class="cloud2" style="animation-delay: 10s; "></div>
-                            <div class="cloud2" style="animation-delay: 12s; "></div>
-                            <div class="swiper-container swiper-bottom">
-                                <div class="swiper-wrapper">
+                        <!--<div class="cloud2" style="animation-delay: 0s; "></div>
+                        <div class="cloud2" style="animation-delay: 2s; "></div>
+                        <div class="cloud2" style="animation-delay: 4s; "></div>
+                        <div class="cloud2" style="animation-delay: 6s; "></div>
+                        <div class="cloud2" style="animation-delay: 8s; "></div>
+                        <div class="cloud2" style="animation-delay: 10s; "></div>
+                        <div class="cloud2" style="animation-delay: 12s; "></div>-->
+                        <div class="swiper-container swiper-bottom">
+                            <div class="swiper-wrapper">
 
-                                    <!-- image box -->
-                                    <div class="swiper-slide" th:each="card : ${cardPop}">
-                                        <a th:href="|/cardnews/${card.cardNewsId}|">
-                                            <div class="imgBox">
-                                                <img th:src="|/ai/image/${card.imageUrl}|"/>
-                                            </div>
-                                        </a>
-                                        <div class="details">
-                                            <h3 th:text="${card.title}">Kaala<br>
-                                                Directed by : <span th:text="${card.member.name}">Pa. Ranjith</span>
-                                            </h3>
+                                <!-- image box -->
+                                <div class="swiper-slide" th:each="card : ${cardPop}">
+                                    <a th:href="|/cardnews/${card.cardNewsId}|">
+                                        <div class="imgBox">
+                                            <img th:src="|/ai/image/${card.imageUrl}|"/>
                                         </div>
+                                    </a>
+                                    <div class="details">
+                                        <h3 th:text="${card.title}">Kaala<br>
+                                            Directed by : <span th:text="${card.member.name}">Pa. Ranjith</span>
+                                        </h3>
                                     </div>
                                 </div>
-<!--                                <div class="swiper-pagination2">-->
-<!--                                </div>-->
                             </div>
                         </div>
+                    </div>
 
                     <div th:if="${!myCardnews.isEmpty()}"
                          style="
@@ -446,9 +467,88 @@
         window.location.href = fullUrl; // 해당 URL로 이동
     });
 </script>
+
 <script>
+    class ClickSpark extends HTMLElement {
+        constructor() {
+            super();
+            this.attachShadow({ mode: "open" });
+        }
+
+        connectedCallback() {
+            this.shadowRoot.innerHTML = this.createSpark();
+            this.svg = this.shadowRoot.querySelector("svg");
+            this._parent = this.parentNode;
+            this._parent.addEventListener("click", this);
+        }
+
+        disconnectedCallback() {
+            this._parent.removeEventListener("click", this);
+            delete this._parent;
+        }
+
+        handleEvent(e) {
+            this.setSparkPosition(e);
+            this.animateSpark();
+        }
+
+        animateSpark() {
+            let sparks = [...this.svg.children];
+            let size = parseInt(sparks[0].getAttribute("y1"));
+            let offset = size / 2 + "px";
+
+            let keyframes = (i) => {
+                let deg = `calc(${i} * (360deg / ${sparks.length}))`;
+
+                return [
+                    {
+                        strokeDashoffset: size * 3,
+                        transform: `rotate(${deg}) translateY(${offset})`
+                    },
+                    {
+                        strokeDashoffset: size,
+                        transform: `rotate(${deg}) translateY(0)`
+                    }
+                ];
+            };
+
+            let options = {
+                duration: 660,
+                easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+                fill: "forwards"
+            };
+
+            sparks.forEach((spark, i) => spark.animate(keyframes(i), options));
+        }
+
+        setSparkPosition(e) {
+            this.style.left = e.pageX - this.clientWidth / 2 + "px";
+            this.style.top = e.pageY - this.clientHeight / 2 + "px";
+        }
+
+        createSpark() {
+            return `
+            <style>
+                :host {
+                    position: absolute;
+                    pointer-events: none;
+                }
+            </style>
+            <svg width="45" height="45" viewBox="0 0 100 100" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" stroke="var(--click-spark-color, currentcolor)" transform="rotate(-20)">
+                ${Array.from(
+                { length: 8 },
+                (_) =>
+                    `<line x1="50" y1="30" x2="50" y2="4" stroke-dasharray="30" stroke-dashoffset="30" style="transform-origin: center" />`
+            ).join("")}
+            </svg>
+        `;
+        }
+    }
+
+    customElements.define("click-spark", ClickSpark);
 
 </script>
+
 </body>
 
 </html>
