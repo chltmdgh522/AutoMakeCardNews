@@ -319,7 +319,7 @@ textarea{
 }
 
 .popup .category label {
-    font-family:'Jua', sans-serif;
+    font-family:'Noto Sans KR', sans-serif;
     font-weight: normal;
     margin-bottom : 10px;
     display: flex;
@@ -425,7 +425,7 @@ textarea{
 .popup label {
     color: #555;
     font-size: 16px;
-    font-family: 'Jua', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     font-weight: normal;
 }
 
@@ -985,7 +985,7 @@ input[type="color"] {
 }
 
 *{
-    font-family: "Jua",sans-serif;
+    font-family: "Noto Sans KR",sans-serif;
 }
 
 #save5 {
@@ -1127,7 +1127,7 @@ input[type="color"] {
 }
 .filter-option5 label {
     font-size: 18px; /* 글씨 크기를 조절 */
-    font-family: 'Jua', sans-serif; /* 폰트 재지정 */
+    font-family: 'Noto Sans KR', sans-serif; /* 폰트 재지정 */
     line-height: normal; /* 라벨의 line-height를 normal로 설정 */
     padding-top: 5px; /* 글씨를 아래로 내리기 위해 추가된 여백 */
     color:black;

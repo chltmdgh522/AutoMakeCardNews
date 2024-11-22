@@ -14,7 +14,7 @@
 
     <!--Fontawesome CDN-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <!--Custom styles-->
     <link href="css/login.css" rel="stylesheet">
     <link rel="shortcut icon" href="/logo/logo2.png" type="image/x-icon">
@@ -26,7 +26,7 @@
 
             <div class="card-body" style="padding-bottom: 1px;">
                 <div  style="background-color: white; text-align: center; padding-bottom: 10px;">
-                    <h3 style="color: black;">아이디 찾기</h3>
+                    <h3 style="color: black; font-weight: bold;">아이디 찾기</h3>
                 </div>
                 <form th:action th:object="${member}" method="post">
                     <div th:if="${#fields.hasGlobalErrors()}" style="text-align: center">

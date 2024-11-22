@@ -5,7 +5,8 @@
 html, body {
     position: relative;
     height: 100%;
-    font-family: 'Numans', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: bold;
 }
 
 body::before {
@@ -109,7 +110,7 @@ a{
 }
 
 *{
-    font-family: "Jua",sans-serif;
+    font-family: "Noto Sans KR",sans-serif;
 }
 
 .social_icon span{
