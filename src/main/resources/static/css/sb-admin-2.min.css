@@ -12725,7 +12725,7 @@ body.sidebar-toggled footer.sticky-footer {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: yellow;
+    background-color: #7199df;
 }
 
 .image-container {
@@ -12745,7 +12745,6 @@ body.sidebar-toggled footer.sticky-footer {
         flex: 0 0 calc(50% - 10px); /* 화면이 좁아지면 이미지를 반으로 나누어 표시합니다 */
     }
 }
-
 
 /* 드롭다운 버튼의 텍스트 오른쪽 정렬 */
 .dropdown .dropdown-toggle {
