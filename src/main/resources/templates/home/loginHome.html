@@ -71,7 +71,6 @@
 
         a:hover {
             text-decoration: none;
-            transform: scale(1.1);
         }
 
         /* 팝업 스타일 */
@@ -168,6 +167,13 @@
             text-decoration: none;
         }
 
+        .more:hover{
+            transform: scale(1.1);
+        }
+
+        .more{
+            transition: transform 0.3s ease;
+        }
         html,
         body {
             height: 100%;
@@ -350,10 +356,10 @@
                     </div>
 
 
-                    <div class="thema mt-3 mb-5" style="display: flex; justify-content: space-between; ">
+                    <div class="thema mt-5 mb-1" style="display: flex; justify-content: space-between; ">
                         <span style="color: black; font-weight: bold;">인기 테마</span>
                         <a th:href="|/cardnews|">
-                            <span style="color: black; font-weight: bold;">더보기</span>
+                            <span style="color: black; font-weight: bold;" class="more">더보기</span>
                         </a>
                     </div>
 
@@ -372,11 +378,11 @@
                         </div>
                     </div>
 
-                    <div class="thema2 mt-5 mb-3" style="display: flex; justify-content: space-between;"
+                    <div class="thema2 mt-5 mb-2" style="display: flex; justify-content: space-between;"
                          th:if="${!myCardnews.isEmpty()}">
                         <span style="color: black; font-weight: bold;" th:text="|${member.name}님이 만든 카드뉴스|"></span>
                         <a th:href="|/cardnews/project|">
-                            <span style="color: black; font-weight: bold;">더보기</span>
+                            <span style="color: black; font-weight: bold;" class="more">더보기</span>
                         </a>
                     </div>
 
