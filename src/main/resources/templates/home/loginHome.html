@@ -41,7 +41,6 @@
             max-width: 80%;
         }
 
-
         .received-message .message-content {
             display: inline-block;
             background-color: #e9ecef;
@@ -64,11 +63,6 @@
         a {
             text-decoration: none;
             transition: transform 0.3s ease;
-        }
-
-        a:hover {
-            text-decoration: none;
-            transform: scale(1.1);
         }
 
         /* 팝업 스타일 */
@@ -166,8 +160,9 @@
 
         html,
         body {
-            height: 100%;
+            height:100%;
             overflow-x: hidden;
+            font-family:'BMJUA' !important;
         }
 
         ::-webkit-color-swatch,
@@ -183,12 +178,17 @@
             overflow: hidden;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+        .card:hover {
+            transform: translateY(-10px); /* 카드가 위로 살짝 올라감 */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 강조 */
+        }
 
         /* 이미지 스타일 */
         .card-image img {
             width: 100%;
             height: auto;
             display: block;
+            transition: transform 0.3s ease; /* 부드러운 이미지 효과 */
         }
 
         /* 카드 텍스트 */
@@ -198,7 +198,7 @@
         }
 
         .card-title {
-            font-size: 1rem;
+            font-size:20px;
             font-weight: bold;
             margin: 0 0 5px;
             color: #333;
@@ -292,7 +292,7 @@
                         <div class="container mb-1">
                             <div class="row justify-content-center">
                                 <div class="col-md-6">
-                                    <p class="text-center mt-2" style="font-size: 2.3em; color: white;">원하시는 카드뉴스를
+                                    <p class="text-center mt-2" style="font-size: 2.3em; font-family:BMJUA; ;color: white;">원하시는 카드뉴스를
                                         검색해보세요!</p>
                                     <form method="get" id="searchForm">
                                         <div class="input-group mt-3 custom-search">
@@ -305,7 +305,7 @@
                                         </div>
                                     </form>
                                     <!-- 동그라미 아이콘들 -->
-                                    <div class="text-center mt-3 mb-1">
+                                    <div class="text-center mt-3 mb-1" style="margin-left: 50px;">
                                         <!-- 첫 번째 그룹: 별 아이콘과 이미지 -->
                                         <a href="/ai-image" style="text-decoration: none">
                                             <div class="d-inline-block mr-5 menu10">
@@ -345,10 +345,10 @@
                         </div>
                     </div>
 
-                    <div class="thema mt-3 mb-5" style="display: flex; justify-content: space-between; ">
-                        <span style="color: black; font-weight: bold;">인기 테마</span>
+                    <div class="thema mt-5 mb-3" style="display: flex; justify-content: space-between; ">
+                        <span style="color: black; font-weight: bold; font-size:19px; margin-left: 10px;">인기 테마</span>
                         <a th:href="|/cardnews|">
-                            <span style="color: black; font-weight: bold;">더보기</span>
+                            <span style="color: black; font-weight: bold; font-size:19px;">더보기</span>
                         </a>
                     </div>
 
@@ -369,9 +369,9 @@
                     
                     <div class="thema2 mt-5 mb-3" style="display: flex; justify-content: space-between;"
                          th:if="${!myCardnews.isEmpty()}">
-                        <span style="color: black; font-weight: bold;" th:text="|${member.name}님이 만든 카드뉴스|"></span>
+                        <span style="color: black; font-weight: bold; margin-left: 10px; font-size:19px;" th:text="|${member.name}님이 만든 카드뉴스|"></span>
                         <a th:href="|/cardnews/project|">
-                            <span style="color: black; font-weight: bold;">더보기</span>
+                            <span style="color: black; font-weight: bold; font-size:19px;">더보기</span>
                         </a>
                     </div>
 
@@ -448,18 +448,27 @@
         connectedCallback() {
             this.shadowRoot.innerHTML = this.createSpark();
             this.svg = this.shadowRoot.querySelector("svg");
-            this._parent = this.parentNode;
-            this._parent.addEventListener("click", this);
+
+            // 부모 요소를 .mixed-color-box로 한정
+            this._parent = document.querySelector(".mixed-color-box");
+            if (this._parent) {
+                this._parent.addEventListener("click", this);
+            }
         }
 
         disconnectedCallback() {
-            this._parent.removeEventListener("click", this);
+            if (this._parent) {
+                this._parent.removeEventListener("click", this);
+            }
             delete this._parent;
         }
 
         handleEvent(e) {
-            this.setSparkPosition(e);
-            this.animateSpark();
+            // 클릭 이벤트가 mixed-color-box 내부에서만 동작하도록 제한
+            if (e.target.closest(".mixed-color-box")) {
+                this.setSparkPosition(e);
+                this.animateSpark();
+            }
         }
 
         animateSpark() {
@@ -507,7 +516,7 @@
             <svg width="45" height="45" viewBox="0 0 100 100" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" stroke="var(--click-spark-color, currentcolor)" transform="rotate(-20)">
                 ${Array.from(
                 { length: 8 },
-                (_) =>
+                () =>
                     `<line x1="50" y1="30" x2="50" y2="4" stroke-dasharray="30" stroke-dashoffset="30" style="transform-origin: center" />`
             ).join("")}
             </svg>
@@ -516,8 +525,8 @@
     }
 
     customElements.define("click-spark", ClickSpark);
-
 </script>
+
 
 <script>
     // Swiper 초기화
