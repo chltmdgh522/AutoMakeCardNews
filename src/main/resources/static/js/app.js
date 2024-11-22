@@ -171,7 +171,7 @@ function addTextToCanvas() {
         size: textSize,
         weight: fontWeight,
         font: fontFamily,
-        x: 30,
+        x: 60,
         y: 660
     });
     redrawCanvas();
