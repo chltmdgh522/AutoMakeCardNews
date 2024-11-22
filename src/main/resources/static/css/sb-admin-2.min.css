@@ -10632,7 +10632,7 @@ a.text-light:hover {
 }
 
 .text-dark {
-    color: #596780 !important
+    color: #858796 !important;"
 }
 
 
@@ -12491,7 +12491,7 @@ body.sidebar-toggled footer.sticky-footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 300px;
+    height: 320px;
     z-index: 1;
 }
 

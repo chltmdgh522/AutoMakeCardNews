@@ -84,16 +84,16 @@
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
             <a class="nav-link">
-                <span class="text-dark font-weight-bold" style="font-size: 20px;">MY PROJECT</span>
+                <span class="text-dark font-weight-bold" style="font-size: 20px; color: #3c237f !important;">MY PROJECT</span>
                 <span>&nbsp;</span>
-                <i class="fas fa-plus-square" style="color: gray;"></i>
+                <i class="fas fa-plus-square" style="color: #3c237f !important;"></i>
             </a>
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item header-menu">
             <a class="nav-link menu" href="/">
-                <i class="fas fa-home fs-3x my-icon"></i>
+                <i class="fas fa-home fs-3x my-icon text-dark" ></i>
                 <span class="text-dark" style="font-size: 23px; margin-left:12px;">Home</span></a>
 
         </li>
@@ -101,35 +101,35 @@
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item header-menu">
             <a class="nav-link" href="/cardnews/project">
-                <i class="fas fa-file fs-2x my-icon"></i>
+                <i class="fas fa-file fs-2x my-icon text-dark"></i>
                 <span class="text-dark" style="font-size: 23px; margin-left:12px;">Project</span></a>
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item header-menu">
             <a class="nav-link" href="/cardnews/template">
-                <i class="fas fa-copy my-icon"></i>
+                <i class="fas fa-copy my-icon text-dark"></i>
                 <span class="text-dark" style="font-size: 23px; margin-left:12px;">Template</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item header-menu">
             <a class="nav-link" href="/members">
-                <i class="fas fa-user my-icon"></i>
+                <i class="fas fa-user my-icon text-dark"></i>
                 <span class="text-dark" style="font-size: 23px; margin-left:12px;">Members</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item header-menu">
             <a class="nav-link" href="/trash">
-                <i class="fas fa-trash my-icon"></i>
+                <i class="fas fa-trash my-icon text-dark"></i>
                 <span class="text-dark" style="font-size: 23px; margin-left:12px;">Trash</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item header-menu">
             <a class="nav-link" href="/game">
-                <i class="fas fa-dice my-icon"></i>
+                <i class="fas fa-dice my-icon text-dark"></i>
                 <span class="text-dark" style="font-size: 23px; margin-left:12px;">Game</span></a>
         </li>
 
@@ -137,7 +137,7 @@
         <li class="nav-item header-menu" th:if="${member.roleType == T(amcn.amcn.member.domain.member.RoleType).MASTER}">
             <a class="nav-link" href="/superchat"
                data-toggle="modal" data-target="#chatModal">
-                <i class="fas fa-comments my-icon"></i>
+                <i class="fas fa-comments my-icon text-dark"></i>
                 <span class="text-dark" style="font-size: 21px; font-weight:bold; ">문의를 받아주세요!</span></a>
         </li>
 
@@ -145,27 +145,27 @@
         <li class="nav-item header-menu" th:unless="${member.roleType == T(amcn.amcn.member.domain.member.RoleType).MASTER}">
             <a class="nav-link" href="/chat"
                data-toggle="modal" data-target="#chatModal">
-                <i class="fas fa-comments my-icon"></i>
+                <i class="fas fa-comments my-icon text-dark"></i>
                 <span class="text-dark" style="font-size: 23px; margin-left:12px;">Chat</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item header-menu">
             <a class="nav-link" th:href="@{/mypage}">
-                <i class="fas fa-cog my-icon"></i>
+                <i class="fas fa-cog my-icon text-dark"></i>
                 <span class="text-dark" style="font-size: 23px; margin-left:12px;">Setting</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item header-menu" th:if="${member.roleType == T(amcn.amcn.member.domain.member.RoleType).MASTER}">
             <a class="nav-link" th:href="@{/system}">
-                <i class="fas fa-wrench my-icon"></i>
+                <i class="fas fa-wrench my-icon text-dark"></i>
                 <span class="text-dark" style="font-size: 23px; font-weight:bold; ">Super</span></a>
         </li>
 
         <form th:action="@{/logout}" method="post" style="color: black; font-weight: bold; text-decoration: none;"
               class="logout-button mt-5 ml-3" >
-            <button type="submit" style="background-color: transparent; border: none; font-weight: bold; color: #596780"  >
+            <button type="submit" style="background-color: transparent; border: none; font-weight: bold; color: black"  >
                 로그아웃
             </button>
         </form>
