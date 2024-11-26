@@ -44,23 +44,30 @@ public class CardNewsService {
                 .replaceAll("에","")// "에 대한" 제거
                 .trim(); // 앞뒤 공백 제거
 
+        // 동적 핵심 요소 생성
+        String dynamicKeyElements = String.format(
+                "An illustration that visually represents '%s'. The image should include a few expressive people reflecting emotions related to '%s'. Add symbolic elements that clearly convey the concept of '%s'. Use a simple and clear style with a soft color palette.",
+                cleanedPrompt, cleanedPrompt, cleanedPrompt
+        );
+
         // 최종 프롬프트 생성
         String prompt_2 = String.format(
-                "[Topic Overview] \n" +
-                        "[Goal] \n" +
-                        "Create a visually clear and expressive illustration about '%s', \n" +
-                        "focusing on making the topic understandable at a glance. \n" +
-                        "[Role] \n" +
-                        "- You are an expert illustrator specializing in creating simple and expressive visuals that effectively communicate ideas. \n" +
-                        "[Visual Elements] \n" +
-                        "- Include people with expressive faces to reflect the emotions of '%s'. \n" +
-                        "- Add symbolic elements closely related to '%s' to make the concept immediately recognizable. \n" +
-                        "[Design Guidelines] \n" +
-                        "- Use a clean, minimal style with soft, neutral colors. \n" +
-                        "- Avoid clutter and ensure the main idea stands out clearly. \n" +
+                "Topic Overview: " +
+                        "- Goal: Create a visually clear and expressive illustration about '%s', focusing on making the topic understandable at a glance. " +
+                        "Role: " +
+                        "- You are an expert illustrator specializing in creating simple and expressive visuals that effectively communicate ideas. " +
+                        "Visual Elements: " +
+                        "- Include people with expressive faces to reflect the emotions of '%s'. " +
+                        "- Add symbolic elements closely related to '%s' to make the concept immediately recognizable. " +
+                        "Design Guidelines: " +
+                        "- Use a clean, minimal style with soft, neutral colors. " +
+                        "- Avoid clutter and ensure the main idea stands out clearly. " +
                         "- Exclude any text in the illustration, focusing solely on visual representation.",
                 cleanedPrompt, cleanedPrompt, cleanedPrompt
         );
+
+        System.out.println(prompt_2); // 생성된 프롬프트 확인용
+
         // JSON 문자열 생성
         String requestBody = String.format(
                 "{\"model\":\"dall-e-3\",\"prompt\":\"%s\",\"n\":1,\"size\":\"1024x1024\"}",
@@ -102,9 +109,9 @@ public class CardNewsService {
         String[] removeWords = {"카드뉴스", "이미지", "관한", "대한", "이미저", "카드뉴소"};
 
         String userInput = removeWordsFromString(prompt, removeWords) +
-                "이게 사용자 답변인데, 답변 내용 중 '카드뉴스'나 '이미지'와 관련된 단어가 있으면 무시해 주세요.\n" +
-                "남은 문장에 관한 주요 헤드라인 문구 10개를 생성해 주세요.\n" +
-                "헤드라인은 간결하고 매력적으로 작성하며, 뉴스 스타일로 작성해주세요.\n";
+                "이게 사용자 답변인데, 답변 내용 중 '카드뉴스'나 '이미지'와 관련된 단어가 있으면 무시해 주세요."+
+                "남은 문장에 관한 주요 헤드라인 문구 10개를 생성해 주세요."+
+                "헤드라인은 간결하고 매력적으로 작성하며, 뉴스 스타일로 작성해주세요.";
         // OpenAI API 호출
         String answer = "";
         try {
@@ -134,7 +141,7 @@ public class CardNewsService {
             e.printStackTrace();
         }
 
-        return CompletableFuture.completedFuture(answer_list(answer));
+        return  CompletableFuture.completedFuture(answer_list(answer));
 
     }
 
