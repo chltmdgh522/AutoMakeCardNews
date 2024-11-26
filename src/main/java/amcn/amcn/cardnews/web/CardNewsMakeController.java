@@ -205,6 +205,7 @@ public class CardNewsMakeController {
 
             String replace = path.replace('\\', '/');
             String substringPath = replace.substring(59);
+            log.info(substringPath);
             loginMember.setOriginalUrl(substringPath);
             loginMember.setAiImg(true);
             memberRepository.updateUrl(loginMember);
