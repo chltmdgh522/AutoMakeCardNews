@@ -288,12 +288,10 @@ wheel              0.41.2
 
 # 💞 팀원 소개
 ##### ❤️‍🔥 AMCN을 개발한 팀원들을 소개합니다!
-추가할예정!!! 
-아래는 다른 프로젝트 팀원들입니당
 
 |                       **[김성학](https://github.com/hak0622)**                         | **[최승호](https://github.com/chltmdgh522)**    | 
 |:-------------------------------------------------------------------------------------------------------:|:-------------------------------------:| 
-| ![img_8.png](img_8.png) | |  <img src="https://github.com/user-attachments/assets/e792dfc6-e2a7-4b42-b5a5-27672d4df6c7" width="400"> |  
+| ![img_8.png](img_8.png) |  <img src="https://github.com/user-attachments/assets/0be14931-7c1f-40ff-9275-041d7365e9f3" width="400"> |  
 |                                          Leader & Frontend & AI                                          |                Backend & AI                | 
 
 ## 😃 팀원 역할
