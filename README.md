@@ -1,12 +1,13 @@
 [![Deploy to EC2](https://github.com/chltmdgh522/AutoMakeCardNews/actions/workflows/deploy.yml/badge.svg)](https://github.com/chltmdgh522/AutoMakeCardNews/actions/workflows/deploy.yml)
+![image](https://github.com/user-attachments/assets/aceb3c4d-54d6-405a-ba52-a026f32921c0)
 
 # 📰 AutoMakeCardNews
-##### 🏆 캡스톤디자인 및 졸업 프로젝트 작품
+##### 🏆 캡스톤디자인 및 졸업 프로젝트 작품: 생성형 AI를 활용한 카드뉴스 자동 제작 서비스
 
 ### 📜 Contents
  1. [Overview](#-overview)
  2. [서비스 화면](#-서비스-화면)
- 3. [주요 기능](#-주요-기능)
+ 3. [주요 기능](#-기능)
  4. [개발 환경](#%EF%B8%8F-개발-환경)
  5. [시스템 아키텍처](#-시스템-아키텍처)
  6. [기술 특이점](#-기술-특이점)
@@ -16,11 +17,14 @@
  
 ## ✨ Overview
 ##### 🏆 개발 기간: 24.03 ~ 24.09 현재는 코드 리펙토링 중!
-> 현대 사회에서 정보의 전달 속도와 방식은 매우 중요한 요소로 자리 잡았다. 특히, 소셜 미디어와 인터넷 플랫폼의 발달로 시각적 콘텐츠의 수요가 급증하고 있다. 이러한 환경 속에 카드뉴스는 간결하고 직관적인 정보 전달 방식으로 인기를 얻고 있으나, 고품질의 카드뉴스 제작은 시간과 노력이 많이 소요되는 작업이다. 따라서 본 프로젝트에서는 생성형 AI를 활용하여 자동으로 카드뉴스를 제작하는 시스템을 개발하였다. 본 애플리케이션은 사용자의 텍스트를 기반으로 음성(TTS)이 포함된 카드뉴스를 생성할 수 있을뿐더러 생성된 이미지를 바탕으로 편집을 할 수 있다. 또한 뉴스 요약 모델을 개발하여 사용자가 원하는 뉴스 요약 정보를 쉽게 얻을 수 있다. 이 외에도, 취업 및 다양한 카테고리에서 정보를 공유하는 커뮤니티 서비스 등을 개발하였다.
+- 현대 사회에서 정보의 전달 속도와 방식은 매우 중요한 요소로 자리 잡았으며, 특히, 소셜 미디어와 인터넷 플랫폼의 발달로 시각적 콘텐츠의 수요가 급증하고 있다.
+- 이러한 환경 속에 카드뉴스는 간결하고 직관적인 정보 전달 방식으로 인기를 얻고 있으나, 고품질의 카드뉴스 제작은 시간과 노력이 많이 소요되는 작업이다.
+- 따라서 본 프로젝트에서는 생성형 AI를 활용하여 자동으로 카드뉴스를 제작하는 시스템을 개발하였다.
+- 본 애플리케이션은 사용자의 텍스트를 기반으로 음성(TTS)이 포함된 카드뉴스를 생성할 수 있을뿐더러 생성된 이미지를 바탕으로 편집을 할 수 있다.
+- 또한 뉴스 요약 모델을 개발하여 사용자가 원하는 뉴스 요약 정보를 쉽게 얻을 수 있다. 이 외에도, 취업 및 다양한 카테고리에서 정보를 공유하는 커뮤니티 서비스 등을 개발하였다.
 
 ## ✨ AMCN의 배포 사이트
 ##### 🏆 [사이트](https://amcn.kr/)
-
 
 
 ## ✨ AMCN의 소통 플랫폼 
@@ -31,10 +35,14 @@
 ## 👀 서비스 화면
 ### ✨ `모바일(아이폰 12 Pro 기준 max-width:480px)` 지원X
 
-추가할 예정
+### 📹 [시연 영상](https://youtu.be/1NWfusum-3o)
+
+### 📄 [PPT](https://drive.google.com/file/d/1-0nLBGCaFirQsS9YzaNkT_HMynD6glDW/view?usp=drive_link)
+
+### 📑 [논문](https://drive.google.com/file/d/11fjjAPV1XGf3r_9ZfU1ZJzqi39Mue5ge/view?usp=drive_link)
 
   
-## ✨  기능 (세부 기래 참고!!)
+## ✨  기능 
 
 - `회원 관리`
 	- 회원가입, 로그인, 비밀번호 찾기, 비밀번호 변경, 이메일 변경, 아이디 찾기 등의 기능을 제공하여 사용자의 계정을 효율적으로 관리합니다.
@@ -153,11 +161,8 @@
 - Java `21`
 - Python `3.11.0`
 - Spring Framework `3.2.4`
-- pipenv or poetry (패키지 관리 도구)
-- MySQL  `8.0.4`
+- pipenv or poetry 
 - Swagger `2.6.0`
-- Batch `5,x`
-- Redis `7.x`
 - Thymeleaf
 - Jpa
 
@@ -167,7 +172,25 @@
   
 
 **🦊 Frontend**
-- lang: HTML5, CSS3, JAVASCRIPT
+-  HTML5, CSS3, JAVASCRIPT
+
+
+**🗝️ API**
+- [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
+- [Quill_API](https://quilljs.com/docs/api/)
+- OpenAI API
+   
+
+**🗂️ DB**
+- MySQL `8.0.30`
+
+**🌐 Server**
+- AWS EC2 (Ubuntu `20.04`)
+- Nginx `1.23` (Reverse Proxy)
+- HTTPS (TLS `1.2`)
+
+**🔨 IDE**
+- IntellJ `2023.2`
 
 **🖼️ Gradle**
 ```
@@ -246,21 +269,6 @@ wheel              0.41.2
 
 ```
 
-**🗝️ API**
-- [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
-- [Quill_API](https://quilljs.com/docs/api/)
-   
-
-**🗂️ DB**
-- MySQL `8.0.30`
-
-**🌐 Server**
-- AWS EC2 (Ubuntu `20.04`)
-- Nginx `1.23` (Reverse Proxy)
-- HTTPS (TLS `1.2`)
-
-**🔨 IDE**
-- IntellJ `2023.2`
 
 ## 💫 시스템 아키텍처
 
@@ -274,11 +282,6 @@ wheel              0.41.2
 ![img_3.png](img_3.png)
 
 
-### [🎨 화면 설계서](https://www.figma.com/design/2MIHENt866R7jjAyDBO3lp/Untitled?node-id=0-1)
-
-추가할 예정 
-
-
 ### [✨ ER Diagram](https://www.figma.com/board/1Uc4vVCBi55xHwkM7iCesv/ANCM?node-id=0-1&node-type=canvas&t=Yf9wU45PPNKY6ovN-0)
 ![img_4.png](img_4.png)
 
@@ -289,20 +292,18 @@ wheel              0.41.2
 추가할예정!!! 
 아래는 다른 프로젝트 팀원들입니당
 
-|                                **[최승호](https://github.com/chltmdgh522)**                                | **[김성학](https://github.com/hak0622)** | **[전진명](https://github.com/JNMYNG)** |
-|:-------------------------------------------------------------------------------------------------------:|:-------------------------------------:| :---------------------------------------------------------------------------------------------------------------------------: | 
-| <img src="https://github.com/user-attachments/assets/e792dfc6-e2a7-4b42-b5a5-27672d4df6c7" width="400"> |  ![img_8.png](img_8.png) | <img src="https://github.com/user-attachments/assets/aec44d20-60ee-4411-9a6f-8dba81ff5403" width="400"> | 
-|                                          Leader & Backend & AI                                          |                Backend                | Frontend |
+|                       **[김성학](https://github.com/hak0622)**                         | **[최승호](https://github.com/chltmdgh522)**    | 
+|:-------------------------------------------------------------------------------------------------------:|:-------------------------------------:| 
+| ![img_8.png](img_8.png) | |  <img src="https://github.com/user-attachments/assets/e792dfc6-e2a7-4b42-b5a5-27672d4df6c7" width="400"> |  
+|                                          Leader & Frontend & AI                                          |                Backend & AI                | 
 
 
 
 
 ## 😃 팀원 역할
 
-- **최승호**
-  - 팀장, 기획, ERD 구축, RestAPI 개발, OpenAI API 연동, 카드뉴스 관련 기능 개발, 회원 관리 기능 개발, 서버 배포 및 최적화
 - **김성학**
-  - 뉴스 요약 모델 성능 향상, 크롤링, 커뮤니티 기능 개발  
-- **전진명**
-  - 디자인 설계 및 프론트 개발
+  - 팀장, 기획, 크롤링, 디자인 설계 및 프론트 개발, 프롬프트 개선
 
+- **최승호**
+  - ERD 구축, (카드뉴스, 커뮤니티, 회원, 뉴스) API 개발, OpenAI API 연동, 서버 배포 및 최적화, 뉴스 요약 모델 성능 향상, 웹 소켓 채팅, 프롬프트 개선 
