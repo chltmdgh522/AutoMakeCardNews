@@ -292,7 +292,7 @@ wheel              0.41.2
 |                       **[김성학](https://github.com/hak0622)**                         | **[최승호](https://github.com/chltmdgh522)**    | 
 |:-------------------------------------------------------------------------------------------------------:|:-------------------------------------:| 
 | ![img_8.png](img_8.png) |  <img src="https://github.com/user-attachments/assets/0be14931-7c1f-40ff-9275-041d7365e9f3" width="400"> |  
-|                                          Leader & Frontend & AI                                          |                Backend & AI                | 
+|                                          Leader & Frontend                                           |                Backend & AI                | 
 
 ## 😃 팀원 역할
 
